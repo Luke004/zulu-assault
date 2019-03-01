@@ -15,13 +15,13 @@ public abstract class Tank extends WarAttender {
 
     @Override
     public void draw() {
-        image.draw(pos.x, pos.y);
-        turret.draw(pos.x + image.getWidth() / 4, pos.y);
+        image.draw(map_position.x, map_position.y);
+        turret.draw(map_position.x + image.getWidth() / 4, map_position.y);
     }
 
     @Override
     public void update(GameContainer gc, int delta) {
-
+        //System.out.println(map_position);
     }
 
     public abstract void rotateTurret(RotateDirection r, int deltaTime);

@@ -14,7 +14,7 @@ public abstract class Soldier extends WarAttender {
 
     @Override
     public void draw() {
-        animation.draw(pos.x, pos.y);
+        animation.draw(map_position.x, map_position.y);
     }
 
     @Override

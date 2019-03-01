@@ -1,6 +1,7 @@
 package map;
 
 import models.war_attenders.WarAttender;
+import models.war_attenders.soldiers.PlayerSoldier;
 import models.war_attenders.tanks.Tank;
 import player.Player;
 import models.war_attenders.soldiers.Soldier;
@@ -40,8 +41,8 @@ public class LevelMap extends TiledMap {
                     Vector2f dir = soldier.getDir();
                     dir.x *= deltaTime * speed * -1;
                     dir.y *= deltaTime * speed * -1;
-                    pos.x += dir.x;
-                    pos.y += dir.y;
+                    pos.add(dir);
+                    player.setMapDir(dir);
                 } else {
                     soldier.stopAnimation();
                 }
@@ -65,8 +66,8 @@ public class LevelMap extends TiledMap {
                     Vector2f dir = tank.getDir();
                     dir.x *= deltaTime * speed * -1;
                     dir.y *= deltaTime * speed * -1;
-                    pos.x += dir.x;
-                    pos.y += dir.y;
+                    pos.add(dir);
+                    tank.updateCoordinates(dir);
                 }
 
                 if (input.isKeyDown(Input.KEY_LEFT)) {
@@ -83,6 +84,12 @@ public class LevelMap extends TiledMap {
 
                 if (input.isKeyDown(Input.KEY_Y)) {
                     tank.rotateTurret(WarAttender.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
+                }
+
+                if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
+                    soldier = new PlayerSoldier(gameContainer.getWidth() / 2,
+                            gameContainer.getHeight() / 2);
+                    player.setWarAttender(soldier, tank);
                 }
                 break;
             case PLANE:     // player is in a plane

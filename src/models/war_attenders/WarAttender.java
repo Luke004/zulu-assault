@@ -5,13 +5,16 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
 
 public abstract class WarAttender {
-    public Vector2f pos, dir;
+    public Vector2f map_position;
+    public Vector2f coordinates;
+    public Vector2f dir;
     public float movement_speed;
     public float rotate_speed;
     public Image image;
 
     public WarAttender(Vector2f startPos) {
-        pos = startPos;
+        map_position = startPos;
+        coordinates = new Vector2f(startPos.x, startPos.y);
         dir = new Vector2f(0, 0);
     }
 
@@ -23,16 +26,25 @@ public abstract class WarAttender {
         return movement_speed;
     }
 
-    public float getRotateSpeed() {
-        return rotate_speed;
-    }
-
-    public Vector2f getPos() {
-        return pos;
-    }
-
     public Vector2f getDir() {
         return dir;
+    }
+
+    public Vector2f getCoordinates() {
+        return coordinates;
+    }
+
+    public Vector2f getMapPosition() {
+        return map_position;
+    }
+
+    public void updateMapPosition(Vector2f map_position) {
+        this.map_position.add(map_position);
+    }
+
+    public void updateCoordinates(Vector2f coordinates) {
+        this.coordinates.sub(coordinates);
+        //System.out.println(this.coordinates);
     }
 
     public abstract float getRotation();
