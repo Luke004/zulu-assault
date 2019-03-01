@@ -9,8 +9,7 @@ public abstract class Soldier extends WarAttender {
     Animation animation;
 
     public Soldier(Vector2f startPos) {
-        pos = startPos;
-        dir = new Vector2f(0, 0);
+        super(startPos);
     }
 
     @Override
@@ -29,9 +28,5 @@ public abstract class Soldier extends WarAttender {
 
     public void stopAnimation() {
         animation.stop();
-    }
-
-    public Animation getAnimation() {
-        return animation;
     }
 }

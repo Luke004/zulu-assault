@@ -3,6 +3,8 @@ package levels;
 import map.LevelMap;
 import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.PlayerSoldier;
+import models.war_attenders.tanks.AgileTank;
+import org.newdawn.slick.geom.Vector2f;
 import player.Player;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
@@ -19,8 +21,10 @@ public class Level_1 extends BasicGame {
 
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
-        WarAttender warAttender = new PlayerSoldier(gameContainer.getWidth() / 2, gameContainer.getHeight() / 2);
-        player = new Player(warAttender);
+        Vector2f playerStartPos = new Vector2f(gameContainer.getWidth() / 2, gameContainer.getHeight() / 2);
+        WarAttender tank = new AgileTank(playerStartPos);
+        //WarAttender soldier = new PlayerSoldier(gameContainer.getWidth() / 2, gameContainer.getHeight() / 2);
+        player = new Player(tank);
         map = new LevelMap("assets/maps/level_1.tmx", 0, 0, player);
     }
 

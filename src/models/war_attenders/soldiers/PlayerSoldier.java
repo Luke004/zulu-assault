@@ -35,4 +35,25 @@ public class PlayerSoldier extends Soldier {
         animation.stop();
     }
 
+    @Override
+    public float getRotation() {
+        return animation.getCurrentFrame().getRotation();
+    }
+
+    @Override
+    public void rotate(RotateDirection rotateDirection, int deltaTime) {
+        switch (rotateDirection) {
+            case ROTATE_DIRECTION_LEFT:
+                for (int idx = 0; idx < animation.getFrameCount(); ++idx) {
+                    animation.getImage(idx).rotate(-rotateSpeed * deltaTime);
+                }
+                break;
+            case ROTATE_DIRECTION_RIGHT:
+                for (int idx = 0; idx < animation.getFrameCount(); ++idx) {
+                    animation.getImage(idx).rotate(rotateSpeed * deltaTime);
+                }
+                break;
+        }
+    }
+
 }

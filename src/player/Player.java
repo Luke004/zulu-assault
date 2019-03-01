@@ -2,6 +2,7 @@ package player;
 
 import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.Soldier;
+import models.war_attenders.tanks.Tank;
 import org.newdawn.slick.*;
 
 public class Player {
@@ -21,7 +22,8 @@ public class Player {
 
     public WarAttenderType getWarAttenderType() {
         if (warAttender instanceof Soldier) return WarAttenderType.SOLDIER;
-        else throw new IllegalStateException("Not a soldier!");
+        if (warAttender instanceof Tank) return WarAttenderType.TANK;
+        else throw new IllegalStateException("Not a soldier, not a tank!");
     }
 
     public WarAttender getWarAttender() {
