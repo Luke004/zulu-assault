@@ -11,13 +11,27 @@ public class AgileTank extends Tank {
         super(startPos);
 
         // individual AgileTank attributes
-        movementSpeed = 0.3f;
-        rotateSpeed = 0.15f;
+        movement_speed = 0.3f;
+        rotate_speed = 0.15f;
+        turret_rotate_speed = 0.2f;
 
         try {
             image = new Image("assets/tanks/agile_tank.png");
+            turret = new Image("assets/tanks/agile_tank_turret.png");
         } catch (SlickException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void rotateTurret(RotateDirection r, int deltaTime) {
+        switch (r) {
+            case ROTATE_DIRECTION_LEFT:
+                turret.rotate(-turret_rotate_speed * deltaTime);
+                break;
+            case ROTATE_DIRECTION_RIGHT:
+                turret.rotate(turret_rotate_speed * deltaTime);
+                break;
         }
     }
 
@@ -27,13 +41,15 @@ public class AgileTank extends Tank {
     }
 
     @Override
-    public void rotate(RotateDirection rotateDirection, int deltaTime) {
-        switch (rotateDirection) {
+    public void rotate(RotateDirection r, int deltaTime) {
+        switch (r) {
             case ROTATE_DIRECTION_LEFT:
-                image.rotate(-rotateSpeed * deltaTime);
+                image.rotate(-rotate_speed * deltaTime);
+                turret.rotate(-rotate_speed * deltaTime);
                 break;
             case ROTATE_DIRECTION_RIGHT:
-                image.rotate(rotateSpeed * deltaTime);
+                image.rotate(rotate_speed * deltaTime);
+                turret.rotate(rotate_speed * deltaTime);
                 break;
         }
     }

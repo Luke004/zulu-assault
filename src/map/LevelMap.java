@@ -4,7 +4,6 @@ import models.war_attenders.WarAttender;
 import models.war_attenders.tanks.Tank;
 import player.Player;
 import models.war_attenders.soldiers.Soldier;
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
@@ -76,6 +75,14 @@ public class LevelMap extends TiledMap {
 
                 if (input.isKeyDown(Input.KEY_RIGHT)) {
                     tank.rotate(WarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
+                }
+
+                if (input.isKeyDown(Input.KEY_X)) {
+                    tank.rotateTurret(WarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
+                }
+
+                if (input.isKeyDown(Input.KEY_Y)) {
+                    tank.rotateTurret(WarAttender.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
                 }
                 break;
             case PLANE:     // player is in a plane

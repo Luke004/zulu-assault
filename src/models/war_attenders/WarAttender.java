@@ -6,8 +6,8 @@ import org.newdawn.slick.geom.Vector2f;
 
 public abstract class WarAttender {
     public Vector2f pos, dir;
-    public float movementSpeed;
-    public float rotateSpeed;
+    public float movement_speed;
+    public float rotate_speed;
     public Image image;
 
     public WarAttender(Vector2f startPos) {
@@ -20,11 +20,11 @@ public abstract class WarAttender {
     public abstract void update(GameContainer gc, int delta);
 
     public float getMovementSpeed() {
-        return movementSpeed;
+        return movement_speed;
     }
 
     public float getRotateSpeed() {
-        return rotateSpeed;
+        return rotate_speed;
     }
 
     public Vector2f getPos() {

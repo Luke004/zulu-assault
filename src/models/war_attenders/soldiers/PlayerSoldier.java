@@ -15,8 +15,8 @@ public class PlayerSoldier extends Soldier {
         super(startPos);
 
         // individual PlayerSoldier attributes
-        movementSpeed = 0.1f;
-        rotateSpeed = 0.25f;
+        movement_speed = 0.1f;
+        rotate_speed = 0.25f;
 
         try {
             image = new Image("assets/soldiers/player_soldier_animation.png");
@@ -45,12 +45,12 @@ public class PlayerSoldier extends Soldier {
         switch (rotateDirection) {
             case ROTATE_DIRECTION_LEFT:
                 for (int idx = 0; idx < animation.getFrameCount(); ++idx) {
-                    animation.getImage(idx).rotate(-rotateSpeed * deltaTime);
+                    animation.getImage(idx).rotate(-rotate_speed * deltaTime);
                 }
                 break;
             case ROTATE_DIRECTION_RIGHT:
                 for (int idx = 0; idx < animation.getFrameCount(); ++idx) {
-                    animation.getImage(idx).rotate(rotateSpeed * deltaTime);
+                    animation.getImage(idx).rotate(rotate_speed * deltaTime);
                 }
                 break;
         }
