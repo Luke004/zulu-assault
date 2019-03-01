@@ -1,15 +1,17 @@
 package levels;
 
-import models.Player;
+import map.LevelMap;
+import models.war_attenders.WarAttender;
+import models.war_attenders.soldiers.PlayerSoldier;
+import player.Player;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.tiled.TiledMap;
 
 public class Level_1 extends BasicGame {
     private Player player;
-    private TiledMap map;
+    private LevelMap map;
 
     public Level_1(String title) {
         super(title);
@@ -17,18 +19,20 @@ public class Level_1 extends BasicGame {
 
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
-        player = new Player(50, 50);
-        map = new TiledMap("assets/maps/level_1.tmx");
+        WarAttender warAttender = new PlayerSoldier(gameContainer.getWidth() / 2, gameContainer.getHeight() / 2);
+        player = new Player(warAttender);
+        map = new LevelMap("assets/maps/level_1.tmx", 0, 0, player);
     }
 
     @Override
-    public void update(GameContainer gameContainer, int deltaTime) throws SlickException {
+    public void update(GameContainer gameContainer, int deltaTime) {
         player.update(gameContainer, deltaTime);
+        map.update(gameContainer, deltaTime);
     }
 
     @Override
-    public void render(GameContainer gameContainer, Graphics graphics) throws SlickException {
-        map.render(0, 0);
+    public void render(GameContainer gameContainer, Graphics graphics) {
+        map.render();
         player.render();
     }
 }
