@@ -3,6 +3,7 @@ package models.war_attenders.soldiers;
 import models.war_attenders.WarAttender;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
 public abstract class Soldier extends WarAttender {
@@ -13,8 +14,9 @@ public abstract class Soldier extends WarAttender {
     }
 
     @Override
-    public void draw() {
+    public void draw(Graphics graphics) {
         animation.draw(map_position.x, map_position.y);
+        graphics.draw(collision_model);
     }
 
     @Override

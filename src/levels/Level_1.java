@@ -37,6 +37,6 @@ public class Level_1 extends BasicGame {
     @Override
     public void render(GameContainer gameContainer, Graphics graphics) {
         map.render();
-        player.render();
+        player.render(graphics);
     }
 }

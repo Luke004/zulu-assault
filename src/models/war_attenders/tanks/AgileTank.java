@@ -1,7 +1,10 @@
 package models.war_attenders.tanks;
 
+import models.war_attenders.WarAttender;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.geom.Vector2f;
 
 public class AgileTank extends Tank {
@@ -16,11 +19,12 @@ public class AgileTank extends Tank {
         turret_rotate_speed = 0.2f;
 
         try {
-            image = new Image("assets/tanks/agile_tank.png");
+            base_image = new Image("assets/tanks/agile_tank.png");
             turret = new Image("assets/tanks/agile_tank_turret.png");
         } catch (SlickException e) {
             e.printStackTrace();
         }
+        collision_model = new Rectangle(startPos.x, startPos.y, base_image.getWidth(), base_image.getHeight());
     }
 
     @Override
@@ -37,19 +41,32 @@ public class AgileTank extends Tank {
 
     @Override
     public float getRotation() {
-        return image.getRotation();
+        return base_image.getRotation();
     }
 
     @Override
     public void rotate(RotateDirection r, int deltaTime) {
+        float degree, radian;
         switch (r) {
             case ROTATE_DIRECTION_LEFT:
-                image.rotate(-rotate_speed * deltaTime);
-                turret.rotate(-rotate_speed * deltaTime);
+                degree = -rotate_speed * deltaTime;
+                base_image.rotate(degree);
+                turret.rotate(degree);
+                radian = (float) (degree * Math.PI / 180);
+                collision_model = collision_model.transform(Transform.createRotateTransform(
+                        radian,
+                        collision_model.getCenterX(),
+                        collision_model.getCenterY()));
                 break;
             case ROTATE_DIRECTION_RIGHT:
-                image.rotate(rotate_speed * deltaTime);
-                turret.rotate(rotate_speed * deltaTime);
+                degree = rotate_speed * deltaTime;
+                base_image.rotate(degree);
+                turret.rotate(degree);
+                radian = (float) (degree * Math.PI / 180);
+                collision_model = collision_model.transform(Transform.createRotateTransform(
+                        radian,
+                        collision_model.getCenterX(),
+                        collision_model.getCenterY()));
                 break;
         }
     }

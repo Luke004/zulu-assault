@@ -20,12 +20,12 @@ public class Player {
         mapDir = new Vector2f(0, 0);
     }
 
-    public void render() {
-        current_warAttender.draw();
+    public void render(Graphics graphics) {
+        current_warAttender.draw(graphics);
 
         // render all planes or tanks the user used to ride and got out by pressing 'shift'
         for (WarAttender warAttender : old_warAttenders) {
-            warAttender.draw();
+            warAttender.draw(graphics);
         }
     }
 
@@ -44,8 +44,21 @@ public class Player {
         else throw new IllegalStateException("Not a soldier, not a tank!");
     }
 
-    public void setWarAttender(WarAttender new_warAttender, WarAttender old_warAttender) {
-        this.current_warAttender = new_warAttender;
+    /*
+    soldier goes back in a once used tank or plane
+     */
+    public void setWarAttender(WarAttender old_warAttender) {
+        old_warAttenders.remove(old_warAttender);
+        this.current_warAttender = old_warAttender;
+    }
+
+    /*
+    soldier goes out of a tank or plane, so set the players
+    current_warAttender -> soldier
+    old_warAttender -> used tank or plane (save this in 'old_warAttenders' list)
+     */
+    public void setWarAttender(WarAttender soldier, WarAttender old_warAttender) {
+        this.current_warAttender = soldier;
         old_warAttenders.add(old_warAttender);
     }
 
@@ -53,11 +66,8 @@ public class Player {
         return current_warAttender;
     }
 
-    /*
-    give the player an info about where the map is going so it can update its old WarAttenders accordingly (->stand still)
-     */
-    public void setMapDir(Vector2f mapDir) {
-        this.mapDir = mapDir;
+    public List<WarAttender> getOldWarAttenders(){
+        return old_warAttenders;
     }
 
     public enum WarAttenderType {

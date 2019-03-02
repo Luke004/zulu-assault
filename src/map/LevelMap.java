@@ -3,6 +3,7 @@ package map;
 import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.PlayerSoldier;
 import models.war_attenders.tanks.Tank;
+import org.newdawn.slick.geom.Shape;
 import player.Player;
 import models.war_attenders.soldiers.Soldier;
 import org.newdawn.slick.GameContainer;
@@ -26,23 +27,22 @@ public class LevelMap extends TiledMap {
     }
 
     public void update(GameContainer gameContainer, int deltaTime) {
-        float rotation;
         Input input = gameContainer.getInput();
         switch (player.getWarAttenderType()) {
             case SOLDIER:   // player is a soldier (goes by foot)
                 Soldier soldier = (Soldier) player.getWarAttender();
-                rotation = soldier.getRotation();
-                soldier.getDir().x = (float) Math.sin(rotation * Math.PI / 180);
-                soldier.getDir().y = (float) -Math.cos(rotation * Math.PI / 180);
 
                 if (input.isKeyDown(Input.KEY_UP)) {
                     soldier.startAnimation();
-                    float speed = soldier.getMovementSpeed();
-                    Vector2f dir = soldier.getDir();
-                    dir.x *= deltaTime * speed * -1;
-                    dir.y *= deltaTime * speed * -1;
-                    pos.add(dir);
-                    player.setMapDir(dir);
+                    soldier.move(WarAttender.Move.MOVE_UP, deltaTime);
+                    Vector2f direction = soldier.getDir();
+                    pos.add(direction);  // move the map in the direction the soldier is moving
+                    soldier.updateCoordinates(direction);
+
+                    // this for loop is needed im case user presses shift and gets out of plane/ tank
+                    for (WarAttender old_warAttender : player.getOldWarAttenders()) {
+                        old_warAttender.freezePosition(direction);  // old_warAttender stays in the same place
+                    }
                 } else {
                     soldier.stopAnimation();
                 }
@@ -54,20 +54,25 @@ public class LevelMap extends TiledMap {
                 if (input.isKeyDown(Input.KEY_RIGHT)) {
                     soldier.rotate(WarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
                 }
+
+                if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
+                    for (WarAttender old_warAttender : player.getOldWarAttenders()) {
+                        if (calculateDistance(player.getWarAttender().getCollisionModel(), old_warAttender.getCollisionModel()) < 30.f) {
+                            player.setWarAttender(old_warAttender);
+                            break;
+                        }
+                    }
+                }
                 break;
             case TANK:      // player is in a tank
                 Tank tank = (Tank) player.getWarAttender();
-                rotation = tank.getRotation();
-                tank.getDir().x = (float) Math.sin(rotation * Math.PI / 180);
-                tank.getDir().y = (float) -Math.cos(rotation * Math.PI / 180);
+
 
                 if (input.isKeyDown(Input.KEY_UP)) {
-                    float speed = tank.getMovementSpeed();
-                    Vector2f dir = tank.getDir();
-                    dir.x *= deltaTime * speed * -1;
-                    dir.y *= deltaTime * speed * -1;
-                    pos.add(dir);
-                    tank.updateCoordinates(dir);
+                    tank.move(WarAttender.Move.MOVE_UP, deltaTime);
+                    Vector2f direction = tank.getDir();
+                    pos.add(direction);// move the map in the direction the tank is moving
+                    tank.updateCoordinates(direction);
                 }
 
                 if (input.isKeyDown(Input.KEY_LEFT)) {
@@ -102,5 +107,12 @@ public class LevelMap extends TiledMap {
 
     public void render() {
         super.render((int) pos.x, (int) pos.y, 0, 0, 20, 15);
+    }
+
+    private float calculateDistance(Shape obj1, Shape obj2) {
+        float horizontal_distance = obj1.getCenterX() - obj2.getCenterX();
+        float vertical_distance = obj1.getCenterY() - obj2.getCenterY();
+        float sum = (float) (Math.pow(horizontal_distance, 2) + Math.pow(vertical_distance, 2));
+        return (float) Math.sqrt(sum);
     }
 }

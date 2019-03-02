@@ -1,8 +1,10 @@
 package models.war_attenders.soldiers;
 
+import models.war_attenders.WarAttender;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Vector2f;
 
 public class PlayerSoldier extends Soldier {
@@ -19,14 +21,18 @@ public class PlayerSoldier extends Soldier {
         rotate_speed = 0.25f;
 
         try {
-            image = new Image("assets/soldiers/player_soldier_animation.png");
+            base_image = new Image("assets/soldiers/player_soldier_animation.png");
         } catch (SlickException e) {
             e.printStackTrace();
         }
+        collision_model = new Ellipse(startPos.x + base_image.getHeight() / 2,
+                startPos.y + base_image.getHeight() / 2,
+                base_image.getHeight() / 2,
+                base_image.getHeight() / 2);
         animation = new Animation(false);
         int x = 0;
         do {
-            animation.addFrame(image.getSubImage(x, 0, 12, 12), 300);
+            animation.addFrame(base_image.getSubImage(x, 0, 12, 12), 300);
             x += 12;
         } while (x <= 24);
         animation.setCurrentFrame(1);
