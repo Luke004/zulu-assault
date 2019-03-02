@@ -8,22 +8,15 @@ import player.Player;
 import models.war_attenders.soldiers.Soldier;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.tiled.TiledMap;
 
-public class LevelMap extends TiledMap {
-    private Vector2f pos;
+public class KeyInputHandler {
     private Player player;
+    private MyTiledMap map;
 
-    public LevelMap(String ref, float start_xPos, float start_yPos, Player player) throws SlickException {
-        this(ref, new Vector2f(start_xPos, start_yPos), player);
-    }
-
-    public LevelMap(String ref, Vector2f startPos, Player player) throws SlickException {
-        super(ref);
-        this.pos = startPos;
+    public KeyInputHandler(Player player, MyTiledMap map) {
         this.player = player;
+        this.map = map;
     }
 
     public void update(GameContainer gameContainer, int deltaTime) {
@@ -36,7 +29,8 @@ public class LevelMap extends TiledMap {
                     soldier.startAnimation();
                     soldier.move(WarAttender.Move.MOVE_UP, deltaTime);
                     Vector2f direction = soldier.getDir();
-                    pos.add(direction);  // move the map in the direction the soldier is moving
+                    map.move(direction);    // move the map in the direction the soldier is moving
+                    //pos.add(direction);
                     soldier.updateCoordinates(direction);
 
                     // this for loop is needed im case user presses shift and gets out of plane/ tank
@@ -70,8 +64,15 @@ public class LevelMap extends TiledMap {
                 if (input.isKeyDown(Input.KEY_UP)) {
                     tank.move(WarAttender.Move.MOVE_UP, deltaTime);
                     Vector2f direction = tank.getDir();
-                    pos.add(direction);// move the map in the direction the tank is moving
+                    map.move(direction);    // move the map in the direction the tank is moving
                     tank.updateCoordinates(direction);
+                } else if(input.isKeyDown(Input.KEY_DOWN)){
+
+                } else {
+                    Vector2f direction = tank.getDir();
+                    direction.x *= tank.deceleration_factor;
+                    direction.y *= tank.deceleration_factor;
+                    map.move(direction);    // move the map in the direction the tank is moving
                 }
 
                 if (input.isKeyDown(Input.KEY_LEFT)) {
@@ -102,10 +103,6 @@ public class LevelMap extends TiledMap {
 
         }
 
-    }
-
-    public void render() {
-        super.render((int) pos.x, (int) pos.y, 0, 0, 20, 15);
     }
 
     private float calculateDistance(Shape obj1, Shape obj2) {

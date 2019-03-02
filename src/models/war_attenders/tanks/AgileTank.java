@@ -16,6 +16,7 @@ public class AgileTank extends Tank {
         movement_speed = 0.3f;
         rotate_speed = 0.15f;
         turret_rotate_speed = 0.2f;
+        deceleration_factor = 0.85f;
 
         try {
             base_image = new Image("assets/tanks/agile_tank.png");

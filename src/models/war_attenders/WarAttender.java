@@ -8,7 +8,7 @@ public abstract class WarAttender {
     public Vector2f map_position;
     public Vector2f coordinates;
     public Vector2f dir;
-    public float movement_speed;
+    public float movement_speed, deceleration_factor;
     public float rotate_speed;
     public Image base_image;
     public Shape collision_model;

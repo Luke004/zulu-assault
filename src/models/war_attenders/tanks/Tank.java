@@ -29,6 +29,11 @@ public abstract class Tank extends WarAttender {
         if (accessible_animation != null) {
             accessible_animation.update(deltaTime);
         }
+        handleKeyInputs();
+    }
+
+    public void handleKeyInputs(){
+
     }
 
     public abstract void rotateTurret(RotateDirection r, int deltaTime);
