@@ -35,6 +35,7 @@ public class Player {
         // update all planes or tanks the user used to ride and got out from by pressing 'shift'
         for (WarAttender warAttender : old_warAttenders) {
             warAttender.map_position.add(mapDir);
+            warAttender.update(gameContainer, deltaTime);
         }
     }
 
@@ -50,6 +51,7 @@ public class Player {
     public void setWarAttender(WarAttender old_warAttender) {
         old_warAttenders.remove(old_warAttender);
         this.current_warAttender = old_warAttender;
+        old_warAttender.setAccessibleAnimation(false);
     }
 
     /*
@@ -59,6 +61,7 @@ public class Player {
      */
     public void setWarAttender(WarAttender soldier, WarAttender old_warAttender) {
         this.current_warAttender = soldier;
+        old_warAttender.setAccessibleAnimation(true);
         old_warAttenders.add(old_warAttender);
     }
 

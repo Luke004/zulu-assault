@@ -67,7 +67,6 @@ public class LevelMap extends TiledMap {
             case TANK:      // player is in a tank
                 Tank tank = (Tank) player.getWarAttender();
 
-
                 if (input.isKeyDown(Input.KEY_UP)) {
                     tank.move(WarAttender.Move.MOVE_UP, deltaTime);
                     Vector2f direction = tank.getDir();

@@ -1,8 +1,6 @@
 package models.war_attenders;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
+import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -14,6 +12,8 @@ public abstract class WarAttender {
     public float rotate_speed;
     public Image base_image;
     public Shape collision_model;
+    public Animation accessible_animation;
+    public Image accessible_animation_image;
 
     public WarAttender(Vector2f startPos) {
         map_position = startPos;
@@ -37,6 +37,28 @@ public abstract class WarAttender {
                 // TODO
                 break;
         }
+    }
+
+    public void setAccessibleAnimation(boolean activate) {
+        if (activate) {
+            try {
+                accessible_animation_image = new Image("assets/healthbars/accessible_arrow_animation.png");
+            } catch (SlickException e) {
+                e.printStackTrace();
+            }
+            accessible_animation = new Animation(false);
+
+            int x = 0;
+            do {
+                accessible_animation.addFrame(accessible_animation_image.getSubImage(x, 0, 17, 28), 1000);
+                x += 17;
+            } while (x <= 34);
+            accessible_animation.setCurrentFrame(1);
+        } else {
+            accessible_animation_image = null;
+            accessible_animation = null;
+        }
+
     }
 
     /*
