@@ -4,6 +4,8 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
+import java.util.Vector;
+
 public abstract class WarAttender {
     public Vector2f map_position;
     public Vector2f coordinates;
@@ -28,31 +30,27 @@ public abstract class WarAttender {
 
     public abstract void update(GameContainer gc, int delta);
 
-    public void accelerate(Move direction, int deltaTime) {
+    public Vector2f getAccelerateVector(Move direction, int deltaTime) {
         isMoving = true;
         if(current_speed < max_speed){
             current_speed += acceleration_factor;
         }
-        switch (direction) {
-            case MOVE_UP:
-                dir.x = (float) Math.sin(getRotation() * Math.PI / 180);
-                dir.y = (float) -Math.cos(getRotation() * Math.PI / 180);
-                dir.x *= deltaTime * current_speed * -1;
-                dir.y *= deltaTime * current_speed * -1;
-                break;
-            case MOVE_DOWN:
-                // TODO
-                break;
-        }
+        calculateVector(direction, deltaTime);
+        return dir;
     }
 
-    public void decelerate(Move direction, int deltaTime) {
+    public Vector2f getDecelerateVector(Move direction, int deltaTime) {
         if (current_speed > 0.1f) {
             current_speed *= deceleration_factor;
         } else {
             isMoving = false;
             current_speed = 0;
         }
+        calculateVector(direction, deltaTime);
+        return dir;
+    }
+
+    private void calculateVector(Move direction, int deltaTime) {
         switch (direction) {
             case MOVE_UP:
                 dir.x = (float) Math.sin(getRotation() * Math.PI / 180);

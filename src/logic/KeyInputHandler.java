@@ -4,7 +4,6 @@ import map.MyTiledMap;
 import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.PlayerSoldier;
 import models.war_attenders.tanks.Tank;
-import org.lwjgl.Sys;
 import org.newdawn.slick.geom.Shape;
 import player.Player;
 import models.war_attenders.soldiers.Soldier;
@@ -29,10 +28,8 @@ public class KeyInputHandler {
 
                 if (input.isKeyDown(Input.KEY_UP)) {
                     soldier.startAnimation();
-                    soldier.accelerate(WarAttender.Move.MOVE_UP, deltaTime);
-                    Vector2f direction = soldier.getDir();
-                    map.move(direction);    // accelerate the map in the direction the soldier is moving
-                    //pos.add(direction);
+                    Vector2f direction = soldier.getAccelerateVector(WarAttender.Move.MOVE_UP, deltaTime);
+                    map.move(direction);    // accelerate soldier until max_speed
                     soldier.updateCoordinates(direction);
 
                     // this for loop is needed im case user presses shift and gets out of plane/ tank
@@ -63,17 +60,15 @@ public class KeyInputHandler {
             case TANK:      // player is in a tank
                 Tank tank = (Tank) player.getWarAttender();
 
-                if (input.isKeyDown(Input.KEY_UP)) {    // acceleration
-                    tank.accelerate(WarAttender.Move.MOVE_UP, deltaTime);
-                    Vector2f direction = tank.getDir();
-                    map.move(direction);    // accelerate the map in the direction the tank is moving
+                if (input.isKeyDown(Input.KEY_UP)) {    // accelerate tank until max_speed
+                    Vector2f direction = tank.getAccelerateVector(WarAttender.Move.MOVE_UP, deltaTime);
+                    map.move(direction);    // move the map like a tank acceleration
                     tank.updateCoordinates(direction);
                 } else if (input.isKeyDown(Input.KEY_DOWN)) {
 
-                } else if (tank.isMoving()) {    // deceleration
-                    tank.decelerate(WarAttender.Move.MOVE_UP, deltaTime);
-                    Vector2f direction = tank.getDir();
-                    map.move(direction);    // decelerate the map in the direction the tank is moving
+                } else if (tank.isMoving()) {    // decelerate as long as the tank is still moving
+                    Vector2f direction = tank.getDecelerateVector(WarAttender.Move.MOVE_UP, deltaTime);
+                    map.move(direction);    // move the map like a tank deceleration
                     tank.updateCoordinates(direction);
                 }
 

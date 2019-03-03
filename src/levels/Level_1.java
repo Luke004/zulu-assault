@@ -26,7 +26,7 @@ public class Level_1 extends BasicGame {
         WarAttender tank = new AgileTank(playerStartPos);
         //WarAttender soldier = new PlayerSoldier(gameContainer.getWidth() / 2, gameContainer.getHeight() / 2);
         player = new Player(tank);
-        map = new MyTiledMap("assets/maps/level_1.tmx", new Vector2f(0,0));
+        map = new MyTiledMap("assets/maps/level_1.tmx", new Vector2f(0,0), tank);
         keyInputHandler = new KeyInputHandler(player, map);
     }
 
@@ -34,7 +34,7 @@ public class Level_1 extends BasicGame {
     public void update(GameContainer gameContainer, int deltaTime) {
         player.update(gameContainer, deltaTime);
         keyInputHandler.update(gameContainer, deltaTime);
-        map.update();
+        map.update(gameContainer, deltaTime);
     }
 
     @Override
