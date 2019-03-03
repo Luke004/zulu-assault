@@ -20,10 +20,10 @@ public class Player {
         mapDir = new Vector2f(0, 0);
     }
 
-    public void render(Graphics graphics) {
+    public void draw(Graphics graphics) {
         current_warAttender.draw(graphics);
 
-        // render all planes or tanks the user used to ride and got out by pressing 'shift'
+        // draw all planes or tanks the user used to ride and got out by pressing 'shift'
         for (WarAttender warAttender : old_warAttenders) {
             warAttender.draw(graphics);
         }
@@ -34,7 +34,6 @@ public class Player {
 
         // update all planes or tanks the user used to ride and got out from by pressing 'shift'
         for (WarAttender warAttender : old_warAttenders) {
-            warAttender.map_position.add(mapDir);
             warAttender.update(gameContainer, deltaTime);
         }
     }

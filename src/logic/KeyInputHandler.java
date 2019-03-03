@@ -1,10 +1,10 @@
 package logic;
 
-import map.MyTiledMap;
 import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.PlayerSoldier;
 import models.war_attenders.tanks.Tank;
 import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.tiled.TiledMap;
 import player.Player;
 import models.war_attenders.soldiers.Soldier;
 import org.newdawn.slick.GameContainer;
@@ -13,11 +13,9 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class KeyInputHandler {
     private Player player;
-    private MyTiledMap map;
 
-    public KeyInputHandler(Player player, MyTiledMap map) {
+    public KeyInputHandler(Player player, TiledMap map) {
         this.player = player;
-        this.map = map;
     }
 
     public void update(GameContainer gameContainer, int deltaTime) {
@@ -28,14 +26,7 @@ public class KeyInputHandler {
 
                 if (input.isKeyDown(Input.KEY_UP)) {
                     soldier.startAnimation();
-                    Vector2f direction = soldier.getAccelerateVector(WarAttender.Move.MOVE_UP, deltaTime);
-                    map.move(direction);    // accelerate soldier until max_speed
-                    soldier.updateCoordinates(direction);
-
-                    // this for loop is needed im case user presses shift and gets out of plane/ tank
-                    for (WarAttender old_warAttender : player.getOldWarAttenders()) {
-                        old_warAttender.freezePosition(direction);  // old_warAttender stays in the same place
-                    }
+                    soldier.accelerate(WarAttender.Move.MOVE_UP, deltaTime);
                 } else {
                     soldier.stopAnimation();
                 }
@@ -60,16 +51,12 @@ public class KeyInputHandler {
             case TANK:      // player is in a tank
                 Tank tank = (Tank) player.getWarAttender();
 
-                if (input.isKeyDown(Input.KEY_UP)) {    // accelerate tank until max_speed
-                    Vector2f direction = tank.getAccelerateVector(WarAttender.Move.MOVE_UP, deltaTime);
-                    map.move(direction);    // move the map like a tank acceleration
-                    tank.updateCoordinates(direction);
+                if (input.isKeyDown(Input.KEY_UP)) {
+                    tank.accelerate(WarAttender.Move.MOVE_UP, deltaTime);   // accelerate tank until max_speed
                 } else if (input.isKeyDown(Input.KEY_DOWN)) {
 
-                } else if (tank.isMoving()) {    // decelerate as long as the tank is still moving
-                    Vector2f direction = tank.getDecelerateVector(WarAttender.Move.MOVE_UP, deltaTime);
-                    map.move(direction);    // move the map like a tank deceleration
-                    tank.updateCoordinates(direction);
+                } else if (tank.isMoving()) {
+                    tank.decelerate(WarAttender.Move.MOVE_UP, deltaTime);   // decelerate as long as the tank is still moving
                 }
 
                 if (input.isKeyDown(Input.KEY_LEFT)) {
@@ -90,8 +77,8 @@ public class KeyInputHandler {
 
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
                     if (!tank.isMoving()) {
-                        soldier = new PlayerSoldier(gameContainer.getWidth() / 2,
-                                gameContainer.getHeight() / 2);
+                        // TODO: fix spawn coordinates of soldier
+                        soldier = new PlayerSoldier(tank.position.x, tank.position.y);
                         player.setWarAttender(soldier, tank);
                     }
                 }

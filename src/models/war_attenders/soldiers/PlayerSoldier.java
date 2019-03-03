@@ -9,11 +9,7 @@ import org.newdawn.slick.geom.Vector2f;
 public class PlayerSoldier extends Soldier {
 
     public PlayerSoldier(float start_xPos, float start_yPos) {
-        this(new Vector2f(start_xPos, start_yPos));
-    }
-
-    public PlayerSoldier(Vector2f startPos) {
-        super(startPos);
+        super(new Vector2f(start_xPos, start_yPos));
 
         // individual PlayerSoldier attributes
         max_speed = 0.1f;
@@ -26,8 +22,8 @@ public class PlayerSoldier extends Soldier {
         } catch (SlickException e) {
             e.printStackTrace();
         }
-        collision_model = new Ellipse(startPos.x + base_image.getHeight() / 2,
-                startPos.y + base_image.getHeight() / 2,
+        collision_model = new Ellipse(start_xPos + base_image.getHeight() / 2,
+                start_yPos + base_image.getHeight() / 2,
                 base_image.getHeight() / 2,
                 base_image.getHeight() / 2);
         animation = new Animation(false);

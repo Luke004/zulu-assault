@@ -113,7 +113,7 @@ public class Camera {
      */
 
     public void drawMap(int offsetX, int offsetY) {
-        //calculate the offset to the next tile (needed by TiledMap.render())
+        //calculate the offset to the next tile (needed by TiledMap.draw())
         int tileOffsetX = (int) - (cameraX % tileWidth);
         int tileOffsetY = (int) - (cameraY % tileHeight);
 

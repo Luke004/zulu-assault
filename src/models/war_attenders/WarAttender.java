@@ -4,11 +4,8 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
-import java.util.Vector;
-
 public abstract class WarAttender {
-    public Vector2f map_position;
-    public Vector2f coordinates;
+    public Vector2f position;
     public Vector2f dir;
     public float max_speed, current_speed;
     public float acceleration_factor;   // number between [0 and 1] -> the smaller the faster the acceleration
@@ -21,8 +18,7 @@ public abstract class WarAttender {
     public boolean isMoving;
 
     public WarAttender(Vector2f startPos) {
-        map_position = startPos;
-        coordinates = new Vector2f(startPos.x, startPos.y);
+        position = startPos;
         dir = new Vector2f(0, 0);
     }
 
@@ -30,16 +26,16 @@ public abstract class WarAttender {
 
     public abstract void update(GameContainer gc, int delta);
 
-    public Vector2f getAccelerateVector(Move direction, int deltaTime) {
+    public void accelerate(Move direction, int deltaTime) {
         isMoving = true;
         if(current_speed < max_speed){
             current_speed += acceleration_factor;
         }
         calculateVector(direction, deltaTime);
-        return dir;
+        position.add(dir);
     }
 
-    public Vector2f getDecelerateVector(Move direction, int deltaTime) {
+    public void decelerate(Move direction, int deltaTime) {
         if (current_speed > 0.1f) {
             current_speed *= deceleration_factor;
         } else {
@@ -47,7 +43,7 @@ public abstract class WarAttender {
             current_speed = 0;
         }
         calculateVector(direction, deltaTime);
-        return dir;
+        position.add(dir);
     }
 
     private void calculateVector(Move direction, int deltaTime) {
@@ -55,8 +51,8 @@ public abstract class WarAttender {
             case MOVE_UP:
                 dir.x = (float) Math.sin(getRotation() * Math.PI / 180);
                 dir.y = (float) -Math.cos(getRotation() * Math.PI / 180);
-                dir.x *= deltaTime * current_speed * -1;
-                dir.y *= deltaTime * current_speed * -1;
+                dir.x *= deltaTime * current_speed;
+                dir.y *= deltaTime * current_speed;
                 break;
             case MOVE_DOWN:
                 // TODO
@@ -86,46 +82,21 @@ public abstract class WarAttender {
 
     }
 
-    /*
-    used when a soldier gets out of a tank or plane to freeze its position at the place the soldier got out at
-     */
-    public void freezePosition(Vector2f direction) {
-        map_position.add(direction);    // WarAttender stays in the same place
-        collision_model.setX(collision_model.getX() + direction.x);
-        collision_model.setY(collision_model.getY() + direction.y);
-    }
-
     public boolean isMoving(){
         return isMoving;
     }
 
-    public float getMovementSpeed() {
-        return max_speed;
+    public Image getBase_image(){
+        return base_image;
     }
 
     public Vector2f getDir() {
         return dir;
     }
 
-    public Vector2f getCoordinates() {
-        return coordinates;
-    }
-
-    public Vector2f getMapPosition() {
-        return map_position;
-    }
 
     public Shape getCollisionModel() {
         return collision_model;
-    }
-
-    public void updateMapPosition(Vector2f map_position) {
-        this.map_position.add(map_position);
-    }
-
-    public void updateCoordinates(Vector2f coordinates) {
-        this.coordinates.sub(coordinates);
-        //System.out.println(this.coordinates);
     }
 
     public abstract float getRotation();

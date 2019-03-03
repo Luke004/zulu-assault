@@ -16,11 +16,11 @@ public abstract class Tank extends WarAttender {
 
     @Override
     public void draw(Graphics graphics) {
-        base_image.draw(map_position.x, map_position.y);
-        turret.draw(map_position.x + base_image.getWidth() / 4, map_position.y);
+        base_image.draw(position.x, position.y);
+        turret.draw(position.x + base_image.getWidth() / 4, position.y);
         graphics.draw(collision_model);
         if (accessible_animation != null) {
-            accessible_animation.draw(map_position.x + base_image.getWidth()/2 - 9, map_position.y);
+            accessible_animation.draw(position.x + base_image.getWidth()/2 - 9, position.y);
         }
     }
 
@@ -29,11 +29,6 @@ public abstract class Tank extends WarAttender {
         if (accessible_animation != null) {
             accessible_animation.update(deltaTime);
         }
-        handleKeyInputs();
-    }
-
-    public void handleKeyInputs(){
-
     }
 
     public abstract void rotateTurret(RotateDirection r, int deltaTime);
