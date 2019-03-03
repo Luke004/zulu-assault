@@ -13,10 +13,11 @@ public class AgileTank extends Tank {
         super(startPos);
 
         // individual AgileTank attributes
-        movement_speed = 0.3f;
+        max_speed = 0.3f;
+        acceleration_factor = 0.0005f;
+        deceleration_factor = 0.995f;
         rotate_speed = 0.15f;
         turret_rotate_speed = 0.2f;
-        deceleration_factor = 0.85f;
 
         try {
             base_image = new Image("assets/tanks/agile_tank.png");

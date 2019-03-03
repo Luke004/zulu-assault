@@ -1,8 +1,10 @@
-package map;
+package logic;
 
+import map.MyTiledMap;
 import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.PlayerSoldier;
 import models.war_attenders.tanks.Tank;
+import org.lwjgl.Sys;
 import org.newdawn.slick.geom.Shape;
 import player.Player;
 import models.war_attenders.soldiers.Soldier;
@@ -27,9 +29,9 @@ public class KeyInputHandler {
 
                 if (input.isKeyDown(Input.KEY_UP)) {
                     soldier.startAnimation();
-                    soldier.move(WarAttender.Move.MOVE_UP, deltaTime);
+                    soldier.accelerate(WarAttender.Move.MOVE_UP, deltaTime);
                     Vector2f direction = soldier.getDir();
-                    map.move(direction);    // move the map in the direction the soldier is moving
+                    map.move(direction);    // accelerate the map in the direction the soldier is moving
                     //pos.add(direction);
                     soldier.updateCoordinates(direction);
 
@@ -51,7 +53,7 @@ public class KeyInputHandler {
 
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
                     for (WarAttender old_warAttender : player.getOldWarAttenders()) {
-                        if (calculateDistance(player.getWarAttender().getCollisionModel(), old_warAttender.getCollisionModel()) < 30.f) {
+                        if (calculateDistance(player.getWarAttender().getCollisionModel(), old_warAttender.getCollisionModel()) < 25.f) {
                             player.setWarAttender(old_warAttender);
                             break;
                         }
@@ -61,18 +63,18 @@ public class KeyInputHandler {
             case TANK:      // player is in a tank
                 Tank tank = (Tank) player.getWarAttender();
 
-                if (input.isKeyDown(Input.KEY_UP)) {
-                    tank.move(WarAttender.Move.MOVE_UP, deltaTime);
+                if (input.isKeyDown(Input.KEY_UP)) {    // acceleration
+                    tank.accelerate(WarAttender.Move.MOVE_UP, deltaTime);
                     Vector2f direction = tank.getDir();
-                    map.move(direction);    // move the map in the direction the tank is moving
+                    map.move(direction);    // accelerate the map in the direction the tank is moving
                     tank.updateCoordinates(direction);
-                } else if(input.isKeyDown(Input.KEY_DOWN)){
+                } else if (input.isKeyDown(Input.KEY_DOWN)) {
 
-                } else {
+                } else if (tank.isMoving()) {    // deceleration
+                    tank.decelerate(WarAttender.Move.MOVE_UP, deltaTime);
                     Vector2f direction = tank.getDir();
-                    direction.x *= tank.deceleration_factor;
-                    direction.y *= tank.deceleration_factor;
-                    map.move(direction);    // move the map in the direction the tank is moving
+                    map.move(direction);    // decelerate the map in the direction the tank is moving
+                    tank.updateCoordinates(direction);
                 }
 
                 if (input.isKeyDown(Input.KEY_LEFT)) {
@@ -92,9 +94,11 @@ public class KeyInputHandler {
                 }
 
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
-                    soldier = new PlayerSoldier(gameContainer.getWidth() / 2,
-                            gameContainer.getHeight() / 2);
-                    player.setWarAttender(soldier, tank);
+                    if (!tank.isMoving()) {
+                        soldier = new PlayerSoldier(gameContainer.getWidth() / 2,
+                                gameContainer.getHeight() / 2);
+                        player.setWarAttender(soldier, tank);
+                    }
                 }
                 break;
             case PLANE:     // player is in a plane

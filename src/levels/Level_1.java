@@ -1,6 +1,6 @@
 package levels;
 
-import map.KeyInputHandler;
+import logic.KeyInputHandler;
 import map.MyTiledMap;
 import models.war_attenders.WarAttender;
 import models.war_attenders.tanks.AgileTank;

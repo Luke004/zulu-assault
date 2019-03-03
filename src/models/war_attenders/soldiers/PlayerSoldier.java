@@ -1,6 +1,5 @@
 package models.war_attenders.soldiers;
 
-import models.war_attenders.WarAttender;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -17,7 +16,9 @@ public class PlayerSoldier extends Soldier {
         super(startPos);
 
         // individual PlayerSoldier attributes
-        movement_speed = 0.1f;
+        max_speed = 0.1f;
+        acceleration_factor = 0.05f;
+        deceleration_factor = 0.1f;
         rotate_speed = 0.25f;
 
         try {

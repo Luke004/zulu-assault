@@ -8,12 +8,15 @@ public abstract class WarAttender {
     public Vector2f map_position;
     public Vector2f coordinates;
     public Vector2f dir;
-    public float movement_speed, deceleration_factor;
+    public float max_speed, current_speed;
+    public float acceleration_factor;   // number between [0 and 1] -> the smaller the faster the acceleration
+    public float deceleration_factor;   // number between [0 and 1] -> the smaller the faster the deceleration
     public float rotate_speed;
     public Image base_image;
     public Shape collision_model;
     public Animation accessible_animation;
     public Image accessible_animation_image;
+    public boolean isMoving;
 
     public WarAttender(Vector2f startPos) {
         map_position = startPos;
@@ -25,13 +28,37 @@ public abstract class WarAttender {
 
     public abstract void update(GameContainer gc, int delta);
 
-    public void move(Move move, int deltaTime) {
-        switch (move) {
+    public void accelerate(Move direction, int deltaTime) {
+        isMoving = true;
+        if(current_speed < max_speed){
+            current_speed += acceleration_factor;
+        }
+        switch (direction) {
             case MOVE_UP:
                 dir.x = (float) Math.sin(getRotation() * Math.PI / 180);
                 dir.y = (float) -Math.cos(getRotation() * Math.PI / 180);
-                dir.x *= deltaTime * movement_speed * -1;
-                dir.y *= deltaTime * movement_speed * -1;
+                dir.x *= deltaTime * current_speed * -1;
+                dir.y *= deltaTime * current_speed * -1;
+                break;
+            case MOVE_DOWN:
+                // TODO
+                break;
+        }
+    }
+
+    public void decelerate(Move direction, int deltaTime) {
+        if (current_speed > 0.1f) {
+            current_speed *= deceleration_factor;
+        } else {
+            isMoving = false;
+            current_speed = 0;
+        }
+        switch (direction) {
+            case MOVE_UP:
+                dir.x = (float) Math.sin(getRotation() * Math.PI / 180);
+                dir.y = (float) -Math.cos(getRotation() * Math.PI / 180);
+                dir.x *= deltaTime * current_speed * -1;
+                dir.y *= deltaTime * current_speed * -1;
                 break;
             case MOVE_DOWN:
                 // TODO
@@ -70,8 +97,12 @@ public abstract class WarAttender {
         collision_model.setY(collision_model.getY() + direction.y);
     }
 
+    public boolean isMoving(){
+        return isMoving;
+    }
+
     public float getMovementSpeed() {
-        return movement_speed;
+        return max_speed;
     }
 
     public Vector2f getDir() {
