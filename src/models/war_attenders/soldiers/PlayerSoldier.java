@@ -18,7 +18,7 @@ public class PlayerSoldier extends Soldier {
         // individual PlayerSoldier attributes
         max_speed = 0.1f;
         acceleration_factor = 0.05f;
-        deceleration_factor = 0.1f;
+        deceleration_factor = 0.1f; // not needed
         rotate_speed = 0.25f;
 
         try {

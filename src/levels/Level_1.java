@@ -34,6 +34,7 @@ public class Level_1 extends BasicGame {
     public void update(GameContainer gameContainer, int deltaTime) {
         player.update(gameContainer, deltaTime);
         keyInputHandler.update(gameContainer, deltaTime);
+        map.update();
     }
 
     @Override
