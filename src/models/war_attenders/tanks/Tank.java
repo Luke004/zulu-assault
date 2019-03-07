@@ -18,7 +18,6 @@ public abstract class Tank extends WarAttender {
     public void draw(Graphics graphics) {
         base_image.draw(position.x, position.y);
         turret.draw(position.x + base_image.getWidth() / 4, position.y);
-        graphics.draw(collision_model);
         if (accessible_animation != null) {
             accessible_animation.draw(position.x + base_image.getWidth()/2 - 9, position.y);
         }
@@ -29,6 +28,8 @@ public abstract class Tank extends WarAttender {
         if (accessible_animation != null) {
             accessible_animation.update(deltaTime);
         }
+        collisionModel.rotate(base_image.getRotation());
+        //System.out.println(collisionModel.rotate(base_image.getRotation())[1].x);
     }
 
     public abstract void rotateTurret(RotateDirection r, int deltaTime);

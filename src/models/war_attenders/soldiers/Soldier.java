@@ -16,12 +16,12 @@ public abstract class Soldier extends WarAttender {
     @Override
     public void draw(Graphics graphics) {
         animation.draw(position.x, position.y);
-        graphics.draw(collision_model);
     }
 
     @Override
     public void update(GameContainer gameContainer, int deltaTime) {
         animation.update(deltaTime);
+        collisionModel.rotate(base_image.getRotation());
     }
 
     public void startAnimation() {

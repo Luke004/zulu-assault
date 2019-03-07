@@ -1,5 +1,6 @@
 package models.war_attenders;
 
+import models.CollisionModel;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
@@ -12,7 +13,7 @@ public abstract class WarAttender {
     public float deceleration_factor;   // number between [0 and 1] -> the smaller the faster the deceleration
     public float rotate_speed;
     public Image base_image;
-    public Shape collision_model;
+    public CollisionModel collisionModel;
     public Animation accessible_animation;
     public Image accessible_animation_image;
     public boolean isMoving;
@@ -82,6 +83,10 @@ public abstract class WarAttender {
 
     }
 
+    public CollisionModel getCollisionModel() {
+        return collisionModel;
+    }
+
     public boolean isMoving(){
         return isMoving;
     }
@@ -92,11 +97,6 @@ public abstract class WarAttender {
 
     public Vector2f getDir() {
         return dir;
-    }
-
-
-    public Shape getCollisionModel() {
-        return collision_model;
     }
 
     public abstract float getRotation();

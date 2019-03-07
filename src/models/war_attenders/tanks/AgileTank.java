@@ -1,5 +1,6 @@
 package models.war_attenders.tanks;
 
+import models.CollisionModel;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
@@ -25,7 +26,7 @@ public class AgileTank extends Tank {
         } catch (SlickException e) {
             e.printStackTrace();
         }
-        collision_model = new Rectangle(startPos.x, startPos.y, base_image.getWidth(), base_image.getHeight());
+        collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
     }
 
     @Override
@@ -47,27 +48,17 @@ public class AgileTank extends Tank {
 
     @Override
     public void rotate(RotateDirection r, int deltaTime) {
-        float degree, radian;
+        float degree;
         switch (r) {
             case ROTATE_DIRECTION_LEFT:
                 degree = -rotate_speed * deltaTime;
                 base_image.rotate(degree);
                 turret.rotate(degree);
-                radian = (float) (degree * Math.PI / 180);
-                collision_model = collision_model.transform(Transform.createRotateTransform(
-                        radian,
-                        collision_model.getCenterX(),
-                        collision_model.getCenterY()));
                 break;
             case ROTATE_DIRECTION_RIGHT:
                 degree = rotate_speed * deltaTime;
                 base_image.rotate(degree);
                 turret.rotate(degree);
-                radian = (float) (degree * Math.PI / 180);
-                collision_model = collision_model.transform(Transform.createRotateTransform(
-                        radian,
-                        collision_model.getCenterX(),
-                        collision_model.getCenterY()));
                 break;
         }
     }

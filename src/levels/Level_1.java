@@ -35,7 +35,6 @@ public class Level_1 extends BasicGame {
 
     @Override
     public void update(GameContainer gameContainer, int deltaTime) {
-        System.out.println(player.getWarAttender().position);
         player.update(gameContainer, deltaTime);
         keyInputHandler.update(gameContainer, deltaTime);
         camera.centerOn(player.getWarAttender().position.x, player.getWarAttender().position.y);
