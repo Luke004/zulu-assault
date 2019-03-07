@@ -15,7 +15,8 @@ public abstract class Soldier extends WarAttender {
 
     @Override
     public void draw(Graphics graphics) {
-        animation.draw(position.x, position.y);
+        animation.draw(position.x - animation.getImage(0).getWidth()/2, position.y-animation.getImage(0).getHeight()/2);
+        //collisionModel.draw(graphics);
     }
 
     @Override

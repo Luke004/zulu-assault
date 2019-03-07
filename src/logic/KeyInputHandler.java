@@ -3,14 +3,13 @@ package logic;
 import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.PlayerSoldier;
 import models.war_attenders.tanks.Tank;
-import org.lwjgl.Sys;
 import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TiledMap;
 import player.Player;
 import models.war_attenders.soldiers.Soldier;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.geom.Vector2f;
 
 public class KeyInputHandler {
     private Player player;
@@ -43,14 +42,10 @@ public class KeyInputHandler {
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
                     for (WarAttender old_warAttender : player.getOldWarAttenders()) {
                         if(old_warAttender.getCollisionModel().intersects(soldier.getCollisionModel())){
-                            System.out.println("WORKS LMAO");
-                        }
-                        /*
-                        if (calculateDistance(player.getWarAttender().getCollisionModel(), old_warAttender.getCollisionModel()) < 25.f) {
                             player.setWarAttender(old_warAttender);
                             break;
+                            // don't forget the break; here
                         }
-                        */
                     }
                 }
                 break;
@@ -83,8 +78,8 @@ public class KeyInputHandler {
 
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
                     if (!tank.isMoving()) {
-                        // TODO: fix spawn coordinates of soldier
-                        soldier = new PlayerSoldier(tank.position.x, tank.position.y);
+                        Vector2f spawn_position = tank.calculateSoldierSpawnPosition();
+                        soldier = new PlayerSoldier(spawn_position.x, spawn_position.y);
                         player.setWarAttender(soldier, tank);
                     }
                 }

@@ -1,11 +1,13 @@
 package models;
 
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Vector2f;
 
 public class CollisionModel {
     private Vector2f position;
     private Point[] corners;
-    private Point[] collision_points;
+    public Point[] collision_points;
 
 
     public CollisionModel(Vector2f position, int model_width, int model_height) {
@@ -33,21 +35,56 @@ public class CollisionModel {
         }
     }
 
-    public boolean intersects(CollisionModel collisionModel2){
-        Point l1 = collision_points[0];
-        Point r1 = collision_points[2];
-        Point l2 = collisionModel2.collision_points[0];
-        Point r2 = collisionModel2.collision_points[2];
+    public boolean intersects(CollisionModel b) {
+        for (int x = 0; x < 2; x++) {
+            CollisionModel collisionModel = (x == 0) ? this : b;
 
-        // if one rectangle is on left side of other
-        if (l1.x > r2.x || l2.x > r1.x)
-            return false;
+            for (int i1 = 0; i1 < collisionModel.getPoints().length; i1++) {
+                int i2 = (i1 + 1) % collisionModel.getPoints().length;
+                Point p1 = collisionModel.getPoints()[i1];
+                Point p2 = collisionModel.getPoints()[i2];
 
-        // if one rectangle is above other
-        if (l1.y > r2.y || l2.y > r1.y)
-            return false;
+                Point normal = new Point(p2.y - p1.y, p1.x - p2.x);
 
+                double minA = Double.POSITIVE_INFINITY;
+                double maxA = Double.NEGATIVE_INFINITY;
+
+                for (Point p : this.getPoints()) {
+                    double projected = normal.x * p.x + normal.y * p.y;
+
+                    if (projected < minA)
+                        minA = projected;
+                    if (projected > maxA)
+                        maxA = projected;
+                }
+
+                double minB = Double.POSITIVE_INFINITY;
+                double maxB = Double.NEGATIVE_INFINITY;
+
+                for (Point p : b.getPoints()) {
+                    double projected = normal.x * p.x + normal.y * p.y;
+
+                    if (projected < minB)
+                        minB = projected;
+                    if (projected > maxB)
+                        maxB = projected;
+                }
+
+                if (maxA < minB || maxB < minA)
+                    return false;
+            }
+        }
         return true;
+    }
+
+    public void draw(Graphics graphics) {
+        for (Point p : collision_points) {
+            graphics.draw(new Circle(p.x, p.y, 1));
+        }
+    }
+
+    private Point[] getPoints() {
+        return collision_points;
     }
 
     public class Point {
