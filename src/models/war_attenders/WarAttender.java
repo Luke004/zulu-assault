@@ -16,11 +16,15 @@ public abstract class WarAttender {
     public CollisionModel collisionModel;
     public Animation accessible_animation;
     public Image accessible_animation_image;
-    public boolean isMoving;
+    public boolean isMoving, isHostile, show_accessible_animation;
 
-    public WarAttender(Vector2f startPos) {
+    public WarAttender(Vector2f startPos, boolean isHostile) {
+        this.isHostile = isHostile;
         position = startPos;
         dir = new Vector2f(0, 0);
+        if (!isHostile) {
+            initAccessibleAnimation();
+        }
     }
 
     public abstract void draw(Graphics graphics);
@@ -29,7 +33,7 @@ public abstract class WarAttender {
 
     public void accelerate(Move direction, int deltaTime) {
         isMoving = true;
-        if(current_speed < max_speed){
+        if (current_speed < max_speed) {
             current_speed += acceleration_factor;
         }
         calculateVector(direction, deltaTime);
@@ -41,7 +45,7 @@ public abstract class WarAttender {
             current_speed *= deceleration_factor;
         } else {
             isMoving = false;
-            current_speed = 0;
+            current_speed = 0.f;
         }
         calculateVector(direction, deltaTime);
         position.add(dir);
@@ -61,37 +65,40 @@ public abstract class WarAttender {
         }
     }
 
-    public void setAccessibleAnimation(boolean activate) {
-        if (activate) {
-            try {
-                accessible_animation_image = new Image("assets/healthbars/accessible_arrow_animation.png");
-            } catch (SlickException e) {
-                e.printStackTrace();
-            }
-            accessible_animation = new Animation(false);
+    public void showAccessibleAnimation(boolean activate) {
+        show_accessible_animation = activate;
+    }
 
-            int x = 0;
-            do {
-                accessible_animation.addFrame(accessible_animation_image.getSubImage(x, 0, 17, 28), 1000);
-                x += 17;
-            } while (x <= 34);
-            accessible_animation.setCurrentFrame(1);
-        } else {
-            accessible_animation_image = null;
-            accessible_animation = null;
+    private void initAccessibleAnimation() {
+        show_accessible_animation = true;
+        try {
+            accessible_animation_image = new Image("assets/healthbars/accessible_arrow_animation.png");
+        } catch (SlickException e) {
+            e.printStackTrace();
         }
+        accessible_animation = new Animation(false);
 
+        int x = 0;
+        do {
+            accessible_animation.addFrame(accessible_animation_image.getSubImage(x, 0, 17, 28), 1000);
+            x += 17;
+        } while (x <= 34);
+        accessible_animation.setCurrentFrame(1);
     }
 
     public CollisionModel getCollisionModel() {
         return collisionModel;
     }
 
-    public boolean isMoving(){
+    public boolean isMoving() {
         return isMoving;
     }
 
-    public Image getBase_image(){
+    public boolean isHostile() {
+        return isHostile;
+    }
+
+    public Image getBase_image() {
         return base_image;
     }
 

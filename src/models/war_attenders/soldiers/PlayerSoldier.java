@@ -10,7 +10,7 @@ import org.newdawn.slick.geom.Vector2f;
 public class PlayerSoldier extends Soldier {
 
     public PlayerSoldier(float start_xPos, float start_yPos) {
-        super(new Vector2f(start_xPos, start_yPos));
+        super(new Vector2f(start_xPos, start_yPos), false);
 
         // individual PlayerSoldier attributes
         max_speed = 0.1f;

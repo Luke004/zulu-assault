@@ -3,18 +3,20 @@ package logic;
 import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.PlayerSoldier;
 import models.war_attenders.tanks.Tank;
-import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.tiled.TiledMap;
 import player.Player;
 import models.war_attenders.soldiers.Soldier;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
+import java.util.ArrayList;
+
 public class KeyInputHandler {
     private Player player;
+    private ArrayList<WarAttender> level_war_attenders;
 
-    public KeyInputHandler(Player player, TiledMap map) {
+    public KeyInputHandler(Player player, ArrayList<WarAttender> level_war_attenders) {
+        this.level_war_attenders = level_war_attenders;
         this.player = player;
     }
 
@@ -40,13 +42,25 @@ public class KeyInputHandler {
                 }
 
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
+                    for(WarAttender warAttender : level_war_attenders){
+                        if(!warAttender.isHostile()){
+                            if (warAttender.getCollisionModel().intersects(soldier.getCollisionModel())) {
+                                warAttender.showAccessibleAnimation(false);
+                                player.setWarAttender(warAttender);
+                                level_war_attenders.remove(warAttender);
+                                break;
+                            }
+                        }
+                    }
+                    /*
                     for (WarAttender old_warAttender : player.getOldWarAttenders()) {
-                        if(old_warAttender.getCollisionModel().intersects(soldier.getCollisionModel())){
+                        if (old_warAttender.getCollisionModel().intersects(soldier.getCollisionModel())) {
                             player.setWarAttender(old_warAttender);
                             break;
                             // don't forget the break; here
                         }
                     }
+                    */
                 }
                 break;
             case TANK:      // player is in a tank
@@ -80,7 +94,9 @@ public class KeyInputHandler {
                     if (!tank.isMoving()) {
                         Vector2f spawn_position = tank.calculateSoldierSpawnPosition();
                         soldier = new PlayerSoldier(spawn_position.x, spawn_position.y);
-                        player.setWarAttender(soldier, tank);
+                        tank.showAccessibleAnimation(true);
+                        level_war_attenders.add(tank);
+                        player.setWarAttender(soldier);
                     }
                 }
                 break;
@@ -90,12 +106,5 @@ public class KeyInputHandler {
 
         }
 
-    }
-
-    private float calculateDistance(Shape obj1, Shape obj2) {
-        float horizontal_distance = obj1.getCenterX() - obj2.getCenterX();
-        float vertical_distance = obj1.getCenterY() - obj2.getCenterY();
-        float sum = (float) (Math.pow(horizontal_distance, 2) + Math.pow(vertical_distance, 2));
-        return (float) Math.sqrt(sum);
     }
 }
