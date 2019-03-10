@@ -26,5 +26,10 @@ public class AgileTank_v2 extends Tank {
         }
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
     }
+
+    @Override
+    public void shoot() {
+
+    }
 }
 

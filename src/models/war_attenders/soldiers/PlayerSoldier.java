@@ -4,7 +4,6 @@ import models.CollisionModel;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Vector2f;
 
 public class PlayerSoldier extends Soldier {
@@ -56,6 +55,11 @@ public class PlayerSoldier extends Soldier {
                 }
                 break;
         }
+    }
+
+    @Override
+    public void shoot() {
+
     }
 
 }

@@ -37,7 +37,7 @@ public class Level_1 extends BasicGame {
         level_war_attenders.add(enemy_tank_1);
 
         // SETUP PLAYER'S DRIVABLE WAR ATTENDERS
-        WarAttender player_drivable_tank_1 = new AgileTank_v2(new Vector2f(700.f, 300.f), false);
+        WarAttender player_drivable_tank_1 = new MediumTank(new Vector2f(700.f, 300.f), false);
         level_war_attenders.add(player_drivable_tank_1);
 
         // SETUP THE PLAYER START POSITION

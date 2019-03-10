@@ -52,15 +52,6 @@ public class KeyInputHandler {
                             }
                         }
                     }
-                    /*
-                    for (WarAttender old_warAttender : player.getOldWarAttenders()) {
-                        if (old_warAttender.getCollisionModel().intersects(soldier.getCollisionModel())) {
-                            player.setWarAttender(old_warAttender);
-                            break;
-                            // don't forget the break; here
-                        }
-                    }
-                    */
                 }
                 break;
             case TANK:      // player is in a tank
@@ -88,6 +79,10 @@ public class KeyInputHandler {
 
                 if (input.isKeyDown(Input.KEY_Y)) {
                     tank.rotateTurret(WarAttender.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
+                }
+
+                if (input.isKeyPressed(Input.KEY_SPACE)) {
+                   tank.shoot();
                 }
 
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {

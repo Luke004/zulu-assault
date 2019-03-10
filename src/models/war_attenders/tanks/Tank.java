@@ -9,6 +9,8 @@ import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Vector2f;
 import player.Player;
 
+import java.util.Iterator;
+
 public abstract class Tank extends WarAttender {
     Image turret;
     float turret_rotate_speed;
@@ -25,6 +27,11 @@ public abstract class Tank extends WarAttender {
             accessible_animation.draw(position.x - base_image.getWidth() / 4, position.y - base_image.getHeight() + 17);
         }
         collisionModel.draw(graphics);
+
+        for(Bullet b : bullet_list){
+            //bullet_image.draw(b.bullet_pos.x, b.bullet_pos.y);
+            b.draw();
+        }
     }
 
     @Override
@@ -34,6 +41,19 @@ public abstract class Tank extends WarAttender {
         }
         collisionModel.rotate(base_image.getRotation());
         //System.out.println(collisionModel.rotate(base_image.getRotation())[1].x);
+
+        Iterator<Bullet> iter = bullet_list.iterator();
+        while (iter.hasNext()) {
+            Bullet b = iter.next();
+            b.update(deltaTime);
+            if(b.bullet_lifetime > MAX_BULLET_LIFETIME){
+                iter.remove();
+            }
+        }
+
+
+
+
     }
 
     public Vector2f calculateSoldierSpawnPosition() {
