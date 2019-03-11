@@ -9,14 +9,14 @@ import models.war_attenders.soldiers.Soldier;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class KeyInputHandler {
     private Player player;
-    private ArrayList<WarAttender> level_war_attenders;
+    private List<WarAttender> friendly_war_attenders;
 
-    public KeyInputHandler(Player player, ArrayList<WarAttender> level_war_attenders) {
-        this.level_war_attenders = level_war_attenders;
+    public KeyInputHandler(Player player, List<WarAttender> friendly_war_attenders) {
+        this.friendly_war_attenders = friendly_war_attenders;
         this.player = player;
     }
 
@@ -42,14 +42,12 @@ public class KeyInputHandler {
                 }
 
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
-                    for(WarAttender warAttender : level_war_attenders){
-                        if(!warAttender.isHostile()){
-                            if (warAttender.getCollisionModel().intersects(soldier.getCollisionModel())) {
-                                warAttender.showAccessibleAnimation(false);
-                                player.setWarAttender(warAttender);
-                                level_war_attenders.remove(warAttender);
-                                break;
-                            }
+                    for (WarAttender warAttender : friendly_war_attenders) {
+                        if (warAttender.getCollisionModel().intersects(soldier.getCollisionModel())) {
+                            warAttender.showAccessibleAnimation(false);
+                            player.setWarAttender(warAttender);
+                            friendly_war_attenders.remove(warAttender);
+                            break;
                         }
                     }
                 }
@@ -82,7 +80,7 @@ public class KeyInputHandler {
                 }
 
                 if (input.isKeyDown(Input.KEY_LCONTROL) || input.isKeyPressed(Input.KEY_RCONTROL)) {
-                   tank.shoot();
+                    tank.shoot();
                 }
 
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
@@ -90,7 +88,7 @@ public class KeyInputHandler {
                         Vector2f spawn_position = tank.calculateSoldierSpawnPosition();
                         soldier = new PlayerSoldier(spawn_position.x, spawn_position.y);
                         tank.showAccessibleAnimation(true);
-                        level_war_attenders.add(tank);
+                        friendly_war_attenders.add(tank);
                         player.setWarAttender(soldier);
                     }
                 }

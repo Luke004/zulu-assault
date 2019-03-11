@@ -2,6 +2,8 @@ package models;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.geom.Polygon;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
 public class CollisionModel {
@@ -24,7 +26,7 @@ public class CollisionModel {
         collision_points[3] = new Point(0, 0);
     }
 
-    public void rotate(float rotation_angle) {
+    public void update(float rotation_angle) {
         for (int i = 0; i < corners.length; ++i) {
             float xVal = (float) (Math.cos(((rotation_angle) * Math.PI) / 180) * corners[i].x
                     + -Math.sin(((rotation_angle) * Math.PI) / 180) * corners[i].y);
@@ -78,9 +80,13 @@ public class CollisionModel {
     }
 
     public void draw(Graphics graphics) {
+        float[] points = new float[8];
+        int idx = 0;
         for (Point p : collision_points) {
-            graphics.draw(new Circle(p.x, p.y, 1));
+            points[idx++] = p.x;
+            points[idx++] = p.y;
         }
+        graphics.draw(new Polygon(points));
     }
 
     private Point[] getPoints() {

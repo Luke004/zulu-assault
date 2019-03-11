@@ -6,6 +6,7 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public abstract class WarAttender {
@@ -22,6 +23,7 @@ public abstract class WarAttender {
     public Vector2f dir;
 
     // specs related
+    public int health;
     public float max_speed, current_speed;
     public float acceleration_factor;   // number between [0 and 1] -> the smaller the faster the acceleration
     public float deceleration_factor;   // number between [0 and 1] -> the smaller the faster the deceleration
@@ -29,6 +31,7 @@ public abstract class WarAttender {
     public float bullet_speed;
     public int shot_reload_time, current_reload_time;    // time(ms) it takes for tank to reload
     public final int MAX_BULLET_LIFETIME = 2000;
+    public int bullet_damage;
 
     // booleans
     public boolean isMoving, isHostile, show_accessible_animation;
@@ -115,8 +118,16 @@ public abstract class WarAttender {
         return isHostile;
     }
 
-    public Image getBase_image() {
-        return base_image;
+    public Iterator<Bullet> getBullets() {
+        return bullet_list.iterator();
+    }
+
+    public int getBulletDamage() {
+        return bullet_damage;
+    }
+
+    public void drainHealth(int amount){
+        health -= amount;
     }
 
     public Vector2f getDir() {
@@ -148,7 +159,7 @@ public abstract class WarAttender {
             bullet_image.setRotation(rotation);
             this.bullet_pos = startPos;
             this.bullet_dir = dir;
-            this.bullet_collision_model = bullet_collision_model;
+            this.bullet_collision_model = new CollisionModel(bullet_pos, bullet_image.getWidth(), bullet_image.getHeight());
         }
 
         public void update(int deltaTime){
@@ -156,10 +167,13 @@ public abstract class WarAttender {
             this.bullet_pos.y += this.bullet_dir.y * bullet_speed * deltaTime;
 
             this.bullet_lifetime += deltaTime;
+
+            bullet_collision_model.update(bullet_image.getRotation());
         }
 
-        public void draw(){
+        public void draw(Graphics graphics){
             this.bullet_image.draw(this.bullet_pos.x, this.bullet_pos.y);
+            bullet_collision_model.draw(graphics);
         }
 
         public CollisionModel getCollisionModel(){

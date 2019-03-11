@@ -5,9 +5,7 @@ import models.war_attenders.soldiers.Soldier;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Vector2f;
-import player.Player;
 
 import java.util.Iterator;
 
@@ -30,7 +28,7 @@ public abstract class Tank extends WarAttender {
 
         for (Bullet b : bullet_list) {
             //bullet_image.draw(b.bullet_pos.x, b.bullet_pos.y);
-            b.draw();
+            b.draw(graphics);
         }
     }
 
@@ -39,8 +37,8 @@ public abstract class Tank extends WarAttender {
         if (show_accessible_animation) {
             accessible_animation.update(deltaTime);
         }
-        collisionModel.rotate(base_image.getRotation());
-        //System.out.println(collisionModel.rotate(base_image.getRotation())[1].x);
+        collisionModel.update(base_image.getRotation());
+        //System.out.println(collisionModel.update(base_image.getRotation())[1].x);
 
         if (current_reload_time < shot_reload_time) {
             current_reload_time += deltaTime;
@@ -54,8 +52,6 @@ public abstract class Tank extends WarAttender {
                 iter.remove();
             }
         }
-
-
     }
 
     public Vector2f calculateSoldierSpawnPosition() {

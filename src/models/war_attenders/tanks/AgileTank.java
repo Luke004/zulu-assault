@@ -14,6 +14,7 @@ public class AgileTank extends Tank {
         super(startPos, isHostile);
 
         // individual AgileTank attributes
+        health = 100;
         max_speed = 0.3f;
         acceleration_factor = 0.0005f;
         deceleration_factor = 0.995f;
@@ -21,6 +22,7 @@ public class AgileTank extends Tank {
         turret_rotate_speed = 0.2f;
         bullet_speed = 0.8f;
         shot_reload_time = 300;
+        bullet_damage = 1;
 
         //init models
         try {

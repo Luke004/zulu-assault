@@ -11,6 +11,7 @@ public class MediumTank extends Tank {
         super(startPos, isHostile);
 
         // individual MediumTank attributes
+        health = 100;
         max_speed = 0.15f;
         acceleration_factor = 0.00005f;
         deceleration_factor = 0.995f;
@@ -18,6 +19,7 @@ public class MediumTank extends Tank {
         turret_rotate_speed = 0.2f;
         bullet_speed = 0.8f;
         shot_reload_time = 1000;    // can shoot once every sec
+        bullet_damage = 15;
 
         try {
             base_image = new Image("assets/tanks/medium_tank.png");

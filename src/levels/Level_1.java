@@ -16,11 +16,12 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Level_1 extends BasicGame {
     private Player player;
     private TiledMap map;
-    private ArrayList<WarAttender> level_war_attenders;
+    private List<WarAttender> friendly_war_attenders, hostile_war_attenders;
     private KeyInputHandler keyInputHandler;
     private CollisionHandler collisionHandler;
     private Camera camera;
@@ -32,13 +33,14 @@ public class Level_1 extends BasicGame {
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
         // SETUP ENEMY WAR ATTENDERS
-        level_war_attenders = new ArrayList<>();
+        hostile_war_attenders = new ArrayList<>();
         WarAttender enemy_tank_1 = new MediumTank(new Vector2f(100.f, 100.f), true);
-        level_war_attenders.add(enemy_tank_1);
+        hostile_war_attenders.add(enemy_tank_1);
 
         // SETUP PLAYER'S DRIVABLE WAR ATTENDERS
+        friendly_war_attenders = new ArrayList<>();
         WarAttender player_drivable_tank_1 = new AgileTank_v2(new Vector2f(700.f, 300.f), false);
-        level_war_attenders.add(player_drivable_tank_1);
+        friendly_war_attenders.add(player_drivable_tank_1);
 
         // SETUP THE PLAYER START POSITION
         Vector2f playerStartPos = new Vector2f(gameContainer.getWidth() / 2, gameContainer.getHeight() / 2);
@@ -52,14 +54,17 @@ public class Level_1 extends BasicGame {
         map = new TiledMap("assets/maps/level_1.tmx");
 
         camera = new Camera(gameContainer, map);
-        keyInputHandler = new KeyInputHandler(player, level_war_attenders);     // handle key inputs
-        collisionHandler = new CollisionHandler(player, level_war_attenders);    // handle collisions
+        keyInputHandler = new KeyInputHandler(player, friendly_war_attenders);     // handle key inputs
+        collisionHandler = new CollisionHandler(player, friendly_war_attenders, hostile_war_attenders);    // handle collisions
     }
 
     @Override
     public void update(GameContainer gameContainer, int deltaTime) {
         player.update(gameContainer, deltaTime);
-        for(WarAttender warAttender : level_war_attenders){
+        for(WarAttender warAttender : friendly_war_attenders){
+            warAttender.update(gameContainer, deltaTime);
+        }
+        for(WarAttender warAttender : hostile_war_attenders){
             warAttender.update(gameContainer, deltaTime);
         }
         keyInputHandler.update(gameContainer, deltaTime);
@@ -72,7 +77,10 @@ public class Level_1 extends BasicGame {
         camera.drawMap();
         camera.translateGraphics();
         player.draw(graphics);
-        for(WarAttender warAttender : level_war_attenders){
+        for(WarAttender warAttender : friendly_war_attenders){
+            warAttender.draw(graphics);
+        }
+        for(WarAttender warAttender : hostile_war_attenders){
             warAttender.draw(graphics);
         }
     }
