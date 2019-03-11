@@ -81,7 +81,7 @@ public class KeyInputHandler {
                     tank.rotateTurret(WarAttender.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
                 }
 
-                if (input.isKeyPressed(Input.KEY_SPACE)) {
+                if (input.isKeyDown(Input.KEY_LCONTROL) || input.isKeyPressed(Input.KEY_RCONTROL)) {
                    tank.shoot();
                 }
 

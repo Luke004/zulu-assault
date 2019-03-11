@@ -28,7 +28,7 @@ public abstract class Tank extends WarAttender {
         }
         collisionModel.draw(graphics);
 
-        for(Bullet b : bullet_list){
+        for (Bullet b : bullet_list) {
             //bullet_image.draw(b.bullet_pos.x, b.bullet_pos.y);
             b.draw();
         }
@@ -42,16 +42,18 @@ public abstract class Tank extends WarAttender {
         collisionModel.rotate(base_image.getRotation());
         //System.out.println(collisionModel.rotate(base_image.getRotation())[1].x);
 
+        if (current_reload_time < shot_reload_time) {
+            current_reload_time += deltaTime;
+        }
+
         Iterator<Bullet> iter = bullet_list.iterator();
         while (iter.hasNext()) {
             Bullet b = iter.next();
             b.update(deltaTime);
-            if(b.bullet_lifetime > MAX_BULLET_LIFETIME){
+            if (b.bullet_lifetime > MAX_BULLET_LIFETIME) {
                 iter.remove();
             }
         }
-
-
 
 
     }
@@ -102,10 +104,10 @@ public abstract class Tank extends WarAttender {
         }
     }
 
-    public void onCollision(WarAttender enemy){
-        if(enemy instanceof Tank){  // enemy is a tank
+    public void onCollision(WarAttender enemy) {
+        if (enemy instanceof Tank) {  // enemy is a tank
             current_speed = 0.f;    // stop movement as long as there's collision
-        } else if (enemy instanceof Soldier){   // enemy is a soldier (bad for him)
+        } else if (enemy instanceof Soldier) {   // enemy is a soldier (bad for him)
             // kill soldier
         }
         // plane instanceof is not needed, nothing happens there
@@ -114,7 +116,34 @@ public abstract class Tank extends WarAttender {
     /*
     let the tank bounce a few meters back from its current position
      */
-    private void bounceBack(){
+    private void bounceBack() {
         // TODO
+    }
+
+    /*
+    The standard method a tank uses to shoot. Should be overwritten if a tank shoots another way.
+     */
+    @Override
+    public void shoot() {
+        if (canShoot()) {
+            current_reload_time = 0;    // reset the reload time when a shot is fired
+            float rotation_angle = turret.getRotation();
+            float spawnX = position.x;
+            float spawnY = position.y;
+            spawnX += -Math.sin(((rotation_angle) * Math.PI) / 180) * -30.f;
+            spawnY += Math.cos(((rotation_angle) * Math.PI) / 180) * -30.f;
+            Vector2f bullet_spawn = new Vector2f(spawnX, spawnY);
+
+            float xVal = (float) Math.sin(rotation_angle * Math.PI / 180);
+            float yVal = (float) -Math.cos(rotation_angle * Math.PI / 180);
+            Vector2f bullet_dir = new Vector2f(xVal, yVal);
+
+            Bullet bullet = new Bullet(bullet_spawn, bullet_dir, rotation_angle);
+            bullet_list.add(bullet);
+        }
+    }
+
+    boolean canShoot() {
+        return current_reload_time >= shot_reload_time;
     }
 }

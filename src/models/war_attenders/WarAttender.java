@@ -27,6 +27,7 @@ public abstract class WarAttender {
     public float deceleration_factor;   // number between [0 and 1] -> the smaller the faster the deceleration
     public float rotate_speed;
     public float bullet_speed;
+    public int shot_reload_time, current_reload_time;    // time(ms) it takes for tank to reload
     public final int MAX_BULLET_LIFETIME = 2000;
 
     // booleans

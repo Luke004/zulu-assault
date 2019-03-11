@@ -17,6 +17,7 @@ public class MediumTank extends Tank {
         rotate_speed = 0.15f;
         turret_rotate_speed = 0.2f;
         bullet_speed = 0.8f;
+        shot_reload_time = 1000;    // can shoot once every sec
 
         try {
             base_image = new Image("assets/tanks/medium_tank.png");
@@ -28,13 +29,4 @@ public class MediumTank extends Tank {
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
     }
 
-    @Override
-    public void shoot(){
-        float rotation_angle = turret.getRotation();
-        float xVal = (float) Math.sin(rotation_angle * Math.PI / 180);
-        float yVal = (float) -Math.cos(rotation_angle * Math.PI / 180);
-        Vector2f bullet_dir = new Vector2f(xVal, yVal);
-        Bullet bullet = new Bullet(new Vector2f(position.x, position.y), bullet_dir, rotation_angle);
-        bullet_list.add(bullet);
-    }
 }

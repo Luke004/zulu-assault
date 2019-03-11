@@ -7,6 +7,8 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class AgileTank extends Tank {
 
+    private boolean switch_bullet_spawn_side;   // so each turret can shoot
+
 
     public AgileTank(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
@@ -18,6 +20,7 @@ public class AgileTank extends Tank {
         rotate_speed = 0.15f;
         turret_rotate_speed = 0.2f;
         bullet_speed = 0.8f;
+        shot_reload_time = 300;
 
         //init models
         try {
@@ -31,12 +34,34 @@ public class AgileTank extends Tank {
     }
 
     @Override
-    public void shoot(){
-        float rotation_angle = turret.getRotation();
-        float xVal = (float) Math.sin(rotation_angle * Math.PI / 180);
-        float yVal = (float) -Math.cos(rotation_angle * Math.PI / 180);
-        Vector2f bullet_dir = new Vector2f(xVal, yVal);
-        Bullet bullet = new Bullet(new Vector2f(position.x, position.y), bullet_dir, rotation_angle);
-        bullet_list.add(bullet);
+    public void shoot() {
+        if (canShoot()) {
+            current_reload_time = 0;    // reset the reload time when a shot is fired
+            float rotation_angle = turret.getRotation();
+
+            float spawnX = position.x;
+            float spawnY = position.y;
+            if (switch_bullet_spawn_side) {
+                spawnX += (float) (Math.cos(((rotation_angle) * Math.PI) / 180) * 4.f
+                        + -Math.sin(((rotation_angle) * Math.PI) / 180) * -30.f);
+                spawnY += (float) (Math.sin(((rotation_angle) * Math.PI) / 180) * 4.f
+                        + Math.cos(((rotation_angle) * Math.PI) / 180) * -30.f);
+                switch_bullet_spawn_side = false;
+            } else {
+                spawnX += (float) (Math.cos(((rotation_angle) * Math.PI) / 180) * -4.f
+                        + -Math.sin(((rotation_angle) * Math.PI) / 180) * -30.f);
+                spawnY += (float) (Math.sin(((rotation_angle) * Math.PI) / 180) * -4.f
+                        + Math.cos(((rotation_angle) * Math.PI) / 180) * -30.f);
+                switch_bullet_spawn_side = true;
+            }
+            Vector2f bullet_spawn = new Vector2f(spawnX, spawnY);
+
+            float dirX = (float) Math.sin(rotation_angle * Math.PI / 180);
+            float dirY = (float) -Math.cos(rotation_angle * Math.PI / 180);
+            Vector2f bullet_dir = new Vector2f(dirX, dirY);
+
+            Bullet bullet = new Bullet(bullet_spawn, bullet_dir, rotation_angle);
+            bullet_list.add(bullet);
+        }
     }
 }
