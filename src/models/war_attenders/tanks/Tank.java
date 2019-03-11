@@ -19,38 +19,18 @@ public abstract class Tank extends WarAttender {
 
     @Override
     public void draw(Graphics graphics) {
-        base_image.draw(position.x - base_image.getWidth() / 2, position.y - base_image.getHeight() / 2);
+        super.draw(graphics);
         turret.draw(position.x - turret.getWidth() / 2, position.y - turret.getHeight() / 2);
         if (show_accessible_animation) {
             accessible_animation.draw(position.x - base_image.getWidth() / 4, position.y - base_image.getHeight() + 17);
-        }
-        collisionModel.draw(graphics);
-
-        for (Bullet b : bullet_list) {
-            //bullet_image.draw(b.bullet_pos.x, b.bullet_pos.y);
-            b.draw(graphics);
         }
     }
 
     @Override
     public void update(GameContainer gc, int deltaTime) {
+        super.update(gc, deltaTime);
         if (show_accessible_animation) {
             accessible_animation.update(deltaTime);
-        }
-        collisionModel.update(base_image.getRotation());
-        //System.out.println(collisionModel.update(base_image.getRotation())[1].x);
-
-        if (current_reload_time < shot_reload_time) {
-            current_reload_time += deltaTime;
-        }
-
-        Iterator<Bullet> iter = bullet_list.iterator();
-        while (iter.hasNext()) {
-            Bullet b = iter.next();
-            b.update(deltaTime);
-            if (b.bullet_lifetime > MAX_BULLET_LIFETIME) {
-                iter.remove();
-            }
         }
     }
 

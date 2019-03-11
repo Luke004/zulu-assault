@@ -11,7 +11,7 @@ import java.util.List;
 
 public abstract class WarAttender {
     // model related
-    public Image base_image;
+    public Image base_image, health_bar_image;
     public CollisionModel collisionModel;
     public Texture bullet_texture;
     public List<Bullet> bullet_list;
@@ -23,7 +23,7 @@ public abstract class WarAttender {
     public Vector2f dir;
 
     // specs related
-    public int health;
+    public int current_health, max_health;
     public float max_speed, current_speed;
     public float acceleration_factor;   // number between [0 and 1] -> the smaller the faster the acceleration
     public float deceleration_factor;   // number between [0 and 1] -> the smaller the faster the deceleration
@@ -42,14 +42,60 @@ public abstract class WarAttender {
         position = startPos;
         dir = new Vector2f(0, 0);
         bullet_list = new ArrayList<>();
-        if (!isHostile) {
+        if (isHostile) {
+            try {
+                health_bar_image = new Image("assets/healthbars/healthbar_enemy.png");
+            } catch (SlickException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                health_bar_image = new Image("assets/healthbars/healthbar_friendly.png");
+            } catch (SlickException e) {
+                e.printStackTrace();
+            }
             initAccessibleAnimation();
         }
     }
 
-    public abstract void draw(Graphics graphics);
+    public void draw(Graphics graphics) {
+        base_image.draw(position.x - base_image.getWidth() / 2, position.y - base_image.getHeight() / 2);
+        health_bar_image.draw(position.x - health_bar_image.getWidth() / 2 - 7.5f, position.y - base_image.getHeight() / 2 - 15);
 
-    public abstract void update(GameContainer gc, int delta);
+        // draw health bar damage using a black rectangle
+        graphics.setColor(Color.black);
+        if (current_health > 0) {
+            graphics.fillRect(position.x - 15, position.y - base_image.getHeight() / 2 - 14, (29 - (((float) current_health) / (((float) max_health) / 29))), 5);
+        } else {    // destroyed (rectangle is full black size)
+            graphics.fillRect(position.x - 15, position.y - base_image.getHeight() / 2 - 14, 29, 5);
+        }
+
+        // BULLET RELATED STUFF
+        for (Bullet b : bullet_list) {
+            b.draw(graphics);
+        }
+
+        // COLLISION RELATED STUFF
+        collisionModel.draw(graphics);
+    }
+
+    public void update(GameContainer gc, int deltaTime) {
+        // BULLET RELATED STUFF
+        if (current_reload_time < shot_reload_time) {
+            current_reload_time += deltaTime;
+        }
+        Iterator<Bullet> iter = bullet_list.iterator();
+        while (iter.hasNext()) {
+            Bullet b = iter.next();
+            b.update(deltaTime);
+            if (b.bullet_lifetime > MAX_BULLET_LIFETIME) {
+                iter.remove();
+            }
+        }
+
+        // COLLISION RELATED STUFF
+        collisionModel.update(base_image.getRotation());
+    }
 
     public void accelerate(Move direction, int deltaTime) {
         isMoving = true;
@@ -126,8 +172,14 @@ public abstract class WarAttender {
         return bullet_damage;
     }
 
-    public void drainHealth(int amount){
-        health -= amount;
+    public void changeHealth(int amount) {
+        current_health += amount;
+        /*
+        if(current_health > 0){
+            healthbarStatusRect.setSize(
+                    Vector2f(-(HEALTHBAR_SIZE - (current_health / (max_health / HEALTHBAR_SIZE))), 5.f));
+        }
+        */
     }
 
     public Vector2f getDir() {
@@ -154,7 +206,7 @@ public abstract class WarAttender {
         public CollisionModel bullet_collision_model;
         public Vector2f bullet_pos, bullet_dir;
 
-        public Bullet(Vector2f startPos, Vector2f dir, float rotation){
+        public Bullet(Vector2f startPos, Vector2f dir, float rotation) {
             this.bullet_image = new Image(bullet_texture);
             bullet_image.setRotation(rotation);
             this.bullet_pos = startPos;
@@ -162,7 +214,7 @@ public abstract class WarAttender {
             this.bullet_collision_model = new CollisionModel(bullet_pos, bullet_image.getWidth(), bullet_image.getHeight());
         }
 
-        public void update(int deltaTime){
+        public void update(int deltaTime) {
             this.bullet_pos.x += this.bullet_dir.x * bullet_speed * deltaTime;
             this.bullet_pos.y += this.bullet_dir.y * bullet_speed * deltaTime;
 
@@ -171,12 +223,13 @@ public abstract class WarAttender {
             bullet_collision_model.update(bullet_image.getRotation());
         }
 
-        public void draw(Graphics graphics){
+        public void draw(Graphics graphics) {
             this.bullet_image.draw(this.bullet_pos.x, this.bullet_pos.y);
-            bullet_collision_model.draw(graphics);
+
+            //bullet_collision_model.draw(graphics);
         }
 
-        public CollisionModel getCollisionModel(){
+        public CollisionModel getCollisionModel() {
             return bullet_collision_model;
         }
     }

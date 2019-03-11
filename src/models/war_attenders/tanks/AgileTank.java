@@ -14,7 +14,8 @@ public class AgileTank extends Tank {
         super(startPos, isHostile);
 
         // individual AgileTank attributes
-        health = 100;
+        max_health = 100;
+        current_health = max_health;
         max_speed = 0.3f;
         acceleration_factor = 0.0005f;
         deceleration_factor = 0.995f;

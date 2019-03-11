@@ -54,6 +54,7 @@ public class CollisionHandler {
                         if (b.getCollisionModel().intersects(hostile_warAttender.getCollisionModel())) {
                             // BULLET HIT HOSTILE WAR ATTENDER
                             bullet_iterator.remove();
+                            hostile_warAttender.changeHealth(-tank.getBulletDamage());
                         }
                     }
                 }
