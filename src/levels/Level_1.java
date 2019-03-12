@@ -39,14 +39,14 @@ public class Level_1 extends BasicGame {
 
         // SETUP PLAYER'S DRIVABLE WAR ATTENDERS
         friendly_war_attenders = new ArrayList<>();
-        WarAttender player_drivable_tank_1 = new AgileTank_v2(new Vector2f(700.f, 300.f), false);
+        WarAttender player_drivable_tank_1 = new MediumTank(new Vector2f(700.f, 300.f), false);
         friendly_war_attenders.add(player_drivable_tank_1);
 
         // SETUP THE PLAYER START POSITION
         Vector2f playerStartPos = new Vector2f(gameContainer.getWidth() / 2, gameContainer.getHeight() / 2);
 
         // SETUP THE PLAYER'S VEHICLE OR SOLDIER
-        WarAttender tank = new MediumTank(playerStartPos, false);
+        WarAttender tank = new AgileTank(playerStartPos, false);
         //WarAttender soldier = new PlayerSoldier(gameContainer.getWidth() / 2, gameContainer.getHeight() / 2, false);
         player = new Player(tank);
 

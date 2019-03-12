@@ -100,7 +100,9 @@ public abstract class WarAttender {
     public void accelerate(Move direction, int deltaTime) {
         isMoving = true;
         if (current_speed < max_speed) {
-            current_speed += acceleration_factor;
+            current_speed += acceleration_factor * deltaTime;
+        } else {
+            current_speed = max_speed;  // cap the max speed
         }
         calculateVector(direction, deltaTime);
         position.add(dir);
@@ -108,7 +110,7 @@ public abstract class WarAttender {
 
     public void decelerate(Move direction, int deltaTime) {
         if (current_speed > 0.1f) {
-            current_speed *= deceleration_factor;
+            current_speed -= deceleration_factor * deltaTime;
         } else {
             isMoving = false;
             current_speed = 0.f;
