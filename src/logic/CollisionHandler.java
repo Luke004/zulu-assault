@@ -63,12 +63,16 @@ public class CollisionHandler {
                         // remove bullet if edge of map was reached
                         if (b.bullet_pos.x < 0) {
                             bullet_iterator.remove();
+                            continue;
                         } else if (b.bullet_pos.y < 0) {
                             bullet_iterator.remove();
+                            continue;
                         } else if (b.bullet_pos.x > MAP_WIDTH) {
                             bullet_iterator.remove();
+                            continue;
                         } else if (b.bullet_pos.y > MAP_HEIGHT) {
                             bullet_iterator.remove();
+                            continue;
                         }
 
                         // BULLET COLLISION WITH MAP TILE
@@ -78,13 +82,15 @@ public class CollisionHandler {
                                 (int) b.bullet_pos.y / TILE_HEIGHT,
                                 0) != 9){
                             // NOT GRASS, REMOVE BULLET
-                            bullet_iterator.remove();g
+                            bullet_iterator.remove();
+                            continue;
                         }
 
                         // BULLET COLLISION WITH HOSTILE WAR ATTENDER
                         if (b.getCollisionModel().intersects(hostile_warAttender.getCollisionModel())) {
                             bullet_iterator.remove();   // remove bullet
                             hostile_warAttender.changeHealth(-tank.getBulletDamage());  //drain health of hit tank
+                            //continue;
                         }
                     }
                 }
