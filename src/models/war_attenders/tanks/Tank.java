@@ -20,6 +20,7 @@ public abstract class Tank extends WarAttender {
     @Override
     public void draw(Graphics graphics) {
         super.draw(graphics);
+        base_image.draw(position.x - base_image.getWidth() / 2, position.y - base_image.getHeight() / 2);
         turret.draw(position.x - turret.getWidth() / 2, position.y - turret.getHeight() / 2);
         if (show_accessible_animation) {
             accessible_animation.draw(position.x - base_image.getWidth() / 4, position.y - base_image.getHeight() + 17);
@@ -117,9 +118,5 @@ public abstract class Tank extends WarAttender {
             Bullet bullet = new Bullet(bullet_spawn, bullet_dir, rotation_angle);
             bullet_list.add(bullet);
         }
-    }
-
-    boolean canShoot() {
-        return current_reload_time >= shot_reload_time;
     }
 }

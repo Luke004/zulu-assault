@@ -41,6 +41,10 @@ public class KeyInputHandler {
                     soldier.rotate(WarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
                 }
 
+                if (input.isKeyDown(Input.KEY_LCONTROL) || input.isKeyPressed(Input.KEY_RCONTROL)) {
+                    soldier.shoot();
+                }
+
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
                     for (WarAttender warAttender : friendly_war_attenders) {
                         if (warAttender.getCollisionModel().intersects(soldier.getCollisionModel())) {

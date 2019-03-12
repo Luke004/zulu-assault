@@ -59,7 +59,6 @@ public abstract class WarAttender {
     }
 
     public void draw(Graphics graphics) {
-        base_image.draw(position.x - base_image.getWidth() / 2, position.y - base_image.getHeight() / 2);
         health_bar_image.draw(position.x - health_bar_image.getWidth() / 2 - 7.5f, position.y - base_image.getHeight() / 2 - 15);
 
         // draw health bar damage using a black rectangle
@@ -193,6 +192,10 @@ public abstract class WarAttender {
     public abstract void rotate(RotateDirection r, int deltaTime);
 
     public abstract void shoot();
+
+    public boolean canShoot() {
+        return current_reload_time >= shot_reload_time;
+    }
 
     public enum RotateDirection {
         ROTATE_DIRECTION_LEFT, ROTATE_DIRECTION_RIGHT;
