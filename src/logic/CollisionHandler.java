@@ -54,108 +54,104 @@ public class CollisionHandler {
     }
 
     public void update(GameContainer gameContainer, int deltaTime) {
-        Input input = gameContainer.getInput();
-        switch (player.getWarAttenderType()) {
-            case SOLDIER:   // player is a soldier (goes by foot)
-                Soldier soldier = (Soldier) player.getWarAttender();
+        WarAttender player_warAttender = player.getWarAttender();
+        if (player_warAttender.isMoving()) {
+            // COLLISION BETWEEN PLAYER ITSELF AND FRIENDLY WAR ATTENDERS
+            for (WarAttender warAttender : friendly_war_attenders) {
+                if (player_warAttender.getCollisionModel().intersects(warAttender.getCollisionModel())) {
+                    player_warAttender.onCollision(warAttender);
+                }
+            }
+            // COLLISION PLAYER ITSELF AND HOSTILE WAR ATTENDERS
+            for (WarAttender hostile_warAttender : hostile_war_attenders) {
+                if (player_warAttender.getCollisionModel().intersects(hostile_warAttender.getCollisionModel())) {
+                    player_warAttender.onCollision(hostile_warAttender);
+                }
+            }
+        }
 
-                if (soldier.isMoving()) {
-                    for (WarAttender warAttender : friendly_war_attenders) {
-                        if (soldier.getCollisionModel().intersects(warAttender.getCollisionModel())) {
-                            soldier.onCollision(warAttender);
+        // PLAYER BULLET COLLISIONS
+        Iterator<WarAttender.Bullet> bullet_iterator = player_warAttender.getBullets();
+        while (bullet_iterator.hasNext()) {
+            WarAttender.Bullet b = bullet_iterator.next();
+            boolean canContinue = false;
+
+            // BULLET COLLISION WITH HOSTILE WAR ATTENDER
+            for (WarAttender hostile_warAttender : hostile_war_attenders) {
+                if (b.getCollisionModel().intersects(hostile_warAttender.getCollisionModel())) {
+                    bullet_iterator.remove();   // remove bullet
+                    hostile_warAttender.changeHealth(-player_warAttender.getBulletDamage());  //drain health of hit tank
+                    canContinue = true;
+                    break;
+                }
+            }
+
+            if (canContinue) continue;
+
+            // BULLET COLLISION WITH MAP TILE
+            for (int idx = 0; idx < destructible_tile_indices.length; ++idx) {
+                int x = (int) b.bullet_pos.x / TILE_WIDTH;
+                int y = (int) b.bullet_pos.y / TILE_HEIGHT;
+                int tile_ID = level_map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
+                if (tile_ID == destructible_tile_indices[idx]) {
+                    if (player_warAttender.getBulletDamage() >= DESTRUCTIBLE_TILE_MAX_HEALTH) {
+                        level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, 42);
+                    } else {
+                        // use a map to track current destructible tile health
+                        int key = x > y ? -x * y : x * y;
+                        if (destructible_tiles_health_info.containsKey(key)) {
+                            int new_health = destructible_tiles_health_info.get(key) - player_warAttender.getBulletDamage();
+                            if (new_health <= 0) {
+                                // TILE DESTROYED
+                                level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, 42);
+                                destructible_tiles_health_info.remove(key);
+                            } else {
+                                destructible_tiles_health_info.put(key, new_health);
+                            }
+                        } else {
+                            destructible_tiles_health_info.put(key, DESTRUCTIBLE_TILE_MAX_HEALTH - player_warAttender.getBulletDamage());
                         }
                     }
+                    bullet_iterator.remove();
+                    canContinue = true;
+                    break;
                 }
+            }
+
+            if (canContinue) continue;
+
+            // remove bullet if edge of map was reached
+            if (b.bullet_pos.x < 0) {
+                bullet_iterator.remove();
+            } else if (b.bullet_pos.y < 0) {
+                bullet_iterator.remove();
+            } else if (b.bullet_pos.x > MAP_WIDTH) {
+                bullet_iterator.remove();
+            } else if (b.bullet_pos.y > MAP_HEIGHT) {
+                bullet_iterator.remove();
+            }
+        }
+
+        /*
+
+        switch (player.getWarAttenderType()) {
+            case SOLDIER:   // player is a soldier (goes by foot)
+                Soldier soldier = (Soldier) player_warAttender;
+
+
+
 
                 break;
             case TANK:      // player is in a tank
                 Tank tank = (Tank) player.getWarAttender();
 
-                // COLLISION BETWEEN TANK ITSELF AND HOSTILE WAR ATTENDERS
-                for (WarAttender hostile_warAttender : hostile_war_attenders) {
-                    if (tank.isMoving()) {
-                        if (tank.getCollisionModel().intersects(hostile_warAttender.getCollisionModel())) {
-                            tank.onCollision(hostile_warAttender);
-                        }
-                    }
-                }
 
-                // COLLISION BETWEEN TANK ITSELF AND FRIENDLY WAR ATTENDERS
-                for (WarAttender friendly_warAttender : friendly_war_attenders) {
-                    if (tank.isMoving()) {
-                        if (tank.getCollisionModel().intersects(friendly_warAttender.getCollisionModel())) {
-                            tank.onCollision(friendly_warAttender);
-                        }
-                    }
-                }
-
-                // TANK BULLET COLLISIONS
-                Iterator<WarAttender.Bullet> bullet_iterator = tank.getBullets();
-                while (bullet_iterator.hasNext()) {
-                    WarAttender.Bullet b = bullet_iterator.next();
-                    boolean canContinue = false;
-
-                    // BULLET COLLISION WITH HOSTILE WAR ATTENDER
-                    for (WarAttender hostile_warAttender : hostile_war_attenders) {
-                        if (b.getCollisionModel().intersects(hostile_warAttender.getCollisionModel())) {
-                            bullet_iterator.remove();   // remove bullet
-                            hostile_warAttender.changeHealth(-tank.getBulletDamage());  //drain health of hit tank
-                            canContinue = true;
-                            break;
-                        }
-                    }
-
-                    if(canContinue) continue;
-
-                    // BULLET COLLISION WITH MAP TILE
-                    for (int idx = 0; idx < destructible_tile_indices.length; ++idx) {
-                        int x = (int) b.bullet_pos.x / TILE_WIDTH;
-                        int y = (int) b.bullet_pos.y / TILE_HEIGHT;
-                        int tile_ID = level_map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
-                        if (tile_ID == destructible_tile_indices[idx]) {
-                            if (tank.getBulletDamage() >= DESTRUCTIBLE_TILE_MAX_HEALTH) {
-                                level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, 42);
-                            } else {
-                                // use a map to track current destructible tile health
-                                int key = x > y ? -x * y : x * y;
-                                if (destructible_tiles_health_info.containsKey(key)) {
-                                    int new_health = destructible_tiles_health_info.get(key) - tank.getBulletDamage();
-                                    if (new_health <= 0) {
-                                        // TILE DESTROYED
-                                        level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, 42);
-                                        destructible_tiles_health_info.remove(key);
-                                    } else {
-                                        destructible_tiles_health_info.put(key, new_health);
-                                    }
-                                } else {
-                                    destructible_tiles_health_info.put(key, DESTRUCTIBLE_TILE_MAX_HEALTH - tank.getBulletDamage());
-                                }
-                            }
-                            bullet_iterator.remove();
-                            canContinue = true;
-                            break;
-                        }
-                    }
-
-                    if(canContinue) continue;
-
-                    // remove bullet if edge of map was reached
-                    if (b.bullet_pos.x < 0) {
-                        bullet_iterator.remove();
-                    } else if (b.bullet_pos.y < 0) {
-                        bullet_iterator.remove();
-                    } else if (b.bullet_pos.x > MAP_WIDTH) {
-                        bullet_iterator.remove();
-                    } else if (b.bullet_pos.y > MAP_HEIGHT) {
-                        bullet_iterator.remove();
-                    }
-                }
                 break;
             case PLANE:     // player is in a plane
 
                 break;
 
         }
-
+        */
     }
 }

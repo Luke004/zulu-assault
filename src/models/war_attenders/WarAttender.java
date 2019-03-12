@@ -175,6 +175,8 @@ public abstract class WarAttender {
         return bullet_damage;
     }
 
+    public abstract void onCollision(WarAttender enemy);
+
     public void changeHealth(int amount) {
         current_health += amount;
         /*
