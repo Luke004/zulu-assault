@@ -55,7 +55,7 @@ public class Level_1 extends BasicGame {
 
         camera = new Camera(gameContainer, map);
         keyInputHandler = new KeyInputHandler(player, friendly_war_attenders);     // handle key inputs
-        collisionHandler = new CollisionHandler(player, friendly_war_attenders, hostile_war_attenders);    // handle collisions
+        collisionHandler = new CollisionHandler(player, map, friendly_war_attenders, hostile_war_attenders);    // handle collisions
     }
 
     @Override

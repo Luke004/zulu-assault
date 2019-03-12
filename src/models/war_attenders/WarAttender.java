@@ -87,6 +87,8 @@ public abstract class WarAttender {
         while (iter.hasNext()) {
             Bullet b = iter.next();
             b.update(deltaTime);
+
+            // remove bullet if if max lifetime was reached
             if (b.bullet_lifetime > MAX_BULLET_LIFETIME) {
                 iter.remove();
             }
