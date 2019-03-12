@@ -49,7 +49,7 @@ public class KeyInputHandler {
                     for (WarAttender warAttender : friendly_war_attenders) {
                         if (warAttender.getCollisionModel().intersects(soldier.getCollisionModel())) {
                             warAttender.showAccessibleAnimation(false);
-                            player.setWarAttender(warAttender);
+                            player.setWarAttender(warAttender, Player.EnterAction.ENTERING);
                             friendly_war_attenders.remove(warAttender);
                             break;
                         }
@@ -89,11 +89,9 @@ public class KeyInputHandler {
 
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
                     if (!tank.isMoving()) {
-                        Vector2f spawn_position = tank.calculateSoldierSpawnPosition();
-                        soldier = new PlayerSoldier(spawn_position.x, spawn_position.y);
                         tank.showAccessibleAnimation(true);
                         friendly_war_attenders.add(tank);
-                        player.setWarAttender(soldier);
+                        player.setWarAttender(tank, Player.EnterAction.LEAVING);
                     }
                 }
                 break;

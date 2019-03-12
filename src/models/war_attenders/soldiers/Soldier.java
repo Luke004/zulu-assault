@@ -42,4 +42,16 @@ public abstract class Soldier extends WarAttender {
         // soldier is not needed, nothing happens
         // plane instanceof is not needed, nothing happens
     }
+
+    public void setPosition(Vector2f position){
+        this.position.x = position.x;
+        this.position.y = position.y;
+        collisionModel.update(base_image.getRotation());
+    }
+
+    public void setRotation(float angle){
+        for (int idx = 0; idx < animation.getFrameCount(); ++idx) {
+            animation.getImage(idx).setRotation(angle);
+        }
+    }
 }
