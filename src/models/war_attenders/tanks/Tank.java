@@ -40,7 +40,7 @@ public abstract class Tank extends WarAttender {
         if (show_accessible_animation) {
             accessible_animation.update(deltaTime);
         }
-        if(decelerate){
+        if (decelerate) {
             decelerate(deltaTime);
         }
     }
@@ -56,7 +56,7 @@ public abstract class Tank extends WarAttender {
     }
 
     public void decelerate(int deltaTime) {
-        if(current_speed > 0.f){  // 0.01f and not 0.f because it will take longer to reach 0.f completely!
+        if (current_speed > 0.f) {  // 0.01f and not 0.f because it will take longer to reach 0.f completely!
             current_speed -= deceleration_factor * deltaTime;
         } else {
             current_speed = 0.f;
@@ -67,16 +67,16 @@ public abstract class Tank extends WarAttender {
         position.add(dir);
     }
 
-    public void startDeceleration(){
+    public void startDeceleration() {
         decelerate = true;
     }
 
-    public void cancelDeceleration(){
+    public void cancelDeceleration() {
         decelerate = false;
     }
 
     public void moveBackwards(int deltaTime) {
-        if(decelerate){ // if tank is still decelerating, but player wants to move backwards, decelerate harder
+        if (decelerate) { // if tank is still decelerating, but player wants to move backwards, decelerate harder
             current_speed -= acceleration_factor * deltaTime;
         }
         calculateMovementVector(deltaTime, Direction.BACKWARDS);
@@ -112,8 +112,8 @@ public abstract class Tank extends WarAttender {
         return base_image.getRotation();
     }
 
-    public void setCurrentSpeed(Direction direction){
-        if(direction == Direction.FORWARD){
+    public void setCurrentSpeed(Direction direction) {
+        if (direction == Direction.FORWARD) {
             this.current_speed = 0.f;
         } else {
             this.current_speed = backwards_speed;
@@ -149,7 +149,7 @@ public abstract class Tank extends WarAttender {
     }
 
     @Override
-    public void blockMovement(){
+    public void blockMovement() {
         position.sub(dir);  // set the position on last position before the collision
         collisionModel.update(base_image.getRotation());    // update collision model
         current_speed = 0.f;    // set the speed to zero (stop moving on collision)
@@ -160,6 +160,12 @@ public abstract class Tank extends WarAttender {
      */
     private void bounceBack() {
         // TODO
+    }
+
+
+    @Override
+    public void setRotation(float angle){
+        turret.setRotation(angle);
     }
 
     /*

@@ -27,6 +27,10 @@ public class AgileTank extends Tank {
         shot_reload_time = 300;
         bullet_damage = 1;
 
+        if (isHostile) {
+            shot_reload_time *= 2;
+        }
+
         //init models
         try {
             base_image = new Image("assets/tanks/agile_tank.png");

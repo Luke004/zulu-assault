@@ -23,6 +23,10 @@ public class MediumTank extends Tank {
         shot_reload_time = 1000;    // can shoot once every sec
         bullet_damage = 15;
 
+        if (isHostile) {    // double the reload time if its an enemy
+            shot_reload_time *= 2;
+        }
+
         try {
             base_image = new Image("assets/tanks/medium_tank.png");
             turret = new Image("assets/tanks/medium_tank_turret.png");

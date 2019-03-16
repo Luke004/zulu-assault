@@ -96,6 +96,38 @@ public abstract class WarAttender {
         collisionModel.update(base_image.getRotation());
     }
 
+    public abstract void setRotation(float degree);
+
+    public void shootAtPlayer(WarAttender player) {
+        float playerX = player.position.x;
+        float playerY = player.position.y;
+        float rotationDegree;
+        float dist = (float) Math.sqrt((playerX - position.x) * (playerX - position.x)
+                + (playerY - position.y) * (playerY - position.y));
+
+        if (dist < 500) {
+            // aim at player and shoot
+            float m = (position.y - playerY) / (position.x - playerX);
+            float x = playerX - position.x;
+            float y = playerY - position.y;
+
+            if ((x > 0) && m > 0) {
+                rotationDegree = (float) (Math.abs(Math.atan(m / 1) * 180.0 / Math.PI) + 90.f);
+            } else if (x > 0 && m <= 0) {
+                rotationDegree = (float) Math.abs((Math.atan(1 / m) * 180.0 / Math.PI));
+            } else if ((x < 0) && (m <= 0)) {
+                rotationDegree = (float) (Math.abs((Math.atan(1 / m) * 180.0 / Math.PI)) + 180.f);
+            } else {
+                rotationDegree = (float) (Math.abs((Math.atan(m / 1) * 180.0 / Math.PI)) + 270.f);
+            }
+            setRotation(rotationDegree);
+
+            shoot();
+        }
+    }
+
+
+
     public void calculateMovementVector(int deltaTime, Direction direction) {
         dir.x = (float) Math.sin(getRotation() * Math.PI / 180);
         dir.y = (float) -Math.cos(getRotation() * Math.PI / 180);

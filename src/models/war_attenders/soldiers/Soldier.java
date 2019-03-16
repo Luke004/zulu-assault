@@ -68,6 +68,7 @@ public abstract class Soldier extends WarAttender {
         collisionModel.update(base_image.getRotation());
     }
 
+    @Override
     public void setRotation(float angle){
         for (int idx = 0; idx < animation.getFrameCount(); ++idx) {
             animation.getImage(idx).setRotation(angle);

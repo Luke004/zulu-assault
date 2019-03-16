@@ -62,6 +62,8 @@ public class CollisionHandler {
         WarAttender player_warAttender = player.getWarAttender();
         handlePlayerCollisions(player_warAttender);
         handleBulletCollisions(player_warAttender);
+        handleHostileShots(player_warAttender);
+
         /*
 
         switch (player.getWarAttenderType()) {
@@ -102,7 +104,7 @@ public class CollisionHandler {
                         player_warAttender.blockMovement();
 
                         // damage ONLY when we are not a solider
-                        if(player_warAttender instanceof Soldier) return;
+                        if (player_warAttender instanceof Soldier) return;
 
                         damageTile(x, y, 1, destructible_tile_replace_indices[idx]);
                         return;
@@ -127,7 +129,7 @@ public class CollisionHandler {
                     return;
                 }
             }
-            // COLLISION PLAYER ITSELF AND HOSTILE WAR ATTENDERS
+            // COLLISION BETWEEN PLAYER ITSELF AND HOSTILE WAR ATTENDERS
             for (WarAttender hostile_warAttender : hostile_war_attenders) {
                 if (player_warAttender.getCollisionModel().intersects(hostile_warAttender.getCollisionModel())) {
                     player_warAttender.onCollision(hostile_warAttender);
@@ -144,7 +146,7 @@ public class CollisionHandler {
             WarAttender.Bullet b = bullet_iterator.next();
             boolean canContinue = false;
 
-            // BULLET COLLISION WITH HOSTILE WAR ATTENDER
+            // PLAYER BULLET COLLISION WITH HOSTILE WAR ATTENDER
             for (WarAttender hostile_warAttender : hostile_war_attenders) {
                 if (b.getCollisionModel().intersects(hostile_warAttender.getCollisionModel())) {
                     bullet_iterator.remove();   // remove bullet
@@ -156,36 +158,12 @@ public class CollisionHandler {
 
             if (canContinue) continue;
 
-            // BULLET COLLISION WITH MAP TILE
-            for (int idx = 0; idx < destructible_tile_indices.length; ++idx) {
-                int x = (int) b.bullet_pos.x / TILE_WIDTH;
-                int y = (int) b.bullet_pos.y / TILE_HEIGHT;
-                int tile_ID = level_map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
-                if (tile_ID == destructible_tile_indices[idx]) {
-                    if (player_warAttender.getBulletDamage() >= DESTRUCTIBLE_TILE_MAX_HEALTH) {
-                        // it's a one shot, destroy tile directly
-                        level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
-                    } else {
-                        damageTile(x, y, player_warAttender.getBulletDamage(), destructible_tile_replace_indices[idx]);
-                    }
-                    bullet_iterator.remove();
-                    canContinue = true;
-                    break;
-                }
-            }
+            // PLAYER BULLET COLLISION WITH DESTRUCTIBLE MAP TILE
+            canContinue =  handleBulletTileCollision(b, player_warAttender.getBulletDamage(), bullet_iterator);
 
             if (canContinue) continue;
 
-            // remove bullet if edge of map was reached
-            if (b.bullet_pos.x < 0) {
-                bullet_iterator.remove();
-            } else if (b.bullet_pos.y < 0) {
-                bullet_iterator.remove();
-            } else if (b.bullet_pos.x > MAP_WIDTH) {
-                bullet_iterator.remove();
-            } else if (b.bullet_pos.y > MAP_HEIGHT) {
-                bullet_iterator.remove();
-            }
+            removeBulletAtMapEdge(b, bullet_iterator);
         }
     }
 
@@ -205,4 +183,66 @@ public class CollisionHandler {
             destructible_tiles_health_info.put(key, DESTRUCTIBLE_TILE_MAX_HEALTH - damage);
         }
     }
+
+    private void handleHostileShots(WarAttender player_warAttender) {
+        for (WarAttender hostile_warAttender : hostile_war_attenders) {
+            hostile_warAttender.shootAtPlayer(player_warAttender);
+
+            Iterator<WarAttender.Bullet> bullet_iterator = hostile_warAttender.getBullets();
+            while (bullet_iterator.hasNext()) {
+                WarAttender.Bullet b = bullet_iterator.next();
+                boolean canContinue = false;
+
+                // HOSTILE BULLET COLLISION WITH PLAYER
+                if (b.getCollisionModel().intersects(player_warAttender.getCollisionModel())) {
+                    bullet_iterator.remove();   // remove bullet
+                    player_warAttender.changeHealth(-hostile_warAttender.getBulletDamage());  //drain health of player
+                    canContinue = true;
+                }
+
+                if (canContinue) continue;
+
+                // HOSTILE BULLET COLLISION WITH DESTRUCTIBLE MAP TILE
+                canContinue =  handleBulletTileCollision(b, hostile_warAttender.getBulletDamage(), bullet_iterator);
+
+                if (canContinue) continue;
+
+                removeBulletAtMapEdge(b, bullet_iterator);
+            }
+        }
+    }
+
+    private boolean handleBulletTileCollision(WarAttender.Bullet b, int bulletDamage, Iterator<WarAttender.Bullet> bullet_iterator){
+        for (int idx = 0; idx < destructible_tile_indices.length; ++idx) {
+            int x = (int) b.bullet_pos.x / TILE_WIDTH;
+            int y = (int) b.bullet_pos.y / TILE_HEIGHT;
+            int tile_ID = level_map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
+            if (tile_ID == destructible_tile_indices[idx]) {
+                if (bulletDamage >= DESTRUCTIBLE_TILE_MAX_HEALTH) {
+                    // it's a one shot, destroy tile directly
+                    level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
+                } else {
+                    damageTile(x, y, bulletDamage, destructible_tile_replace_indices[idx]);
+                }
+                bullet_iterator.remove();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void removeBulletAtMapEdge(WarAttender.Bullet b, Iterator<WarAttender.Bullet> bullet_iterator){
+        // remove bullet if edge of map was reached
+        if (b.bullet_pos.x < 0) {
+            bullet_iterator.remove();
+        } else if (b.bullet_pos.y < 0) {
+            bullet_iterator.remove();
+        } else if (b.bullet_pos.x > MAP_WIDTH) {
+            bullet_iterator.remove();
+        } else if (b.bullet_pos.y > MAP_HEIGHT) {
+            bullet_iterator.remove();
+        }
+    }
+
+
 }
