@@ -28,8 +28,10 @@ public class KeyInputHandler {
                 // forward movement
                 if (input.isKeyPressed(Input.KEY_UP)) {
                     soldier.startAnimation();
+                    soldier.setMoving(true);
                 } else if (KEY_UP_RELEASED) {
                     soldier.stopAnimation();
+                    soldier.setMoving(false);
                     KEY_UP_RELEASED = false;
                 }
                 if (input.isKeyDown(Input.KEY_UP)) {
@@ -39,8 +41,10 @@ public class KeyInputHandler {
                 // backwards movement
                 if (input.isKeyPressed(Input.KEY_DOWN)) {
                     soldier.startAnimation();
+                    soldier.setMoving(true);
                 } else if (KEY_DOWN_RELEASED) {
                     soldier.stopAnimation();
+                    soldier.setMoving(false);
                     KEY_DOWN_RELEASED = false;
                 }
                 if (input.isKeyDown(Input.KEY_DOWN)) {
@@ -66,6 +70,7 @@ public class KeyInputHandler {
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
                     for (WarAttender warAttender : friendly_war_attenders) {
                         if (warAttender.getCollisionModel().intersects(soldier.getCollisionModel())) {
+                            warAttender.setMoving(true);
                             warAttender.showAccessibleAnimation(false);
                             player.setWarAttender(warAttender, Player.EnterAction.ENTERING);
                             friendly_war_attenders.remove(warAttender);

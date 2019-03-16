@@ -139,7 +139,10 @@ public abstract class Tank extends WarAttender {
 
     public void onCollision(WarAttender enemy) {
         if (enemy instanceof Tank) {  // enemy is a tank
-            current_speed = 0.f;    // stop movement as long as there's collision
+            // stop movement as long as there's collision
+            position.sub(dir);  // set the position on last position before the collision
+            collisionModel.update(base_image.getRotation());    // update collision model
+            current_speed = 0.f;    // set the speed to zero (stop moving on collision)
         } else if (enemy instanceof Soldier) {   // enemy is a soldier (bad for him)
             // kill soldier
         }

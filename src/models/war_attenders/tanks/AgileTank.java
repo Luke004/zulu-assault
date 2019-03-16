@@ -38,13 +38,13 @@ public class AgileTank extends Tank {
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
     }
 
-    /*
+
     @Override
     public void update(GameContainer gc, int deltaTime) {
         super.update(gc, deltaTime);
         System.out.println(isMoving);
     }
-*/
+
     @Override
     public void shoot() {
         if (canShoot()) {

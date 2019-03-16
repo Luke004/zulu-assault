@@ -38,16 +38,19 @@ public abstract class Soldier extends WarAttender {
     public void moveForward(int deltaTime) {
         calculateMovementVector(deltaTime, Direction.FORWARD);
         position.add(dir);
+        collisionModel.update(base_image.getRotation());
     }
 
     public void moveBackwards(int deltaTime) {
         calculateMovementVector(deltaTime, Direction.BACKWARDS);
         position.add(dir);
+        collisionModel.update(base_image.getRotation());
     }
 
     public void onCollision(WarAttender enemy){
         if(enemy instanceof Tank){  // enemy is a tank
-            current_speed = 0.f;  // stop movement as long as there's collision
+            position.sub(dir);  // set the position on last position before the collision
+            collisionModel.update(base_image.getRotation());    // update collision model
         }
         // soldier is not needed, nothing happens
         // plane instanceof is not needed, nothing happens
