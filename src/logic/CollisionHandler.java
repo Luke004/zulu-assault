@@ -2,6 +2,7 @@ package logic;
 
 import models.CollisionModel;
 import models.war_attenders.WarAttender;
+import models.war_attenders.soldiers.Soldier;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.tiled.TileSet;
 import org.newdawn.slick.tiled.TiledMap;
@@ -87,15 +88,31 @@ public class CollisionHandler {
     private void handlePlayerCollisions(WarAttender player_warAttender) {
         if (player_warAttender.isMoving()) {
             CollisionModel.Point[] playerCorners = player_warAttender.getCollisionModel().getPoints();
+            int idx, tile_ID, x, y;
 
-            //System.out.println((int)playerCorners[0].x / TILE_WIDTH);
-
-            // COLLISION BETWEEN PLAYER ITSELF AND INDESTRUCTIBLE TILES
-            for (int idx = 0; idx < indestructible_tile_indices.length; ++idx) {
             for (CollisionModel.Point p : playerCorners) {
-                int tile_ID = level_map.getTileId((int) p.x / TILE_WIDTH, (int) p.y / TILE_HEIGHT, LANDSCAPE_TILES_LAYER_IDX);
+                x = (int) p.x / TILE_WIDTH;
+                y = (int) p.y / TILE_HEIGHT;
+                tile_ID = level_map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
+
+                // COLLISION BETWEEN PLAYER ITSELF AND DESTRUCTIBLE TILES
+                for (idx = 0; idx < destructible_tile_indices.length; ++idx) {
+                    if (tile_ID == destructible_tile_indices[idx]) {
+                        // block movement as long as tile exists and damage the destructible tile
+                        player_warAttender.blockMovement();
+
+                        // damage ONLY when we are not a solider
+                        if(player_warAttender instanceof Soldier) return;
+
+                        damageTile(x, y, 1, destructible_tile_replace_indices[idx]);
+                        return;
+                    }
+                }
+
+                // COLLISION BETWEEN PLAYER ITSELF AND INDESTRUCTIBLE TILES
+                for (idx = 0; idx < indestructible_tile_indices.length; ++idx) {
                     if (tile_ID == indestructible_tile_indices[idx]) {
-                        // block movement because tile is indestructible
+                        // block movement forever because tile is indestructible
                         player_warAttender.blockMovement();
                         return;
                     }
@@ -146,22 +163,10 @@ public class CollisionHandler {
                 int tile_ID = level_map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
                 if (tile_ID == destructible_tile_indices[idx]) {
                     if (player_warAttender.getBulletDamage() >= DESTRUCTIBLE_TILE_MAX_HEALTH) {
+                        // it's a one shot, destroy tile directly
                         level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
                     } else {
-                        // use a map to track current destructible tile health
-                        int key = x > y ? -x * y : x * y;
-                        if (destructible_tiles_health_info.containsKey(key)) {
-                            int new_health = destructible_tiles_health_info.get(key) - player_warAttender.getBulletDamage();
-                            if (new_health <= 0) {
-                                // TILE DESTROYED
-                                level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
-                                destructible_tiles_health_info.remove(key);
-                            } else {
-                                destructible_tiles_health_info.put(key, new_health);
-                            }
-                        } else {
-                            destructible_tiles_health_info.put(key, DESTRUCTIBLE_TILE_MAX_HEALTH - player_warAttender.getBulletDamage());
-                        }
+                        damageTile(x, y, player_warAttender.getBulletDamage(), destructible_tile_replace_indices[idx]);
                     }
                     bullet_iterator.remove();
                     canContinue = true;
@@ -181,6 +186,23 @@ public class CollisionHandler {
             } else if (b.bullet_pos.y > MAP_HEIGHT) {
                 bullet_iterator.remove();
             }
+        }
+    }
+
+    private void damageTile(int xPos, int yPos, int damage, int replaceTileIndex) {
+        // use a map to track current destructible tile health
+        int key = xPos > yPos ? -xPos * yPos : xPos * yPos;
+        if (destructible_tiles_health_info.containsKey(key)) {
+            int new_health = destructible_tiles_health_info.get(key) - damage;
+            if (new_health <= 0) {
+                // TILE DESTROYED
+                level_map.setTileId(xPos, yPos, LANDSCAPE_TILES_LAYER_IDX, replaceTileIndex);
+                destructible_tiles_health_info.remove(key);
+            } else {
+                destructible_tiles_health_info.put(key, new_health);
+            }
+        } else {
+            destructible_tiles_health_info.put(key, DESTRUCTIBLE_TILE_MAX_HEALTH - damage);
         }
     }
 }
