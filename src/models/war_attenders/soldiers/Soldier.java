@@ -47,13 +47,19 @@ public abstract class Soldier extends WarAttender {
         collisionModel.update(base_image.getRotation());
     }
 
+    @Override
     public void onCollision(WarAttender enemy){
         if(enemy instanceof Tank){  // enemy is a tank
-            position.sub(dir);  // set the position on last position before the collision
-            collisionModel.update(base_image.getRotation());    // update collision model
+            blockMovement();
         }
         // soldier is not needed, nothing happens
         // plane instanceof is not needed, nothing happens
+    }
+
+    @Override
+    public void blockMovement(){
+        position.sub(dir);  // set the position on last position before the collision
+        collisionModel.update(base_image.getRotation());    // update collision model
     }
 
     public void setPosition(Vector2f position){

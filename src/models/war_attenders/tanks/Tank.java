@@ -137,16 +137,22 @@ public abstract class Tank extends WarAttender {
         }
     }
 
+    @Override
     public void onCollision(WarAttender enemy) {
         if (enemy instanceof Tank) {  // enemy is a tank
-            // stop movement as long as there's collision
-            position.sub(dir);  // set the position on last position before the collision
-            collisionModel.update(base_image.getRotation());    // update collision model
-            current_speed = 0.f;    // set the speed to zero (stop moving on collision)
+            // block movement as long as there's collision
+            blockMovement();
         } else if (enemy instanceof Soldier) {   // enemy is a soldier (bad for him)
             // kill soldier
         }
         // plane instanceof is not needed, nothing happens there
+    }
+
+    @Override
+    public void blockMovement(){
+        position.sub(dir);  // set the position on last position before the collision
+        collisionModel.update(base_image.getRotation());    // update collision model
+        current_speed = 0.f;    // set the speed to zero (stop moving on collision)
     }
 
     /*

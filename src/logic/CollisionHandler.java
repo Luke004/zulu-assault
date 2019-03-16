@@ -1,5 +1,6 @@
 package logic;
 
+import models.CollisionModel;
 import models.war_attenders.WarAttender;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.tiled.TileSet;
@@ -35,8 +36,8 @@ public class CollisionHandler {
         // TileMap related stuff
         destructible_tile_indices = new int[]{1, 2, 18, 19, 25, 65, 68, 83, 88, 89};
         destructible_tile_replace_indices = new int[]{32, 33, 34, 35, 36, 37, 95, 94, 93, 91};
-        indestructible_tile_indices = new int[]{40, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 64, 65, 66, 67, 68,
-                69, 72, 73, 74, 75, 76, 77, 83, 89};
+        indestructible_tile_indices = new int[]{40, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 64, 66, 67, 68,
+                72, 73, 74, 75, 76, 77};
         destructible_tiles_health_info = new HashMap<>();
 
         // create TileInfo for 'landscape_tiles' TileSet
@@ -45,30 +46,81 @@ public class CollisionHandler {
         if (!landscape_tiles.name.equals("landscape_tiles"))
             throw new IllegalAccessError("Wrong tileset index: [" + LANDSCAPE_TILES_TILESET_IDX + "] is not landscape_tiles");
         else {
-            for (int idx = 0; idx < destructible_tile_indices.length; ++idx) {
+            int idx;
+            for (idx = 0; idx < destructible_tile_indices.length; ++idx) {
                 destructible_tile_indices[idx] += landscape_tiles.firstGID;
                 destructible_tile_replace_indices[idx] += landscape_tiles.firstGID;
+            }
+            for (idx = 0; idx < indestructible_tile_indices.length; ++idx) {
+                indestructible_tile_indices[idx] += landscape_tiles.firstGID;
             }
         }
     }
 
     public void update(GameContainer gameContainer, int deltaTime) {
         WarAttender player_warAttender = player.getWarAttender();
+        handlePlayerCollisions(player_warAttender);
+        handleBulletCollisions(player_warAttender);
+        /*
+
+        switch (player.getWarAttenderType()) {
+            case SOLDIER:   // player is a soldier (goes by foot)
+                Soldier soldier = (Soldier) player_warAttender;
+
+
+
+
+                break;
+            case TANK:      // player is in a tank
+                Tank tank = (Tank) player.getWarAttender();
+
+
+                break;
+            case PLANE:     // player is in a plane
+
+                break;
+
+        }
+        */
+    }
+
+    private void handlePlayerCollisions(WarAttender player_warAttender) {
         if (player_warAttender.isMoving()) {
+            CollisionModel.Point[] playerCorners = player_warAttender.getCollisionModel().getPoints();
+
+            //System.out.println((int)playerCorners[0].x / TILE_WIDTH);
+
+            // COLLISION BETWEEN PLAYER ITSELF AND INDESTRUCTIBLE TILES
+            for (int idx = 0; idx < indestructible_tile_indices.length; ++idx) {
+            for (CollisionModel.Point p : playerCorners) {
+                int tile_ID = level_map.getTileId((int) p.x / TILE_WIDTH, (int) p.y / TILE_HEIGHT, LANDSCAPE_TILES_LAYER_IDX);
+                    if (tile_ID == indestructible_tile_indices[idx]) {
+                        // block movement because tile is indestructible
+                        player_warAttender.blockMovement();
+                        return;
+                    }
+                }
+            }
+
+
             // COLLISION BETWEEN PLAYER ITSELF AND FRIENDLY WAR ATTENDERS
             for (WarAttender warAttender : friendly_war_attenders) {
                 if (player_warAttender.getCollisionModel().intersects(warAttender.getCollisionModel())) {
                     player_warAttender.onCollision(warAttender);
+                    return;
                 }
             }
             // COLLISION PLAYER ITSELF AND HOSTILE WAR ATTENDERS
             for (WarAttender hostile_warAttender : hostile_war_attenders) {
                 if (player_warAttender.getCollisionModel().intersects(hostile_warAttender.getCollisionModel())) {
                     player_warAttender.onCollision(hostile_warAttender);
+                    return;
                 }
             }
         }
+    }
 
+    private void handleBulletCollisions(WarAttender player_warAttender) {
         // PLAYER BULLET COLLISIONS
         Iterator<WarAttender.Bullet> bullet_iterator = player_warAttender.getBullets();
         while (bullet_iterator.hasNext()) {
@@ -94,7 +146,7 @@ public class CollisionHandler {
                 int tile_ID = level_map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
                 if (tile_ID == destructible_tile_indices[idx]) {
                     if (player_warAttender.getBulletDamage() >= DESTRUCTIBLE_TILE_MAX_HEALTH) {
-                        level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, 42);
+                        level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
                     } else {
                         // use a map to track current destructible tile health
                         int key = x > y ? -x * y : x * y;
@@ -130,27 +182,5 @@ public class CollisionHandler {
                 bullet_iterator.remove();
             }
         }
-
-        /*
-
-        switch (player.getWarAttenderType()) {
-            case SOLDIER:   // player is a soldier (goes by foot)
-                Soldier soldier = (Soldier) player_warAttender;
-
-
-
-
-                break;
-            case TANK:      // player is in a tank
-                Tank tank = (Tank) player.getWarAttender();
-
-
-                break;
-            case PLANE:     // player is in a plane
-
-                break;
-
-        }
-        */
     }
 }

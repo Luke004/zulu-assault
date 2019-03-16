@@ -89,7 +89,7 @@ public class CollisionModel {
         graphics.draw(new Polygon(points));
     }
 
-    private Point[] getPoints() {
+    public Point[] getPoints() {
         return collision_points;
     }
 

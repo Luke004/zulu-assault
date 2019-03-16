@@ -154,6 +154,8 @@ public abstract class WarAttender {
 
     public abstract void onCollision(WarAttender enemy);
 
+    public abstract void blockMovement();
+
     public void changeHealth(int amount) {
         current_health += amount;
     }
