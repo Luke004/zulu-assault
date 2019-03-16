@@ -25,8 +25,6 @@ public abstract class WarAttender {
     // specs related
     public int current_health, max_health;
     public float max_speed, current_speed;
-    public float acceleration_factor;   // number between [0 and 1] -> the smaller the faster the acceleration
-    public float deceleration_factor;   // number between [0 and 1] -> the smaller the faster the deceleration
     public float rotate_speed;
     public float bullet_speed;
     public int shot_reload_time, current_reload_time;    // time(ms) it takes for tank to reload
@@ -98,40 +96,15 @@ public abstract class WarAttender {
         collisionModel.update(base_image.getRotation());
     }
 
-    public void accelerate(Move direction, int deltaTime) {
-        isMoving = true;
-        if (current_speed < max_speed) {
-            current_speed += acceleration_factor * deltaTime;
-        } else {
-            current_speed = max_speed;  // cap the max speed
+    public void calculateMovementVector(int deltaTime, Direction direction) {
+        dir.x = (float) Math.sin(getRotation() * Math.PI / 180);
+        dir.y = (float) -Math.cos(getRotation() * Math.PI / 180);
+        if(direction == Direction.BACKWARDS){
+            dir.x *= -1;
+            dir.y *= -1;
         }
-        calculateVector(direction, deltaTime);
-        position.add(dir);
-    }
-
-    public void decelerate(Move direction, int deltaTime) {
-        if (current_speed > 0.1f) {
-            current_speed -= deceleration_factor * deltaTime;
-        } else {
-            isMoving = false;
-            current_speed = 0.f;
-        }
-        calculateVector(direction, deltaTime);
-        position.add(dir);
-    }
-
-    private void calculateVector(Move direction, int deltaTime) {
-        switch (direction) {
-            case MOVE_UP:
-                dir.x = (float) Math.sin(getRotation() * Math.PI / 180);
-                dir.y = (float) -Math.cos(getRotation() * Math.PI / 180);
-                dir.x *= deltaTime * current_speed;
-                dir.y *= deltaTime * current_speed;
-                break;
-            case MOVE_DOWN:
-                // TODO
-                break;
-        }
+        dir.x *= deltaTime * current_speed;
+        dir.y *= deltaTime * current_speed;
     }
 
     public void showAccessibleAnimation(boolean activate) {
@@ -159,12 +132,16 @@ public abstract class WarAttender {
         return collisionModel;
     }
 
-    public boolean isMoving() {
-        return isMoving;
-    }
-
     public boolean isHostile() {
         return isHostile;
+    }
+
+    public void setMoving(boolean b) {
+        isMoving = b;
+    }
+
+    public boolean isMoving(){
+        return isMoving;
     }
 
     public Iterator<Bullet> getBullets() {
@@ -179,16 +156,6 @@ public abstract class WarAttender {
 
     public void changeHealth(int amount) {
         current_health += amount;
-        /*
-        if(current_health > 0){
-            healthbarStatusRect.setSize(
-                    Vector2f(-(HEALTHBAR_SIZE - (current_health / (max_health / HEALTHBAR_SIZE))), 5.f));
-        }
-        */
-    }
-
-    public Vector2f getDir() {
-        return dir;
     }
 
     public abstract float getRotation();
@@ -205,8 +172,8 @@ public abstract class WarAttender {
         ROTATE_DIRECTION_LEFT, ROTATE_DIRECTION_RIGHT;
     }
 
-    public enum Move {
-        MOVE_UP, MOVE_DOWN
+    public enum Direction {
+        FORWARD, BACKWARDS
     }
 
     public class Bullet {

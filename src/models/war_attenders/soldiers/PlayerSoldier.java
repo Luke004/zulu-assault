@@ -15,8 +15,7 @@ public class PlayerSoldier extends Soldier {
         max_health = 100;
         current_health = max_health;
         max_speed = 0.1f;
-        acceleration_factor = 0.005f;
-        deceleration_factor = 0.1f;
+        current_speed = max_speed;
         rotate_speed = 0.25f;
         bullet_speed = 0.8f;
         shot_reload_time = 300;

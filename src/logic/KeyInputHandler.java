@@ -1,9 +1,7 @@
 package logic;
 
 import models.war_attenders.WarAttender;
-import models.war_attenders.soldiers.PlayerSoldier;
 import models.war_attenders.tanks.Tank;
-import org.newdawn.slick.geom.Vector2f;
 import player.Player;
 import models.war_attenders.soldiers.Soldier;
 import org.newdawn.slick.GameContainer;
@@ -14,6 +12,7 @@ import java.util.List;
 public class KeyInputHandler {
     private Player player;
     private List<WarAttender> friendly_war_attenders;
+    private boolean KEY_UP_RELEASED, KEY_DOWN_RELEASED;
 
     public KeyInputHandler(Player player, List<WarAttender> friendly_war_attenders) {
         this.friendly_war_attenders = friendly_war_attenders;
@@ -26,25 +25,44 @@ public class KeyInputHandler {
             case SOLDIER:   // player is a soldier (goes by foot)
                 Soldier soldier = (Soldier) player.getWarAttender();
 
-                if (input.isKeyDown(Input.KEY_UP)) {
+                // forward movement
+                if (input.isKeyPressed(Input.KEY_UP)) {
                     soldier.startAnimation();
-                    soldier.accelerate(WarAttender.Move.MOVE_UP, deltaTime);
-                } else {
+                } else if (KEY_UP_RELEASED) {
                     soldier.stopAnimation();
+                    KEY_UP_RELEASED = false;
+                }
+                if (input.isKeyDown(Input.KEY_UP)) {
+                    soldier.moveForward(deltaTime);
                 }
 
+                // backwards movement
+                if (input.isKeyPressed(Input.KEY_DOWN)) {
+                    soldier.startAnimation();
+                } else if (KEY_DOWN_RELEASED) {
+                    soldier.stopAnimation();
+                    KEY_DOWN_RELEASED = false;
+                }
+                if (input.isKeyDown(Input.KEY_DOWN)) {
+                    soldier.moveBackwards(deltaTime);
+                }
+
+                // left turn
                 if (input.isKeyDown(Input.KEY_LEFT)) {
                     soldier.rotate(WarAttender.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
                 }
 
+                // right turn
                 if (input.isKeyDown(Input.KEY_RIGHT)) {
                     soldier.rotate(WarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
                 }
 
+                // shoot
                 if (input.isKeyDown(Input.KEY_LCONTROL) || input.isKeyPressed(Input.KEY_RCONTROL)) {
                     soldier.shoot();
                 }
 
+                // get into WarAttender
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
                     for (WarAttender warAttender : friendly_war_attenders) {
                         if (warAttender.getCollisionModel().intersects(soldier.getCollisionModel())) {
@@ -59,12 +77,30 @@ public class KeyInputHandler {
             case TANK:      // player is in a tank
                 Tank tank = (Tank) player.getWarAttender();
 
+                // forward movement
+                if (input.isKeyPressed(Input.KEY_UP)) {
+                    tank.setMoving(true);
+                    tank.setCurrentSpeed(WarAttender.Direction.FORWARD);
+                    tank.cancelDeceleration();
+                }
                 if (input.isKeyDown(Input.KEY_UP)) {
-                    tank.accelerate(WarAttender.Move.MOVE_UP, deltaTime);   // accelerate tank until max_speed
-                } else if (input.isKeyDown(Input.KEY_DOWN)) {
+                    tank.accelerate(deltaTime);   // accelerate tank until max_speed
+                } else if (KEY_UP_RELEASED) {
+                    tank.startDeceleration();
+                    KEY_UP_RELEASED = false;
+                }
 
-                } else if (tank.isMoving()) {
-                    tank.decelerate(WarAttender.Move.MOVE_UP, deltaTime);   // decelerate as long as the tank is still moving
+                // backwards movement
+                if (input.isKeyPressed(Input.KEY_DOWN)) {
+                    tank.setMoving(true);
+                    tank.setCurrentSpeed(WarAttender.Direction.BACKWARDS);
+                } else if(KEY_DOWN_RELEASED){
+                    tank.setMoving(false);
+                    KEY_DOWN_RELEASED = false;
+                }
+
+                if (input.isKeyDown(Input.KEY_DOWN)) {
+                    tank.moveBackwards(deltaTime);  // drive tank backwards with its backwards_speed
                 }
 
                 if (input.isKeyDown(Input.KEY_LEFT)) {
@@ -87,6 +123,7 @@ public class KeyInputHandler {
                     tank.shoot();
                 }
 
+                // get out of tank
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
                     if (!tank.isMoving()) {
                         tank.showAccessibleAnimation(true);
@@ -101,5 +138,16 @@ public class KeyInputHandler {
 
         }
 
+    }
+
+    public void onKeyRelease(int key) {
+        switch (key) {
+            case Input.KEY_UP:
+                KEY_UP_RELEASED = true;
+                break;
+            case Input.KEY_DOWN:
+                KEY_DOWN_RELEASED = true;
+                break;
+        }
     }
 }

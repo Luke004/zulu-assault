@@ -2,16 +2,23 @@ package models.war_attenders.tanks;
 
 import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.Soldier;
+import org.lwjgl.Sys;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
 
-import java.util.Iterator;
+import java.nio.file.FileSystemNotFoundException;
 
 public abstract class Tank extends WarAttender {
     Image turret;
     float turret_rotate_speed;
+    float backwards_speed;
+    private boolean decelerate;
+
+    // each tank has an acceleration and a deceleration
+    public float acceleration_factor;   // number between [0 and 1] -> the smaller the faster the acceleration
+    public float deceleration_factor;   // number between [0 and 1] -> the smaller the faster the deceleration
 
     public Tank(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
@@ -33,6 +40,47 @@ public abstract class Tank extends WarAttender {
         if (show_accessible_animation) {
             accessible_animation.update(deltaTime);
         }
+        if(decelerate){
+            decelerate(deltaTime);
+        }
+    }
+
+    public void accelerate(int deltaTime) {
+        if (current_speed < max_speed) {
+            current_speed += acceleration_factor * deltaTime;
+        } else {
+            current_speed = max_speed;  // cap the max speed
+        }
+        calculateMovementVector(deltaTime, Direction.FORWARD);
+        position.add(dir);
+    }
+
+    public void decelerate(int deltaTime) {
+        if(current_speed > 0.f){  // 0.01f and not 0.f because it will take longer to reach 0.f completely!
+            current_speed -= deceleration_factor * deltaTime;
+        } else {
+            current_speed = 0.f;
+            decelerate = false;
+            isMoving = false;
+        }
+        calculateMovementVector(deltaTime, Direction.FORWARD);
+        position.add(dir);
+    }
+
+    public void startDeceleration(){
+        decelerate = true;
+    }
+
+    public void cancelDeceleration(){
+        decelerate = false;
+    }
+
+    public void moveBackwards(int deltaTime) {
+        if(decelerate){ // if tank is still decelerating, but player wants to move backwards, decelerate harder
+            current_speed -= acceleration_factor * deltaTime;
+        }
+        calculateMovementVector(deltaTime, Direction.BACKWARDS);
+        position.add(dir);
     }
 
     public Vector2f calculateSoldierSpawnPosition() {
@@ -62,6 +110,14 @@ public abstract class Tank extends WarAttender {
     @Override
     public float getRotation() {
         return base_image.getRotation();
+    }
+
+    public void setCurrentSpeed(Direction direction){
+        if(direction == Direction.FORWARD){
+            this.current_speed = 0.f;
+        } else {
+            this.current_speed = backwards_speed;
+        }
     }
 
     @Override

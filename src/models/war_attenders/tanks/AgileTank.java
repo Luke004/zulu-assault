@@ -1,6 +1,7 @@
 package models.war_attenders.tanks;
 
 import models.CollisionModel;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
@@ -17,6 +18,7 @@ public class AgileTank extends Tank {
         max_health = 100;
         current_health = max_health;
         max_speed = 0.3f;
+        backwards_speed = 0.15f;
         acceleration_factor = 0.0005f;
         deceleration_factor = 0.0005f;
         rotate_speed = 0.15f;
@@ -36,6 +38,13 @@ public class AgileTank extends Tank {
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
     }
 
+    /*
+    @Override
+    public void update(GameContainer gc, int deltaTime) {
+        super.update(gc, deltaTime);
+        System.out.println(isMoving);
+    }
+*/
     @Override
     public void shoot() {
         if (canShoot()) {

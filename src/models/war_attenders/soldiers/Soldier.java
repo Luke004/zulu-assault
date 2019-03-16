@@ -35,6 +35,16 @@ public abstract class Soldier extends WarAttender {
         animation.stop();
     }
 
+    public void moveForward(int deltaTime) {
+        calculateMovementVector(deltaTime, Direction.FORWARD);
+        position.add(dir);
+    }
+
+    public void moveBackwards(int deltaTime) {
+        calculateMovementVector(deltaTime, Direction.BACKWARDS);
+        position.add(dir);
+    }
+
     public void onCollision(WarAttender enemy){
         if(enemy instanceof Tank){  // enemy is a tank
             current_speed = 0.f;  // stop movement as long as there's collision

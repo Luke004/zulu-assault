@@ -7,13 +7,10 @@ import models.war_attenders.WarAttender;
 import models.war_attenders.tanks.AgileTank;
 import models.war_attenders.tanks.AgileTank_v2;
 import models.war_attenders.tanks.MediumTank;
+import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TiledMap;
 import player.Player;
-import org.newdawn.slick.BasicGame;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,10 +58,10 @@ public class Level_1 extends BasicGame {
     @Override
     public void update(GameContainer gameContainer, int deltaTime) {
         player.update(gameContainer, deltaTime);
-        for(WarAttender warAttender : friendly_war_attenders){
+        for (WarAttender warAttender : friendly_war_attenders) {
             warAttender.update(gameContainer, deltaTime);
         }
-        for(WarAttender warAttender : hostile_war_attenders){
+        for (WarAttender warAttender : hostile_war_attenders) {
             warAttender.update(gameContainer, deltaTime);
         }
         keyInputHandler.update(gameContainer, deltaTime);
@@ -77,11 +74,16 @@ public class Level_1 extends BasicGame {
         camera.drawMap();
         camera.translateGraphics();
         player.draw(graphics);
-        for(WarAttender warAttender : friendly_war_attenders){
+        for (WarAttender warAttender : friendly_war_attenders) {
             warAttender.draw(graphics);
         }
-        for(WarAttender warAttender : hostile_war_attenders){
+        for (WarAttender warAttender : hostile_war_attenders) {
             warAttender.draw(graphics);
         }
+    }
+
+    @Override
+    public void keyReleased(int key, char c) {
+        keyInputHandler.onKeyRelease(key);
     }
 }

@@ -1,10 +1,7 @@
 package logic;
 
 import models.war_attenders.WarAttender;
-import models.war_attenders.soldiers.Soldier;
-import models.war_attenders.tanks.Tank;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.tiled.TileSet;
 import org.newdawn.slick.tiled.TiledMap;
 import player.Player;
@@ -19,7 +16,7 @@ public class CollisionHandler {
     private List<WarAttender> friendly_war_attenders, hostile_war_attenders;
     private TiledMap level_map;
     private int MAP_WIDTH, MAP_HEIGHT, TILE_WIDTH, TILE_HEIGHT;
-    private int[] destructible_tile_indices, indestructible_tile_indices;
+    private int[] destructible_tile_indices, indestructible_tile_indices, destructible_tile_replace_indices;
     final int DESTRUCTIBLE_TILE_MAX_HEALTH = 15;
     private final int LANDSCAPE_TILES_LAYER_IDX = 0;
     private Map<Integer, Integer> destructible_tiles_health_info;
@@ -36,19 +33,21 @@ public class CollisionHandler {
         MAP_HEIGHT = level_map.getHeight() * TILE_HEIGHT;
 
         // TileMap related stuff
-        destructible_tile_indices = new int[]{1, 2, 18, 19, 25};
+        destructible_tile_indices = new int[]{1, 2, 18, 19, 25, 65, 68, 83, 88, 89};
+        destructible_tile_replace_indices = new int[]{32, 33, 34, 35, 36, 37, 95, 94, 93, 91};
         indestructible_tile_indices = new int[]{40, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 64, 65, 66, 67, 68,
                 69, 72, 73, 74, 75, 76, 77, 83, 89};
         destructible_tiles_health_info = new HashMap<>();
 
         // create TileInfo for 'landscape_tiles' TileSet
-        int LANDSCAPE_TILES_TILESET_IDX = 1;
+        final int LANDSCAPE_TILES_TILESET_IDX = 1;
         TileSet landscape_tiles = level_map.getTileSet(LANDSCAPE_TILES_TILESET_IDX);
         if (!landscape_tiles.name.equals("landscape_tiles"))
             throw new IllegalAccessError("Wrong tileset index: [" + LANDSCAPE_TILES_TILESET_IDX + "] is not landscape_tiles");
         else {
             for (int idx = 0; idx < destructible_tile_indices.length; ++idx) {
                 destructible_tile_indices[idx] += landscape_tiles.firstGID;
+                destructible_tile_replace_indices[idx] += landscape_tiles.firstGID;
             }
         }
     }
@@ -103,7 +102,7 @@ public class CollisionHandler {
                             int new_health = destructible_tiles_health_info.get(key) - player_warAttender.getBulletDamage();
                             if (new_health <= 0) {
                                 // TILE DESTROYED
-                                level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, 42);
+                                level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
                                 destructible_tiles_health_info.remove(key);
                             } else {
                                 destructible_tiles_health_info.put(key, new_health);

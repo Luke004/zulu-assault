@@ -14,6 +14,7 @@ public class MediumTank extends Tank {
         max_health = 100;
         current_health = max_health;
         max_speed = 0.15f;
+        backwards_speed = max_speed / 2;
         acceleration_factor = 0.00005f;
         deceleration_factor = 0.0009f;
         rotate_speed = 0.15f;
