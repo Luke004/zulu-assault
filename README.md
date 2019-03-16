@@ -26,8 +26,8 @@ Taken from the old game's HELPME.TXT.
 |`4`|Use an expand |No|
 
 ## Info
-**Idea by:**
-Dallas Nutsch
- e-mail - tripled@door.net
- alt    - danutsch@yahoo.com
+**Idea by:**  
+Dallas Nutsch  
+ e-mail - tripled@door.net  
+ alt    - danutsch@yahoo.com  
 [Website](www.door.net/arrowhead)
