@@ -28,7 +28,7 @@ Taken from the old game's HELPME.TXT.
 `1` Use an invincibility  
 `2` Use an emp (Destroys nearby planes)  
 `3` Use a mega pulse (most powerful weapon)  
-`4`Use an expand (Repels enemy weapons)
+`4` Use an expand (Repels enemy weapons)
 
 ## Info
 **Idea by:**  
