@@ -20,7 +20,7 @@ Taken from the old game's HELPME.TXT.
 |`[` |Zoom Radar Out|No|
 |`]`|Zoom Radar In|No|
 |`Escape`|Go to menu|No|
-|`1`|Use an invincibility  |No|
+|`1`|Use an invincibility  |Yes|
 |`2`|Use an emp|No|
 |`3`|Use a mega pulse|No|
 |`4`|Use an expand |No|

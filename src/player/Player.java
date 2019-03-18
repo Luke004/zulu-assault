@@ -1,5 +1,6 @@
 package player;
 
+import logic.ItemChangeListener;
 import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.PlayerSoldier;
 import models.war_attenders.soldiers.Soldier;
@@ -10,12 +11,13 @@ import org.newdawn.slick.geom.Vector2f;
 public class Player {
     private WarAttender base_soldier;
     private WarAttender current_warAttender;
-    private int[] items;
+    private ItemChangeListener GUI_listener;
+    private int[] item_amounts;
 
     public void init(WarAttender current_warAttender) {
         current_warAttender.showAccessibleAnimation(false);
         this.current_warAttender = current_warAttender;
-        items = new int[4];
+        item_amounts = new int[4];
     }
 
     public void draw(Graphics graphics) {
@@ -53,7 +55,7 @@ public class Player {
                     ((Soldier) base_soldier).setPosition(spawn_position);
                 }
                 // set soldiers rotation so he's facing away from the tank
-                ((Soldier) base_soldier).setRotation(tank.getRotation() - 180);
+                base_soldier.setRotation(tank.getRotation() - 180);
                 this.current_warAttender = base_soldier;
                 break;
         }
@@ -63,42 +65,55 @@ public class Player {
         return current_warAttender;
     }
 
+    public void addListener(ItemChangeListener gui) {
+        this.GUI_listener = gui;
+    }
+
     public void addItem(Item item) {
+        int idx = -1;
         switch (item) {
             case INVINCIBLE:
-                items[0]++;
+                idx = 0;
                 break;
             case EMP:
-                items[1]++;
+                idx = 1;
                 break;
             case MEGA_PULSE:
-                items[2]++;
+                idx = 2;
                 break;
             case EXPAND:
-                items[3]++;
+                idx = 3;
                 break;
+            default:
+                throw new IllegalStateException("Illegal item index [" + idx + "]!");
         }
+        item_amounts[idx]++;
+        GUI_listener.itemAdded(idx);
     }
 
-    public void removeItem(Item item) {
+    public void activateItem(Item item) {
+        int idx = -1;
         switch (item) {
             case INVINCIBLE:
-                items[0]--;
+                if (current_warAttender.isInvincible()) return;
+                idx = 0;
                 break;
             case EMP:
-                items[1]--;
+                idx = 1;
                 break;
             case MEGA_PULSE:
-                items[2]--;
+                idx = 2;
                 break;
             case EXPAND:
-                items[3]--;
+                idx = 3;
                 break;
+            default:
+                throw new IllegalStateException("Illegal item index [" + idx + "]!");
         }
-    }
-
-    public int [] getItems(){
-        return items;
+        if (item_amounts[idx] == 0) return;
+        item_amounts[idx]--;
+        current_warAttender.activateItem(item);
+        GUI_listener.itemActivated(idx);
     }
 
     public enum Item {

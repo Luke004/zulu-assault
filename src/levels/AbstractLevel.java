@@ -34,7 +34,8 @@ public abstract class AbstractLevel extends BasicGame {
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
         camera = new Camera(gameContainer, map);
-        hud = new HUD(player);
+        hud = new HUD(player, gameContainer);
+        player.addListener(hud);
         keyInputHandler = new KeyInputHandler(player, friendly_war_attenders);     // handle key inputs
         collisionHandler = new CollisionHandler(player, map, friendly_war_attenders, hostile_war_attenders);    // handle collisions
     }
@@ -50,6 +51,7 @@ public abstract class AbstractLevel extends BasicGame {
         }
         keyInputHandler.update(gameContainer, deltaTime);
         collisionHandler.update(gameContainer, deltaTime);
+        hud.update(deltaTime);
         camera.centerOn(player.getWarAttender().position.x, player.getWarAttender().position.y);
     }
 
@@ -67,7 +69,7 @@ public abstract class AbstractLevel extends BasicGame {
 
         // un-translate graphics to draw the HUD- items
         camera.untranslateGraphics();
-        hud.draw(graphics);
+        hud.draw();
 
     }
 

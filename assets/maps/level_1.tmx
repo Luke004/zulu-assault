@@ -9,8 +9,8 @@
  <tileset firstgid="113" name="big_landscape_tiles" tilewidth="40" tileheight="40" tilecount="100" columns="10">
   <image source="../tilesets/big_landscape_tiles.png" width="400" height="400"/>
  </tileset>
- <tileset firstgid="213" name="item_tiles" tilewidth="40" tileheight="40" tilecount="56" columns="8">
-  <image source="../tilesets/item_tiles.png" width="320" height="280"/>
+ <tileset firstgid="213" name="item_tiles" tilewidth="40" tileheight="40" tilecount="88" columns="8">
+  <image source="../tilesets/item_tiles.png" width="320" height="440"/>
  </tileset>
  <layer name="landscape_tiles" width="101" height="99" locked="1">
   <data encoding="base64" compression="gzip">
@@ -24,7 +24,7 @@
  </layer>
  <layer name="item_tiles" width="101" height="99">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3OQQ0AIAwEsPn3hwSeSCDBAyy5B62CVgEAAN12OvC5kQ4APJjpAMCllQ4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA0OVAl6xQ8nAAA
+   H4sIAAAAAAAACu3VsQmAMBAF0DiA+0+WERzBUrAVNV4sjAm8VyUHB7/5XEpAK/nvADCAmp7M0+cxoGvuCcRKPVmbpoC+uSdwtZz+x55sLYPAQNwTiOkJxPQEYnoCMT2BWC68n2Z38ze7AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACj2gGIHjjVPJwAAA==
   </data>
  </layer>
  <layer name="enemy_tiles" width="101" height="99">

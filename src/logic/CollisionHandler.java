@@ -36,7 +36,7 @@ public class CollisionHandler {
         MAP_HEIGHT = level_map.getHeight() * TILE_HEIGHT;
 
         // TileMap related stuff
-        item_indices = new int[]{0, 16, 24, 40, 56};
+        item_indices = new int[]{0, 16, 32, 40, 56};
         destructible_tile_indices = new int[]{1, 2, 18, 19, 25, 65, 68, 83, 88, 89};
         destructible_tile_replace_indices = new int[]{32, 33, 34, 35, 36, 37, 95, 94, 93, 91};
         indestructible_tile_indices = new int[]{40, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 64, 66, 67, 68,
@@ -137,8 +137,33 @@ public class CollisionHandler {
                 // COLLISION BETWEEN PLAYER ITSELF AND ITEMS
                 for (idx = 0; idx < item_indices.length; ++idx) {
                     if (item_layer_tile_ID == item_indices[idx]) {
-                        player.addItem(Player.Item.INVINCIBLE);
-                        return;
+                        switch (idx) {
+                            case 0:
+                                player.addItem(Player.Item.INVINCIBLE);
+                                break;
+                            case 1:
+                                player.addItem(Player.Item.EMP);
+                                break;
+                            case 2:
+                                player.addItem(Player.Item.MEGA_PULSE);
+                                break;
+                            case 3:
+                                player.addItem(Player.Item.EXPAND);
+                                break;
+                            case 4: // silver wrench
+                                // don't take the wrench if player is at max health
+                                if (player_warAttender.isMaxHealth()) return;
+                                player_warAttender.changeHealth(10);
+                                break;
+                            case 5: // golden wrench
+                                // don't take the wrench if player is at max health
+                                if (player_warAttender.isMaxHealth()) return;
+                                player_warAttender.changeHealth(50);
+                                break;
+                            default:
+                                return;
+                        }
+                        level_map.setTileId(x, y, ITEM_TILES_LAYER_IDX, 0); // delete the item tile
                     }
                 }
             }
@@ -218,7 +243,9 @@ public class CollisionHandler {
                 // HOSTILE BULLET COLLISION WITH PLAYER
                 if (b.getCollisionModel().intersects(player_warAttender.getCollisionModel())) {
                     bullet_iterator.remove();   // remove bullet
-                    player_warAttender.changeHealth(-hostile_warAttender.getBulletDamage());  //drain health of player
+                    if (!player_warAttender.isInvincible()){
+                        player_warAttender.changeHealth(-hostile_warAttender.getBulletDamage());  //drain health of player
+                    }
                     canContinue = true;
                 }
 

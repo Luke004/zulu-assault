@@ -66,6 +66,11 @@ public class KeyInputHandler {
                     soldier.shoot();
                 }
 
+                // activate invincibility
+                if (input.isKeyPressed(Input.KEY_1)) {
+                    player.activateItem(Player.Item.INVINCIBLE);
+                }
+
                 // get into WarAttender
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
                     for (WarAttender warAttender : friendly_war_attenders) {
@@ -126,6 +131,22 @@ public class KeyInputHandler {
 
                 if (input.isKeyDown(Input.KEY_LCONTROL) || input.isKeyPressed(Input.KEY_RCONTROL)) {
                     tank.shoot();
+                }
+
+                if (input.isKeyPressed(Input.KEY_1)) {
+                    player.activateItem(Player.Item.INVINCIBLE);
+                }
+
+                if (input.isKeyPressed(Input.KEY_2)) {
+                    player.activateItem(Player.Item.EMP);
+                }
+
+                if (input.isKeyPressed(Input.KEY_3)) {
+                    player.activateItem(Player.Item.MEGA_PULSE);
+                }
+
+                if (input.isKeyPressed(Input.KEY_4)) {
+                    player.activateItem(Player.Item.EXPAND);
                 }
 
                 // get out of tank

@@ -4,6 +4,7 @@ import models.CollisionModel;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
+import player.Player;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -33,6 +34,11 @@ public abstract class WarAttender {
 
     // booleans
     public boolean isMoving, isHostile, show_accessible_animation;
+
+    // invincibility item related
+    private boolean isInvincible;
+    private int invincibility_lifetime;
+    private final int INVINCIBILITY_TIME = 10000;   // 10 sec
 
 
     public WarAttender(Vector2f startPos, boolean isHostile) {
@@ -94,6 +100,17 @@ public abstract class WarAttender {
 
         // COLLISION RELATED STUFF
         collisionModel.update(base_image.getRotation());
+
+        // ITEMS RELATED STUFF
+
+        // invincibility
+        if(isInvincible){
+            invincibility_lifetime += deltaTime;
+            if(invincibility_lifetime > INVINCIBILITY_TIME){
+                isInvincible = false;
+                invincibility_lifetime = 0;
+            }
+        }
     }
 
     public abstract void setRotation(float degree);
@@ -168,6 +185,10 @@ public abstract class WarAttender {
         return isHostile;
     }
 
+    public boolean isInvincible() {
+        return isInvincible;
+    }
+
     public void setMoving(boolean b) {
         isMoving = b;
     }
@@ -192,6 +213,14 @@ public abstract class WarAttender {
         current_health += amount;
     }
 
+    public boolean isMaxHealth() {
+        return current_health == max_health;
+    }
+
+    public int getHealth() {
+        return current_health;
+    }
+
     public abstract float getRotation();
 
     public abstract void rotate(RotateDirection r, int deltaTime);
@@ -200,6 +229,23 @@ public abstract class WarAttender {
 
     public boolean canShoot() {
         return current_reload_time >= shot_reload_time;
+    }
+
+    public void activateItem(Player.Item item) {
+        switch(item){
+            case INVINCIBLE:
+                isInvincible = true;
+                break;
+            case EMP:
+                // TODO: destroy all planes here
+                break;
+            case MEGA_PULSE:
+                // TODO: shoot most powerful weapon here
+                break;
+            case EXPAND:
+                // TODO: reflect enemy bullets here
+                break;
+        }
     }
 
     public enum RotateDirection {
