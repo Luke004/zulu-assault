@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="101" height="99" tilewidth="40" tileheight="40" infinite="0" nextobjectid="17">
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="101" height="99" tilewidth="40" tileheight="40" infinite="0" nextobjectid="32">
  <tileset firstgid="1" name="enemy_tiles" tilewidth="40" tileheight="40" tilecount="8" columns="8">
   <image source="../tilesets/enemy_tiles.png" width="320" height="40"/>
  </tileset>
@@ -9,6 +9,9 @@
  <tileset firstgid="113" name="big_landscape_tiles" tilewidth="40" tileheight="40" tilecount="100" columns="10">
   <image source="../tilesets/big_landscape_tiles.png" width="400" height="400"/>
  </tileset>
+ <tileset firstgid="213" name="item_tiles" tilewidth="40" tileheight="40" tilecount="56" columns="8">
+  <image source="../tilesets/item_tiles.png" width="320" height="280"/>
+ </tileset>
  <layer name="landscape_tiles" width="101" height="99" locked="1">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAACu2dyW7UQBBAfZ2ZkJwgyWSEyOQLOBFIWG4gpAiuATJs//8P2JJbKipV3VXdbnfbrkhP9oz3elO9eMuqaZqVYRhJbCKnGcbcsN+7YaRhOVQP2IW5qceFOakHc1AP5sIw/FiOTAPzVB5zMA3MUx1szEU1bNC4eTEMGsuNujAfdbE2J1Vi5+jrYdNYO6t2zE09scef1z2l93NJ+JxsgBPoxRyVc7VmMC9lkXixuqe8D+xl01jeDInvNx7y4Za3PBnXF/SwQd+X3r+loLmP3ryUc6GZxyjj6UXLUYDS+z5HfDlx0nKOKL2/c4RrV5mT8i44J7DNa07qcALJ4WRfQSxqgfPg80M5ocDLfQSUPu6aGdPJfcuhH5Y+7pqRlleQ5y1n5uQRh8Lbl+SKOYkj9Kwcd45Rkiu/+vjXRu1OuPjjIYcvXzonX1oeemBcHgoyBScOXLdI7isKOSmdE1PNE+wjVN9DN9I22Hnzf33CTeOmd2wBku1dg3VeZ3QR4yQUb6rP6LtWJXUCl5E4gXDr/Bxg61nnVJ1o9yPVibbc+R1gzHLrMsGJ7x5HKj9CuQE/xzj5GeFiKCffM3IYaD0xOQL9PEUeLoVOqLZYDv425dp3JdqF2McYeZLKj5YdwncMFHh5R+5+fOg64pHiGNw6nZN7MG1OeXI/0HqoWId+/1p8Tv705HJyQJ+7PPmWicNA6xky9lNw4sPtp+sDacsWquyi+hchcPy0/bI5OomFq08kTnDdu4Q8+VqBE+k1XZgf5kTHFg2HandpYgvLtEvFciXbXRpwbFwbNzVPcjrhPM3JCazfSzuhYuuLt6YdMCUnOeqT3GVXzDxzdELVzWM4Garex066cyuvKnAwRJ7AfkwOJyEHQ+VJ5+SuJ3eca+if5Ci7fG2smDp+zDzBTkLx2DWP27i5nHDn4iVOYn1hLzBG7vvanHDlktTJk4ADyfPTXAyvmnC7i8oTbpmpOrlIcOK7JoWfCZXmyZYZ14Cvj0/JyQo4keRMKE9CnrCTq374uuW9kDdKP7U6ofqFOzQuyRdNnkicOB8vlWi81OiE66dr+/DSPKGgyq4YF453ROzh9dSpl11UOUaxJZyk5MnbgZ1Qbmpzoqm7h8oT/H4hap51BifYg/u8Ypw4L0PHB8ZJ83sf2okvVzgvqU5uG75dDP3U5CTntqR5Qn3v/KU6kdbxc3NyzmxL0mek/KzRulOcSL3MzQm+L5VzQj1H4nvHlqtPblo+AGLqFMlxOCfdMyl3gFw+cjrhtjVEW3hPgB2FPGmd5MyL2pzEvKOGckLNd6NwwvW1luyE+t8M+DykG3JOdmC4A99TOXRL7B/lpYSTMYktuzDQBWy3a88rSM5FzNnJPoOTiwgneJ4lO1n1x/YsoxMM9afx1fEJUDp+uZx07djUXMFl144YOid4Guci5pzqHHBOulyBzynsG9175kLtLS62lBOqH7UknBMOaf5wPqALWK7BcV8uLDFXhnQSuw8u5qHroktxQzk5bTnugfP63l2Xsg/YCRX7LTM+R7CT04h1jPFu2ql6iInNoeHzAsNdV7H3Bcc7OUacNel9RnvPfJoTzEnvJOXd5OZDHqfQ9Q43PcWJ/X+Mx/GghlzcuOWdk1BcfXXJkp3EvvPHt54D+M7FWLvtJTsJxVgaM5g7+FqN5H/LrNDQ6pTHsdY8M+3ijp2E8gS7DZWZSyf0LDu+Hx7WAdJrmlrvS0XzXgF8D4q0jve1JcyLzIlmWedEMh/eJp7+D1hGgOs8nAAA
@@ -16,7 +19,12 @@
  </layer>
  <layer name="big_landscape_tiles" width="101" height="99">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3dR1IWURhG4X8J7AK2h0iQIEFAyUgWJSmCkoPkHCVJdEGegvqZMpF7u4vzVJ3x+03utDuTURLlxD5AkiRJSrG82AfoXm7sAyRJkiRJkiRJkiRJkiRJkiRJkiQ9m3x6RQX0mgoDbBZRMZXQGyoNsJkmZVROFfSWKgNsVlE11dA7qg2wmSZ1VE/v6QM1BNhspCZqphZqDbCZJm3UTh+pgzoDbHZRN/VQL/UF2EyTT9RPn+kLDQTYHKQhGqYR+hpgU5IkKWn8Pov0tJjv5BuN0ncao/GIt+jBNM3QLM3RfNxzEiPmO1mhVVqjddqIeIse7NE+HdAhHcU9JzGy7+QH/aQJmqSpANvndEF/6JKuAmymyQIt0i9aouW457xo2XeySVu0TTu0G+sgPTqm33RCp3QW9xzhmm7olu7ob9xzJEmSJEmSJEmSJEmS/gv/fSpJkiRJkiRJkpLuH4REZOI8nAAA
+   H4sIAAAAAAAACu3RxVKdURQF4TtlxqviwSXB3SG4u7snkOAOD0QzhwGTc+5f9FfV47WrdiqldJQZ+wBJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkqRPZFE25VAu5QXYzKcC+kGFVBRgM0mKqYRKqYzKA2xWUCVV0U/6FWAzSaqphmqpjuoDbDZQIzVRM7UE2EySVmqjduqgzgCbXdRNPdRLfQE2k6SfftMADdJQgM1hGqFRGqPxAJuSJEmS9BUTNElTNE0zcc8RlmiZVmiV1uKeI+zQLu3RPh3EPUf4S6d0Rv/of9xz0s4szdE8LdBigM0buqU7uqeHAJtJsk4btElbtB33HOGQjuiYTuhP1Gv07pwu6JKu6DruOcIjPdEzvdBr3HMkSZIkSZIkSZIkSQoq44MUlz+QJEmSJEmSJEnfxRt3gjylPJwAAA==
+  </data>
+ </layer>
+ <layer name="item_tiles" width="101" height="99">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3OQQ0AIAwEsPn3hwSeSCDBAyy5B62CVgEAAN12OvC5kQ4APJjpAMCllQ4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA0OVAl6xQ8nAAA
   </data>
  </layer>
  <layer name="enemy_tiles" width="101" height="99">
