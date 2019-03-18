@@ -17,10 +17,11 @@ public class CollisionHandler {
     private Player player;
     private List<WarAttender> friendly_war_attenders, hostile_war_attenders;
     private TiledMap level_map;
-    private int MAP_WIDTH, MAP_HEIGHT, TILE_WIDTH, TILE_HEIGHT;
-    private int[] destructible_tile_indices, indestructible_tile_indices, destructible_tile_replace_indices;
-    final int DESTRUCTIBLE_TILE_MAX_HEALTH = 15;
+    private final int MAP_WIDTH, MAP_HEIGHT, TILE_WIDTH, TILE_HEIGHT;
+    private int[] destructible_tile_indices, indestructible_tile_indices, destructible_tile_replace_indices, item_indices;
+    private final int DESTRUCTIBLE_TILE_MAX_HEALTH = 15;
     private final int LANDSCAPE_TILES_LAYER_IDX = 0;
+    private final int ITEM_TILES_LAYER_IDX = 2;
     private Map<Integer, Integer> destructible_tiles_health_info;
 
 
@@ -35,25 +36,37 @@ public class CollisionHandler {
         MAP_HEIGHT = level_map.getHeight() * TILE_HEIGHT;
 
         // TileMap related stuff
+        item_indices = new int[]{0, 16, 24, 40, 56};
         destructible_tile_indices = new int[]{1, 2, 18, 19, 25, 65, 68, 83, 88, 89};
         destructible_tile_replace_indices = new int[]{32, 33, 34, 35, 36, 37, 95, 94, 93, 91};
         indestructible_tile_indices = new int[]{40, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 64, 66, 67, 68,
                 72, 73, 74, 75, 76, 77};
         destructible_tiles_health_info = new HashMap<>();
 
+        int idx;
         // create TileInfo for 'landscape_tiles' TileSet
         final int LANDSCAPE_TILES_TILESET_IDX = 1;
         TileSet landscape_tiles = level_map.getTileSet(LANDSCAPE_TILES_TILESET_IDX);
         if (!landscape_tiles.name.equals("landscape_tiles"))
             throw new IllegalAccessError("Wrong tileset index: [" + LANDSCAPE_TILES_TILESET_IDX + "] is not landscape_tiles");
         else {
-            int idx;
             for (idx = 0; idx < destructible_tile_indices.length; ++idx) {
                 destructible_tile_indices[idx] += landscape_tiles.firstGID;
                 destructible_tile_replace_indices[idx] += landscape_tiles.firstGID;
             }
             for (idx = 0; idx < indestructible_tile_indices.length; ++idx) {
                 indestructible_tile_indices[idx] += landscape_tiles.firstGID;
+            }
+        }
+
+        // create TileInfo for 'item_tiles' TileSet
+        final int ITEM_TILES_TILESET_IDX = 3;
+        TileSet item_tiles = level_map.getTileSet(ITEM_TILES_TILESET_IDX);
+        if (!item_tiles.name.equals("item_tiles"))
+            throw new IllegalAccessError("Wrong tileset index: [" + ITEM_TILES_TILESET_IDX + "] is not item_tiles");
+        else {
+            for (idx = 0; idx < item_indices.length; ++idx) {
+                item_indices[idx] += item_tiles.firstGID;
             }
         }
     }
@@ -90,16 +103,17 @@ public class CollisionHandler {
     private void handlePlayerCollisions(WarAttender player_warAttender) {
         if (player_warAttender.isMoving()) {
             CollisionModel.Point[] playerCorners = player_warAttender.getCollisionModel().getPoints();
-            int idx, tile_ID, x, y;
+            int idx, landscape_layer_tile_ID, item_layer_tile_ID, x, y;
 
             for (CollisionModel.Point p : playerCorners) {
                 x = (int) p.x / TILE_WIDTH;
                 y = (int) p.y / TILE_HEIGHT;
-                tile_ID = level_map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
+                landscape_layer_tile_ID = level_map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
+                item_layer_tile_ID = level_map.getTileId(x, y, ITEM_TILES_LAYER_IDX);
 
                 // COLLISION BETWEEN PLAYER ITSELF AND DESTRUCTIBLE TILES
                 for (idx = 0; idx < destructible_tile_indices.length; ++idx) {
-                    if (tile_ID == destructible_tile_indices[idx]) {
+                    if (landscape_layer_tile_ID == destructible_tile_indices[idx]) {
                         // block movement as long as tile exists and damage the destructible tile
                         player_warAttender.blockMovement();
 
@@ -113,9 +127,17 @@ public class CollisionHandler {
 
                 // COLLISION BETWEEN PLAYER ITSELF AND INDESTRUCTIBLE TILES
                 for (idx = 0; idx < indestructible_tile_indices.length; ++idx) {
-                    if (tile_ID == indestructible_tile_indices[idx]) {
+                    if (landscape_layer_tile_ID == indestructible_tile_indices[idx]) {
                         // block movement forever because tile is indestructible
                         player_warAttender.blockMovement();
+                        return;
+                    }
+                }
+
+                // COLLISION BETWEEN PLAYER ITSELF AND ITEMS
+                for (idx = 0; idx < item_indices.length; ++idx) {
+                    if (item_layer_tile_ID == item_indices[idx]) {
+                        player.addItem(Player.Item.INVINCIBLE);
                         return;
                     }
                 }
@@ -159,7 +181,7 @@ public class CollisionHandler {
             if (canContinue) continue;
 
             // PLAYER BULLET COLLISION WITH DESTRUCTIBLE MAP TILE
-            canContinue =  handleBulletTileCollision(b, player_warAttender.getBulletDamage(), bullet_iterator);
+            canContinue = handleBulletTileCollision(b, player_warAttender.getBulletDamage(), bullet_iterator);
 
             if (canContinue) continue;
 
@@ -203,7 +225,7 @@ public class CollisionHandler {
                 if (canContinue) continue;
 
                 // HOSTILE BULLET COLLISION WITH DESTRUCTIBLE MAP TILE
-                canContinue =  handleBulletTileCollision(b, hostile_warAttender.getBulletDamage(), bullet_iterator);
+                canContinue = handleBulletTileCollision(b, hostile_warAttender.getBulletDamage(), bullet_iterator);
 
                 if (canContinue) continue;
 
@@ -212,7 +234,7 @@ public class CollisionHandler {
         }
     }
 
-    private boolean handleBulletTileCollision(WarAttender.Bullet b, int bulletDamage, Iterator<WarAttender.Bullet> bullet_iterator){
+    private boolean handleBulletTileCollision(WarAttender.Bullet b, int bulletDamage, Iterator<WarAttender.Bullet> bullet_iterator) {
         for (int idx = 0; idx < destructible_tile_indices.length; ++idx) {
             int x = (int) b.bullet_pos.x / TILE_WIDTH;
             int y = (int) b.bullet_pos.y / TILE_HEIGHT;
@@ -231,7 +253,7 @@ public class CollisionHandler {
         return false;
     }
 
-    private void removeBulletAtMapEdge(WarAttender.Bullet b, Iterator<WarAttender.Bullet> bullet_iterator){
+    private void removeBulletAtMapEdge(WarAttender.Bullet b, Iterator<WarAttender.Bullet> bullet_iterator) {
         // remove bullet if edge of map was reached
         if (b.bullet_pos.x < 0) {
             bullet_iterator.remove();

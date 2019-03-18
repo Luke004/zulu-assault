@@ -10,10 +10,12 @@ import org.newdawn.slick.geom.Vector2f;
 public class Player {
     private WarAttender base_soldier;
     private WarAttender current_warAttender;
+    private int[] items;
 
-    public Player(WarAttender current_warAttender) {
+    public void init(WarAttender current_warAttender) {
         current_warAttender.showAccessibleAnimation(false);
         this.current_warAttender = current_warAttender;
+        items = new int[4];
     }
 
     public void draw(Graphics graphics) {
@@ -59,6 +61,48 @@ public class Player {
 
     public WarAttender getWarAttender() {
         return current_warAttender;
+    }
+
+    public void addItem(Item item) {
+        switch (item) {
+            case INVINCIBLE:
+                items[0]++;
+                break;
+            case EMP:
+                items[1]++;
+                break;
+            case MEGA_PULSE:
+                items[2]++;
+                break;
+            case EXPAND:
+                items[3]++;
+                break;
+        }
+    }
+
+    public void removeItem(Item item) {
+        switch (item) {
+            case INVINCIBLE:
+                items[0]--;
+                break;
+            case EMP:
+                items[1]--;
+                break;
+            case MEGA_PULSE:
+                items[2]--;
+                break;
+            case EXPAND:
+                items[3]--;
+                break;
+        }
+    }
+
+    public int [] getItems(){
+        return items;
+    }
+
+    public enum Item {
+        INVINCIBLE, EMP, MEGA_PULSE, EXPAND
     }
 
     public enum EnterAction {
