@@ -9,22 +9,28 @@ import org.newdawn.slick.geom.Vector2f;
 
 public abstract class Soldier extends WarAttender {
     Animation animation;
+    private int SOLDIER_WIDTH_HALF, SOLDIER_HEIGHT_HALF;
 
     public Soldier(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
     }
 
-    @Override
-    public void draw(Graphics graphics) {
-        super.draw(graphics);
-        animation.draw(position.x - animation.getImage(0).getWidth()/2, position.y-animation.getImage(0).getHeight()/2);
-        //collisionModel.draw(graphics);
+    void init() {
+        SOLDIER_WIDTH_HALF = animation.getImage(0).getWidth() / 2;
+        SOLDIER_HEIGHT_HALF = animation.getImage(0).getHeight() / 2;
     }
 
     @Override
     public void update(GameContainer gameContainer, int deltaTime) {
         super.update(gameContainer, deltaTime);
         animation.update(deltaTime);
+    }
+
+    @Override
+    public void draw(Graphics graphics) {
+        super.draw(graphics);
+        animation.draw(position.x - SOLDIER_WIDTH_HALF, position.y - SOLDIER_HEIGHT_HALF);
+        //collisionModel.draw(graphics);
     }
 
     public void startAnimation() {
@@ -48,8 +54,8 @@ public abstract class Soldier extends WarAttender {
     }
 
     @Override
-    public void onCollision(WarAttender enemy){
-        if(enemy instanceof Tank){  // enemy is a tank
+    public void onCollision(WarAttender enemy) {
+        if (enemy instanceof Tank) {  // enemy is a tank
             blockMovement();
         }
         // soldier is not needed, nothing happens
@@ -57,19 +63,19 @@ public abstract class Soldier extends WarAttender {
     }
 
     @Override
-    public void blockMovement(){
+    public void blockMovement() {
         position.sub(dir);  // set the position on last position before the collision
         collisionModel.update(base_image.getRotation());    // update collision model
     }
 
-    public void setPosition(Vector2f position){
+    public void setPosition(Vector2f position) {
         this.position.x = position.x;
         this.position.y = position.y;
         collisionModel.update(base_image.getRotation());
     }
 
     @Override
-    public void setRotation(float angle){
+    public void setRotation(float angle) {
         for (int idx = 0; idx < animation.getFrameCount(); ++idx) {
             animation.getImage(idx).setRotation(angle);
         }
