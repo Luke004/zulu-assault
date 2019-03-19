@@ -1,6 +1,8 @@
 package models.war_attenders.tanks;
 
 import models.CollisionModel;
+import models.weapons.Shell;
+import models.weapons.Weapon;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
@@ -19,23 +21,15 @@ public class MediumTank extends Tank {
         deceleration_factor = 0.0009f;
         rotate_speed = 0.15f;
         turret_rotate_speed = 0.2f;
-        bullet_speed = 0.8f;
-        shot_reload_time = 1000;    // can shoot once every sec
-        bullet_damage = 15;
-
-        if (isHostile) {    // double the reload time if its an enemy
-            shot_reload_time *= 2;
-        }
+        weapons.add(new Shell());   // WEAPON_1
 
         try {
             base_image = new Image("assets/tanks/medium_tank.png");
             turret = new Image("assets/tanks/medium_tank_turret.png");
-            bullet_texture = new Image("assets/bullets/shell.png").getTexture();
         } catch (SlickException e) {
             e.printStackTrace();
         }
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
-
         super.init();
     }
 

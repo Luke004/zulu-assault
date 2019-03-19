@@ -61,9 +61,14 @@ public class KeyInputHandler {
                     soldier.rotate(WarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
                 }
 
-                // shoot
+                // fire weapon1
                 if (input.isKeyDown(Input.KEY_LCONTROL) || input.isKeyPressed(Input.KEY_RCONTROL)) {
-                    soldier.shoot();
+                    soldier.fireWeapon(WarAttender.WeaponType.WEAPON_1);
+                }
+
+                // fire weapon2
+                if (input.isKeyDown(Input.KEY_LALT) || input.isKeyPressed(Input.KEY_RALT)) {
+                    soldier.fireWeapon(WarAttender.WeaponType.WEAPON_2);
                 }
 
                 // activate invincibility
@@ -129,8 +134,14 @@ public class KeyInputHandler {
                     tank.rotateTurret(WarAttender.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
                 }
 
+                // fire weapon1
                 if (input.isKeyDown(Input.KEY_LCONTROL) || input.isKeyPressed(Input.KEY_RCONTROL)) {
-                    tank.shoot();
+                    tank.fireWeapon(WarAttender.WeaponType.WEAPON_1);
+                }
+
+                // fire weapon2
+                if (input.isKeyDown(Input.KEY_LALT) || input.isKeyPressed(Input.KEY_RALT)) {
+                    tank.fireWeapon(WarAttender.WeaponType.WEAPON_2);
                 }
 
                 if (input.isKeyPressed(Input.KEY_1)) {

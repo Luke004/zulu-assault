@@ -15,9 +15,10 @@ public abstract class Soldier extends WarAttender {
         super(startPos, isHostile);
     }
 
-    void init() {
+    public void init() {
         SOLDIER_WIDTH_HALF = animation.getImage(0).getWidth() / 2;
         SOLDIER_HEIGHT_HALF = animation.getImage(0).getHeight() / 2;
+        super.init();
     }
 
     @Override
@@ -31,7 +32,7 @@ public abstract class Soldier extends WarAttender {
         super.draw(graphics);
 
         if (isInvincible) {
-            if(!invincibility_animation_switch){
+            if (!invincibility_animation_switch) {
                 animation.getCurrentFrame().drawFlash(position.x - SOLDIER_WIDTH_HALF, position.y - SOLDIER_HEIGHT_HALF);
             } else {
                 animation.draw(position.x - SOLDIER_WIDTH_HALF, position.y - SOLDIER_HEIGHT_HALF);
@@ -88,6 +89,19 @@ public abstract class Soldier extends WarAttender {
     public void setRotation(float angle) {
         for (int idx = 0; idx < animation.getFrameCount(); ++idx) {
             animation.getImage(idx).setRotation(angle);
+        }
+    }
+
+    @Override
+    public void fireWeapon(WeaponType weapon) {
+        switch (weapon) {
+            case WEAPON_1:
+                weapons.get(0).fire(position.x, position.y, animation.getCurrentFrame().getRotation());
+                break;
+            case WEAPON_2:
+                if (weapons.size() == 2) return;    // does not have a WEAPON_2, so return
+                weapons.get(1).fire(position.x, position.y, animation.getCurrentFrame().getRotation());
+                break;
         }
     }
 }

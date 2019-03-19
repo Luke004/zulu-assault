@@ -1,6 +1,8 @@
 package models.war_attenders.soldiers;
 
 import models.CollisionModel;
+import models.weapons.MachineGun;
+import models.weapons.Uzi;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -17,13 +19,10 @@ public class PlayerSoldier extends Soldier {
         max_speed = 0.1f;
         current_speed = max_speed;
         rotate_speed = 0.25f;
-        bullet_speed = 0.8f;
-        shot_reload_time = 300;
-        bullet_damage = 1;
+        weapons.add(new Uzi());
 
         try {
             base_image = new Image("assets/soldiers/player_soldier_animation.png");
-            bullet_texture = new Image("assets/bullets/bullet_small.png").getTexture();
         } catch (SlickException e) {
             e.printStackTrace();
         }
@@ -39,6 +38,7 @@ public class PlayerSoldier extends Soldier {
         animation.stop();
         // just use index 0, all indices are same width and height
         collisionModel = new CollisionModel(position, animation.getImage(0).getWidth(), animation.getImage(0).getHeight());
+        super.init();
     }
 
     @Override
@@ -62,8 +62,10 @@ public class PlayerSoldier extends Soldier {
         }
     }
 
+
+    /*
     @Override
-    public void shoot() {
+    public void fireWeapon() {
         if (canShoot()) {
             current_reload_time = 0;    // reset the reload time when a shot is fired
             float rotation_angle = animation.getCurrentFrame().getRotation();
@@ -81,5 +83,6 @@ public class PlayerSoldier extends Soldier {
             bullet_list.add(bullet);
         }
     }
+    */
 
 }

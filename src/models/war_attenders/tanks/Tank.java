@@ -22,11 +22,12 @@ public abstract class Tank extends WarAttender {
         super(startPos, isHostile);
     }
 
-    void init() {
+    public void init() {
         TANK_WIDTH_HALF = base_image.getWidth() / 2;
         TANK_HEIGHT_HALF = base_image.getHeight() / 2;
         TURRET_WIDTH_HALF = turret.getWidth() / 2;
         TURRET_HEIGHT_HALF = turret.getHeight() / 2;
+        super.init();
     }
 
     @Override
@@ -45,7 +46,7 @@ public abstract class Tank extends WarAttender {
     public void draw(Graphics graphics) {
         super.draw(graphics);
         if (isInvincible) {
-            if(!invincibility_animation_switch){
+            if (!invincibility_animation_switch) {
                 base_image.drawFlash(position.x - TANK_WIDTH_HALF, position.y - TANK_HEIGHT_HALF);
                 turret.drawFlash(position.x - TURRET_WIDTH_HALF, position.y - TURRET_HEIGHT_HALF);
             } else {
@@ -180,32 +181,21 @@ public abstract class Tank extends WarAttender {
         // TODO
     }
 
-
     @Override
     public void setRotation(float angle) {
         turret.setRotation(angle);
     }
 
-    /*
-    The standard method a tank uses to shoot. Should be overwritten if a tank shoots another way.
-     */
     @Override
-    public void shoot() {
-        if (canShoot()) {
-            current_reload_time = 0;    // reset the reload time when a shot is fired
-            float rotation_angle = turret.getRotation();
-            float spawnX = position.x;
-            float spawnY = position.y;
-            spawnX += -Math.sin(((rotation_angle) * Math.PI) / 180) * -30.f;
-            spawnY += Math.cos(((rotation_angle) * Math.PI) / 180) * -30.f;
-            Vector2f bullet_spawn = new Vector2f(spawnX, spawnY);
-
-            float xVal = (float) Math.sin(rotation_angle * Math.PI / 180);
-            float yVal = (float) -Math.cos(rotation_angle * Math.PI / 180);
-            Vector2f bullet_dir = new Vector2f(xVal, yVal);
-
-            Bullet bullet = new Bullet(bullet_spawn, bullet_dir, rotation_angle);
-            bullet_list.add(bullet);
+    public void fireWeapon(WeaponType weapon) {
+        switch (weapon) {
+            case WEAPON_1:
+                weapons.get(0).fire(position.x, position.y, turret.getRotation());
+                break;
+            case WEAPON_2:
+                if (weapons.size() == 2) return;    // does not have a WEAPON_2, so return
+                weapons.get(1).fire(position.x, position.y, turret.getRotation());
+                break;
         }
     }
 }
