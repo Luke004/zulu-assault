@@ -29,7 +29,17 @@ public abstract class Soldier extends WarAttender {
     @Override
     public void draw(Graphics graphics) {
         super.draw(graphics);
-        animation.draw(position.x - SOLDIER_WIDTH_HALF, position.y - SOLDIER_HEIGHT_HALF);
+
+        if (isInvincible) {
+            if(!invincibility_animation_switch){
+                animation.getCurrentFrame().drawFlash(position.x - SOLDIER_WIDTH_HALF, position.y - SOLDIER_HEIGHT_HALF);
+            } else {
+                animation.draw(position.x - SOLDIER_WIDTH_HALF, position.y - SOLDIER_HEIGHT_HALF);
+            }
+        } else {
+            animation.draw(position.x - SOLDIER_WIDTH_HALF, position.y - SOLDIER_HEIGHT_HALF);
+        }
+
         //collisionModel.draw(graphics);
     }
 

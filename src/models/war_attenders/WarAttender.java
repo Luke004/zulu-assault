@@ -36,10 +36,11 @@ public abstract class WarAttender {
     public boolean isMoving, isHostile, show_accessible_animation;
 
     // invincibility item related
-    private boolean isInvincible;
+    public boolean isInvincible, invincibility_animation_switch;
     private int invincibility_lifetime;
     private final int INVINCIBILITY_TIME = 10000;   // 10 sec
-    public int currentTime, invincible_animation_time_switch = 1000;    // once every sec switch to white color while invincible
+    public int invincible_animation_time_switch = 1000;    // once every sec switch to white color while invincible
+    public int invincible_animation_current_time;
 
 
     public WarAttender(Vector2f startPos, boolean isHostile) {
@@ -104,13 +105,23 @@ public abstract class WarAttender {
 
         // ITEMS RELATED STUFF
 
-        // invincibility
+        // INVINCIBILITY
         if(isInvincible){
+            // invincibility logic itself
             invincibility_lifetime += deltaTime;
             if(invincibility_lifetime > INVINCIBILITY_TIME){
                 isInvincible = false;
                 invincibility_lifetime = 0;
             }
+
+            // invincibility animation related
+            invincible_animation_current_time += deltaTime;
+            if(invincible_animation_current_time >= invincible_animation_time_switch){
+                if(invincibility_animation_switch) invincibility_animation_switch = false;
+                else invincibility_animation_switch = true;
+                invincible_animation_current_time = 0;
+            }
+
         }
     }
 

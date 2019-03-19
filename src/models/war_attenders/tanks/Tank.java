@@ -2,14 +2,10 @@ package models.war_attenders.tanks;
 
 import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.Soldier;
-import org.lwjgl.Sys;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
-
-import java.nio.file.FileSystemNotFoundException;
 
 public abstract class Tank extends WarAttender {
     Image turret;
@@ -17,8 +13,6 @@ public abstract class Tank extends WarAttender {
     float backwards_speed;
     private boolean decelerate;
     private int TANK_WIDTH_HALF, TANK_HEIGHT_HALF, TURRET_WIDTH_HALF, TURRET_HEIGHT_HALF;
-
-    private boolean switcher;
 
     // each tank has an acceleration and a deceleration
     public float acceleration_factor;   // number between [0 and 1] -> the smaller the faster the acceleration
@@ -39,13 +33,6 @@ public abstract class Tank extends WarAttender {
     public void update(GameContainer gc, int deltaTime) {
         super.update(gc, deltaTime);
 
-        currentTime += deltaTime;
-        if(currentTime >= invincible_animation_time_switch){
-            if(switcher) switcher = false;
-                    else switcher = true;
-            currentTime = 0;
-        }
-
         if (show_accessible_animation) {
             accessible_animation.update(deltaTime);
         }
@@ -57,9 +44,10 @@ public abstract class Tank extends WarAttender {
     @Override
     public void draw(Graphics graphics) {
         super.draw(graphics);
-        if (isInvincible()) {
-            if(!switcher){
+        if (isInvincible) {
+            if(!invincibility_animation_switch){
                 base_image.drawFlash(position.x - TANK_WIDTH_HALF, position.y - TANK_HEIGHT_HALF);
+                turret.drawFlash(position.x - TURRET_WIDTH_HALF, position.y - TURRET_HEIGHT_HALF);
             } else {
                 base_image.draw(position.x - TANK_WIDTH_HALF, position.y - TANK_HEIGHT_HALF);
                 turret.draw(position.x - TURRET_WIDTH_HALF, position.y - TURRET_HEIGHT_HALF);
