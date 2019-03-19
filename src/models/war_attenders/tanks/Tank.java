@@ -2,6 +2,8 @@ package models.war_attenders.tanks;
 
 import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.Soldier;
+import models.weapons.MegaPulse;
+import models.weapons.Weapon;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -187,15 +189,20 @@ public abstract class Tank extends WarAttender {
     }
 
     @Override
-    public void fireWeapon(WeaponType weapon) {
-        switch (weapon) {
+    public void fireWeapon(WeaponType weaponType) {
+        Weapon weapon = null;
+        switch (weaponType) {
             case WEAPON_1:
-                weapons.get(0).fire(position.x, position.y, turret.getRotation());
+                weapon = getWeapon(WeaponType.WEAPON_1);
                 break;
             case WEAPON_2:
-                if (weapons.size() == 2) return;    // does not have a WEAPON_2, so return
-                weapons.get(1).fire(position.x, position.y, turret.getRotation());
+                weapon = getWeapon(WeaponType.WEAPON_2);
+                break;
+            case MEGA_PULSE:
+                weapon = getWeapon(WeaponType.MEGA_PULSE);
                 break;
         }
+        if(weapon == null) return;  // does not have a WEAPON_2, so return
+        weapon.fire(position.x, position.y, turret.getRotation());
     }
 }

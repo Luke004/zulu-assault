@@ -102,6 +102,13 @@ public abstract class Soldier extends WarAttender {
                 if (weapons.size() == 2) return;    // does not have a WEAPON_2, so return
                 weapons.get(1).fire(position.x, position.y, animation.getCurrentFrame().getRotation());
                 break;
+            case MEGA_PULSE:
+                if (weapons.size() == 2) {   // does not have a WEAPON_2, MEGA_PULSE it at index [1]
+                    weapons.get(1).fire(position.x, position.y, animation.getCurrentFrame().getRotation());
+                } else {    // does have a WEAPON_2, MEGA_PULSE it at index [2]
+                    weapons.get(2).fire(position.x, position.y, animation.getCurrentFrame().getRotation());
+                }
+                break;
         }
     }
 }

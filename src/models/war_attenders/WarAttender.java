@@ -1,6 +1,7 @@
 package models.war_attenders;
 
 import models.CollisionModel;
+import models.weapons.MegaPulse;
 import models.weapons.Weapon;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
@@ -60,6 +61,7 @@ public abstract class WarAttender {
     }
 
     public void init() {
+        weapons.add(new MegaPulse());  // add the MEGA_PULSE (special item)
         if (isHostile) {    // double the reload time if its an enemy
             for (Weapon weapon : weapons) {
                 weapon.multiplyShotReloadTime(2);
@@ -131,7 +133,6 @@ public abstract class WarAttender {
             // aim at player and fire
             float m = (position.y - playerY) / (position.x - playerX);
             float x = playerX - position.x;
-            float y = playerY - position.y;
 
             if ((x > 0) && m > 0) {
                 rotationDegree = (float) (Math.abs(Math.atan(m / 1) * 180.0 / Math.PI) + 90.f);
@@ -200,6 +201,20 @@ public abstract class WarAttender {
         return isMoving;
     }
 
+    public Weapon getWeapon(WeaponType weaponType) {
+        switch (weaponType) {
+            case WEAPON_1:
+                return weapons.get(0);
+            case WEAPON_2:
+                if (weapons.size() == 2) return null;    // does not have a WEAPON_2
+                else return weapons.get(1);
+            case MEGA_PULSE:
+                if (weapons.size() == 2) return weapons.get(1);
+                else return weapons.get(2);
+        }
+        return null;
+    }
+
     public List<Weapon> getWeapons() {
         return weapons;
     }
@@ -236,7 +251,7 @@ public abstract class WarAttender {
                 // TODO: destroy all planes here
                 break;
             case MEGA_PULSE:
-                // TODO: fire most powerful weapon here
+                fireWeapon(WeaponType.MEGA_PULSE);
                 break;
             case EXPAND:
                 // TODO: reflect enemy bullets here
@@ -245,7 +260,7 @@ public abstract class WarAttender {
     }
 
     public enum WeaponType {
-        WEAPON_1, WEAPON_2
+        WEAPON_1, WEAPON_2, MEGA_PULSE
     }
 
     public enum RotateDirection {

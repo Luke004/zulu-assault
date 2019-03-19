@@ -18,11 +18,11 @@ public abstract class Weapon {
     int bullet_damage, shot_reload_time, current_reload_time;
     float bullet_speed;
 
-    public Weapon(){
+    public Weapon() {
         this.bullet_list = new ArrayList<>();
     }
 
-    public void update(int deltaTime){
+    public void update(int deltaTime) {
         if (current_reload_time < shot_reload_time) {
             current_reload_time += deltaTime;
         }
@@ -38,7 +38,7 @@ public abstract class Weapon {
         }
     }
 
-    public void draw(Graphics graphics){
+    public void draw(Graphics graphics) {
         for (Bullet b : bullet_list) {
             b.draw(graphics);
         }
@@ -60,7 +60,7 @@ public abstract class Weapon {
         }
     }
 
-    boolean canFire() {
+    public boolean canFire() {
         return current_reload_time >= shot_reload_time;
     }
 
@@ -71,7 +71,7 @@ public abstract class Weapon {
     /*
     for KI to shoot slower than player (less difficult)
      */
-    public void multiplyShotReloadTime(int factor){
+    public void multiplyShotReloadTime(int factor) {
         shot_reload_time *= factor;
     }
 
@@ -84,13 +84,16 @@ public abstract class Weapon {
         public Image bullet_image;
         public CollisionModel bullet_collision_model;
         public Vector2f bullet_pos, bullet_dir;
+        private final int BULLET_WIDTH_HALF, BULLET_HEIGHT_HALF;
 
         public Bullet(Vector2f startPos, Vector2f dir, float rotation) {
             this.bullet_image = new Image(bullet_texture);
             bullet_image.setRotation(rotation);
             this.bullet_pos = startPos;
             this.bullet_dir = dir;
-            this.bullet_collision_model = new CollisionModel(bullet_pos, bullet_image.getWidth(), bullet_image.getHeight());
+            BULLET_WIDTH_HALF = bullet_image.getWidth() / 2;
+            BULLET_HEIGHT_HALF = bullet_image.getHeight() / 2;
+            this.bullet_collision_model = new CollisionModel(bullet_pos, BULLET_WIDTH_HALF * 2, BULLET_HEIGHT_HALF * 2);
         }
 
         public void update(int deltaTime) {
@@ -103,7 +106,7 @@ public abstract class Weapon {
         }
 
         public void draw(Graphics graphics) {
-            this.bullet_image.draw(this.bullet_pos.x, this.bullet_pos.y);
+            this.bullet_image.draw(this.bullet_pos.x - BULLET_WIDTH_HALF, this.bullet_pos.y - BULLET_HEIGHT_HALF);
 
             //bullet_collision_model.draw(graphics);
         }

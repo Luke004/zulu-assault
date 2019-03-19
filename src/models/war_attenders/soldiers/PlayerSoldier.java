@@ -61,28 +61,4 @@ public class PlayerSoldier extends Soldier {
                 break;
         }
     }
-
-
-    /*
-    @Override
-    public void fireWeapon() {
-        if (canShoot()) {
-            current_reload_time = 0;    // reset the reload time when a shot is fired
-            float rotation_angle = animation.getCurrentFrame().getRotation();
-            float spawnX = position.x;
-            float spawnY = position.y;
-            spawnX += -Math.sin(((rotation_angle) * Math.PI) / 180) * -30.f;
-            spawnY += Math.cos(((rotation_angle) * Math.PI) / 180) * -30.f;
-            Vector2f bullet_spawn = new Vector2f(spawnX, spawnY);
-
-            float xVal = (float) Math.sin(rotation_angle * Math.PI / 180);
-            float yVal = (float) -Math.cos(rotation_angle * Math.PI / 180);
-            Vector2f bullet_dir = new Vector2f(xVal, yVal);
-
-            Bullet bullet = new Bullet(bullet_spawn, bullet_dir, rotation_angle);
-            bullet_list.add(bullet);
-        }
-    }
-    */
-
 }

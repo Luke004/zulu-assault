@@ -22,7 +22,7 @@ Taken from the old game's HELPME.TXT.
 |`Escape`|Go to menu|No|
 |`1`|Use an invincibility  |Yes|
 |`2`|Use an emp|No|
-|`3`|Use a mega pulse|No|
+|`3`|Use a mega pulse|Yes|
 |`4`|Use an expand |No|
 
 `1` Use an invincibility  

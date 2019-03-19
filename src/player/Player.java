@@ -102,6 +102,7 @@ public class Player {
                 idx = 1;
                 break;
             case MEGA_PULSE:
+                if(!current_warAttender.getWeapon(WarAttender.WeaponType.MEGA_PULSE).canFire()) return;
                 idx = 2;
                 break;
             case EXPAND:
