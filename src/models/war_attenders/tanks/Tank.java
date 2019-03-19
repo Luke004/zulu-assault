@@ -3,6 +3,7 @@ package models.war_attenders.tanks;
 import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.Soldier;
 import org.lwjgl.Sys;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -15,6 +16,9 @@ public abstract class Tank extends WarAttender {
     float turret_rotate_speed;
     float backwards_speed;
     private boolean decelerate;
+    private int TANK_WIDTH_HALF, TANK_HEIGHT_HALF, TURRET_WIDTH_HALF, TURRET_HEIGHT_HALF;
+
+    private boolean switcher;
 
     // each tank has an acceleration and a deceleration
     public float acceleration_factor;   // number between [0 and 1] -> the smaller the faster the acceleration
@@ -24,24 +28,50 @@ public abstract class Tank extends WarAttender {
         super(startPos, isHostile);
     }
 
-    @Override
-    public void draw(Graphics graphics) {
-        super.draw(graphics);
-        base_image.draw(position.x - base_image.getWidth() / 2, position.y - base_image.getHeight() / 2);
-        turret.draw(position.x - turret.getWidth() / 2, position.y - turret.getHeight() / 2);
-        if (show_accessible_animation) {
-            accessible_animation.draw(position.x - base_image.getWidth() / 4, position.y - base_image.getHeight() + 17);
-        }
+    void init() {
+        TANK_WIDTH_HALF = base_image.getWidth() / 2;
+        TANK_HEIGHT_HALF = base_image.getHeight() / 2;
+        TURRET_WIDTH_HALF = turret.getWidth() / 2;
+        TURRET_HEIGHT_HALF = turret.getHeight() / 2;
     }
 
     @Override
     public void update(GameContainer gc, int deltaTime) {
         super.update(gc, deltaTime);
+
+        currentTime += deltaTime;
+        if(currentTime >= invincible_animation_time_switch){
+            if(switcher) switcher = false;
+                    else switcher = true;
+            currentTime = 0;
+        }
+
         if (show_accessible_animation) {
             accessible_animation.update(deltaTime);
         }
         if (decelerate) {
             decelerate(deltaTime);
+        }
+    }
+
+    @Override
+    public void draw(Graphics graphics) {
+        super.draw(graphics);
+        if (isInvincible()) {
+            if(!switcher){
+                base_image.drawFlash(position.x - TANK_WIDTH_HALF, position.y - TANK_HEIGHT_HALF);
+            } else {
+                base_image.draw(position.x - TANK_WIDTH_HALF, position.y - TANK_HEIGHT_HALF);
+                turret.draw(position.x - TURRET_WIDTH_HALF, position.y - TURRET_HEIGHT_HALF);
+            }
+        } else {
+            base_image.draw(position.x - TANK_WIDTH_HALF, position.y - TANK_HEIGHT_HALF);
+            turret.draw(position.x - TURRET_WIDTH_HALF, position.y - TURRET_HEIGHT_HALF);
+        }
+
+
+        if (show_accessible_animation) {
+            accessible_animation.draw(position.x - (TANK_WIDTH_HALF * 2) / 4, position.y - (TANK_HEIGHT_HALF * 2) + 17);
         }
     }
 
@@ -164,7 +194,7 @@ public abstract class Tank extends WarAttender {
 
 
     @Override
-    public void setRotation(float angle){
+    public void setRotation(float angle) {
         turret.setRotation(angle);
     }
 

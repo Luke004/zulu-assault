@@ -6,6 +6,7 @@ import logic.KeyInputHandler;
 import models.war_attenders.WarAttender;
 import models.war_attenders.tanks.AgileTank;
 import models.war_attenders.tanks.AgileTank_v2;
+import models.war_attenders.tanks.FlamethrowerTank;
 import models.war_attenders.tanks.MediumTank;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
@@ -29,7 +30,7 @@ public class Level_1 extends AbstractLevel {
         hostile_war_attenders.add(enemy_tank_1);
 
         // SETUP PLAYER'S DRIVABLE WAR ATTENDERS
-        WarAttender player_drivable_tank_1 = new MediumTank(new Vector2f(700.f, 300.f), false);
+        WarAttender player_drivable_tank_1 = new FlamethrowerTank(new Vector2f(700.f, 300.f), false);
         friendly_war_attenders.add(player_drivable_tank_1);
 
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER

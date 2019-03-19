@@ -39,6 +39,7 @@ public abstract class WarAttender {
     private boolean isInvincible;
     private int invincibility_lifetime;
     private final int INVINCIBILITY_TIME = 10000;   // 10 sec
+    public int currentTime, invincible_animation_time_switch = 1000;    // once every sec switch to white color while invincible
 
 
     public WarAttender(Vector2f startPos, boolean isHostile) {

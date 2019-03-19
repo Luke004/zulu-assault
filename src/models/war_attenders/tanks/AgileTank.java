@@ -40,6 +40,8 @@ public class AgileTank extends Tank {
             e.printStackTrace();
         }
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
+
+        super.init();
     }
 
 /*
