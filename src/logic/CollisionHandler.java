@@ -3,6 +3,7 @@ package logic;
 import models.CollisionModel;
 import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.Soldier;
+import models.weapons.MegaPulse;
 import models.weapons.Weapon;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.tiled.TileSet;
@@ -197,10 +198,16 @@ public class CollisionHandler {
                 boolean canContinue = false;
 
                 // PLAYER BULLET COLLISION WITH HOSTILE WAR ATTENDER
-                for (WarAttender hostile_warAttender : hostile_war_attenders) {
-                    if (b.getCollisionModel().intersects(hostile_warAttender.getCollisionModel())) {
+                for (int idx = 0; idx < hostile_war_attenders.size(); ++idx) {
+                    if (b.getCollisionModel().intersects(hostile_war_attenders.get(idx).getCollisionModel())) {
+                        if (weapon instanceof MegaPulse) {
+                            if (!((MegaPulse) weapon).hasAlreadyHit(idx)) {
+                                hostile_war_attenders.get(idx).changeHealth(-weapon.getBulletDamage()); //drain health of hit tank
+                            }
+                            continue;
+                        }
+                        hostile_war_attenders.get(idx).changeHealth(-weapon.getBulletDamage()); //drain health of hit tank
                         bullet_iterator.remove();   // remove bullet
-                        hostile_warAttender.changeHealth(-weapon.getBulletDamage());  //drain health of hit tank
                         canContinue = true;
                         break;
                     }
@@ -209,7 +216,7 @@ public class CollisionHandler {
                 if (canContinue) continue;
 
                 // PLAYER BULLET COLLISION WITH DESTRUCTIBLE MAP TILE
-                canContinue = handleBulletTileCollision(b, weapon.getBulletDamage(), bullet_iterator);
+                canContinue = handleBulletTileCollision(b, weapon, bullet_iterator);
 
                 if (canContinue) continue;
 
@@ -259,7 +266,7 @@ public class CollisionHandler {
                     if (canContinue) continue;
 
                     // HOSTILE BULLET COLLISION WITH DESTRUCTIBLE MAP TILE
-                    canContinue = handleBulletTileCollision(b, weapon.getBulletDamage(), bullet_iterator);
+                    canContinue = handleBulletTileCollision(b, weapon, bullet_iterator);
 
                     if (canContinue) continue;
 
@@ -269,18 +276,19 @@ public class CollisionHandler {
         }
     }
 
-    private boolean handleBulletTileCollision(Bullet b, int bulletDamage, Iterator<Bullet> bullet_iterator) {
+    private boolean handleBulletTileCollision(Bullet b, Weapon weapon, Iterator<Bullet> bullet_iterator) {
         for (int idx = 0; idx < destructible_tile_indices.length; ++idx) {
             int x = (int) b.bullet_pos.x / TILE_WIDTH;
             int y = (int) b.bullet_pos.y / TILE_HEIGHT;
             int tile_ID = level_map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
             if (tile_ID == destructible_tile_indices[idx]) {
-                if (bulletDamage >= DESTRUCTIBLE_TILE_MAX_HEALTH) {
+                if (weapon.getBulletDamage() >= DESTRUCTIBLE_TILE_MAX_HEALTH) {
                     // it's a one shot, destroy tile directly
                     level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
                 } else {
-                    damageTile(x, y, bulletDamage, destructible_tile_replace_indices[idx]);
+                    damageTile(x, y, weapon.getBulletDamage(), destructible_tile_replace_indices[idx]);
                 }
+                if(weapon instanceof MegaPulse) continue;
                 bullet_iterator.remove();
                 return true;
             }

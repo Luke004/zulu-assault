@@ -5,6 +5,8 @@ import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.PlayerSoldier;
 import models.war_attenders.soldiers.Soldier;
 import models.war_attenders.tanks.Tank;
+import models.weapons.MegaPulse;
+import models.weapons.Weapon;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -102,7 +104,9 @@ public class Player {
                 idx = 1;
                 break;
             case MEGA_PULSE:
-                if(!current_warAttender.getWeapon(WarAttender.WeaponType.MEGA_PULSE).canFire()) return;
+                MegaPulse mega_pulse = (MegaPulse) current_warAttender.getWeapon(WarAttender.WeaponType.MEGA_PULSE);
+                if (!mega_pulse.canFire()) return;
+                else mega_pulse.clearHitList();
                 idx = 2;
                 break;
             case EXPAND:
