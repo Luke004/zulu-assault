@@ -26,16 +26,16 @@ public class Level_1 extends AbstractLevel {
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
         // SETUP ENEMY WAR ATTENDERS
-        WarAttender enemy_tank_1 = new MediumTank(new Vector2f(100.f, 100.f), true);
+        WarAttender enemy_tank_1 = new FlamethrowerTank(new Vector2f(100.f, 100.f), true);
         hostile_war_attenders.add(enemy_tank_1);
 
         // SETUP PLAYER'S DRIVABLE WAR ATTENDERS
-        WarAttender player_drivable_tank_1 = new AgileTank_v2(new Vector2f(700.f, 300.f), false);
+        WarAttender player_drivable_tank_1 = new MediumTank(new Vector2f(700.f, 300.f), false);
         friendly_war_attenders.add(player_drivable_tank_1);
 
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
         Vector2f playerStartPos = new Vector2f(600, 900);
-        WarAttender tank = new MediumTank(playerStartPos, false);
+        WarAttender tank = new AgileTank_v2(playerStartPos, false);
         //WarAttender soldier = new PlayerSoldier(gameContainer.getWidth() / 2, gameContainer.getHeight() / 2, false);
         player.init(tank);
 
