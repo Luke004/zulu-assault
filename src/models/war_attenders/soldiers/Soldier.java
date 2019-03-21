@@ -1,13 +1,13 @@
 package models.war_attenders.soldiers;
 
-import models.war_attenders.WarAttender;
+import models.war_attenders.MovableWarAttender;
 import models.war_attenders.tanks.Tank;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
-public abstract class Soldier extends WarAttender {
+public abstract class Soldier extends MovableWarAttender {
     Animation animation;
     private int SOLDIER_WIDTH_HALF, SOLDIER_HEIGHT_HALF;
 
@@ -65,7 +65,7 @@ public abstract class Soldier extends WarAttender {
     }
 
     @Override
-    public void onCollision(WarAttender enemy) {
+    public void onCollision(MovableWarAttender enemy) {
         if (enemy instanceof Tank) {  // enemy is a tank
             blockMovement();
         }
@@ -86,7 +86,7 @@ public abstract class Soldier extends WarAttender {
     }
 
     @Override
-    public void setRotation(float angle) {
+    public void rotateTowardsPlayer(float angle) {
         for (int idx = 0; idx < animation.getFrameCount(); ++idx) {
             animation.getImage(idx).setRotation(angle);
         }

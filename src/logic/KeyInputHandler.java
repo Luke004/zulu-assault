@@ -1,6 +1,6 @@
 package logic;
 
-import models.war_attenders.WarAttender;
+import models.war_attenders.MovableWarAttender;
 import models.war_attenders.tanks.Tank;
 import player.Player;
 import models.war_attenders.soldiers.Soldier;
@@ -11,10 +11,10 @@ import java.util.List;
 
 public class KeyInputHandler {
     private Player player;
-    private List<WarAttender> friendly_war_attenders;
+    private List<MovableWarAttender> friendly_war_attenders;
     private boolean KEY_UP_RELEASED, KEY_DOWN_RELEASED;
 
-    public KeyInputHandler(Player player, List<WarAttender> friendly_war_attenders) {
+    public KeyInputHandler(Player player, List<MovableWarAttender> friendly_war_attenders) {
         this.friendly_war_attenders = friendly_war_attenders;
         this.player = player;
     }
@@ -53,22 +53,22 @@ public class KeyInputHandler {
 
                 // left turn
                 if (input.isKeyDown(Input.KEY_LEFT)) {
-                    soldier.rotate(WarAttender.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
+                    soldier.rotate(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
                 }
 
                 // right turn
                 if (input.isKeyDown(Input.KEY_RIGHT)) {
-                    soldier.rotate(WarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
+                    soldier.rotate(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
                 }
 
                 // fire weapon1
                 if (input.isKeyDown(Input.KEY_LCONTROL) || input.isKeyPressed(Input.KEY_RCONTROL)) {
-                    soldier.fireWeapon(WarAttender.WeaponType.WEAPON_1);
+                    soldier.fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
                 }
 
                 // fire weapon2
                 if (input.isKeyDown(Input.KEY_LALT) || input.isKeyPressed(Input.KEY_RALT)) {
-                    soldier.fireWeapon(WarAttender.WeaponType.WEAPON_2);
+                    soldier.fireWeapon(MovableWarAttender.WeaponType.WEAPON_2);
                 }
 
                 // activate invincibility
@@ -76,9 +76,9 @@ public class KeyInputHandler {
                     player.activateItem(Player.Item.INVINCIBLE);
                 }
 
-                // get into WarAttender
+                // get into MovableWarAttender
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
-                    for (WarAttender warAttender : friendly_war_attenders) {
+                    for (MovableWarAttender warAttender : friendly_war_attenders) {
                         if (warAttender.getCollisionModel().intersects(soldier.getCollisionModel())) {
                             warAttender.setMoving(true);
                             warAttender.showAccessibleAnimation(false);
@@ -95,7 +95,7 @@ public class KeyInputHandler {
                 // forward movement
                 if (input.isKeyPressed(Input.KEY_UP)) {
                     tank.setMoving(true);
-                    tank.setCurrentSpeed(WarAttender.Direction.FORWARD);
+                    tank.setCurrentSpeed(MovableWarAttender.Direction.FORWARD);
                     tank.cancelDeceleration();
                 }
                 if (input.isKeyDown(Input.KEY_UP)) {
@@ -108,7 +108,7 @@ public class KeyInputHandler {
                 // backwards movement
                 if (input.isKeyPressed(Input.KEY_DOWN)) {
                     tank.setMoving(true);
-                    tank.setCurrentSpeed(WarAttender.Direction.BACKWARDS);
+                    tank.setCurrentSpeed(MovableWarAttender.Direction.BACKWARDS);
                 } else if(KEY_DOWN_RELEASED){
                     tank.setMoving(false);
                     KEY_DOWN_RELEASED = false;
@@ -119,29 +119,29 @@ public class KeyInputHandler {
                 }
 
                 if (input.isKeyDown(Input.KEY_LEFT)) {
-                    tank.rotate(WarAttender.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
+                    tank.rotate(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
                 }
 
                 if (input.isKeyDown(Input.KEY_RIGHT)) {
-                    tank.rotate(WarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
+                    tank.rotate(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
                 }
 
                 if (input.isKeyDown(Input.KEY_X)) {
-                    tank.rotateTurret(WarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
+                    tank.rotateTurret(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
                 }
 
                 if (input.isKeyDown(Input.KEY_Y)) {
-                    tank.rotateTurret(WarAttender.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
+                    tank.rotateTurret(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
                 }
 
                 // fire weapon1
                 if (input.isKeyDown(Input.KEY_LCONTROL) || input.isKeyPressed(Input.KEY_RCONTROL)) {
-                    tank.fireWeapon(WarAttender.WeaponType.WEAPON_1);
+                    tank.fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
                 }
 
                 // fire weapon2
                 if (input.isKeyDown(Input.KEY_LALT) || input.isKeyPressed(Input.KEY_RALT)) {
-                    tank.fireWeapon(WarAttender.WeaponType.WEAPON_2);
+                    tank.fireWeapon(MovableWarAttender.WeaponType.WEAPON_2);
                 }
 
                 if (input.isKeyPressed(Input.KEY_1)) {

@@ -1,10 +1,13 @@
 package logic;
 
 import models.CollisionModel;
+import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.Soldier;
+import models.war_attenders.windmills.Windmill;
 import models.weapons.MegaPulse;
 import models.weapons.Weapon;
+import org.lwjgl.Sys;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.tiled.TileSet;
 import org.newdawn.slick.tiled.TiledMap;
@@ -18,7 +21,8 @@ import java.util.Map;
 
 public class CollisionHandler {
     private Player player;
-    private List<WarAttender> friendly_war_attenders, hostile_war_attenders;
+    private List<MovableWarAttender> friendly_war_attenders, hostile_war_attenders;
+    private List<Windmill> enemy_windmills;
     private TiledMap level_map;
     private final int MAP_WIDTH, MAP_HEIGHT, TILE_WIDTH, TILE_HEIGHT;
     private int[] destructible_tile_indices, indestructible_tile_indices, destructible_tile_replace_indices, item_indices,
@@ -33,9 +37,11 @@ public class CollisionHandler {
     private Map<Integer, Float> destructible_tiles_health_info;
 
 
-    public CollisionHandler(Player player, TiledMap level_map, List<WarAttender> friendly_war_attenders, List<WarAttender> hostile_war_attenders) {
+    public CollisionHandler(Player player, TiledMap level_map, List<MovableWarAttender> friendly_war_attenders,
+                            List<MovableWarAttender> hostile_war_attenders, List<Windmill> enemy_windmills) {
         this.friendly_war_attenders = friendly_war_attenders;
         this.hostile_war_attenders = hostile_war_attenders;
+        this.enemy_windmills = enemy_windmills;
         this.player = player;
         this.level_map = level_map;
         TILE_WIDTH = level_map.getTileWidth();
@@ -99,10 +105,10 @@ public class CollisionHandler {
     }
 
     public void update(GameContainer gameContainer, int deltaTime) {
-        WarAttender player_warAttender = player.getWarAttender();
+        MovableWarAttender player_warAttender = player.getWarAttender();
         handlePlayerCollisions(player_warAttender);
         handleBulletCollisions(player_warAttender);
-        handleHostileShots(player_warAttender);
+        updateHostileShots(player_warAttender);
 
         /*
 
@@ -127,7 +133,7 @@ public class CollisionHandler {
         */
     }
 
-    private void handlePlayerCollisions(WarAttender player_warAttender) {
+    private void handlePlayerCollisions(MovableWarAttender player_warAttender) {
         if (player_warAttender.isMoving()) {
             CollisionModel.Point[] playerCorners = player_warAttender.getCollisionModel().getPoints();
             int idx, landscape_layer_tile_ID, item_layer_tile_ID, enemy_layer_tile_ID, x, y;
@@ -171,7 +177,7 @@ public class CollisionHandler {
                         // damage ONLY when we are not a solider
                         if (player_warAttender instanceof Soldier) return;
 
-                        damageWindmill(x, y, 0.5f);
+                        damageWindmill(x, y, 0.2f);
                         return;
                     }
                 }
@@ -212,14 +218,14 @@ public class CollisionHandler {
 
 
             // COLLISION BETWEEN PLAYER ITSELF AND FRIENDLY WAR ATTENDERS
-            for (WarAttender warAttender : friendly_war_attenders) {
+            for (MovableWarAttender warAttender : friendly_war_attenders) {
                 if (player_warAttender.getCollisionModel().intersects(warAttender.getCollisionModel())) {
                     player_warAttender.onCollision(warAttender);
                     return;
                 }
             }
             // COLLISION BETWEEN PLAYER ITSELF AND HOSTILE WAR ATTENDERS
-            for (WarAttender hostile_warAttender : hostile_war_attenders) {
+            for (MovableWarAttender hostile_warAttender : hostile_war_attenders) {
                 if (player_warAttender.getCollisionModel().intersects(hostile_warAttender.getCollisionModel())) {
                     player_warAttender.onCollision(hostile_warAttender);
                     return;
@@ -228,7 +234,7 @@ public class CollisionHandler {
         }
     }
 
-    private void handleBulletCollisions(WarAttender player_warAttender) {
+    private void handleBulletCollisions(MovableWarAttender player_warAttender) {
         // PLAYER BULLET COLLISIONS
         for (Weapon weapon : player_warAttender.getWeapons()) {
             Iterator<Bullet> bullet_iterator = weapon.getBullets();
@@ -271,13 +277,54 @@ public class CollisionHandler {
 
     }
 
+    private void damageWindmill(int xPos, int yPos, Weapon weapon) {
+        // use a map to track current destructible tile health
+        int key = xPos > yPos ? -xPos * yPos : xPos * yPos;
+        int idx;
+
+        if (weapon instanceof MegaPulse) {
+            for(idx = 0; idx < enemy_windmills.size(); ++idx) {
+                if (enemy_windmills.get(idx).getKey() == key) {
+                    if (!((MegaPulse) weapon).hasAlreadyHit(key)) {
+                        System.out.println("CALL");
+                        enemy_windmills.get(idx).changeHealth(-weapon.getBulletDamage()); //drain health of hit tank
+                        break;
+                    }
+                    return;
+                }
+            }
+        } else {
+            for(idx = 0; idx < enemy_windmills.size(); ++idx){
+                if(enemy_windmills.get(idx).getKey() == key){
+                    enemy_windmills.get(idx).changeHealth(-weapon.getBulletDamage());
+                    break;
+                }
+            }
+        }
+        damageWindmill_part2(key, idx, xPos, yPos, weapon.getBulletDamage());
+    }
+
     private void damageWindmill(int xPos, int yPos, float damage) {
         // use a map to track current destructible tile health
         int key = xPos > yPos ? -xPos * yPos : xPos * yPos;
+        int idx;
+
+        for(idx = 0; idx < enemy_windmills.size(); ++idx){
+            if(enemy_windmills.get(idx).getKey() == key){
+                enemy_windmills.get(idx).changeHealth(-damage);
+                break;
+            }
+        }
+        damageWindmill_part2(key, idx, xPos, yPos, damage);
+    }
+
+    private void damageWindmill_part2(int key, int idx, int xPos, int yPos, float damage){
         if (destructible_tiles_health_info.containsKey(key)) {
             float new_health = destructible_tiles_health_info.get(key) - damage;
             if (new_health <= 0) {
                 // TILE DESTROYED
+
+                enemy_windmills.remove(idx);
 
                 // look what tile lies below destroyed windmill (grass, dirt or concrete)
                 int tileID = level_map.getTileId(xPos, yPos, LANDSCAPE_TILES_LAYER_IDX);
@@ -322,34 +369,42 @@ public class CollisionHandler {
         }
     }
 
-    private void handleHostileShots(WarAttender player_warAttender) {
-        for (WarAttender hostile_warAttender : hostile_war_attenders) {
+    private void updateHostileShots(MovableWarAttender player_warAttender) {
+        for (MovableWarAttender hostile_warAttender : hostile_war_attenders) {
             hostile_warAttender.shootAtPlayer(player_warAttender);
+            hostileShotCollision(hostile_warAttender, player_warAttender);
+        }
 
-            for (Weapon weapon : hostile_warAttender.getWeapons()) {
-                Iterator<Bullet> bullet_iterator = weapon.getBullets();
-                while (bullet_iterator.hasNext()) {
-                    Bullet b = bullet_iterator.next();
-                    boolean canContinue = false;
+        for (WarAttender enemy_windmill : enemy_windmills) {
+            enemy_windmill.shootAtPlayer(player_warAttender);
+            hostileShotCollision(enemy_windmill, player_warAttender);
+        }
+    }
 
-                    // HOSTILE BULLET COLLISION WITH PLAYER
-                    if (b.getCollisionModel().intersects(player_warAttender.getCollisionModel())) {
-                        bullet_iterator.remove();   // remove bullet
-                        if (!player_warAttender.isInvincible()) {
-                            player_warAttender.changeHealth(-weapon.getBulletDamage());  //drain health of player
-                        }
-                        canContinue = true;
+    private void hostileShotCollision(WarAttender w, MovableWarAttender player){
+        for (Weapon weapon : w.getWeapons()) {
+            Iterator<Bullet> bullet_iterator = weapon.getBullets();
+            while (bullet_iterator.hasNext()) {
+                Bullet b = bullet_iterator.next();
+                boolean canContinue = false;
+
+                // HOSTILE SHOT COLLISION WITH PLAYER
+                if (b.getCollisionModel().intersects(player.getCollisionModel())) {
+                    bullet_iterator.remove();   // remove bullet
+                    if (!player.isInvincible()) {
+                        player.changeHealth(-weapon.getBulletDamage());  //drain health of player
                     }
-
-                    if (canContinue) continue;
-
-                    // HOSTILE BULLET COLLISION WITH DESTRUCTIBLE MAP TILE
-                    canContinue = handleBulletTileCollision(b, weapon, bullet_iterator);
-
-                    if (canContinue) continue;
-
-                    removeBulletAtMapEdge(b, bullet_iterator);
+                    canContinue = true;
                 }
+
+                if (canContinue) continue;
+
+                // HOSTILE BULLET COLLISION WITH DESTRUCTIBLE MAP TILE
+                canContinue = handleBulletTileCollision(b, weapon, bullet_iterator);
+
+                if (canContinue) continue;
+
+                removeBulletAtMapEdge(b, bullet_iterator);
             }
         }
     }
@@ -380,7 +435,7 @@ public class CollisionHandler {
             int y = (int) b.bullet_pos.y / TILE_HEIGHT;
             int tile_ID = level_map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
             if (tile_ID == windmill_indices[idx]) {
-                damageWindmill(x, y, weapon.getBulletDamage());
+                damageWindmill(x, y, weapon);
                 if (weapon instanceof MegaPulse) continue;
                 bullet_iterator.remove();
                 return true;

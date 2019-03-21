@@ -1,48 +1,29 @@
 package models.war_attenders;
 
-import models.CollisionModel;
 import models.weapons.MegaPulse;
 import models.weapons.Weapon;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
-import player.Player;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public abstract class WarAttender {
     public List<Weapon> weapons;
-    // model related
-    public Image base_image, health_bar_image;
-    public CollisionModel collisionModel;
+    public Image health_bar_image;
     public Animation accessible_animation;
     public Image accessible_animation_image;
-
-    // math related
-    public Vector2f position;
-    public Vector2f dir;
-
+    public boolean show_accessible_animation;
     // specs related
-    public int current_health, max_health;
-    public float max_speed, current_speed;
-    public float rotate_speed;
+    public float current_health, max_health;
+    public boolean isHostile;
 
-    // booleans
-    public boolean isMoving, isHostile, show_accessible_animation;
-
-    // invincibility item related
-    public boolean isInvincible, invincibility_animation_switch;
-    private int invincibility_lifetime;
-    private final int INVINCIBILITY_TIME = 10000;   // 10 sec
-    public int invincible_animation_time_switch = 1000;    // once every sec switch to white color while invincible
-    public int invincible_animation_current_time;
+    public Vector2f position;
 
 
     public WarAttender(Vector2f startPos, boolean isHostile) {
         this.isHostile = isHostile;
-        position = startPos;
-        dir = new Vector2f(0, 0);
+        this.position = startPos;
         weapons = new ArrayList<>();    // 3 weapons -> WEAPON_1, WEAPON_2 and MEGA_PULSE
         if (isHostile) {
             try {
@@ -61,68 +42,61 @@ public abstract class WarAttender {
     }
 
     public void init() {
-        weapons.add(new MegaPulse());  // add the MEGA_PULSE (special item)
         if (isHostile) {    // double the reload time if its an enemy
             for (Weapon weapon : weapons) {
-                weapon.multiplyShotReloadTime(2);
+                weapon.multiplyShotReloadTime(5);
             }
+        } else {
+            weapons.add(new MegaPulse());  // add the MEGA_PULSE (special item)
         }
     }
 
     public void update(GameContainer gc, int deltaTime) {
-        // COLLISION RELATED STUFF
-        collisionModel.update(base_image.getRotation());
-
         // BULLETS
         for (Weapon weapon : weapons) {
             weapon.update(deltaTime);
         }
-
-        // ITEMS RELATED STUFF
-
-        // INVINCIBILITY
-        if (isInvincible) {
-            // invincibility logic itself
-            invincibility_lifetime += deltaTime;
-            if (invincibility_lifetime > INVINCIBILITY_TIME) {
-                isInvincible = false;
-                invincibility_lifetime = 0;
-            }
-
-            // invincibility animation related
-            invincible_animation_current_time += deltaTime;
-            if (invincible_animation_current_time >= invincible_animation_time_switch) {
-                if (invincibility_animation_switch) invincibility_animation_switch = false;
-                else invincibility_animation_switch = true;
-                invincible_animation_current_time = 0;
-            }
-
-        }
     }
 
     public void draw(Graphics graphics) {
-        health_bar_image.draw(position.x - health_bar_image.getWidth() / 2 - 7.5f, position.y - base_image.getHeight() / 2 - 15);
+        health_bar_image.draw(position.x  - 7.5f, position.y - 15);
 
         // draw health bar damage using a black rectangle
         graphics.setColor(Color.black);
         if (current_health > 0) {
-            graphics.fillRect(position.x - 15, position.y - base_image.getHeight() / 2 - 14, (29 - (((float) current_health) / (((float) max_health) / 29))), 5);
+            graphics.fillRect(position.x + 36, position.y - 14, -(29 - (((float) current_health) / (((float) max_health) / 29))), 5);
         } else {    // destroyed (rectangle is full black size)
-            graphics.fillRect(position.x - 15, position.y - base_image.getHeight() / 2 - 14, 29, 5);
+            graphics.fillRect(position.x + 36, position.y - 14, -29, 5);
         }
 
         // BULLETS
         for (Weapon weapon : weapons) {
             weapon.draw(graphics);
         }
-
-        // COLLISION RELATED STUFF
-        collisionModel.draw(graphics);
     }
 
-    public abstract void setRotation(float degree);
+    private void initAccessibleAnimation() {
+        show_accessible_animation = true;
+        try {
+            accessible_animation_image = new Image("assets/healthbars/accessible_arrow_animation.png");
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
+        accessible_animation = new Animation(false);
 
-    public void shootAtPlayer(WarAttender player) {
+        int x = 0;
+        do {
+            accessible_animation.addFrame(accessible_animation_image.getSubImage(x, 0, 17, 28), 1000);
+            x += 17;
+        } while (x <= 34);
+        accessible_animation.setCurrentFrame(1);
+    }
+
+    public void showAccessibleAnimation(boolean activate) {
+        show_accessible_animation = activate;
+    }
+
+    public void shootAtPlayer(MovableWarAttender player) {
         float playerX = player.position.x;
         float playerY = player.position.y;
         float rotationDegree;
@@ -143,65 +117,17 @@ public abstract class WarAttender {
             } else {
                 rotationDegree = (float) (Math.abs((Math.atan(m / 1) * 180.0 / Math.PI)) + 270.f);
             }
-            setRotation(rotationDegree);
+            rotateTowardsPlayer(rotationDegree);
 
-            fireWeapon(WeaponType.WEAPON_1);
+            fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
         }
     }
 
-    public void calculateMovementVector(int deltaTime, Direction direction) {
-        dir.x = (float) Math.sin(getRotation() * Math.PI / 180);
-        dir.y = (float) -Math.cos(getRotation() * Math.PI / 180);
-        if (direction == Direction.BACKWARDS) {
-            dir.x *= -1;
-            dir.y *= -1;
-        }
-        dir.x *= deltaTime * current_speed;
-        dir.y *= deltaTime * current_speed;
-    }
+    public abstract void fireWeapon(MovableWarAttender.WeaponType weapon);
 
-    public void showAccessibleAnimation(boolean activate) {
-        show_accessible_animation = activate;
-    }
+    public abstract void rotateTowardsPlayer(float degree);
 
-    private void initAccessibleAnimation() {
-        show_accessible_animation = true;
-        try {
-            accessible_animation_image = new Image("assets/healthbars/accessible_arrow_animation.png");
-        } catch (SlickException e) {
-            e.printStackTrace();
-        }
-        accessible_animation = new Animation(false);
-
-        int x = 0;
-        do {
-            accessible_animation.addFrame(accessible_animation_image.getSubImage(x, 0, 17, 28), 1000);
-            x += 17;
-        } while (x <= 34);
-        accessible_animation.setCurrentFrame(1);
-    }
-
-    public CollisionModel getCollisionModel() {
-        return collisionModel;
-    }
-
-    public boolean isHostile() {
-        return isHostile;
-    }
-
-    public boolean isInvincible() {
-        return isInvincible;
-    }
-
-    public void setMoving(boolean b) {
-        isMoving = b;
-    }
-
-    public boolean isMoving() {
-        return isMoving;
-    }
-
-    public Weapon getWeapon(WeaponType weaponType) {
+    public Weapon getWeapon(MovableWarAttender.WeaponType weaponType) {
         switch (weaponType) {
             case WEAPON_1:
                 return weapons.get(0);
@@ -219,55 +145,20 @@ public abstract class WarAttender {
         return weapons;
     }
 
-    public abstract void onCollision(WarAttender enemy);
-
-    public abstract void blockMovement();
-
-    public void changeHealth(int amount) {
+    public void changeHealth(float amount) {
         current_health += amount;
+        if(current_health > max_health) current_health = max_health;
     }
 
     public boolean isMaxHealth() {
         return current_health == max_health;
     }
 
-    public int getHealth() {
+    public float getHealth() {
         return current_health;
-    }
-
-    public abstract float getRotation();
-
-    public abstract void rotate(RotateDirection r, int deltaTime);
-
-    public abstract void fireWeapon(WeaponType weapon);
-
-
-    public void activateItem(Player.Item item) {
-        switch (item) {
-            case INVINCIBLE:
-                isInvincible = true;
-                break;
-            case EMP:
-                // TODO: destroy all planes here
-                break;
-            case MEGA_PULSE:
-                fireWeapon(WeaponType.MEGA_PULSE);
-                break;
-            case EXPAND:
-                // TODO: reflect enemy bullets here
-                break;
-        }
     }
 
     public enum WeaponType {
         WEAPON_1, WEAPON_2, MEGA_PULSE
-    }
-
-    public enum RotateDirection {
-        ROTATE_DIRECTION_LEFT, ROTATE_DIRECTION_RIGHT
-    }
-
-    public enum Direction {
-        FORWARD, BACKWARDS
     }
 }

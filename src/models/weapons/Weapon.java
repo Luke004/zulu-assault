@@ -15,7 +15,7 @@ public abstract class Weapon {
     protected List<Bullet> bullet_list;
     public static final int MAX_BULLET_LIFETIME = 2000;
     // specs related
-    int bullet_damage, shot_reload_time, current_reload_time;
+    float bullet_damage, shot_reload_time, current_reload_time;
     float bullet_speed;
 
     public Weapon() {
@@ -75,7 +75,7 @@ public abstract class Weapon {
         shot_reload_time *= factor;
     }
 
-    public int getBulletDamage() {
+    public float getBulletDamage() {
         return bullet_damage;
     }
 

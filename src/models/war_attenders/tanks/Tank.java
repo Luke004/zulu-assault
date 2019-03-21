@@ -1,15 +1,14 @@
 package models.war_attenders.tanks;
 
-import models.war_attenders.WarAttender;
+import models.war_attenders.MovableWarAttender;
 import models.war_attenders.soldiers.Soldier;
-import models.weapons.MegaPulse;
 import models.weapons.Weapon;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
 
-public abstract class Tank extends WarAttender {
+public abstract class Tank extends MovableWarAttender {
     Image turret;
     float turret_rotate_speed;
     float backwards_speed;
@@ -159,7 +158,7 @@ public abstract class Tank extends WarAttender {
     }
 
     @Override
-    public void onCollision(WarAttender enemy) {
+    public void onCollision(MovableWarAttender enemy) {
         if (enemy instanceof Tank) {  // enemy is a tank
             // block movement as long as there's collision
             blockMovement();
@@ -184,7 +183,7 @@ public abstract class Tank extends WarAttender {
     }
 
     @Override
-    public void setRotation(float angle) {
+    public void rotateTowardsPlayer(float angle) {
         turret.setRotation(angle);
     }
 

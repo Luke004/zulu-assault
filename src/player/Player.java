@@ -1,22 +1,21 @@
 package player;
 
 import logic.ItemChangeListener;
-import models.war_attenders.WarAttender;
+import models.war_attenders.MovableWarAttender;
 import models.war_attenders.soldiers.PlayerSoldier;
 import models.war_attenders.soldiers.Soldier;
 import models.war_attenders.tanks.Tank;
 import models.weapons.MegaPulse;
-import models.weapons.Weapon;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Player {
-    private WarAttender base_soldier;
-    private WarAttender current_warAttender;
+    private MovableWarAttender base_soldier;
+    private MovableWarAttender current_warAttender;
     private ItemChangeListener GUI_listener;
     private int[] item_amounts;
 
-    public void init(WarAttender current_warAttender) {
+    public void init(MovableWarAttender current_warAttender) {
         current_warAttender.showAccessibleAnimation(false);
         this.current_warAttender = current_warAttender;
         item_amounts = new int[4];
@@ -39,7 +38,7 @@ public class Player {
     /*
     soldier goes back in a once used tank or plane
      */
-    public void setWarAttender(WarAttender warAttender, EnterAction action) {
+    public void setWarAttender(MovableWarAttender warAttender, EnterAction action) {
         switch (action) {
             case ENTERING:
                 if (base_soldier == null) {
@@ -56,14 +55,14 @@ public class Player {
                     // soldier already exists, set its position to tank current pos
                     ((Soldier) base_soldier).setPosition(spawn_position);
                 }
-                // set soldiers rotation so he's facing away from the tank
-                base_soldier.setRotation(tank.getRotation() - 180);
+                // set soldiers rotation so he's facing towards the tank at its back
+                base_soldier.rotateTowardsPlayer(tank.getRotation());
                 this.current_warAttender = base_soldier;
                 break;
         }
     }
 
-    public WarAttender getWarAttender() {
+    public MovableWarAttender getWarAttender() {
         return current_warAttender;
     }
 
@@ -104,7 +103,7 @@ public class Player {
                 idx = 1;
                 break;
             case MEGA_PULSE:
-                MegaPulse mega_pulse = (MegaPulse) current_warAttender.getWeapon(WarAttender.WeaponType.MEGA_PULSE);
+                MegaPulse mega_pulse = (MegaPulse) current_warAttender.getWeapon(MovableWarAttender.WeaponType.MEGA_PULSE);
                 if (!mega_pulse.canFire()) return;
                 else mega_pulse.clearHitList();
                 idx = 2;
