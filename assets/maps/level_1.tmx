@@ -29,7 +29,7 @@
  </layer>
  <layer name="enemy_tiles" width="101" height="99">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3dQQ6AIAwEwKL//zMHb5YLiVoJMy9oUjZc2BABAAAAAAAAUOOsHoDkqB6ApFUPQGInAAAAAAAAAAAAAABr8P4bgK+Munn6egDMcp8AAAAAAAAAAAC8494x0TkBAHbn/7j/G+3I3tiVsw/PkCW4yALMkxuI6LpPedk8nAAA
+   H4sIAAAAAAAACu3bMQrAMAgFUJve/84ZuoWQptAi1PdGJ0E/TkYAAAAAAAAAAAAAAAAAAAAAAAAAwL8c2Q0AUEbbrAHAinsCAAAAAAAAAADwjfHHxM8JAFDdmd0At2YzMjeqsvvwDlmCiyzAc3IDER1kdAfMPJwAAA==
   </data>
  </layer>
 </map>

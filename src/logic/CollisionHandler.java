@@ -286,7 +286,6 @@ public class CollisionHandler {
             for(idx = 0; idx < enemy_windmills.size(); ++idx) {
                 if (enemy_windmills.get(idx).getKey() == key) {
                     if (!((MegaPulse) weapon).hasAlreadyHit(key)) {
-                        System.out.println("CALL");
                         enemy_windmills.get(idx).changeHealth(-weapon.getBulletDamage()); //drain health of hit tank
                         break;
                     }

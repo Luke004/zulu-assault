@@ -29,7 +29,7 @@ public class Level_1 extends AbstractLevel {
 
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
         Vector2f playerStartPos = new Vector2f(600, 900);
-        MovableWarAttender tank = new AgileTank_v2(playerStartPos, false);
+        MovableWarAttender tank = new MediumTank(playerStartPos, false);
         //MovableWarAttender soldier = new PlayerSoldier(gameContainer.getWidth() / 2, gameContainer.getHeight() / 2, false);
         player.init(tank);
 
