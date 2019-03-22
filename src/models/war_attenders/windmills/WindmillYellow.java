@@ -1,6 +1,6 @@
 package models.war_attenders.windmills;
 
-import models.weapons.Plasma;
+import models.weapons.RocketLauncher;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -11,7 +11,7 @@ public class WindmillYellow extends Windmill {
         super(startPos, isHostile, key);
 
         // individual WindmillYellow attributes
-        weapons.add(new Plasma());  // WEAPON_1
+        weapons.add(new RocketLauncher(isHostile));   // WEAPON_1
 
         try {
             turret = new Image("assets/windmills/YellowWindmill_turret.png");

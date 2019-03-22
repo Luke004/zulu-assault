@@ -13,7 +13,7 @@ import java.util.List;
 public abstract class Weapon {
     Texture bullet_texture;
     protected List<Bullet> bullet_list;
-    public static final int MAX_BULLET_LIFETIME = 2000;
+    public static final int MAX_BULLET_LIFETIME = 4000;
     // specs related
     float bullet_damage, shot_reload_time, current_reload_time;
     float bullet_speed;

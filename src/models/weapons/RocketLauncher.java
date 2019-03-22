@@ -1,7 +1,5 @@
 package models.weapons;
 
-import models.CollisionModel;
-import org.lwjgl.Sys;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -9,15 +7,13 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class RocketLauncher extends Weapon {
     private List<Animation> active_rockets;
     private List<Animation> buffered_rockets;
-    private int recollect_timer;
 
-    public RocketLauncher() {
+    public RocketLauncher(boolean isHostile) {
         super();
 
         // individual RocketLauncher specs
@@ -29,17 +25,21 @@ public class RocketLauncher extends Weapon {
         try {
             bullet_texture = new Image("assets/bullets/shell.png").getTexture();
             rocket_animation_image = new Image("assets/bullets/rocket_animation.png");
-            Animation rocket_animation = new Animation(false);
-            int[] y = {17, 32, 44, 57, 71, 87, 103, 123};
-            int x = 0;
-            int idx;
-            for (idx = 0; idx < y.length; ++idx) {
-                rocket_animation.addFrame(rocket_animation_image.getSubImage(x, 0, 20, y[idx]), 100);
-                x += 20;
+            final int BUFFER_SIZE;
+            if (isHostile) {
+                BUFFER_SIZE = 2;
+            } else {
+                BUFFER_SIZE = 4;
             }
-            final int BUFFER_SIZE = 5;
             buffered_rockets = new ArrayList<>();
-            for (idx = 0; idx < BUFFER_SIZE; ++idx) {
+            for (int idx = 0; idx < BUFFER_SIZE; ++idx) {
+                Animation rocket_animation = new Animation(false);
+                int IMAGE_COUNT = 8;
+                int x = 0;
+                for (int idx2 = 0; idx2 < IMAGE_COUNT; ++idx2) {
+                    rocket_animation.addFrame(rocket_animation_image.getSubImage(x, 0, 20, 123), 200);
+                    x += 20;
+                }
                 buffered_rockets.add(rocket_animation);
             }
             active_rockets = new ArrayList<>();
@@ -50,11 +50,8 @@ public class RocketLauncher extends Weapon {
 
     public void update(int deltaTime) {
         super.update(deltaTime);
-        if(active_rockets.size() == 0) return;
-        this.recollect_timer += deltaTime;
-        if (recollect_timer > MAX_BULLET_LIFETIME) {
-            putRocketBackToBuffer();
-        }
+        if (active_rockets.size() == 0) return;
+        putRocketBackToBuffer();
     }
 
 
@@ -72,15 +69,13 @@ public class RocketLauncher extends Weapon {
 
             Animation fresh_rocket = getNextFreshRocket();
 
-
             for (int idx = 0; idx < fresh_rocket.getFrameCount(); ++idx) {
                 fresh_rocket.getImage(idx).setRotation(rotation_angle);
             }
-
-
             fresh_rocket.setCurrentFrame(0);
-            fresh_rocket.start();
             fresh_rocket.stopAt(7);
+            fresh_rocket.start();
+
 
             Bullet bullet = new Rocket(bullet_spawn, bullet_dir, rotation_angle, fresh_rocket);
             bullet_list.add(bullet);
@@ -106,16 +101,18 @@ public class RocketLauncher extends Weapon {
 
     public class Rocket extends Bullet {
         private Animation rocket_animation;
-        private float xVal, yVal, rotation;
+        private final int ANIMATION_WIDTH_HALF, ANIMATION_HEIGHT_HALF;
+        private float xVal, yVal;
 
         public Rocket(Vector2f startPos, Vector2f dir, float rotation, Animation rocket_animation) {
             super(startPos, dir, rotation);
             this.rocket_animation = rocket_animation;
+            ANIMATION_WIDTH_HALF = rocket_animation.getCurrentFrame().getWidth() / 2;
+            ANIMATION_HEIGHT_HALF = rocket_animation.getCurrentFrame().getHeight() / 2;
 
-            this.rotation = rotation;
-
-            final float DISTANCE = 10;
-            final float SPAWN_X = 0;
+            // calculate x and y to set rocket behind the bullet
+            final float DISTANCE = -70;
+            final float SPAWN_X = -3;
             xVal = (float) (Math.cos(((rotation) * Math.PI) / 180) * SPAWN_X
                     + -Math.sin(((rotation) * Math.PI) / 180) * DISTANCE);
             yVal = (float) (Math.sin(((rotation) * Math.PI) / 180) * SPAWN_X
@@ -126,16 +123,13 @@ public class RocketLauncher extends Weapon {
         public void update(int deltaTime) {
             super.update(deltaTime);
             rocket_animation.update(deltaTime);
-            rocket_animation.getCurrentFrame().setRotation(rotation);
+
         }
 
         @Override
         public void draw(Graphics graphics) {
             super.draw(graphics);
-
-            rocket_animation.draw(bullet_pos.x - xVal, bullet_pos.y - yVal);
+            rocket_animation.draw(bullet_pos.x - ANIMATION_WIDTH_HALF - xVal, bullet_pos.y - ANIMATION_HEIGHT_HALF - yVal);
         }
-
     }
-
 }

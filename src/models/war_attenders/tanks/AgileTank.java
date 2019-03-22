@@ -2,6 +2,7 @@ package models.war_attenders.tanks;
 
 import models.CollisionModel;
 import models.weapons.MachineGun;
+import models.weapons.RocketLauncher;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;

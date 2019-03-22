@@ -2,6 +2,7 @@ package levels;
 
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
+import models.war_attenders.tanks.AgileTank;
 import models.war_attenders.tanks.AgileTank_v2;
 import models.war_attenders.tanks.FlamethrowerTank;
 import models.war_attenders.tanks.MediumTank;
@@ -28,8 +29,8 @@ public class Level_1 extends AbstractLevel {
         friendly_war_attenders.add(player_drivable_tank_1);
 
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
-        Vector2f playerStartPos = new Vector2f(600, 900);
-        MovableWarAttender tank = new MediumTank(playerStartPos, false);
+        Vector2f playerStartPos = new Vector2f(600, 3500);
+        MovableWarAttender tank = new AgileTank(playerStartPos, false);
         //MovableWarAttender soldier = new PlayerSoldier(gameContainer.getWidth() / 2, gameContainer.getHeight() / 2, false);
         player.init(tank);
 
