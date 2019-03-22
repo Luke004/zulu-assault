@@ -1,6 +1,7 @@
 package logic;
 
 import models.war_attenders.MovableWarAttender;
+import models.war_attenders.robots.Robot;
 import models.war_attenders.tanks.Tank;
 import player.Player;
 import models.war_attenders.soldiers.Soldier;
@@ -169,6 +170,70 @@ public class KeyInputHandler {
                     }
                 }
                 break;
+
+            case ROBOT:   // player is in a robot
+                Robot robot = (Robot) player.getWarAttender();
+
+                // forward movement
+                if (input.isKeyPressed(Input.KEY_UP)) {
+                    robot.startAnimation();
+                    robot.setMoving(true);
+                } else if (KEY_UP_RELEASED) {
+                    robot.stopAnimation();
+                    robot.setMoving(false);
+                    KEY_UP_RELEASED = false;
+                }
+                if (input.isKeyDown(Input.KEY_UP)) {
+                    robot.moveForward(deltaTime);
+                }
+
+                // backwards movement
+                if (input.isKeyPressed(Input.KEY_DOWN)) {
+                    robot.startAnimation();
+                    robot.setMoving(true);
+                } else if (KEY_DOWN_RELEASED) {
+                    robot.stopAnimation();
+                    robot.setMoving(false);
+                    KEY_DOWN_RELEASED = false;
+                }
+                if (input.isKeyDown(Input.KEY_DOWN)) {
+                    robot.moveBackwards(deltaTime);
+                }
+
+                // left turn
+                if (input.isKeyDown(Input.KEY_LEFT)) {
+                    robot.rotate(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
+                }
+
+                // right turn
+                if (input.isKeyDown(Input.KEY_RIGHT)) {
+                    robot.rotate(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
+                }
+
+                if (input.isKeyDown(Input.KEY_X)) {
+                    robot.rotateTurret(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
+                }
+
+                if (input.isKeyDown(Input.KEY_Y)) {
+                    robot.rotateTurret(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
+                }
+
+                // fire weapon1
+                if (input.isKeyDown(Input.KEY_LCONTROL) || input.isKeyPressed(Input.KEY_RCONTROL)) {
+                    robot.fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
+                }
+
+                // fire weapon2
+                if (input.isKeyDown(Input.KEY_LALT) || input.isKeyPressed(Input.KEY_RALT)) {
+                    robot.fireWeapon(MovableWarAttender.WeaponType.WEAPON_2);
+                }
+
+                // activate invincibility
+                if (input.isKeyPressed(Input.KEY_1)) {
+                    robot.activateItem(Player.Item.INVINCIBLE);
+                }
+                break;
+
             case PLANE:     // player is in a plane
 
                 break;

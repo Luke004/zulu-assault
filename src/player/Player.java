@@ -2,6 +2,7 @@ package player;
 
 import logic.ItemChangeListener;
 import models.war_attenders.MovableWarAttender;
+import models.war_attenders.robots.Robot;
 import models.war_attenders.soldiers.PlayerSoldier;
 import models.war_attenders.soldiers.Soldier;
 import models.war_attenders.tanks.Tank;
@@ -32,6 +33,7 @@ public class Player {
     public WarAttenderType getWarAttenderType() {
         if (current_warAttender instanceof Soldier) return WarAttenderType.SOLDIER;
         if (current_warAttender instanceof Tank) return WarAttenderType.TANK;
+        if (current_warAttender instanceof Robot) return WarAttenderType.ROBOT;
         else throw new IllegalStateException("Not a soldier, not a tank!");
     }
 
@@ -129,6 +131,6 @@ public class Player {
     }
 
     public enum WarAttenderType {
-        SOLDIER, PLANE, TANK
+        SOLDIER, PLANE, TANK, ROBOT
     }
 }

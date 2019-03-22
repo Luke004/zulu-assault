@@ -14,7 +14,7 @@ public class WindmillYellow extends Windmill {
         weapons.add(new RocketLauncher(isHostile));   // WEAPON_1
 
         try {
-            turret = new Image("assets/windmills/YellowWindmill_turret.png");
+            turret = new Image("assets/war_attenders/windmills/YellowWindmill_turret.png");
         } catch (SlickException e) {
             e.printStackTrace();
         }

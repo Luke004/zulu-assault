@@ -13,8 +13,8 @@ public class AgileTank_v2 extends AgileTank {
         // EVERYTHING = AgileTank here, the only diff is the 'base_image'
 
         try {
-            base_image = new Image("assets/tanks/agile_tank_v2.png");
-            turret = new Image("assets/tanks/agile_tank_v2_turret.png");
+            base_image = new Image("assets/war_attenders/tanks/agile_tank_v2.png");
+            turret = new Image("assets/war_attenders/tanks/agile_tank_v2_turret.png");
         } catch (SlickException e) {
             e.printStackTrace();
         }

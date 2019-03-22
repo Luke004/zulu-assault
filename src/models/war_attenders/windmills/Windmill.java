@@ -5,7 +5,6 @@ import models.war_attenders.WarAttender;
 import models.weapons.Weapon;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
 public abstract class Windmill extends WarAttender {
@@ -20,12 +19,6 @@ public abstract class Windmill extends WarAttender {
         max_health = 100;
         current_health = max_health;
         turret_rotate_speed = 0.2f;
-
-        try {
-            turret = new Image("assets/windmills/GreenWindmill_turret.png");
-        } catch (SlickException e) {
-            e.printStackTrace();
-        }
     }
 
     public void init() {

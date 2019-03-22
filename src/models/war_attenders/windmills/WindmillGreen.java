@@ -15,7 +15,7 @@ public class WindmillGreen extends Windmill {
         weapons.add(new Uzi());  // WEAPON_1
 
         try {
-            turret = new Image("assets/windmills/GreenWindmill_turret.png");
+            turret = new Image("assets/war_attenders/windmills/GreenWindmill_turret.png");
         } catch (SlickException e) {
             e.printStackTrace();
         }

@@ -15,7 +15,7 @@ public class WindmillGrey extends Windmill {
         weapons.add(new Shell());  // WEAPON_1
 
         try {
-            turret = new Image("assets/windmills/GreyWindmill_turret.png");
+            turret = new Image("assets/war_attenders/windmills/GreyWindmill_turret.png");
         } catch (SlickException e) {
             e.printStackTrace();
         }

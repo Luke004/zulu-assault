@@ -22,7 +22,7 @@ public class PlayerSoldier extends Soldier {
         weapons.add(new Uzi());
 
         try {
-            base_image = new Image("assets/soldiers/player_soldier_animation.png");
+            base_image = new Image("assets/war_attenders/soldiers/player_soldier_animation.png");
         } catch (SlickException e) {
             e.printStackTrace();
         }

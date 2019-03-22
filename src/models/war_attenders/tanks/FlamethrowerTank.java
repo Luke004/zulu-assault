@@ -23,8 +23,8 @@ public class FlamethrowerTank extends Tank {
         weapons.add(new Plasma());  // WEAPON_1
 
         try {
-            base_image = new Image("assets/tanks/flamethrower_tank.png");
-            turret = new Image("assets/tanks/flamethrower_tank_turret.png");
+            base_image = new Image("assets/war_attenders/tanks/flamethrower_tank.png");
+            turret = new Image("assets/war_attenders/tanks/flamethrower_tank_turret.png");
         } catch (SlickException e) {
             e.printStackTrace();
         }

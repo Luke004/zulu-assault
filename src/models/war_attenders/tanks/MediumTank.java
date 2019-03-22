@@ -24,8 +24,8 @@ public class MediumTank extends Tank {
         weapons.add(new Shell());   // WEAPON_1
 
         try {
-            base_image = new Image("assets/tanks/medium_tank.png");
-            turret = new Image("assets/tanks/medium_tank_turret.png");
+            base_image = new Image("assets/war_attenders/tanks/medium_tank.png");
+            turret = new Image("assets/war_attenders/tanks/medium_tank_turret.png");
         } catch (SlickException e) {
             e.printStackTrace();
         }

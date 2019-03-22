@@ -25,8 +25,8 @@ public class AgileTank extends Tank {
         weapons.add(new MachineGun());  // WEAPON_1
 
         try {
-            base_image = new Image("assets/tanks/agile_tank.png");
-            turret = new Image("assets/tanks/agile_tank_turret.png");
+            base_image = new Image("assets/war_attenders/tanks/agile_tank.png");
+            turret = new Image("assets/war_attenders/tanks/agile_tank_turret.png");
         } catch (SlickException e) {
             e.printStackTrace();
         }
