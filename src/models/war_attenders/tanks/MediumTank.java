@@ -15,6 +15,7 @@ public class MediumTank extends Tank {
         // individual MediumTank attributes
         max_health = 100;
         current_health = max_health;
+        armor = 60;
         max_speed = 0.15f;
         backwards_speed = max_speed / 2;
         acceleration_factor = 0.00005f;

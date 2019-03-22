@@ -18,7 +18,7 @@ public class MegaPulse extends Weapon {
             e.printStackTrace();
         }
         // individual MegaPulse specs
-        bullet_damage = 60;
+        bullet_damage = 3000;
         bullet_speed = 0.5f;
         shot_reload_time = 500;
     }

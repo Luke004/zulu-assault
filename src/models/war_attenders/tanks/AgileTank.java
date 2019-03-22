@@ -16,6 +16,7 @@ public class AgileTank extends Tank {
         // individual AgileTank attributes
         max_health = 100;
         current_health = max_health;
+        armor = 50;
         max_speed = 0.3f;
         backwards_speed = 0.15f;
         acceleration_factor = 0.0005f;

@@ -13,6 +13,7 @@ public class ShellRobot extends Robot{
         // individual PlasmaRobot attributes
         max_health = 100;
         current_health = max_health;
+        armor = 75;
         max_speed = 0.2f;
         current_speed = max_speed;
         rotate_speed = 0.25f;

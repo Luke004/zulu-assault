@@ -5,6 +5,8 @@ import models.war_attenders.robots.PlasmaRobot;
 import models.war_attenders.robots.ShellRobot;
 import models.war_attenders.tanks.AgileTank;
 import models.war_attenders.tanks.FlamethrowerTank;
+import models.war_attenders.tanks.MediumTank;
+import models.war_attenders.tanks.RocketTank;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TiledMap;

@@ -15,7 +15,7 @@ public class MachineGun extends Weapon {
             e.printStackTrace();
         }
         // individual MachineGun specs
-        bullet_damage = 1;
+        bullet_damage = 50;
         bullet_speed = 0.8f;
         shot_reload_time = 300;
     }

@@ -15,7 +15,7 @@ public abstract class WarAttender {
     public Image accessible_animation_image;
     public boolean show_accessible_animation;
     // specs related
-    public float current_health, max_health;
+    public float current_health, max_health, armor;
     public boolean isHostile;
 
     public Vector2f position;
@@ -161,8 +161,14 @@ public abstract class WarAttender {
     }
 
     public void changeHealth(float amount) {
-        current_health += amount;
-        if(current_health > max_health) current_health = max_health;
+        if(amount < 0){
+            // damage
+            current_health += amount / armor;
+        } else {
+            // heal
+            current_health += amount;
+            if(current_health > max_health) current_health = max_health;
+        }
     }
 
     public boolean isMaxHealth() {

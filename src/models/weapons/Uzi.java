@@ -13,7 +13,7 @@ public class Uzi extends Weapon {
             e.printStackTrace();
         }
         // individual Uzi specs
-        bullet_damage = 1;
+        bullet_damage = 50;
         bullet_speed = 0.8f;
         shot_reload_time = 300;
     }

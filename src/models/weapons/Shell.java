@@ -12,7 +12,7 @@ public class Shell extends Weapon {
             e.printStackTrace();
         }
         // individual Shell specs
-        bullet_damage = 15;
+        bullet_damage = 750;
         bullet_speed = 0.8f;
         shot_reload_time = 1000;
     }

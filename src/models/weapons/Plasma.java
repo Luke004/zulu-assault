@@ -12,7 +12,7 @@ public class Plasma extends Weapon {
             e.printStackTrace();
         }
         // individual Plasma specs
-        bullet_damage = 4;
+        bullet_damage = 100;
         bullet_speed = 0.8f;
         shot_reload_time = 330;
     }

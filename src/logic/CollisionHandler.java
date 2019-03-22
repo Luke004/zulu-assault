@@ -26,9 +26,9 @@ public class CollisionHandler {
     private final int MAP_WIDTH, MAP_HEIGHT, TILE_WIDTH, TILE_HEIGHT;
     private int[] destructible_tile_indices, indestructible_tile_indices, destructible_tile_replace_indices, item_indices,
             windmill_indices, windmill_replace_indices;
-    private final int WINDMILL_TILE_HEALTH = 100;
-    private final int DESTRUCTIBLE_TILE_MAX_HEALTH = 15;
-    private final int DESTRUCTIBLE_TILE_LOW_HEALTH = 2;
+    private final float  TILE_HEALTH = 100;
+    private final float DESTRUCTIBLE_TILE_NORMAL_ARMOR = 5.f;
+    private final float DESTRUCTIBLE_TILE_LOW_ARMOR = 1.f;
     private final int LANDSCAPE_TILES_LAYER_IDX = 0;
     private final int ITEM_TILES_LAYER_IDX = 2;
     private final int ENEMY_TILES_LAYER_IDX = 3;
@@ -309,7 +309,7 @@ public class CollisionHandler {
 
         for (idx = 0; idx < enemy_windmills.size(); ++idx) {
             if (enemy_windmills.get(idx).getKey() == key) {
-                enemy_windmills.get(idx).changeHealth(-damage);
+                enemy_windmills.get(idx).changeHealth(-damage / Windmill.ARMOR);
                 break;
             }
         }
@@ -318,7 +318,7 @@ public class CollisionHandler {
 
     private void damageWindmill_part2(int key, int idx, int xPos, int yPos, float damage) {
         if (destructible_tiles_health_info.containsKey(key)) {
-            float new_health = destructible_tiles_health_info.get(key) - damage;
+            float new_health = destructible_tiles_health_info.get(key) - damage / Windmill.ARMOR;
             if (new_health <= 0) {
                 // TILE DESTROYED
 
@@ -342,7 +342,7 @@ public class CollisionHandler {
                 destructible_tiles_health_info.put(key, new_health);
             }
         } else {
-            destructible_tiles_health_info.put(key, WINDMILL_TILE_HEALTH - damage);
+            destructible_tiles_health_info.put(key, Windmill.HEALTH - damage / Windmill.ARMOR);
         }
     }
 
@@ -350,7 +350,7 @@ public class CollisionHandler {
         // use a map to track current destructible tile health
         int key = xPos > yPos ? -xPos * yPos : xPos * yPos;
         if (destructible_tiles_health_info.containsKey(key)) {
-            float new_health = destructible_tiles_health_info.get(key) - damage;
+            float new_health = destructible_tiles_health_info.get(key) - damage / DESTRUCTIBLE_TILE_NORMAL_ARMOR;
             if (new_health <= 0) {
                 // TILE DESTROYED
                 level_map.setTileId(xPos, yPos, LANDSCAPE_TILES_LAYER_IDX, replaceTileIndex);
@@ -360,10 +360,10 @@ public class CollisionHandler {
             }
         } else {
             if (replaceTileIndex == 44) {  // this ONE low health tile cactus thing LOL
-                destructible_tiles_health_info.put(key, DESTRUCTIBLE_TILE_LOW_HEALTH - damage);
+                destructible_tiles_health_info.put(key, TILE_HEALTH - damage / DESTRUCTIBLE_TILE_LOW_ARMOR);
                 return;
             }
-            destructible_tiles_health_info.put(key, DESTRUCTIBLE_TILE_MAX_HEALTH - damage);
+            destructible_tiles_health_info.put(key, TILE_HEALTH - damage / DESTRUCTIBLE_TILE_NORMAL_ARMOR);
         }
     }
 
@@ -424,7 +424,7 @@ public class CollisionHandler {
             int y = (int) b.bullet_pos.y / TILE_HEIGHT;
             int tile_ID = level_map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
             if (tile_ID == destructible_tile_indices[idx]) {
-                if (weapon.getBulletDamage() >= DESTRUCTIBLE_TILE_MAX_HEALTH) {
+                if ((TILE_HEALTH - weapon.getBulletDamage() / DESTRUCTIBLE_TILE_NORMAL_ARMOR) < 0) {
                     // it's a one shot, destroy tile directly
                     level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
                 } else {

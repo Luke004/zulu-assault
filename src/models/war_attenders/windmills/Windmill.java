@@ -11,12 +11,14 @@ public abstract class Windmill extends WarAttender {
     Image turret;
     float turret_rotate_speed;
     private int key;
+    public final static int ARMOR = 10;
+    public final static int HEALTH = 100;
 
     public Windmill(Vector2f startPos, boolean isHostile, int key) {
         super(startPos, isHostile);
         this.key = key;
-
         max_health = 100;
+        armor = 10;
         current_health = max_health;
         turret_rotate_speed = 0.2f;
     }

@@ -17,7 +17,7 @@ public class RocketLauncher extends Weapon {
         super();
 
         // individual RocketLauncher specs
-        bullet_damage = 10.f;
+        bullet_damage = 500;
         bullet_speed = 0.5f;
         shot_reload_time = 800;
 
