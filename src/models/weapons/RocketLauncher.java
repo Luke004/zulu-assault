@@ -29,7 +29,7 @@ public class RocketLauncher extends Weapon {
             if (isHostile) {
                 BUFFER_SIZE = 2;
             } else {
-                BUFFER_SIZE = 4;
+                BUFFER_SIZE = 4;    // player needs more buffer_size, since he can shoot more often
             }
             buffered_rockets = new ArrayList<>();
             for (int idx = 0; idx < BUFFER_SIZE; ++idx) {

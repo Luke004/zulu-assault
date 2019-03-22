@@ -25,12 +25,12 @@ public class Level_1 extends AbstractLevel {
         hostile_war_attenders.add(enemy_tank_1);
 
         // SETUP PLAYER'S DRIVABLE WAR ATTENDERS
-        MovableWarAttender player_drivable_tank_1 = new MediumTank(new Vector2f(700.f, 300.f), false);
+        MovableWarAttender player_drivable_tank_1 = new AgileTank(new Vector2f(700.f, 300.f), false);
         friendly_war_attenders.add(player_drivable_tank_1);
 
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
-        Vector2f playerStartPos = new Vector2f(600, 3500);
-        MovableWarAttender tank = new AgileTank(playerStartPos, false);
+        Vector2f playerStartPos = new Vector2f(600, 1800);
+        MovableWarAttender tank = new MediumTank(playerStartPos, false);
         //MovableWarAttender soldier = new PlayerSoldier(gameContainer.getWidth() / 2, gameContainer.getHeight() / 2, false);
         player.init(tank);
 

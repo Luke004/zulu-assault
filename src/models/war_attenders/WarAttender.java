@@ -96,17 +96,32 @@ public abstract class WarAttender {
         show_accessible_animation = activate;
     }
 
-    public void shootAtPlayer(MovableWarAttender player) {
-        float playerX = player.position.x;
-        float playerY = player.position.y;
-        float rotationDegree;
-        float dist = (float) Math.sqrt((playerX - position.x) * (playerX - position.x)
-                + (playerY - position.y) * (playerY - position.y));
+    public void shootAtEnemies(MovableWarAttender player, List<MovableWarAttender> friendly_war_attenders) {
+        // calculate dist between the player and the enemy
+        float xPos = player.position.x;
+        float yPos = player.position.y;
+        float dist = (float) Math.sqrt((xPos - position.x) * (xPos - position.x)
+                + (yPos - position.y) * (yPos - position.y));
 
+        // calculate dist between each friend and the enemy
+        for(MovableWarAttender friendly_war_attender : friendly_war_attenders){
+           float next_xPos = friendly_war_attender.position.x;
+           float next_yPos = friendly_war_attender.position.y;
+           float next_dist = (float) Math.sqrt((next_xPos - position.x) * (next_xPos - position.x)
+                   + (next_yPos - position.y) * (next_yPos - position.y));
+           if(next_dist < dist) {
+               dist = next_dist;
+               xPos = next_xPos;
+               yPos = next_yPos;
+           }
+        }
+
+        // aim at the closest enemy
+        float rotationDegree;
         if (dist < 500) {
             // aim at player and fire
-            float m = (position.y - playerY) / (position.x - playerX);
-            float x = playerX - position.x;
+            float m = (position.y - yPos) / (position.x - xPos);
+            float x = xPos - position.x;
 
             if ((x > 0) && m > 0) {
                 rotationDegree = (float) (Math.abs(Math.atan(m / 1) * 180.0 / Math.PI) + 90.f);

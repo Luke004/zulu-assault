@@ -7,7 +7,6 @@ import models.war_attenders.soldiers.Soldier;
 import models.war_attenders.windmills.Windmill;
 import models.weapons.MegaPulse;
 import models.weapons.Weapon;
-import org.lwjgl.Sys;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.tiled.TileSet;
 import org.newdawn.slick.tiled.TiledMap;
@@ -108,7 +107,7 @@ public class CollisionHandler {
         MovableWarAttender player_warAttender = player.getWarAttender();
         handlePlayerCollisions(player_warAttender);
         handleBulletCollisions(player_warAttender);
-        updateHostileShots(player_warAttender);
+        updateHostileShots(player_warAttender, friendly_war_attenders);
 
         /*
 
@@ -283,7 +282,7 @@ public class CollisionHandler {
         int idx;
 
         if (weapon instanceof MegaPulse) {
-            for(idx = 0; idx < enemy_windmills.size(); ++idx) {
+            for (idx = 0; idx < enemy_windmills.size(); ++idx) {
                 if (enemy_windmills.get(idx).getKey() == key) {
                     if (!((MegaPulse) weapon).hasAlreadyHit(key)) {
                         enemy_windmills.get(idx).changeHealth(-weapon.getBulletDamage()); //drain health of hit tank
@@ -293,8 +292,8 @@ public class CollisionHandler {
                 }
             }
         } else {
-            for(idx = 0; idx < enemy_windmills.size(); ++idx){
-                if(enemy_windmills.get(idx).getKey() == key){
+            for (idx = 0; idx < enemy_windmills.size(); ++idx) {
+                if (enemy_windmills.get(idx).getKey() == key) {
                     enemy_windmills.get(idx).changeHealth(-weapon.getBulletDamage());
                     break;
                 }
@@ -308,8 +307,8 @@ public class CollisionHandler {
         int key = xPos > yPos ? -xPos * yPos : xPos * yPos;
         int idx;
 
-        for(idx = 0; idx < enemy_windmills.size(); ++idx){
-            if(enemy_windmills.get(idx).getKey() == key){
+        for (idx = 0; idx < enemy_windmills.size(); ++idx) {
+            if (enemy_windmills.get(idx).getKey() == key) {
                 enemy_windmills.get(idx).changeHealth(-damage);
                 break;
             }
@@ -317,7 +316,7 @@ public class CollisionHandler {
         damageWindmill_part2(key, idx, xPos, yPos, damage);
     }
 
-    private void damageWindmill_part2(int key, int idx, int xPos, int yPos, float damage){
+    private void damageWindmill_part2(int key, int idx, int xPos, int yPos, float damage) {
         if (destructible_tiles_health_info.containsKey(key)) {
             float new_health = destructible_tiles_health_info.get(key) - damage;
             if (new_health <= 0) {
@@ -368,19 +367,19 @@ public class CollisionHandler {
         }
     }
 
-    private void updateHostileShots(MovableWarAttender player_warAttender) {
+    private void updateHostileShots(MovableWarAttender player_warAttender, List<MovableWarAttender> friendly_war_attenders) {
         for (MovableWarAttender hostile_warAttender : hostile_war_attenders) {
-            hostile_warAttender.shootAtPlayer(player_warAttender);
+            hostile_warAttender.shootAtEnemies(player_warAttender, friendly_war_attenders);
             hostileShotCollision(hostile_warAttender, player_warAttender);
         }
 
         for (WarAttender enemy_windmill : enemy_windmills) {
-            enemy_windmill.shootAtPlayer(player_warAttender);
+            enemy_windmill.shootAtEnemies(player_warAttender, friendly_war_attenders);
             hostileShotCollision(enemy_windmill, player_warAttender);
         }
     }
 
-    private void hostileShotCollision(WarAttender w, MovableWarAttender player){
+    private void hostileShotCollision(WarAttender w, MovableWarAttender player) {
         for (Weapon weapon : w.getWeapons()) {
             Iterator<Bullet> bullet_iterator = weapon.getBullets();
             while (bullet_iterator.hasNext()) {
@@ -400,6 +399,17 @@ public class CollisionHandler {
 
                 // HOSTILE BULLET COLLISION WITH DESTRUCTIBLE MAP TILE
                 canContinue = handleBulletTileCollision(b, weapon, bullet_iterator);
+
+                if (canContinue) continue;
+
+                // HOSTILE SHOT COLLISION WITH FRIENDLY WAR ATTENDERS
+                for (MovableWarAttender friendly_warAttender : friendly_war_attenders) {
+                    if (b.getCollisionModel().intersects(friendly_warAttender.getCollisionModel())) {
+                        bullet_iterator.remove();
+                        friendly_warAttender.changeHealth(-weapon.getBulletDamage());  //drain health of friend
+                        canContinue = true;
+                    }
+                }
 
                 if (canContinue) continue;
 
