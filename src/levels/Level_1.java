@@ -30,7 +30,7 @@ public class Level_1 extends AbstractLevel {
 
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
         Vector2f playerStartPos = new Vector2f(600, 1800);
-        MovableWarAttender tank = new PlasmaRobot(playerStartPos, false);
+        MovableWarAttender tank = new MediumTank(playerStartPos, false);
         //MovableWarAttender soldier = new PlayerSoldier(gameContainer.getWidth() / 2, gameContainer.getHeight() / 2, false);
         player.init(tank);
 

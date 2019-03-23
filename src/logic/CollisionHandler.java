@@ -6,6 +6,8 @@ import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.Soldier;
 import models.war_attenders.windmills.Windmill;
 import models.weapons.MegaPulse;
+import models.weapons.RocketLauncher;
+import models.weapons.Shell;
 import models.weapons.Weapon;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.tiled.TileSet;
@@ -13,10 +15,7 @@ import org.newdawn.slick.tiled.TiledMap;
 import player.Player;
 import models.weapons.Weapon.*;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CollisionHandler {
     private Player player;
@@ -26,7 +25,7 @@ public class CollisionHandler {
     private final int MAP_WIDTH, MAP_HEIGHT, TILE_WIDTH, TILE_HEIGHT;
     private int[] destructible_tile_indices, indestructible_tile_indices, destructible_tile_replace_indices, item_indices,
             windmill_indices, windmill_replace_indices;
-    private final float  TILE_HEALTH = 100;
+    private final float TILE_HEALTH = 100;
     private final float DESTRUCTIBLE_TILE_NORMAL_ARMOR = 5.f;
     private final float DESTRUCTIBLE_TILE_LOW_ARMOR = 1.f;
     private final int LANDSCAPE_TILES_LAYER_IDX = 0;
@@ -419,14 +418,52 @@ public class CollisionHandler {
     }
 
     private boolean handleBulletTileCollision(Bullet b, Weapon weapon, Iterator<Bullet> bullet_iterator) {
+        int x = (int) b.bullet_pos.x / TILE_WIDTH;
+        int y = (int) b.bullet_pos.y / TILE_HEIGHT;
+        int tile_ID = level_map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
+
         for (int idx = 0; idx < destructible_tile_indices.length; ++idx) {
-            int x = (int) b.bullet_pos.x / TILE_WIDTH;
-            int y = (int) b.bullet_pos.y / TILE_HEIGHT;
-            int tile_ID = level_map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
             if (tile_ID == destructible_tile_indices[idx]) {
-                if ((TILE_HEALTH - weapon.getBulletDamage() / DESTRUCTIBLE_TILE_NORMAL_ARMOR) < 0) {
-                    // it's a one shot, destroy tile directly
+                if (weapon instanceof RocketLauncher || weapon instanceof Shell) {
+                    // it's a one shot, destroy tile directly and maybe other tiles around
                     level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
+
+                    List<Tile> tiles = new ArrayList<>();
+
+                    // top tile
+                    if (y > 0) {
+                        tiles.add(new Tile(x, y - 1, level_map.getTileId(x, y - 1, LANDSCAPE_TILES_LAYER_IDX)));
+                    }
+
+                    // bottom tile
+                    if (y < level_map.getHeight()) {
+                        tiles.add(new Tile(x, y + 1, level_map.getTileId(x, y + 1, LANDSCAPE_TILES_LAYER_IDX)));
+                    }
+
+                    // left tile
+                    if (x > 0) {
+                        tiles.add(new Tile(x - 1, y, level_map.getTileId(x - 1, y, LANDSCAPE_TILES_LAYER_IDX)));
+                    }
+
+                    // right tile
+                    if (x < level_map.getWidth()) {
+                        tiles.add(new Tile(x + 1, y, level_map.getTileId(x + 1, y, LANDSCAPE_TILES_LAYER_IDX)));
+                    }
+
+                    for (Tile tile : tiles) {
+                        for (int idx2 = 0; idx2 < destructible_tile_indices.length; ++idx2) {
+                            if (tile.tileID == destructible_tile_indices[idx2]) {
+                                double d = Math.random();
+                                if (d < 0.5) {
+                                    // 50% chance of tile getting destroyed
+                                    level_map.setTileId(tile.xVal, tile.yVal, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx2]);
+                                    if (destructible_tiles_health_info.containsKey(tile.key)) {
+                                        destructible_tiles_health_info.remove(tile.key);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 } else {
                     damageTile(x, y, weapon.getBulletDamage(), destructible_tile_replace_indices[idx]);
                 }
@@ -466,5 +503,15 @@ public class CollisionHandler {
         }
     }
 
+    private class Tile {
+        int tileID, xVal, yVal, key;
+
+        Tile(int xVal, int yVal, int tileID) {
+            this.tileID = tileID;
+            this.xVal = xVal;
+            this.yVal = yVal;
+            this.key = xVal > yVal ? -xVal * yVal : xVal * yVal;
+        }
+    }
 
 }
