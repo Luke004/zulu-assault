@@ -52,7 +52,7 @@ public class Player {
                 Tank tank = ((Tank) warAttender);
                 Vector2f spawn_position = tank.calculateSoldierSpawnPosition();
                 if (base_soldier == null) {
-                    base_soldier = new PlayerSoldier(spawn_position.x, spawn_position.y);
+                    base_soldier = new PlayerSoldier(new Vector2f(spawn_position.x, spawn_position.y), false);
                 } else {
                     // soldier already exists, set its position to tank current pos
                     ((Soldier) base_soldier).setPosition(spawn_position);

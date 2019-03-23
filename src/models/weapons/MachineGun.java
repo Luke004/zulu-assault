@@ -1,23 +1,12 @@
 package models.weapons;
 
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
-public class MachineGun extends Weapon {
+public class MachineGun extends Uzi {
     private boolean switch_bullet_spawn_side;
 
     public MachineGun() {
         super();
-        try {
-            bullet_texture = new Image("assets/bullets/bullet_small.png").getTexture();
-        } catch (SlickException e) {
-            e.printStackTrace();
-        }
-        // individual MachineGun specs
-        bullet_damage = 50;
-        bullet_speed = 0.8f;
-        shot_reload_time = 300;
     }
 
     @Override

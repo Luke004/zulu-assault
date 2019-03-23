@@ -1,7 +1,6 @@
 package models.war_attenders.windmills;
 
 import models.weapons.Shell;
-import models.weapons.Weapon;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;

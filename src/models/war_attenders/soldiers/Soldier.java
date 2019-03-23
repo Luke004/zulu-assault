@@ -1,11 +1,17 @@
 package models.war_attenders.soldiers;
 
+import models.CollisionModel;
 import models.war_attenders.MovableWarAttender;
+import models.war_attenders.WarAttender;
+import models.war_attenders.robots.Robot;
 import models.war_attenders.tanks.Tank;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
+import player.Player;
+
+import java.util.List;
 
 public abstract class Soldier extends MovableWarAttender {
     Animation animation;
@@ -16,8 +22,22 @@ public abstract class Soldier extends MovableWarAttender {
     }
 
     public void init() {
+        animation = new Animation(false);
+        int x = 0;
+        do {
+            animation.addFrame(base_image.getSubImage(x, 0, 12, 12), 300);
+            x += 12;
+        } while (x <= 24);
+        animation.setCurrentFrame(1);
+        animation.setLooping(true);
+        animation.setPingPong(true);
+        animation.stop();
+
         SOLDIER_WIDTH_HALF = animation.getImage(0).getWidth() / 2;
         SOLDIER_HEIGHT_HALF = animation.getImage(0).getHeight() / 2;
+
+        // just use index 0, all indices are same width and height
+        collisionModel = new CollisionModel(position, animation.getImage(0).getWidth(), animation.getImage(0).getHeight());
         super.init();
     }
 
@@ -86,10 +106,31 @@ public abstract class Soldier extends MovableWarAttender {
     }
 
     @Override
+    public void rotate(RotateDirection rotateDirection, int deltaTime) {
+        switch (rotateDirection) {
+            case ROTATE_DIRECTION_LEFT:
+                for (int idx = 0; idx < animation.getFrameCount(); ++idx) {
+                    animation.getImage(idx).rotate(-rotate_speed * deltaTime);
+                }
+                break;
+            case ROTATE_DIRECTION_RIGHT:
+                for (int idx = 0; idx < animation.getFrameCount(); ++idx) {
+                    animation.getImage(idx).rotate(rotate_speed * deltaTime);
+                }
+                break;
+        }
+    }
+
+    @Override
     public void rotateTowardsPlayer(float angle) {
         for (int idx = 0; idx < animation.getFrameCount(); ++idx) {
             animation.getImage(idx).setRotation(angle);
         }
+    }
+
+    @Override
+    public float getRotation() {
+        return animation.getCurrentFrame().getRotation();
     }
 
     @Override
@@ -109,6 +150,54 @@ public abstract class Soldier extends MovableWarAttender {
                     weapons.get(2).fire(position.x, position.y, animation.getCurrentFrame().getRotation());
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void shootAtEnemies(MovableWarAttender player, List<MovableWarAttender> friendly_war_attenders, int deltaTime) {
+        MovableWarAttender closest_warAttender = player;
+        // calculate dist between the player and the enemy
+        float xPos = player.position.x;
+        float yPos = player.position.y;
+        float dist = (float) Math.sqrt((xPos - position.x) * (xPos - position.x)
+                + (yPos - position.y) * (yPos - position.y));
+
+        // calculate dist between each friend and the enemy
+        for (MovableWarAttender friendly_war_attender : friendly_war_attenders) {
+            float next_xPos = friendly_war_attender.position.x;
+            float next_yPos = friendly_war_attender.position.y;
+            float next_dist = (float) Math.sqrt((next_xPos - position.x) * (next_xPos - position.x)
+                    + (next_yPos - position.y) * (next_yPos - position.y));
+            if (next_dist < dist) {
+                dist = next_dist;
+                xPos = next_xPos;
+                yPos = next_yPos;
+                closest_warAttender = friendly_war_attender;
+            }
+        }
+
+        // flee when the closest warAttender gets too close and is a tank or a robot
+        if (dist < 100 && (closest_warAttender instanceof Tank || closest_warAttender instanceof Robot)) {
+            this.dir = closest_warAttender.dir;
+            moveBackwards(deltaTime);
+        } else if (dist < 500) {
+            // aim at the closest enemy and fire
+            float rotationDegree;
+            float m = (position.y - yPos) / (position.x - xPos);
+            float x = xPos - position.x;
+
+            if ((x > 0) && m > 0) {
+                rotationDegree = (float) (Math.abs(Math.atan(m / 1) * 180.0 / Math.PI) + 90.f);
+            } else if (x > 0 && m <= 0) {
+                rotationDegree = (float) Math.abs((Math.atan(1 / m) * 180.0 / Math.PI));
+            } else if ((x < 0) && (m <= 0)) {
+                rotationDegree = (float) (Math.abs((Math.atan(1 / m) * 180.0 / Math.PI)) + 180.f);
+            } else {
+                rotationDegree = (float) (Math.abs((Math.atan(m / 1) * 180.0 / Math.PI)) + 270.f);
+            }
+            rotateTowardsPlayer(rotationDegree);
+
+            fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
         }
     }
 }

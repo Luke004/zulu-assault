@@ -96,7 +96,7 @@ public abstract class WarAttender {
         show_accessible_animation = activate;
     }
 
-    public void shootAtEnemies(MovableWarAttender player, List<MovableWarAttender> friendly_war_attenders) {
+    public void shootAtEnemies(MovableWarAttender player, List<MovableWarAttender> friendly_war_attenders, int deltaTime) {
         // calculate dist between the player and the enemy
         float xPos = player.position.x;
         float yPos = player.position.y;

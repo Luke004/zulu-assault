@@ -3,7 +3,10 @@ package logic;
 import models.CollisionModel;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
+import models.war_attenders.robots.Robot;
+import models.war_attenders.soldiers.EnemySoldier;
 import models.war_attenders.soldiers.Soldier;
+import models.war_attenders.tanks.Tank;
 import models.war_attenders.windmills.Windmill;
 import models.weapons.MegaPulse;
 import models.weapons.RocketLauncher;
@@ -106,7 +109,19 @@ public class CollisionHandler {
         MovableWarAttender player_warAttender = player.getWarAttender();
         handlePlayerCollisions(player_warAttender);
         handleBulletCollisions(player_warAttender);
-        updateHostileShots(player_warAttender, friendly_war_attenders);
+        updateHostileShots(player_warAttender, friendly_war_attenders, deltaTime);
+
+        /*
+        // make enemy soldiers flee from player if he's in a tank or robot
+        if(player_warAttender instanceof Tank || player_warAttender instanceof Robot){
+            for(MovableWarAttender enemy_soldier : hostile_war_attenders){
+                if(enemy_soldier instanceof Soldier){
+                    ((Soldier)enemy_soldier).fleeFromPlayer(player_warAttender);
+                }
+            }
+        }
+
+*/
 
         /*
 
@@ -367,14 +382,14 @@ public class CollisionHandler {
         }
     }
 
-    private void updateHostileShots(MovableWarAttender player_warAttender, List<MovableWarAttender> friendly_war_attenders) {
+    private void updateHostileShots(MovableWarAttender player_warAttender, List<MovableWarAttender> friendly_war_attenders, int deltaTime) {
         for (MovableWarAttender hostile_warAttender : hostile_war_attenders) {
-            hostile_warAttender.shootAtEnemies(player_warAttender, friendly_war_attenders);
+            hostile_warAttender.shootAtEnemies(player_warAttender, friendly_war_attenders, deltaTime);
             hostileShotCollision(hostile_warAttender, player_warAttender);
         }
 
         for (WarAttender enemy_windmill : enemy_windmills) {
-            enemy_windmill.shootAtEnemies(player_warAttender, friendly_war_attenders);
+            enemy_windmill.shootAtEnemies(player_warAttender, friendly_war_attenders, deltaTime);
             hostileShotCollision(enemy_windmill, player_warAttender);
         }
     }
@@ -426,60 +441,7 @@ public class CollisionHandler {
             if (tile_ID == destructible_tile_indices[idx]) {
                 if (weapon instanceof RocketLauncher || weapon instanceof Shell) {
                     // it's a one shot, destroy tile directly and maybe other tiles around
-                    level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
-
-                    List<Tile> tiles = new ArrayList<>();
-
-                    if (y > 0) {
-                        // top tile
-                        tiles.add(new Tile(x, y - 1, level_map.getTileId(x, y - 1, LANDSCAPE_TILES_LAYER_IDX)));
-                        if (x > 0) {
-                            // top left tile
-                            tiles.add(new Tile(x - 1, y - 1, level_map.getTileId(x - 1, y - 1, LANDSCAPE_TILES_LAYER_IDX)));
-                        }
-                        if (x < level_map.getWidth() - 1) {
-                            // top right tile
-                            tiles.add(new Tile(x + 1, y - 1, level_map.getTileId(x + 1, y - 1, LANDSCAPE_TILES_LAYER_IDX)));
-                        }
-                    }
-
-                    if (y < level_map.getHeight() - 1) {
-                        // bottom tile
-                        tiles.add(new Tile(x, y + 1, level_map.getTileId(x, y + 1, LANDSCAPE_TILES_LAYER_IDX)));
-                        if (x > 0) {
-                            // bottom left tile
-                            tiles.add(new Tile(x - 1, y + 1, level_map.getTileId(x - 1, y + 1, LANDSCAPE_TILES_LAYER_IDX)));
-                        }
-                        if (x < level_map.getWidth() - 1) {
-                            // bottom right tile
-                            tiles.add(new Tile(x + 1, y + 1, level_map.getTileId(x + 1, y + 1, LANDSCAPE_TILES_LAYER_IDX)));
-                        }
-                    }
-                    
-                    if (x > 0) {
-                        // left tile
-                        tiles.add(new Tile(x - 1, y, level_map.getTileId(x - 1, y, LANDSCAPE_TILES_LAYER_IDX)));
-                    }
-
-                    if (x < level_map.getWidth() - 1) {
-                        // right tile
-                        tiles.add(new Tile(x + 1, y, level_map.getTileId(x + 1, y, LANDSCAPE_TILES_LAYER_IDX)));
-                    }
-
-                    for (Tile tile : tiles) {
-                        for (int idx2 = 0; idx2 < destructible_tile_indices.length; ++idx2) {
-                            if (tile.tileID == destructible_tile_indices[idx2]) {
-                                double d = Math.random();
-                                if (d < 0.3) {
-                                    // 30% chance of tile getting destroyed
-                                    level_map.setTileId(tile.xVal, tile.yVal, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx2]);
-                                    if (destructible_tiles_health_info.containsKey(tile.key)) {
-                                        destructible_tiles_health_info.remove(tile.key);
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    doCollateralTileDamage(x, y, idx);
                 } else {
                     damageTile(x, y, weapon.getBulletDamage(), destructible_tile_replace_indices[idx]);
                 }
@@ -489,6 +451,64 @@ public class CollisionHandler {
             }
         }
         return false;
+    }
+
+    private void doCollateralTileDamage(int x, int y, int idx){
+        // destroy the hit tile directly
+        level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
+
+        // maybe destroy nearby tiles
+        List<Tile> tiles = new ArrayList<>();
+        if (y > 0) {
+            // top tile
+            tiles.add(new Tile(x, y - 1, level_map.getTileId(x, y - 1, LANDSCAPE_TILES_LAYER_IDX)));
+            if (x > 0) {
+                // top left tile
+                tiles.add(new Tile(x - 1, y - 1, level_map.getTileId(x - 1, y - 1, LANDSCAPE_TILES_LAYER_IDX)));
+            }
+            if (x < level_map.getWidth() - 1) {
+                // top right tile
+                tiles.add(new Tile(x + 1, y - 1, level_map.getTileId(x + 1, y - 1, LANDSCAPE_TILES_LAYER_IDX)));
+            }
+        }
+
+        if (y < level_map.getHeight() - 1) {
+            // bottom tile
+            tiles.add(new Tile(x, y + 1, level_map.getTileId(x, y + 1, LANDSCAPE_TILES_LAYER_IDX)));
+            if (x > 0) {
+                // bottom left tile
+                tiles.add(new Tile(x - 1, y + 1, level_map.getTileId(x - 1, y + 1, LANDSCAPE_TILES_LAYER_IDX)));
+            }
+            if (x < level_map.getWidth() - 1) {
+                // bottom right tile
+                tiles.add(new Tile(x + 1, y + 1, level_map.getTileId(x + 1, y + 1, LANDSCAPE_TILES_LAYER_IDX)));
+            }
+        }
+
+        if (x > 0) {
+            // left tile
+            tiles.add(new Tile(x - 1, y, level_map.getTileId(x - 1, y, LANDSCAPE_TILES_LAYER_IDX)));
+        }
+
+        if (x < level_map.getWidth() - 1) {
+            // right tile
+            tiles.add(new Tile(x + 1, y, level_map.getTileId(x + 1, y, LANDSCAPE_TILES_LAYER_IDX)));
+        }
+
+        for (Tile tile : tiles) {
+            for (int idx2 = 0; idx2 < destructible_tile_indices.length; ++idx2) {
+                if (tile.tileID == destructible_tile_indices[idx2]) {
+                    double d = Math.random();
+                    if (d < 0.3) {
+                        // 30% chance of tile getting destroyed
+                        level_map.setTileId(tile.xVal, tile.yVal, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx2]);
+                        if (destructible_tiles_health_info.containsKey(tile.key)) {
+                            destructible_tiles_health_info.remove(tile.key);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private void handleBulletWindmillCollision(Bullet b, Weapon weapon, Iterator<Bullet> bullet_iterator) {
