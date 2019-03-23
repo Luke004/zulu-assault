@@ -29,7 +29,7 @@ public class Level_1 extends AbstractLevel {
         friendly_war_attenders.add(player_drivable_tank_1);
 
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
-        Vector2f playerStartPos = new Vector2f(600, 1800);
+        Vector2f playerStartPos = new Vector2f(3000, 3000);
         MovableWarAttender tank = new MediumTank(playerStartPos, false);
         //MovableWarAttender soldier = new PlayerSoldier(gameContainer.getWidth() / 2, gameContainer.getHeight() / 2, false);
         player.init(tank);

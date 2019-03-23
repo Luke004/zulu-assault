@@ -175,7 +175,7 @@ public class CollisionHandler {
                         // damage ONLY when we are not a solider
                         if (player_warAttender instanceof Soldier) return;
 
-                        damageWindmill(x, y, 0.2f);
+                        damageWindmill(x, y, 1.f);
                         return;
                     }
                 }
@@ -238,7 +238,11 @@ public class CollisionHandler {
             Iterator<Bullet> bullet_iterator = weapon.getBullets();
             while (bullet_iterator.hasNext()) {
                 Bullet b = bullet_iterator.next();
-                boolean canContinue = false;
+                boolean canContinue;
+
+                canContinue = removeBulletAtMapEdge(b, bullet_iterator);
+
+                if (canContinue) continue;
 
                 // PLAYER BULLET COLLISION WITH HOSTILE WAR ATTENDER
                 for (int idx = 0; idx < hostile_war_attenders.size(); ++idx) {
@@ -264,11 +268,8 @@ public class CollisionHandler {
                 if (canContinue) continue;
 
                 // PLAYER BULLET COLLISION WITH WINDMILL
-                canContinue = handleBulletWindmillCollision(b, weapon, bullet_iterator);
+                handleBulletWindmillCollision(b, weapon, bullet_iterator);
 
-                if (canContinue) continue;
-
-                removeBulletAtMapEdge(b, bullet_iterator);
             }
         }
 
@@ -383,7 +384,11 @@ public class CollisionHandler {
             Iterator<Bullet> bullet_iterator = weapon.getBullets();
             while (bullet_iterator.hasNext()) {
                 Bullet b = bullet_iterator.next();
-                boolean canContinue = false;
+                boolean canContinue;
+
+                canContinue = removeBulletAtMapEdge(b, bullet_iterator);
+
+                if (canContinue) continue;
 
                 // HOSTILE SHOT COLLISION WITH PLAYER
                 if (b.getCollisionModel().intersects(player.getCollisionModel())) {
@@ -406,13 +411,8 @@ public class CollisionHandler {
                     if (b.getCollisionModel().intersects(friendly_warAttender.getCollisionModel())) {
                         bullet_iterator.remove();
                         friendly_warAttender.changeHealth(-weapon.getBulletDamage());  //drain health of friend
-                        canContinue = true;
                     }
                 }
-
-                if (canContinue) continue;
-
-                removeBulletAtMapEdge(b, bullet_iterator);
             }
         }
     }
@@ -430,23 +430,39 @@ public class CollisionHandler {
 
                     List<Tile> tiles = new ArrayList<>();
 
-                    // top tile
                     if (y > 0) {
+                        // top tile
                         tiles.add(new Tile(x, y - 1, level_map.getTileId(x, y - 1, LANDSCAPE_TILES_LAYER_IDX)));
+                        if (x > 0) {
+                            // top left tile
+                            tiles.add(new Tile(x - 1, y - 1, level_map.getTileId(x - 1, y - 1, LANDSCAPE_TILES_LAYER_IDX)));
+                        }
+                        if (x < level_map.getWidth() - 1) {
+                            // top right tile
+                            tiles.add(new Tile(x + 1, y - 1, level_map.getTileId(x + 1, y - 1, LANDSCAPE_TILES_LAYER_IDX)));
+                        }
                     }
 
-                    // bottom tile
-                    if (y < level_map.getHeight()) {
+                    if (y < level_map.getHeight() - 1) {
+                        // bottom tile
                         tiles.add(new Tile(x, y + 1, level_map.getTileId(x, y + 1, LANDSCAPE_TILES_LAYER_IDX)));
+                        if (x > 0) {
+                            // bottom left tile
+                            tiles.add(new Tile(x - 1, y + 1, level_map.getTileId(x - 1, y + 1, LANDSCAPE_TILES_LAYER_IDX)));
+                        }
+                        if (x < level_map.getWidth() - 1) {
+                            // bottom right tile
+                            tiles.add(new Tile(x + 1, y + 1, level_map.getTileId(x + 1, y + 1, LANDSCAPE_TILES_LAYER_IDX)));
+                        }
                     }
-
-                    // left tile
+                    
                     if (x > 0) {
+                        // left tile
                         tiles.add(new Tile(x - 1, y, level_map.getTileId(x - 1, y, LANDSCAPE_TILES_LAYER_IDX)));
                     }
 
-                    // right tile
-                    if (x < level_map.getWidth()) {
+                    if (x < level_map.getWidth() - 1) {
+                        // right tile
                         tiles.add(new Tile(x + 1, y, level_map.getTileId(x + 1, y, LANDSCAPE_TILES_LAYER_IDX)));
                     }
 
@@ -454,8 +470,8 @@ public class CollisionHandler {
                         for (int idx2 = 0; idx2 < destructible_tile_indices.length; ++idx2) {
                             if (tile.tileID == destructible_tile_indices[idx2]) {
                                 double d = Math.random();
-                                if (d < 0.5) {
-                                    // 50% chance of tile getting destroyed
+                                if (d < 0.3) {
+                                    // 30% chance of tile getting destroyed
                                     level_map.setTileId(tile.xVal, tile.yVal, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx2]);
                                     if (destructible_tiles_health_info.containsKey(tile.key)) {
                                         destructible_tiles_health_info.remove(tile.key);
@@ -475,7 +491,7 @@ public class CollisionHandler {
         return false;
     }
 
-    private boolean handleBulletWindmillCollision(Bullet b, Weapon weapon, Iterator<Bullet> bullet_iterator) {
+    private void handleBulletWindmillCollision(Bullet b, Weapon weapon, Iterator<Bullet> bullet_iterator) {
         for (int idx = 0; idx < windmill_indices.length; ++idx) {
             int x = (int) b.bullet_pos.x / TILE_WIDTH;
             int y = (int) b.bullet_pos.y / TILE_HEIGHT;
@@ -484,23 +500,26 @@ public class CollisionHandler {
                 damageWindmill(x, y, weapon);
                 if (weapon instanceof MegaPulse) continue;
                 bullet_iterator.remove();
-                return true;
             }
         }
-        return false;
     }
 
-    private void removeBulletAtMapEdge(Bullet b, Iterator<Bullet> bullet_iterator) {
+    private boolean removeBulletAtMapEdge(Bullet b, Iterator<Bullet> bullet_iterator) {
         // remove bullet if edge of map was reached
         if (b.bullet_pos.x < 0) {
             bullet_iterator.remove();
+            return true;
         } else if (b.bullet_pos.y < 0) {
             bullet_iterator.remove();
-        } else if (b.bullet_pos.x > MAP_WIDTH) {
+            return true;
+        } else if (b.bullet_pos.x > MAP_WIDTH - 1) {
             bullet_iterator.remove();
-        } else if (b.bullet_pos.y > MAP_HEIGHT) {
+            return true;
+        } else if (b.bullet_pos.y > MAP_HEIGHT - 1) {
             bullet_iterator.remove();
+            return true;
         }
+        return false;
     }
 
     private class Tile {
