@@ -4,6 +4,7 @@ import logic.Camera;
 import logic.CollisionHandler;
 import logic.KeyInputHandler;
 import models.HUD;
+import models.interaction_circles.InteractionCircle;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
 import models.war_attenders.tanks.FlamethrowerTank;
@@ -27,6 +28,7 @@ public abstract class AbstractLevel extends BasicGame {
     Player player;
     TiledMap map;
     List<Windmill> enemy_windmills;
+    List<InteractionCircle> interaction_circles;
     List<MovableWarAttender> friendly_war_attenders, hostile_war_attenders;
     KeyInputHandler keyInputHandler;
     CollisionHandler collisionHandler;
@@ -38,6 +40,7 @@ public abstract class AbstractLevel extends BasicGame {
         hostile_war_attenders = new ArrayList<>();
         friendly_war_attenders = new ArrayList<>();
         enemy_windmills = new ArrayList<>();
+        interaction_circles = new ArrayList<>();
         player = new Player();
     }
 
@@ -48,7 +51,7 @@ public abstract class AbstractLevel extends BasicGame {
         hud = new HUD(player, gameContainer);
         player.addListener(hud);
         keyInputHandler = new KeyInputHandler(player, friendly_war_attenders);     // handle key inputs
-        collisionHandler = new CollisionHandler(player, map, friendly_war_attenders, hostile_war_attenders, enemy_windmills);    // handle collisions
+        collisionHandler = new CollisionHandler(player, map, friendly_war_attenders, hostile_war_attenders, enemy_windmills, interaction_circles);    // handle collisions
     }
 
     private void setupWindmills() {
@@ -103,6 +106,9 @@ public abstract class AbstractLevel extends BasicGame {
         for (WarAttender warAttender : enemy_windmills) {
             warAttender.update(gameContainer, deltaTime);
         }
+        for (InteractionCircle interaction_circle : interaction_circles) {
+            interaction_circle.update(deltaTime);
+        }
         keyInputHandler.update(gameContainer, deltaTime);
         collisionHandler.update(gameContainer, deltaTime);
         hud.update(deltaTime);
@@ -113,6 +119,9 @@ public abstract class AbstractLevel extends BasicGame {
     public void render(GameContainer gameContainer, Graphics graphics) {
         camera.drawMap();
         camera.translateGraphics();
+        for (InteractionCircle interaction_circle : interaction_circles) {
+            interaction_circle.draw();
+        }
         player.draw(graphics);
         for (MovableWarAttender warAttender : friendly_war_attenders) {
             warAttender.draw(graphics);

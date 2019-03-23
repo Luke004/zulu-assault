@@ -1,5 +1,7 @@
 package levels;
 
+import models.interaction_circles.HealthCircle;
+import models.interaction_circles.InteractionCircle;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.robots.PlasmaRobot;
 import models.war_attenders.robots.ShellRobot;
@@ -32,6 +34,10 @@ public class Level_1 extends AbstractLevel {
         // SETUP PLAYER'S DRIVABLE WAR ATTENDERS
         MovableWarAttender player_drivable_tank_1 = new AgileTank(new Vector2f(700.f, 300.f), false);
         friendly_war_attenders.add(player_drivable_tank_1);
+
+        // SETUP INTERACTION CIRCLES
+        InteractionCircle health_circle_1 = new HealthCircle(new Vector2f(500.f, 500.f));
+        interaction_circles.add(health_circle_1);
 
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
         Vector2f playerStartPos = new Vector2f(450, 250);

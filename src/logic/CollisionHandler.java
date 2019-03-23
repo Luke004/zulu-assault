@@ -1,6 +1,9 @@
 package logic;
 
 import models.CollisionModel;
+import models.interaction_circles.HealthCircle;
+import models.interaction_circles.InteractionCircle;
+import models.interaction_circles.TeleportCircle;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
 import models.war_attenders.robots.Robot;
@@ -24,6 +27,7 @@ public class CollisionHandler {
     private Player player;
     private List<MovableWarAttender> friendly_war_attenders, hostile_war_attenders;
     private List<Windmill> enemy_windmills;
+    private List<InteractionCircle> interaction_circles;
     private TiledMap level_map;
     private final int MAP_WIDTH, MAP_HEIGHT, TILE_WIDTH, TILE_HEIGHT;
     private int[] destructible_tile_indices, indestructible_tile_indices, destructible_tile_replace_indices, item_indices,
@@ -39,10 +43,11 @@ public class CollisionHandler {
 
 
     public CollisionHandler(Player player, TiledMap level_map, List<MovableWarAttender> friendly_war_attenders,
-                            List<MovableWarAttender> hostile_war_attenders, List<Windmill> enemy_windmills) {
+                            List<MovableWarAttender> hostile_war_attenders, List<Windmill> enemy_windmills, List<InteractionCircle> interaction_circles) {
         this.friendly_war_attenders = friendly_war_attenders;
         this.hostile_war_attenders = hostile_war_attenders;
         this.enemy_windmills = enemy_windmills;
+        this.interaction_circles = interaction_circles;
         this.player = player;
         this.level_map = level_map;
         TILE_WIDTH = level_map.getTileWidth();
@@ -110,6 +115,20 @@ public class CollisionHandler {
         handlePlayerCollisions(player_warAttender);
         handleBulletCollisions(player_warAttender);
         updateHostileShots(player_warAttender, friendly_war_attenders, deltaTime);
+
+        for(InteractionCircle interaction_circle : interaction_circles){
+            if(player_warAttender.getCollisionModel().intersects(interaction_circle.getCollisionModel())){
+                if(interaction_circle instanceof HealthCircle){
+                    if(player_warAttender.isMaxHealth()) return;
+                    player_warAttender.changeHealth(HealthCircle.HEAL_SPEED);
+                    return;
+                }
+                if(interaction_circle instanceof TeleportCircle){
+                    // TODO: teleport player here
+                    return;
+                }
+            }
+        }
 
         /*
         // make enemy soldiers flee from player if he's in a tank or robot
