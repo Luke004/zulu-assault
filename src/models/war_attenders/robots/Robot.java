@@ -134,7 +134,7 @@ public abstract class Robot extends MovableWarAttender {
     }
 
     @Override
-    public void rotateTowardsPlayer(float angle) {
+    public void setRotation(float angle) {
         base_image.setRotation(angle);
     }
 

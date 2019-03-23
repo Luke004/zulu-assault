@@ -2,14 +2,12 @@ package models.war_attenders.soldiers;
 
 import models.CollisionModel;
 import models.war_attenders.MovableWarAttender;
-import models.war_attenders.WarAttender;
 import models.war_attenders.robots.Robot;
 import models.war_attenders.tanks.Tank;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
-import player.Player;
 
 import java.util.List;
 
@@ -122,7 +120,7 @@ public abstract class Soldier extends MovableWarAttender {
     }
 
     @Override
-    public void rotateTowardsPlayer(float angle) {
+    public void setRotation(float angle) {
         for (int idx = 0; idx < animation.getFrameCount(); ++idx) {
             animation.getImage(idx).setRotation(angle);
         }
@@ -132,6 +130,7 @@ public abstract class Soldier extends MovableWarAttender {
     public float getRotation() {
         return animation.getCurrentFrame().getRotation();
     }
+
 
     @Override
     public void fireWeapon(WeaponType weapon) {
@@ -178,8 +177,8 @@ public abstract class Soldier extends MovableWarAttender {
 
         // flee when the closest warAttender gets too close and is a tank or a robot
         if (dist < 100 && (closest_warAttender instanceof Tank || closest_warAttender instanceof Robot)) {
-            this.dir = closest_warAttender.dir;
-            moveBackwards(deltaTime);
+            setRotation(closest_warAttender.getRotation() + 105.f);
+            moveForward(deltaTime);
         } else if (dist < 500) {
             // aim at the closest enemy and fire
             float rotationDegree;
@@ -195,7 +194,7 @@ public abstract class Soldier extends MovableWarAttender {
             } else {
                 rotationDegree = (float) (Math.abs((Math.atan(m / 1) * 180.0 / Math.PI)) + 270.f);
             }
-            rotateTowardsPlayer(rotationDegree);
+            setRotation(rotationDegree);
 
             fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
         }

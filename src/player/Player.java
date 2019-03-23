@@ -58,7 +58,7 @@ public class Player {
                     ((Soldier) base_soldier).setPosition(spawn_position);
                 }
                 // set soldiers rotation so he's facing towards the tank at its back
-                base_soldier.rotateTowardsPlayer(tank.getRotation());
+                base_soldier.setRotation(tank.getRotation());
                 this.current_warAttender = base_soldier;
                 break;
         }

@@ -132,7 +132,7 @@ public abstract class WarAttender {
             } else {
                 rotationDegree = (float) (Math.abs((Math.atan(m / 1) * 180.0 / Math.PI)) + 270.f);
             }
-            rotateTowardsPlayer(rotationDegree);
+            setRotation(rotationDegree);
 
             fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
         }
@@ -140,7 +140,7 @@ public abstract class WarAttender {
 
     public abstract void fireWeapon(MovableWarAttender.WeaponType weapon);
 
-    public abstract void rotateTowardsPlayer(float degree);
+    public abstract void setRotation(float degree);
 
     public Weapon getWeapon(MovableWarAttender.WeaponType weaponType) {
         switch (weaponType) {

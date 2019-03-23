@@ -1,26 +1,27 @@
 package models.war_attenders.soldiers;
 
+import models.weapons.RocketLauncher;
 import models.weapons.Uzi;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
-public class EnemySoldier extends Soldier {
+public class RocketSoldier extends Soldier {
 
-    public EnemySoldier(Vector2f startPos, boolean isHostile) {
+    public RocketSoldier(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
 
-        // individual EnemySoldier attributes
+        // individual RocketSoldier attributes
         max_health = 100;
         current_health = max_health;
         armor = 2.5f;
-        max_speed = 0.1f;
+        max_speed = 0.05f;
         current_speed = max_speed;
         rotate_speed = 0.25f;
-        weapons.add(new Uzi());
+        weapons.add(new RocketLauncher(isHostile));
 
         try {
-            base_image = new Image("assets/war_attenders/soldiers/enemy_soldier_animation.png");
+            base_image = new Image("assets/war_attenders/soldiers/rocket_soldier_animation.png");
         } catch (SlickException e) {
             e.printStackTrace();
         }

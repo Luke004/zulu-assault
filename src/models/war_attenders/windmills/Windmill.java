@@ -51,7 +51,7 @@ public abstract class Windmill extends WarAttender {
     }
 
     @Override
-    public void rotateTowardsPlayer(float angle) {
+    public void setRotation(float angle) {
         turret.setRotation(angle);
     }
 

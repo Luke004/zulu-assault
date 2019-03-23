@@ -28,8 +28,8 @@ public class WindmillGrey extends Windmill {
     }
 
     @Override
-    public void rotateTowardsPlayer(float angle) {
+    public void setRotation(float angle) {
         turret.setCenterOfRotation(6, 21);
-        super.rotateTowardsPlayer(angle);
+        super.setRotation(angle);
     }
 }

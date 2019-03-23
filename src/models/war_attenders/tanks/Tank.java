@@ -183,7 +183,7 @@ public abstract class Tank extends MovableWarAttender {
     }
 
     @Override
-    public void rotateTowardsPlayer(float angle) {
+    public void setRotation(float angle) {
         turret.setRotation(angle);
     }
 

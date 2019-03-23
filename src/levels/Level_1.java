@@ -4,6 +4,7 @@ import models.war_attenders.MovableWarAttender;
 import models.war_attenders.robots.PlasmaRobot;
 import models.war_attenders.robots.ShellRobot;
 import models.war_attenders.soldiers.EnemySoldier;
+import models.war_attenders.soldiers.RocketSoldier;
 import models.war_attenders.tanks.AgileTank;
 import models.war_attenders.tanks.FlamethrowerTank;
 import models.war_attenders.tanks.MediumTank;
@@ -25,7 +26,7 @@ public class Level_1 extends AbstractLevel {
         MovableWarAttender enemy_tank_1 = new FlamethrowerTank(new Vector2f(100.f, 100.f), true);
         hostile_war_attenders.add(enemy_tank_1);
 
-        MovableWarAttender enemy_soldier_1 = new EnemySoldier(new Vector2f(450.f, 400.f), true);
+        MovableWarAttender enemy_soldier_1 = new RocketSoldier(new Vector2f(450.f, 400.f), true);
         hostile_war_attenders.add(enemy_soldier_1);
 
         // SETUP PLAYER'S DRIVABLE WAR ATTENDERS
