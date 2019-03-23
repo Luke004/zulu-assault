@@ -6,16 +6,17 @@ import models.interaction_circles.InteractionCircle;
 import models.interaction_circles.TeleportCircle;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
-import models.war_attenders.robots.Robot;
-import models.war_attenders.soldiers.EnemySoldier;
 import models.war_attenders.soldiers.Soldier;
-import models.war_attenders.tanks.Tank;
 import models.war_attenders.windmills.Windmill;
 import models.weapons.MegaPulse;
 import models.weapons.RocketLauncher;
 import models.weapons.Shell;
 import models.weapons.Weapon;
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TileSet;
 import org.newdawn.slick.tiled.TiledMap;
 import player.Player;
@@ -40,6 +41,8 @@ public class CollisionHandler {
     private final int ENEMY_TILES_LAYER_IDX = 3;
     private final int GRASS_IDX, CONCRETE_IDX, DIRT_IDX;
     private Map<Integer, Float> destructible_tiles_health_info;
+
+    private SmokeAnimation smokeAnimation;
 
 
     public CollisionHandler(Player player, TiledMap level_map, List<MovableWarAttender> friendly_war_attenders,
@@ -108,22 +111,30 @@ public class CollisionHandler {
                 windmill_indices[idx] += enemy_tiles.firstGID;
             }
         }
+        smokeAnimation = new SmokeAnimation();
+
+    }
+
+    public void draw() {
+        smokeAnimation.draw();
     }
 
     public void update(GameContainer gameContainer, int deltaTime) {
+        smokeAnimation.update(deltaTime);
+
         MovableWarAttender player_warAttender = player.getWarAttender();
         handlePlayerCollisions(player_warAttender);
         handleBulletCollisions(player_warAttender);
         updateHostileShots(player_warAttender, friendly_war_attenders, deltaTime);
 
-        for(InteractionCircle interaction_circle : interaction_circles){
-            if(player_warAttender.getCollisionModel().intersects(interaction_circle.getCollisionModel())){
-                if(interaction_circle instanceof HealthCircle){
-                    if(player_warAttender.isMaxHealth()) return;
+        for (InteractionCircle interaction_circle : interaction_circles) {
+            if (player_warAttender.getCollisionModel().intersects(interaction_circle.getCollisionModel())) {
+                if (interaction_circle instanceof HealthCircle) {
+                    if (player_warAttender.isMaxHealth()) return;
                     player_warAttender.changeHealth(HealthCircle.HEAL_SPEED);
                     return;
                 }
-                if(interaction_circle instanceof TeleportCircle){
+                if (interaction_circle instanceof TeleportCircle) {
                     // TODO: teleport player here
                     return;
                 }
@@ -186,7 +197,7 @@ public class CollisionHandler {
                         // damage ONLY when we are not a solider
                         if (player_warAttender instanceof Soldier) return;
 
-                        damageTile(x, y, 0.1f, destructible_tile_replace_indices[idx]);
+                        damageTile(x, y, MovableWarAttender.DAMAGE_TO_DESTRUCTIBLE_TILE, destructible_tile_replace_indices[idx]);
                         return;
                     }
                 }
@@ -387,6 +398,7 @@ public class CollisionHandler {
             float new_health = destructible_tiles_health_info.get(key) - damage / DESTRUCTIBLE_TILE_NORMAL_ARMOR;
             if (new_health <= 0) {
                 // TILE DESTROYED
+                smokeAnimation.setup(player.getWarAttender());
                 level_map.setTileId(xPos, yPos, LANDSCAPE_TILES_LAYER_IDX, replaceTileIndex);
                 destructible_tiles_health_info.remove(key);
             } else {
@@ -472,7 +484,7 @@ public class CollisionHandler {
         return false;
     }
 
-    private void doCollateralTileDamage(int x, int y, int idx){
+    private void doCollateralTileDamage(int x, int y, int idx) {
         // destroy the hit tile directly
         level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
 
@@ -569,6 +581,60 @@ public class CollisionHandler {
             this.xVal = xVal;
             this.yVal = yVal;
             this.key = xVal > yVal ? -xVal * yVal : xVal * yVal;
+        }
+    }
+
+    private class SmokeAnimation {
+        private Animation smoke_animation;
+        private boolean showSmokeAnimation;
+        private Vector2f position;
+        private final int SMOKE_WIDTH_HALF, SMOKE_HEIGHT_HALF;
+
+        SmokeAnimation() {
+            position = new Vector2f(0, 0);
+            try {
+                Image rocket_animation_image = new Image("assets/animations/smoke.png");
+                smoke_animation = new Animation(false);
+                int IMAGE_COUNT = 8;
+                int x = 0;
+                for (int idx = 0; idx < IMAGE_COUNT; ++idx) {
+                    smoke_animation.addFrame(rocket_animation_image.getSubImage(x, 0, 40, 34), 80);
+                    x += 40;
+                }
+                smoke_animation.setLooping(false);
+
+            } catch (SlickException e) {
+                e.printStackTrace();
+            }
+            SMOKE_WIDTH_HALF = smoke_animation.getImage(0).getWidth() / 2;
+            SMOKE_HEIGHT_HALF = smoke_animation.getImage(0).getHeight() / 2;
+        }
+
+        private void setup(MovableWarAttender player) {
+            showSmokeAnimation = true;
+            for (int idx = 0; idx < smoke_animation.getFrameCount(); ++idx) {
+                smoke_animation.getImage(idx).setRotation(player.getRotation() - 90);
+            }
+            this.position.x = player.position.x - SMOKE_WIDTH_HALF;
+            this.position.y = player.position.y - SMOKE_HEIGHT_HALF;
+
+            smoke_animation.start();
+            smoke_animation.setCurrentFrame(0);
+        }
+
+        public void draw() {
+            if (showSmokeAnimation) {
+                smoke_animation.draw(this.position.x, this.position.y);
+            }
+        }
+
+        public void update(int deltaTime) {
+            if (showSmokeAnimation) {
+                smoke_animation.update(deltaTime);
+                if(smoke_animation.isStopped()){
+                    showSmokeAnimation = false;
+                }
+            }
         }
     }
 

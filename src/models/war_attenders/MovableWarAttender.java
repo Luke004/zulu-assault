@@ -15,6 +15,7 @@ public abstract class MovableWarAttender extends WarAttender {
     public Vector2f dir;
 
     // specs related
+    public static final float DAMAGE_TO_DESTRUCTIBLE_TILE = 5.f;
     public float max_speed, current_speed;
     public float rotate_speed;
 

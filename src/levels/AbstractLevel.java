@@ -132,6 +132,7 @@ public abstract class AbstractLevel extends BasicGame {
         for (WarAttender warAttender : enemy_windmills) {
             warAttender.draw(graphics);
         }
+        collisionHandler.draw();
 
         // un-translate graphics to draw the HUD- items
         camera.untranslateGraphics();
