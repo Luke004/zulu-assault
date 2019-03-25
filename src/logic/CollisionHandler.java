@@ -1,6 +1,7 @@
 package logic;
 
 import models.CollisionModel;
+import models.animations.SmokeAnimation;
 import models.interaction_circles.HealthCircle;
 import models.interaction_circles.InteractionCircle;
 import models.interaction_circles.TeleportCircle;
@@ -12,11 +13,7 @@ import models.weapons.MegaPulse;
 import models.weapons.RocketLauncher;
 import models.weapons.Shell;
 import models.weapons.Weapon;
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TileSet;
 import org.newdawn.slick.tiled.TiledMap;
 import player.Player;
@@ -111,7 +108,7 @@ public class CollisionHandler {
                 windmill_indices[idx] += enemy_tiles.firstGID;
             }
         }
-        smokeAnimation = new SmokeAnimation();
+        smokeAnimation = new SmokeAnimation(1);
 
     }
 
@@ -398,7 +395,10 @@ public class CollisionHandler {
             float new_health = destructible_tiles_health_info.get(key) - damage / DESTRUCTIBLE_TILE_NORMAL_ARMOR;
             if (new_health <= 0) {
                 // TILE DESTROYED
-                smokeAnimation.setup(player.getWarAttender());
+                if(damage == MovableWarAttender.DAMAGE_TO_DESTRUCTIBLE_TILE){
+                    // show smoke animation only when drove over tile, not bullet destruction
+                    smokeAnimation.play(player.getWarAttender().position, player.getWarAttender().getRotation());
+                }
                 level_map.setTileId(xPos, yPos, LANDSCAPE_TILES_LAYER_IDX, replaceTileIndex);
                 destructible_tiles_health_info.remove(key);
             } else {
@@ -583,59 +583,4 @@ public class CollisionHandler {
             this.key = xVal > yVal ? -xVal * yVal : xVal * yVal;
         }
     }
-
-    private class SmokeAnimation {
-        private Animation smoke_animation;
-        private boolean showSmokeAnimation;
-        private Vector2f position;
-        private final int SMOKE_WIDTH_HALF, SMOKE_HEIGHT_HALF;
-
-        SmokeAnimation() {
-            position = new Vector2f(0, 0);
-            try {
-                Image rocket_animation_image = new Image("assets/animations/smoke.png");
-                smoke_animation = new Animation(false);
-                int IMAGE_COUNT = 8;
-                int x = 0;
-                for (int idx = 0; idx < IMAGE_COUNT; ++idx) {
-                    smoke_animation.addFrame(rocket_animation_image.getSubImage(x, 0, 40, 34), 80);
-                    x += 40;
-                }
-                smoke_animation.setLooping(false);
-
-            } catch (SlickException e) {
-                e.printStackTrace();
-            }
-            SMOKE_WIDTH_HALF = smoke_animation.getImage(0).getWidth() / 2;
-            SMOKE_HEIGHT_HALF = smoke_animation.getImage(0).getHeight() / 2;
-        }
-
-        private void setup(MovableWarAttender player) {
-            showSmokeAnimation = true;
-            for (int idx = 0; idx < smoke_animation.getFrameCount(); ++idx) {
-                smoke_animation.getImage(idx).setRotation(player.getRotation() - 90);
-            }
-            this.position.x = player.position.x - SMOKE_WIDTH_HALF;
-            this.position.y = player.position.y - SMOKE_HEIGHT_HALF;
-
-            smoke_animation.start();
-            smoke_animation.setCurrentFrame(0);
-        }
-
-        public void draw() {
-            if (showSmokeAnimation) {
-                smoke_animation.draw(this.position.x, this.position.y);
-            }
-        }
-
-        public void update(int deltaTime) {
-            if (showSmokeAnimation) {
-                smoke_animation.update(deltaTime);
-                if(smoke_animation.isStopped()){
-                    showSmokeAnimation = false;
-                }
-            }
-        }
-    }
-
 }

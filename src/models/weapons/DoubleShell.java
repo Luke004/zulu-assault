@@ -21,6 +21,7 @@ public class DoubleShell extends Shell {
             Vector2f bullet_spawn = new Vector2f(spawnX_1, spawnY_1);
             Weapon.Bullet bullet = new Weapon.Bullet(bullet_spawn, bullet_dir, rotation_angle);
             bullet_list.add(bullet);
+            smokeAnimation.play(bullet_spawn, rotation_angle);
 
             // second bullet (left turret)
             spawnX_1 = (float) (spawnX + Math.cos(((rotation_angle) * Math.PI) / 180) * -19.5f
@@ -31,6 +32,7 @@ public class DoubleShell extends Shell {
             Vector2f bullet_spawn2 = new Vector2f(spawnX_1, spawnY_1);
             Weapon.Bullet bullet2 = new Weapon.Bullet(bullet_spawn2, bullet_dir, rotation_angle);
             bullet_list.add(bullet2);
+            smokeAnimation.play(bullet_spawn2, rotation_angle);
         }
     }
 }
