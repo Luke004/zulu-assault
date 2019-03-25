@@ -51,7 +51,7 @@ public class Shell extends Weapon {
             Weapon.Bullet bullet = new Weapon.Bullet(bullet_spawn, bullet_dir, rotation_angle);
             bullet_list.add(bullet);
 
-            smokeAnimation.play(bullet_spawn, rotation_angle);
+            smokeAnimation.play(bullet_spawn.x, bullet_spawn.y, rotation_angle);
         }
     }
 }

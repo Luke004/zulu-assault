@@ -23,8 +23,8 @@ public class WindmillYellow extends Windmill {
 
     @Override
     public void draw(Graphics graphics) {
-        super.draw(graphics);
         turret.draw(position.x + 14.5f, position.y + 4);
+        super.draw(graphics);
     }
 
     @Override

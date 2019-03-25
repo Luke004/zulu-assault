@@ -41,9 +41,9 @@ public class SmokeAnimation {
         SMOKE_HEIGHT_HALF = smoke_animation.getImage(0).getHeight() / 2;
     }
 
-    public void play(Vector2f position, float rotation) {
+    public void play(float xPos, float yPos, float rotation) {
         SmokeInstance smokeInstance = getNextFreshSmokeInstance();
-        smokeInstance.setup(position, rotation);
+        smokeInstance.setup(xPos, yPos, rotation);
     }
 
     public void draw() {
@@ -82,12 +82,12 @@ public class SmokeAnimation {
             this.animation = animation;
         }
 
-        void setup(Vector2f position, float rotation) {
-            for (int idx = 0; idx < animation.getFrameCount(); ++idx) {
+        void setup(float xPos, float yPos, float rotation) {
+            for (int idx = 0; idx < this.animation.getFrameCount(); ++idx) {
                 this.animation.getImage(idx).setRotation(rotation - 90);
             }
-            this.xPos = position.x - SMOKE_WIDTH_HALF;
-            this.yPos = position.y - SMOKE_HEIGHT_HALF;
+            this.xPos = xPos - SMOKE_WIDTH_HALF;
+            this.yPos = yPos - SMOKE_HEIGHT_HALF;
             this.animation.setCurrentFrame(0);
             this.animation.start();
         }

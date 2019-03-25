@@ -1,11 +1,16 @@
 package models.war_attenders.windmills;
 
+import models.animations.SmokeAnimation;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
 import models.weapons.Weapon;
+import org.lwjgl.Sys;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
+
+import java.util.Random;
 
 public abstract class Windmill extends WarAttender {
     Image turret;
@@ -13,9 +18,15 @@ public abstract class Windmill extends WarAttender {
     private int key;
     public final static int ARMOR = 10;
     public final static int HEALTH = 100;
+    private SmokeAnimation smokeAnimation;
+    private final int SMOKE_ANIMATION_FREQUENCY = 300;  // two per second
+    private int smoke_animation_timer;
+    private Random random;
 
     public Windmill(Vector2f startPos, boolean isHostile, int key) {
         super(startPos, isHostile);
+        random = new Random();
+        smokeAnimation = new SmokeAnimation(3);
         this.key = key;
         max_health = 100;
         armor = 10;
@@ -28,8 +39,25 @@ public abstract class Windmill extends WarAttender {
     }
 
     @Override
+    public void update(GameContainer gc, int deltaTime) {
+        super.update(gc, deltaTime);
+        smokeAnimation.update(deltaTime);
+        if(current_health < max_health / 2){
+            smoke_animation_timer += deltaTime;
+            if(smoke_animation_timer > SMOKE_ANIMATION_FREQUENCY){
+                smoke_animation_timer = 0;
+                int rotation = random.nextInt(360);
+                float xVal = (float) (position.x + 20 + -Math.sin(((rotation) * Math.PI) / 180) * -30.f);
+                float yVal = (float) (position.y + 20 + Math.cos(((rotation) * Math.PI) / 180) * -30.f);
+                smokeAnimation.play(xVal, yVal, rotation);
+            }
+        }
+    }
+
+    @Override
     public void draw(Graphics graphics) {
         super.draw(graphics);
+        smokeAnimation.draw();
     }
 
     @Override

@@ -397,7 +397,8 @@ public class CollisionHandler {
                 // TILE DESTROYED
                 if(damage == MovableWarAttender.DAMAGE_TO_DESTRUCTIBLE_TILE){
                     // show smoke animation only when drove over tile, not bullet destruction
-                    smokeAnimation.play(player.getWarAttender().position, player.getWarAttender().getRotation());
+                    MovableWarAttender playerWarAttender = player.getWarAttender();
+                    smokeAnimation.play(playerWarAttender.position.x, playerWarAttender.position.y, playerWarAttender.getRotation());
                 }
                 level_map.setTileId(xPos, yPos, LANDSCAPE_TILES_LAYER_IDX, replaceTileIndex);
                 destructible_tiles_health_info.remove(key);
