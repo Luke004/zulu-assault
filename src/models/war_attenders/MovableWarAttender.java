@@ -1,5 +1,7 @@
 package models.war_attenders;
 
+import logic.ItemChangeListener;
+import logic.WarAttenderDeleteListener;
 import models.CollisionModel;
 import models.weapons.Weapon;
 import org.newdawn.slick.*;
@@ -7,6 +9,8 @@ import org.newdawn.slick.geom.Vector2f;
 import player.Player;
 
 public abstract class MovableWarAttender extends WarAttender {
+    // listener
+    protected WarAttenderDeleteListener level_delete_listener;
     // model related
     public Image base_image;
     public CollisionModel collisionModel;
@@ -82,6 +86,10 @@ public abstract class MovableWarAttender extends WarAttender {
 
         // COLLISION RELATED STUFF
         collisionModel.draw(graphics);
+    }
+
+    public void addListener(WarAttenderDeleteListener delete_listener) {
+        this.level_delete_listener = delete_listener;
     }
 
     public void calculateMovementVector(int deltaTime, Direction direction) {

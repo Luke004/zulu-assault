@@ -16,7 +16,7 @@ public abstract class WarAttender {
     public boolean show_accessible_animation;
     // specs related
     public float current_health, max_health, armor;
-    public boolean isHostile;
+    public boolean isHostile, isDestroyed;
 
     public Vector2f position;
 
@@ -97,6 +97,7 @@ public abstract class WarAttender {
     }
 
     public void shootAtEnemies(MovableWarAttender player, List<MovableWarAttender> friendly_war_attenders, int deltaTime) {
+        if(isDestroyed) return;
         // calculate dist between the player and the enemy
         float xPos = player.position.x;
         float yPos = player.position.y;
@@ -164,12 +165,17 @@ public abstract class WarAttender {
         if(amount < 0){
             // damage
             current_health += amount / armor;
+            if(current_health <= 0){
+                isDestroyed = true;
+            }
         } else {
             // heal
             current_health += amount;
             if(current_health > max_health) current_health = max_health;
         }
     }
+
+    //protected abstract void showDestructionAnimation(Graphics graphics);
 
     public boolean isMaxHealth() {
         return current_health == max_health;

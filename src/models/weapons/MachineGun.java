@@ -34,6 +34,14 @@ public class MachineGun extends Uzi {
 
             Bullet bullet = new Bullet(bullet_spawn, bullet_dir, rotation_angle);
             bullet_list.add(bullet);
+
+            for (int idx = 0; idx < fire_animation.getFrameCount(); ++idx) {
+                fire_animation.getImage(idx).setRotation(rotation_angle - 180);
+            }
+            xPos = bullet_spawn.x;
+            yPos = bullet_spawn.y;
+            fire_animation.setCurrentFrame(0);
+            fire_animation.start();
         }
     }
 }

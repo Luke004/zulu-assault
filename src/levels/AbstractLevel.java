@@ -3,6 +3,7 @@ package levels;
 import logic.Camera;
 import logic.CollisionHandler;
 import logic.KeyInputHandler;
+import logic.WarAttenderDeleteListener;
 import models.HUD;
 import models.interaction_circles.InteractionCircle;
 import models.war_attenders.MovableWarAttender;
@@ -22,9 +23,10 @@ import org.newdawn.slick.tiled.TiledMap;
 import player.Player;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public abstract class AbstractLevel extends BasicGame {
+public abstract class AbstractLevel extends BasicGame implements WarAttenderDeleteListener {
     Player player;
     TiledMap map;
     List<Windmill> enemy_windmills;
@@ -52,6 +54,15 @@ public abstract class AbstractLevel extends BasicGame {
         player.addListener(hud);
         keyInputHandler = new KeyInputHandler(player, friendly_war_attenders);     // handle key inputs
         collisionHandler = new CollisionHandler(player, map, friendly_war_attenders, hostile_war_attenders, enemy_windmills, interaction_circles);    // handle collisions
+
+        // add listeners for destruction of warAttenders
+        for (MovableWarAttender warAttender : friendly_war_attenders) {
+            warAttender.addListener(this);
+        }
+        for (MovableWarAttender warAttender : hostile_war_attenders) {
+            warAttender.addListener(this);
+        }
+        player.getWarAttender().addListener(this);
     }
 
     private void setupWindmills() {
@@ -97,14 +108,14 @@ public abstract class AbstractLevel extends BasicGame {
     @Override
     public void update(GameContainer gameContainer, int deltaTime) {
         player.update(gameContainer, deltaTime);
-        for (MovableWarAttender warAttender : friendly_war_attenders) {
-            warAttender.update(gameContainer, deltaTime);
+        for(int idx = 0; idx < friendly_war_attenders.size(); ++idx){
+            friendly_war_attenders.get(idx).update(gameContainer, deltaTime);
         }
-        for (MovableWarAttender warAttender : hostile_war_attenders) {
-            warAttender.update(gameContainer, deltaTime);
+        for(int idx = 0; idx < hostile_war_attenders.size(); ++idx){
+            hostile_war_attenders.get(idx).update(gameContainer, deltaTime);
         }
-        for (WarAttender warAttender : enemy_windmills) {
-            warAttender.update(gameContainer, deltaTime);
+        for(int idx = 0; idx < enemy_windmills.size(); ++idx){
+            enemy_windmills.get(idx).update(gameContainer, deltaTime);
         }
         for (InteractionCircle interaction_circle : interaction_circles) {
             interaction_circle.update(deltaTime);
@@ -123,14 +134,14 @@ public abstract class AbstractLevel extends BasicGame {
             interaction_circle.draw();
         }
         player.draw(graphics);
-        for (MovableWarAttender warAttender : friendly_war_attenders) {
-            warAttender.draw(graphics);
+        for(int idx = 0; idx < friendly_war_attenders.size(); ++idx){
+            friendly_war_attenders.get(idx).draw(graphics);
         }
-        for (MovableWarAttender warAttender : hostile_war_attenders) {
-            warAttender.draw(graphics);
+        for(int idx = 0; idx < hostile_war_attenders.size(); ++idx){
+            hostile_war_attenders.get(idx).draw(graphics);
         }
-        for (WarAttender warAttender : enemy_windmills) {
-            warAttender.draw(graphics);
+        for(int idx = 0; idx < enemy_windmills.size(); ++idx){
+            enemy_windmills.get(idx).draw(graphics);
         }
         collisionHandler.draw();
 
@@ -138,6 +149,17 @@ public abstract class AbstractLevel extends BasicGame {
         camera.untranslateGraphics();
         hud.draw();
 
+    }
+
+    @Override
+    public void notifyForDeletion(MovableWarAttender warAttender, boolean isHostile) {
+        if(isHostile){
+            //hostile_war_attenders.removeIf(enemy -> enemy.isDestroyed);
+            hostile_war_attenders.remove(warAttender);
+        } else {
+            friendly_war_attenders.remove(warAttender);
+            //friendly_war_attenders.removeIf(friend -> friend.isDestroyed);
+        }
     }
 
     @Override

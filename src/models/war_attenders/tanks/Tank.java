@@ -3,10 +3,13 @@ package models.war_attenders.tanks;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.soldiers.Soldier;
 import models.weapons.Weapon;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
+
+import java.util.Random;
 
 public abstract class Tank extends MovableWarAttender {
     Image turret;
@@ -19,6 +22,8 @@ public abstract class Tank extends MovableWarAttender {
     public float acceleration_factor;   // number between [0 and 1] -> the smaller the faster the acceleration
     public float deceleration_factor;   // number between [0 and 1] -> the smaller the faster the deceleration
 
+    private DestructionAnimation destructionAnimation;
+
     public Tank(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
     }
@@ -28,6 +33,7 @@ public abstract class Tank extends MovableWarAttender {
         TANK_HEIGHT_HALF = base_image.getHeight() / 2;
         TURRET_WIDTH_HALF = turret.getWidth() / 2;
         TURRET_HEIGHT_HALF = turret.getHeight() / 2;
+        destructionAnimation = new DestructionAnimation();
         super.init();
     }
 
@@ -40,6 +46,13 @@ public abstract class Tank extends MovableWarAttender {
         }
         if (decelerate) {
             decelerate(deltaTime);
+        }
+
+        if(isDestroyed) {
+            destructionAnimation.update(deltaTime);
+            if(destructionAnimation.hasFinished()){
+                level_delete_listener.notifyForDeletion(this, isHostile);
+            }
         }
     }
 
@@ -59,9 +72,12 @@ public abstract class Tank extends MovableWarAttender {
             turret.draw(position.x - TURRET_WIDTH_HALF, position.y - TURRET_HEIGHT_HALF);
         }
 
-
         if (show_accessible_animation) {
             accessible_animation.draw(position.x - (TANK_WIDTH_HALF * 2) / 4, position.y - (TANK_HEIGHT_HALF * 2) + 17);
+        }
+
+        if(isDestroyed) {
+            destructionAnimation.draw(graphics);
         }
     }
 
@@ -168,6 +184,13 @@ public abstract class Tank extends MovableWarAttender {
         // plane instanceof is not needed, nothing happens there
     }
 
+    /*
+    @Override
+    protected void showDestructionAnimation(Graphics graphics) {
+
+    }
+    */
+
     @Override
     public void blockMovement() {
         position.sub(dir);  // set the position on last position before the collision
@@ -201,7 +224,129 @@ public abstract class Tank extends MovableWarAttender {
                 weapon = getWeapon(WeaponType.MEGA_PULSE);
                 break;
         }
-        if(weapon == null) return;  // does not have a WEAPON_2, so return
+        if (weapon == null) return;  // does not have a WEAPON_2, so return
         weapon.fire(position.x, position.y, turret.getRotation());
+    }
+
+    private class DestructionAnimation {
+        private long oscillation_timer, line_change_timer;
+        private final static int OSCILLATION_CHANGE = 100;
+        private final static int LINE_CHANGE = 600;
+        private final static int MAXIMUM_LINE_CHANGES = 10;
+        private Random random;
+        private MyLine my_first_line;
+        private MyLine my_second_line;
+        private int finish_destruction_counter;
+
+        DestructionAnimation() {
+            random = new Random();
+            my_first_line = new MyLine();
+            my_second_line = new MyLine();
+        }
+
+        public void draw(Graphics graphics) {
+            graphics.setColor(new Color(196, 200, 249));
+            graphics.setLineWidth(3.f);
+            my_first_line.draw(graphics);
+            my_second_line.draw(graphics);
+        }
+
+        public void update(int deltaTime) {
+            oscillation_timer += deltaTime;
+            line_change_timer += deltaTime;
+            if (oscillation_timer > OSCILLATION_CHANGE) {
+                oscillation_timer = 0;
+                my_first_line.oscillateMidPoints();
+                my_second_line.oscillateMidPoints();
+            }
+            if (line_change_timer > LINE_CHANGE) {
+                finish_destruction_counter ++;
+                line_change_timer = 0;
+                my_first_line.defineNewLine();
+                my_second_line.defineNewLine();
+            }
+        }
+
+        boolean hasFinished() {
+            return finish_destruction_counter == MAXIMUM_LINE_CHANGES;
+        }
+
+
+        private class MyLine {
+            Vector2f line_start, mid_point_1, mid_point_1_oscillation, mid_point_2, mid_point_2_oscillation, line_end;
+
+            MyLine() {
+                line_start = new Vector2f();
+                mid_point_1 = new Vector2f();
+                mid_point_1_oscillation = new Vector2f();
+                mid_point_2 = new Vector2f();
+                mid_point_2_oscillation = new Vector2f();
+                line_end = new Vector2f();
+                collisionModel.update(getRotation());
+                defineNewLine();
+            }
+
+            void draw(Graphics graphics) {
+                graphics.drawLine(line_start.x, line_start.y, mid_point_1.x, mid_point_1.y);
+                graphics.drawLine(mid_point_1.x, mid_point_1.y, mid_point_2.x, mid_point_2.y);
+                graphics.drawLine(mid_point_2.x, mid_point_2.y, line_end.x, line_end.y);
+            }
+
+            private void defineNewLine() {
+                // go from tank middle in a random direction (360°) for 'TANK_WIDTH_HALF' units and pick this point
+                // as 'line_start'
+                int angle = random.nextInt(360);
+                float xDir = (float) Math.sin(angle * Math.PI / 180);
+                float yDir = (float) -Math.cos(angle * Math.PI / 180);
+                xDir *= TANK_WIDTH_HALF;
+                yDir *= TANK_WIDTH_HALF;
+                line_start.x = position.x + xDir;
+                line_start.y = position.y + yDir;
+                angle -= getRotation();
+                if (angle < 0) angle *= -1;
+                // connect line_start to one of the opposite collision corners
+                if (angle >= 360) angle -= 360;
+                int pointIdx;
+                if (angle > 270 || angle < 90) {
+                    pointIdx = random.nextInt(3 + 1 - 2) + 2;
+                } else {
+                    pointIdx = random.nextInt(1);
+                }
+                line_end.x = collisionModel.collision_points[pointIdx].x;
+                line_end.y = collisionModel.collision_points[pointIdx].y;
+
+                // define the two mid points between 'line_start' and 'line_end' which will be oscillating
+                float diff_X = line_end.x - line_start.x;
+                float diff_Y = line_end.y - line_start.y;
+                float interval_X = diff_X / 3;
+                float interval_Y = diff_Y / 3;
+                mid_point_1.x = line_start.x + interval_X * 1;
+                mid_point_1.y = line_start.y + interval_Y * 1;
+                mid_point_2.x = line_start.x + interval_X * 2;
+                mid_point_2.y = line_start.y + interval_Y * 2;
+            }
+
+            private void oscillateMidPoints() {
+                // oscillate the first mid point
+                mid_point_1.x -= mid_point_1_oscillation.x;
+                mid_point_1.y -= mid_point_1_oscillation.y;
+                mid_point_1_oscillation.x = random.nextInt(TANK_WIDTH_HALF + TANK_WIDTH_HALF / 2);
+                mid_point_1_oscillation.y = calcOrthogonalPoint(mid_point_1.y, mid_point_1.x, mid_point_1_oscillation.x);
+                mid_point_1.x += mid_point_1_oscillation.x;
+                mid_point_1.y += mid_point_1_oscillation.y;
+
+                // oscillate the second mid point
+                mid_point_2.x -= mid_point_2_oscillation.x;
+                mid_point_2.y -= mid_point_2_oscillation.y;
+                mid_point_2_oscillation.x = -random.nextInt(TANK_WIDTH_HALF + TANK_HEIGHT_HALF / 2);
+                mid_point_2_oscillation.y = calcOrthogonalPoint(mid_point_2.y, mid_point_2.x, mid_point_2_oscillation.x);
+                mid_point_2.x += mid_point_2_oscillation.x;
+                mid_point_2.y += mid_point_2_oscillation.y;
+            }
+
+            private float calcOrthogonalPoint(float p1, float p2, float op1) {
+                return -(p1 * op1) / p2;
+            }
+        }
     }
 }

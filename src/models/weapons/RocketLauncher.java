@@ -8,6 +8,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class RocketLauncher extends Weapon {
     private List<Animation> active_rockets;
@@ -32,15 +33,16 @@ public class RocketLauncher extends Weapon {
                 BUFFER_SIZE = 4;    // player needs more buffer_size, since he can shoot more often
             }
             buffered_rockets = new ArrayList<>();
-            for (int idx = 0; idx < BUFFER_SIZE; ++idx) {
-                Animation rocket_animation = new Animation(false);
-                int IMAGE_COUNT = 8;
-                int x = 0;
-                for (int idx2 = 0; idx2 < IMAGE_COUNT; ++idx2) {
-                    rocket_animation.addFrame(rocket_animation_image.getSubImage(x, 0, 20, 123), 200);
-                    x += 20;
-                }
-                buffered_rockets.add(rocket_animation);
+            Animation rocket_animation = new Animation(false);
+            int IMAGE_COUNT = 8;
+            int x = 0;
+            int idx;
+            for (idx = 0; idx < IMAGE_COUNT; ++idx) {
+                rocket_animation.addFrame(rocket_animation_image.getSubImage(x, 0, 20, 123), 200);
+                x += 20;
+            }
+            for (idx = 0; idx < BUFFER_SIZE; ++idx) {
+                buffered_rockets.add(rocket_animation.copy());
             }
             active_rockets = new ArrayList<>();
         } catch (SlickException e) {
