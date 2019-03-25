@@ -1,8 +1,17 @@
 package models.weapons;
 
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
 public class DoubleShell extends Shell {
+
+    public DoubleShell(){
+        try {
+            smokeAnimation.addNewSmokeInstance();   // add another instance
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void fire(float spawnX, float spawnY, float rotation_angle) {
