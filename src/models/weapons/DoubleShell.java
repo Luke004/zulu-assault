@@ -7,7 +7,7 @@ public class DoubleShell extends Shell {
 
     public DoubleShell(){
         try {
-            smokeAnimation.addNewSmokeInstance();   // add another instance
+            smokeAnimation.addNewInstance();   // add another instance
         } catch (SlickException e) {
             e.printStackTrace();
         }

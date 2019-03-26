@@ -1,7 +1,9 @@
 package logic;
 
 import models.CollisionModel;
+import models.animations.AbstractAnimation;
 import models.animations.SmokeAnimation;
+import models.animations.UziHitExplosionAnimation;
 import models.interaction_circles.HealthCircle;
 import models.interaction_circles.InteractionCircle;
 import models.interaction_circles.TeleportCircle;
@@ -9,11 +11,11 @@ import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.Soldier;
 import models.war_attenders.windmills.Windmill;
-import models.weapons.MegaPulse;
-import models.weapons.RocketLauncher;
-import models.weapons.Shell;
-import models.weapons.Weapon;
+import models.weapons.*;
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TileSet;
 import org.newdawn.slick.tiled.TiledMap;
 import player.Player;
@@ -40,6 +42,8 @@ public class CollisionHandler {
     private Map<Integer, Float> destructible_tiles_health_info;
 
     private SmokeAnimation smokeAnimation;
+    private UziHitExplosionAnimation uziHitExplosionAnimation;
+    private Random random;
 
 
     public CollisionHandler(Player player, TiledMap level_map, List<MovableWarAttender> friendly_war_attenders,
@@ -109,15 +113,18 @@ public class CollisionHandler {
             }
         }
         smokeAnimation = new SmokeAnimation(1);
-
+        uziHitExplosionAnimation = new UziHitExplosionAnimation(10);
+        random = new Random();
     }
 
     public void draw() {
         smokeAnimation.draw();
+        uziHitExplosionAnimation.draw();
     }
 
     public void update(GameContainer gameContainer, int deltaTime) {
         smokeAnimation.update(deltaTime);
+        uziHitExplosionAnimation.update(deltaTime);
 
         MovableWarAttender player_warAttender = player.getWarAttender();
         handlePlayerCollisions(player_warAttender);
@@ -294,6 +301,10 @@ public class CollisionHandler {
                                 hostile_war_attenders.get(idx).changeHealth(-weapon.getBulletDamage()); //drain health of hit tank
                             }
                             continue;
+                        } else if (weapon instanceof Uzi) {
+                            if (!(hostile_war_attenders.get(idx) instanceof Soldier)) {
+                                uziHitExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, random.nextInt(360));
+                            }
                         }
                         hostile_war_attenders.get(idx).changeHealth(-weapon.getBulletDamage()); //drain health of hit tank
                         bullet_iterator.remove();   // remove bullet
@@ -395,7 +406,7 @@ public class CollisionHandler {
             float new_health = destructible_tiles_health_info.get(key) - damage / DESTRUCTIBLE_TILE_NORMAL_ARMOR;
             if (new_health <= 0) {
                 // TILE DESTROYED
-                if(damage == MovableWarAttender.DAMAGE_TO_DESTRUCTIBLE_TILE){
+                if (damage == MovableWarAttender.DAMAGE_TO_DESTRUCTIBLE_TILE) {
                     // show smoke animation only when drove over tile, not bullet destruction
                     MovableWarAttender playerWarAttender = player.getWarAttender();
                     smokeAnimation.play(playerWarAttender.position.x, playerWarAttender.position.y, playerWarAttender.getRotation());
@@ -439,6 +450,9 @@ public class CollisionHandler {
 
                 // HOSTILE SHOT COLLISION WITH PLAYER
                 if (b.getCollisionModel().intersects(player.getCollisionModel())) {
+                    if (weapon instanceof Uzi) {
+                        uziHitExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, random.nextInt(360));
+                    }
                     bullet_iterator.remove();   // remove bullet
                     if (!player.isInvincible()) {
                         player.changeHealth(-weapon.getBulletDamage());  //drain health of player
@@ -475,6 +489,9 @@ public class CollisionHandler {
                     // it's a one shot, destroy tile directly and maybe other tiles around
                     doCollateralTileDamage(x, y, idx);
                 } else {
+                    if (weapon instanceof Uzi) {
+                        uziHitExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, random.nextInt(360));
+                    }
                     damageTile(x, y, weapon.getBulletDamage(), destructible_tile_replace_indices[idx]);
                 }
                 if (weapon instanceof MegaPulse) continue;
@@ -551,6 +568,9 @@ public class CollisionHandler {
             if (tile_ID == windmill_indices[idx]) {
                 damageWindmill(x, y, weapon);
                 if (weapon instanceof MegaPulse) continue;
+                else if (weapon instanceof Uzi) {
+                    uziHitExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, random.nextInt(360));
+                }
                 bullet_iterator.remove();
             }
         }

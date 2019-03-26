@@ -8,25 +8,13 @@ import org.newdawn.slick.geom.Vector2f;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SmokeAnimation {
-    private List<SmokeInstance> active_smoke_instances;
-    private List<SmokeInstance> buffered_smoke_instances;
-
+public class SmokeAnimation extends AbstractAnimation {
     public SmokeAnimation(final int BUFFER_SIZE) {
-        buffered_smoke_instances = new ArrayList<>();
-        active_smoke_instances = new ArrayList<>();
-        try {
-            int times = 0;
-            do {
-                addNewSmokeInstance();
-                times++;
-            } while (times < BUFFER_SIZE);
-        } catch (SlickException e) {
-            e.printStackTrace();
-        }
+        super(BUFFER_SIZE);
     }
 
-    public void addNewSmokeInstance() throws SlickException {
+    @Override
+    public void addNewInstance() throws SlickException {
         Image smoke_animation_image = new Image("assets/animations/smoke.png");
         Animation smoke_animation = new Animation(false);
         int IMAGE_COUNT = 8;
@@ -36,72 +24,6 @@ public class SmokeAnimation {
             x += 40;
         }
         smoke_animation.setLooping(false);
-        buffered_smoke_instances.add(new SmokeInstance(smoke_animation));
-    }
-
-    public void play(float xPos, float yPos, float rotation) {
-        SmokeInstance smokeInstance = getNextFreshSmokeInstance();
-        smokeInstance.setup(xPos, yPos, rotation);
-    }
-
-    public void draw() {
-        for (int idx = 0; idx < active_smoke_instances.size(); ++idx)
-            active_smoke_instances.get(idx).draw();
-    }
-
-    public void update(int deltaTime) {
-        for (int idx = 0; idx < active_smoke_instances.size(); ++idx)
-            active_smoke_instances.get(idx).update(deltaTime);
-    }
-
-    private SmokeInstance getNextFreshSmokeInstance() {
-        /*
-        if (buffered_smoke_instances.size() == 0) {
-            // just in case the instances aren't enough during runtime, add another one ad hoc
-            SmokeInstance newSmokeInstance = new SmokeInstance(smoke_animation.copy());
-            active_smoke_instances.add(newSmokeInstance);
-            return newSmokeInstance;
-        }
-        */
-        SmokeInstance smokeInstance = buffered_smoke_instances.get(0);
-        active_smoke_instances.add(smokeInstance);
-        buffered_smoke_instances.remove(smokeInstance);
-        return smokeInstance;
-    }
-
-    private void putSmokeInstanceBackToBuffer(SmokeInstance instance) {
-        buffered_smoke_instances.add(instance);
-        active_smoke_instances.remove(instance);
-    }
-
-    private class SmokeInstance {
-        float xPos, yPos;
-        private Animation animation;
-
-        SmokeInstance(Animation animation) {
-            this.animation = animation;
-        }
-
-        void setup(float xPos, float yPos, float rotation) {
-            for (int idx = 0; idx < this.animation.getFrameCount(); ++idx) {
-                this.animation.getImage(idx).setRotation(rotation - 90);
-            }
-            this.xPos = xPos - animation.getImage(0).getWidth() / 2;
-            this.yPos = yPos - animation.getImage(0).getHeight() / 2;
-            this.animation.setCurrentFrame(0);
-            this.animation.start();
-        }
-
-        public void draw() {
-            this.animation.draw(this.xPos, this.yPos);
-        }
-
-        public void update(int deltaTime) {
-            this.animation.update(deltaTime);
-
-            if (this.animation.isStopped()) {
-                putSmokeInstanceBackToBuffer(this);
-            }
-        }
+        buffered_instances.add(new AnimationInstance(smoke_animation));
     }
 }
