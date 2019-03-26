@@ -60,7 +60,6 @@ public abstract class WarAttender {
 
     public void draw(Graphics graphics) {
         health_bar_image.draw(position.x  - 7.5f, position.y - 15);
-
         // draw health bar damage using a black rectangle
         graphics.setColor(Color.black);
         if (current_health > 0) {

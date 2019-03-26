@@ -64,7 +64,7 @@ public abstract class AbstractAnimation {
 
     public class AnimationInstance {
         float xPos, yPos;
-        private Animation animation;
+        public Animation animation;
 
         public AnimationInstance(Animation animation) {
             this.animation = animation;

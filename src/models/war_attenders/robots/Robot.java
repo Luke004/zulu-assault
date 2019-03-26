@@ -45,8 +45,6 @@ public abstract class Robot extends MovableWarAttender {
 
     @Override
     public void draw(Graphics graphics) {
-        super.draw(graphics);
-
         if (isInvincible) {
             if (!invincibility_animation_switch) {
                 walking_animation.getCurrentFrame().drawFlash(position.x - ROBOT_WIDTH_HALF, position.y - ROBOT_HEIGHT_HALF);
@@ -59,6 +57,7 @@ public abstract class Robot extends MovableWarAttender {
             walking_animation.draw(position.x - ROBOT_WIDTH_HALF, position.y - ROBOT_HEIGHT_HALF);
             base_image.draw(position.x - ROBOT_WIDTH_HALF, position.y - ROBOT_HEIGHT_HALF);
         }
+        super.draw(graphics);
 
         //collisionModel.draw(graphics);
     }

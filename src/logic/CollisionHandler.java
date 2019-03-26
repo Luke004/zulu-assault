@@ -3,6 +3,7 @@ package logic;
 import models.CollisionModel;
 import models.animations.AbstractAnimation;
 import models.animations.SmokeAnimation;
+import models.animations.UziDamageAnimation;
 import models.animations.UziHitExplosionAnimation;
 import models.interaction_circles.HealthCircle;
 import models.interaction_circles.InteractionCircle;
@@ -43,6 +44,7 @@ public class CollisionHandler {
 
     private SmokeAnimation smokeAnimation;
     private UziHitExplosionAnimation uziHitExplosionAnimation;
+    private UziDamageAnimation uziDamageAnimation;
     private Random random;
 
 
@@ -114,17 +116,20 @@ public class CollisionHandler {
         }
         smokeAnimation = new SmokeAnimation(1);
         uziHitExplosionAnimation = new UziHitExplosionAnimation(10);
+        uziDamageAnimation = new UziDamageAnimation(5);
         random = new Random();
     }
 
     public void draw() {
         smokeAnimation.draw();
         uziHitExplosionAnimation.draw();
+        uziDamageAnimation.draw();
     }
 
     public void update(GameContainer gameContainer, int deltaTime) {
         smokeAnimation.update(deltaTime);
         uziHitExplosionAnimation.update(deltaTime);
+        uziDamageAnimation.update(deltaTime);
 
         MovableWarAttender player_warAttender = player.getWarAttender();
         handlePlayerCollisions(player_warAttender);
@@ -304,6 +309,9 @@ public class CollisionHandler {
                         } else if (weapon instanceof Uzi) {
                             if (!(hostile_war_attenders.get(idx) instanceof Soldier)) {
                                 uziHitExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, random.nextInt(360));
+
+                                uziDamageAnimation.play(b.bullet_pos.x, b.bullet_pos.y, b.bullet_image.getRotation() - 90
+                                + random.nextInt(30 + 1 + 30) - 30);  // add random extra rotation [-30 , +30]
                             }
                         }
                         hostile_war_attenders.get(idx).changeHealth(-weapon.getBulletDamage()); //drain health of hit tank
@@ -452,6 +460,11 @@ public class CollisionHandler {
                 if (b.getCollisionModel().intersects(player.getCollisionModel())) {
                     if (weapon instanceof Uzi) {
                         uziHitExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, random.nextInt(360));
+
+                        if(!(player instanceof Soldier)){
+                            uziDamageAnimation.play(b.bullet_pos.x, b.bullet_pos.y, b.bullet_image.getRotation() - 90
+                                    + random.nextInt(30 + 1 + 30) - 30);  // add random extra rotation [-30 , +30]
+                        }
                     }
                     bullet_iterator.remove();   // remove bullet
                     if (!player.isInvincible()) {
@@ -570,7 +583,11 @@ public class CollisionHandler {
                 if (weapon instanceof MegaPulse) continue;
                 else if (weapon instanceof Uzi) {
                     uziHitExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, random.nextInt(360));
+                    uziDamageAnimation.play(b.bullet_pos.x, b.bullet_pos.y, b.bullet_image.getRotation() - 90
+                            + random.nextInt(30 + 1 + 30) - 30);  // add random extra rotation [-30 , +30]
                 }
+
+
                 bullet_iterator.remove();
             }
         }
