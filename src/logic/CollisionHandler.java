@@ -40,6 +40,7 @@ public class CollisionHandler {
     private UziHitExplosionAnimation uziHitExplosionAnimation;
     private UziDamageAnimation uziDamageAnimation;
     private BigExplosionAnimation bigExplosionAnimation;
+    private PlasmaHitAnimation plasmaHitAnimation;
     private Random random;
 
 
@@ -113,6 +114,7 @@ public class CollisionHandler {
         uziHitExplosionAnimation = new UziHitExplosionAnimation(10);
         uziDamageAnimation = new UziDamageAnimation(10);
         bigExplosionAnimation = new BigExplosionAnimation(10);
+        plasmaHitAnimation = new PlasmaHitAnimation(10);
         random = new Random();
     }
 
@@ -125,6 +127,7 @@ public class CollisionHandler {
         uziHitExplosionAnimation.draw();
         uziDamageAnimation.draw();
         bigExplosionAnimation.draw();
+        plasmaHitAnimation.draw();
     }
 
     public void update(GameContainer gameContainer, int deltaTime) {
@@ -132,6 +135,7 @@ public class CollisionHandler {
         uziHitExplosionAnimation.update(deltaTime);
         uziDamageAnimation.update(deltaTime);
         bigExplosionAnimation.update(deltaTime);
+        plasmaHitAnimation.update(deltaTime);
 
         MovableWarAttender player_warAttender = player.getWarAttender();
         handlePlayerCollisions(player_warAttender);
@@ -317,6 +321,8 @@ public class CollisionHandler {
                             }
                         }  else if(weapon instanceof Shell || weapon instanceof RocketLauncher){
                             bigExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, 90);
+                        } else if (weapon instanceof Plasma){
+                            plasmaHitAnimation.play(b.bullet_pos.x, b.bullet_pos.y, 0);
                         }
                         hostile_war_attenders.get(idx).changeHealth(-weapon.getBulletDamage()); //drain health of hit tank
                         bullet_iterator.remove();   // remove bullet
@@ -501,6 +507,8 @@ public class CollisionHandler {
                         + random.nextInt(30 + 1 + 30) - 30);  // add random extra rotation [-30 , +30]
         } else if(weapon instanceof Shell || weapon instanceof RocketLauncher){
             bigExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, 90);
+        } else if(weapon instanceof Plasma){
+            plasmaHitAnimation.play(b.bullet_pos.x, b.bullet_pos.y, 0);
         }
     }
 
@@ -523,6 +531,8 @@ public class CollisionHandler {
                 } else {
                     if (weapon instanceof Uzi) {
                         uziHitExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, random.nextInt(360));
+                    } else if(weapon instanceof Plasma){
+                        plasmaHitAnimation.play(b.bullet_pos.x, b.bullet_pos.y, 0);
                     }
                     damageTile(x, y, weapon.getBulletDamage(), destructible_tile_replace_indices[idx]);
                 }

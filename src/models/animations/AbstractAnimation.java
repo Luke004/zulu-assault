@@ -5,6 +5,7 @@ import org.newdawn.slick.SlickException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public abstract class AbstractAnimation {
     private List<AnimationInstance> active_instances;
@@ -90,6 +91,33 @@ public abstract class AbstractAnimation {
             if (this.animation.isStopped()) {
                 putSmokeInstanceBackToBuffer(this);
             }
+        }
+    }
+
+    public class MovableAnimationInstance extends AnimationInstance {
+        private float xDir, yDir;
+        private final float SPEED;
+        private final Random random;
+
+        public MovableAnimationInstance(Animation animation) {
+            super(animation);
+            random = new Random();
+            SPEED = 0.05f;
+        }
+
+        @Override
+        void setup(float xPos, float yPos, float rotation) {
+            super.setup(xPos, yPos, rotation);
+            float rotate_direction = random.nextInt(360);
+            xDir = (float) Math.sin(rotate_direction * Math.PI / 180);
+            yDir = (float) -Math.cos(rotate_direction * Math.PI / 180);
+        }
+
+        @Override
+        public void update(int deltaTime) {
+            super.update(deltaTime);
+            xPos += xDir * SPEED * deltaTime;
+            yPos += yDir * SPEED * deltaTime;
         }
     }
 
