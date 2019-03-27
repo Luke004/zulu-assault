@@ -20,7 +20,6 @@ public abstract class WarAttender {
 
     public Vector2f position;
 
-
     public WarAttender(Vector2f startPos, boolean isHostile) {
         this.isHostile = isHostile;
         this.position = startPos;
@@ -63,7 +62,7 @@ public abstract class WarAttender {
         // draw health bar damage using a black rectangle
         graphics.setColor(Color.black);
         if (current_health > 0) {
-            graphics.fillRect(position.x + 36, position.y - 14, -(29 - (((float) current_health) / (((float) max_health) / 29))), 5);
+            graphics.fillRect(position.x + 36, position.y - 14, -(29 - (( current_health) / (( max_health) / 29))), 5);
         } else {    // destroyed (rectangle is full black size)
             graphics.fillRect(position.x + 36, position.y - 14, -29, 5);
         }

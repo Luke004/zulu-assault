@@ -16,7 +16,7 @@ public abstract class Tank extends MovableWarAttender {
     float turret_rotate_speed;
     float backwards_speed;
     private boolean decelerate;
-    private int TANK_WIDTH_HALF, TANK_HEIGHT_HALF, TURRET_WIDTH_HALF, TURRET_HEIGHT_HALF;
+    private int TURRET_WIDTH_HALF, TURRET_HEIGHT_HALF;
 
     // each tank has an acceleration and a deceleration
     public float acceleration_factor;   // number between [0 and 1] -> the smaller the faster the acceleration
@@ -29,8 +29,8 @@ public abstract class Tank extends MovableWarAttender {
     }
 
     public void init() {
-        TANK_WIDTH_HALF = base_image.getWidth() / 2;
-        TANK_HEIGHT_HALF = base_image.getHeight() / 2;
+        WIDTH_HALF = base_image.getWidth() / 2;
+        HEIGHT_HALF = base_image.getHeight() / 2;
         TURRET_WIDTH_HALF = turret.getWidth() / 2;
         TURRET_HEIGHT_HALF = turret.getHeight() / 2;
         destructionAnimation = new DestructionAnimation();
@@ -51,7 +51,7 @@ public abstract class Tank extends MovableWarAttender {
         if(isDestroyed) {
             destructionAnimation.update(deltaTime);
             if(destructionAnimation.hasFinished()){
-                level_delete_listener.notifyForDeletion(this, isHostile);
+                level_delete_listener.notifyForDeletion(this);
             }
         }
     }
@@ -61,19 +61,19 @@ public abstract class Tank extends MovableWarAttender {
         super.draw(graphics);
         if (isInvincible) {
             if (!invincibility_animation_switch) {
-                base_image.drawFlash(position.x - TANK_WIDTH_HALF, position.y - TANK_HEIGHT_HALF);
+                base_image.drawFlash(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
                 turret.drawFlash(position.x - TURRET_WIDTH_HALF, position.y - TURRET_HEIGHT_HALF);
             } else {
-                base_image.draw(position.x - TANK_WIDTH_HALF, position.y - TANK_HEIGHT_HALF);
+                base_image.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
                 turret.draw(position.x - TURRET_WIDTH_HALF, position.y - TURRET_HEIGHT_HALF);
             }
         } else {
-            base_image.draw(position.x - TANK_WIDTH_HALF, position.y - TANK_HEIGHT_HALF);
+            base_image.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
             turret.draw(position.x - TURRET_WIDTH_HALF, position.y - TURRET_HEIGHT_HALF);
         }
 
         if (show_accessible_animation) {
-            accessible_animation.draw(position.x - (TANK_WIDTH_HALF * 2) / 4, position.y - (TANK_HEIGHT_HALF * 2) + 17);
+            accessible_animation.draw(position.x - (WIDTH_HALF * 2) / 4, position.y - (HEIGHT_HALF * 2) + 17);
         }
 
         if(isDestroyed) {
@@ -298,8 +298,8 @@ public abstract class Tank extends MovableWarAttender {
                 int angle = random.nextInt(360);
                 float xDir = (float) Math.sin(angle * Math.PI / 180);
                 float yDir = (float) -Math.cos(angle * Math.PI / 180);
-                xDir *= TANK_WIDTH_HALF;
-                yDir *= TANK_WIDTH_HALF;
+                xDir *= WIDTH_HALF;
+                yDir *= WIDTH_HALF;
                 line_start.x = position.x + xDir;
                 line_start.y = position.y + yDir;
                 angle -= getRotation();
@@ -330,7 +330,7 @@ public abstract class Tank extends MovableWarAttender {
                 // oscillate the first mid point
                 mid_point_1.x -= mid_point_1_oscillation.x;
                 mid_point_1.y -= mid_point_1_oscillation.y;
-                mid_point_1_oscillation.x = random.nextInt(TANK_WIDTH_HALF + TANK_WIDTH_HALF / 2);
+                mid_point_1_oscillation.x = random.nextInt(WIDTH_HALF + WIDTH_HALF / 2);
                 mid_point_1_oscillation.y = calcOrthogonalPoint(mid_point_1.y, mid_point_1.x, mid_point_1_oscillation.x);
                 mid_point_1.x += mid_point_1_oscillation.x;
                 mid_point_1.y += mid_point_1_oscillation.y;
@@ -338,7 +338,7 @@ public abstract class Tank extends MovableWarAttender {
                 // oscillate the second mid point
                 mid_point_2.x -= mid_point_2_oscillation.x;
                 mid_point_2.y -= mid_point_2_oscillation.y;
-                mid_point_2_oscillation.x = -random.nextInt(TANK_WIDTH_HALF + TANK_HEIGHT_HALF / 2);
+                mid_point_2_oscillation.x = -random.nextInt(WIDTH_HALF + HEIGHT_HALF / 2);
                 mid_point_2_oscillation.y = calcOrthogonalPoint(mid_point_2.y, mid_point_2.x, mid_point_2_oscillation.x);
                 mid_point_2.x += mid_point_2_oscillation.x;
                 mid_point_2.y += mid_point_2_oscillation.y;

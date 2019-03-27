@@ -8,7 +8,6 @@ import org.newdawn.slick.geom.Vector2f;
 
 public abstract class Robot extends MovableWarAttender {
     Animation walking_animation;
-    private int ROBOT_WIDTH_HALF, ROBOT_HEIGHT_HALF;
 
     public Robot(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
@@ -30,8 +29,8 @@ public abstract class Robot extends MovableWarAttender {
         } catch (SlickException e) {
             e.printStackTrace();
         }
-        ROBOT_WIDTH_HALF = walking_animation.getImage(0).getWidth() / 2;
-        ROBOT_HEIGHT_HALF = walking_animation.getImage(0).getHeight() / 2;
+        WIDTH_HALF = walking_animation.getImage(0).getWidth() / 2;
+        HEIGHT_HALF = walking_animation.getImage(0).getHeight() / 2;
         // just use index 0, all indices are same width and height
         collisionModel = new CollisionModel(position, walking_animation.getImage(0).getWidth(), walking_animation.getImage(0).getHeight());
         super.init();
@@ -41,21 +40,24 @@ public abstract class Robot extends MovableWarAttender {
     public void update(GameContainer gameContainer, int deltaTime) {
         super.update(gameContainer, deltaTime);
         walking_animation.update(deltaTime);
+        if(isDestroyed) {
+            level_delete_listener.notifyForDeletion(this);
+        }
     }
 
     @Override
     public void draw(Graphics graphics) {
         if (isInvincible) {
             if (!invincibility_animation_switch) {
-                walking_animation.getCurrentFrame().drawFlash(position.x - ROBOT_WIDTH_HALF, position.y - ROBOT_HEIGHT_HALF);
-                base_image.drawFlash(position.x - ROBOT_WIDTH_HALF, position.y - ROBOT_HEIGHT_HALF);
+                walking_animation.getCurrentFrame().drawFlash(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
+                base_image.drawFlash(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
             } else {
-                walking_animation.draw(position.x - ROBOT_WIDTH_HALF, position.y - ROBOT_HEIGHT_HALF);
-                base_image.draw(position.x - ROBOT_WIDTH_HALF, position.y - ROBOT_HEIGHT_HALF);
+                walking_animation.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
+                base_image.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
             }
         } else {
-            walking_animation.draw(position.x - ROBOT_WIDTH_HALF, position.y - ROBOT_HEIGHT_HALF);
-            base_image.draw(position.x - ROBOT_WIDTH_HALF, position.y - ROBOT_HEIGHT_HALF);
+            walking_animation.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
+            base_image.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
         }
         super.draw(graphics);
 

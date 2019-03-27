@@ -8,10 +8,7 @@ import models.war_attenders.robots.PlasmaRobot;
 import models.war_attenders.robots.ShellRobot;
 import models.war_attenders.soldiers.EnemySoldier;
 import models.war_attenders.soldiers.RocketSoldier;
-import models.war_attenders.tanks.AgileTank;
-import models.war_attenders.tanks.FlamethrowerTank;
-import models.war_attenders.tanks.MediumTank;
-import models.war_attenders.tanks.RocketTank;
+import models.war_attenders.tanks.*;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TiledMap;
@@ -42,7 +39,7 @@ public class Level_1 extends AbstractLevel {
 
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
         Vector2f playerStartPos = new Vector2f(450, 250);
-        MovableWarAttender tank = new MediumTank(playerStartPos, false);
+        MovableWarAttender tank = new ShellRobot(playerStartPos, false);
         //MovableWarAttender soldier = new PlayerSoldier(gameContainer.getWidth() / 2, gameContainer.getHeight() / 2, false);
         player.init(tank);
 

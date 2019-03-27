@@ -26,6 +26,15 @@ public class BigExplosionAnimation extends AbstractAnimation {
         buffered_instances.add(new MovableAnimationInstance(explosion_animation));
     }
 
+    public void playTenTimes(float xPos, float yPos, float rotation) {
+        final int PLAY_TIMES = 10;
+        int counter = 0;
+        do {
+            super.play(xPos, yPos, rotation);
+            counter ++;
+        } while (counter < PLAY_TIMES);
+    }
+
     private class MovableAnimationInstance extends AnimationInstance {
         private float xDir, yDir;
         private final float SPEED;

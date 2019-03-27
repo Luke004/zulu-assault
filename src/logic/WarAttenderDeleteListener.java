@@ -1,7 +1,8 @@
 package logic;
 
-import models.war_attenders.MovableWarAttender;
+import models.war_attenders.WarAttender;
 
 public interface WarAttenderDeleteListener {
-    void notifyForDeletion(MovableWarAttender warAttender, boolean isHostile);
+    void notifyForDeletion(WarAttender warAttender);
+    void notifyForDeletion(float xPos, float yPos);
 }

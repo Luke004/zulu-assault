@@ -13,7 +13,6 @@ import java.util.List;
 
 public abstract class Soldier extends MovableWarAttender {
     Animation animation;
-    private int SOLDIER_WIDTH_HALF, SOLDIER_HEIGHT_HALF;
 
     public Soldier(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
@@ -31,8 +30,8 @@ public abstract class Soldier extends MovableWarAttender {
         animation.setPingPong(true);
         animation.stop();
 
-        SOLDIER_WIDTH_HALF = animation.getImage(0).getWidth() / 2;
-        SOLDIER_HEIGHT_HALF = animation.getImage(0).getHeight() / 2;
+        WIDTH_HALF = animation.getImage(0).getWidth() / 2;
+        HEIGHT_HALF = animation.getImage(0).getHeight() / 2;
 
         // just use index 0, all indices are same width and height
         collisionModel = new CollisionModel(position, animation.getImage(0).getWidth(), animation.getImage(0).getHeight());
@@ -51,12 +50,12 @@ public abstract class Soldier extends MovableWarAttender {
 
         if (isInvincible) {
             if (!invincibility_animation_switch) {
-                animation.getCurrentFrame().drawFlash(position.x - SOLDIER_WIDTH_HALF, position.y - SOLDIER_HEIGHT_HALF);
+                animation.getCurrentFrame().drawFlash(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
             } else {
-                animation.draw(position.x - SOLDIER_WIDTH_HALF, position.y - SOLDIER_HEIGHT_HALF);
+                animation.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
             }
         } else {
-            animation.draw(position.x - SOLDIER_WIDTH_HALF, position.y - SOLDIER_HEIGHT_HALF);
+            animation.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
         }
 
         //collisionModel.draw(graphics);

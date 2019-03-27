@@ -5,9 +5,11 @@ import logic.CollisionHandler;
 import logic.KeyInputHandler;
 import logic.WarAttenderDeleteListener;
 import models.HUD;
+import models.animations.BigExplosionAnimation;
 import models.interaction_circles.InteractionCircle;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
+import models.war_attenders.soldiers.Soldier;
 import models.war_attenders.tanks.FlamethrowerTank;
 import models.war_attenders.windmills.Windmill;
 import models.war_attenders.windmills.WindmillGreen;
@@ -36,6 +38,7 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
     CollisionHandler collisionHandler;
     private Camera camera;
     private HUD hud;
+    private BigExplosionAnimation bigExplosionAnimation;
 
     public AbstractLevel(String title) {
         super(title);
@@ -63,6 +66,8 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
             warAttender.addListener(this);
         }
         player.getWarAttender().addListener(this);
+        collisionHandler.addListener(this);
+        bigExplosionAnimation = new BigExplosionAnimation(50);
     }
 
     private void setupWindmills() {
@@ -123,6 +128,7 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         keyInputHandler.update(gameContainer, deltaTime);
         collisionHandler.update(gameContainer, deltaTime);
         hud.update(deltaTime);
+        bigExplosionAnimation.update(deltaTime);
         camera.centerOn(player.getWarAttender().position.x, player.getWarAttender().position.y);
     }
 
@@ -144,6 +150,7 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
             enemy_windmills.get(idx).draw(graphics);
         }
         collisionHandler.draw();
+        bigExplosionAnimation.draw();
 
         // un-translate graphics to draw the HUD- items
         camera.untranslateGraphics();
@@ -152,14 +159,26 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
     }
 
     @Override
-    public void notifyForDeletion(MovableWarAttender warAttender, boolean isHostile) {
-        if(isHostile){
+    public void notifyForDeletion(WarAttender warAttender) {
+        if(warAttender.isHostile){
             //hostile_war_attenders.removeIf(enemy -> enemy.isDestroyed);
-            hostile_war_attenders.remove(warAttender);
+            if(warAttender instanceof Windmill){
+                bigExplosionAnimation.playTenTimes(warAttender.position.x + 20, warAttender.position.y + 20, 0);
+            } else {
+                hostile_war_attenders.remove(warAttender);
+                if(warAttender instanceof Soldier) return;
+                bigExplosionAnimation.playTenTimes(warAttender.position.x, warAttender.position.y, 0);
+            }
         } else {
             friendly_war_attenders.remove(warAttender);
             //friendly_war_attenders.removeIf(friend -> friend.isDestroyed);
         }
+    }
+
+    @Override
+    public void notifyForDeletion(float xPos, float yPos) {
+        // a destructible tile was deleted
+        bigExplosionAnimation.playTenTimes(xPos, yPos, 0);
     }
 
     @Override

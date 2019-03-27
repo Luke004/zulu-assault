@@ -35,7 +35,7 @@ public class CollisionHandler {
     private final int ENEMY_TILES_LAYER_IDX = 3;
     private final int GRASS_IDX, CONCRETE_IDX, DIRT_IDX;
     private Map<Integer, Float> destructible_tiles_health_info;
-
+    protected WarAttenderDeleteListener level_delete_listener;
     private SmokeAnimation smokeAnimation;
     private UziHitExplosionAnimation uziHitExplosionAnimation;
     private UziDamageAnimation uziDamageAnimation;
@@ -109,11 +109,15 @@ public class CollisionHandler {
                 windmill_indices[idx] += enemy_tiles.firstGID;
             }
         }
-        smokeAnimation = new SmokeAnimation(1);
+        smokeAnimation = new SmokeAnimation(3);
         uziHitExplosionAnimation = new UziHitExplosionAnimation(10);
-        uziDamageAnimation = new UziDamageAnimation(5);
-        bigExplosionAnimation = new BigExplosionAnimation(5);
+        uziDamageAnimation = new UziDamageAnimation(10);
+        bigExplosionAnimation = new BigExplosionAnimation(10);
         random = new Random();
+    }
+
+    public void addListener(WarAttenderDeleteListener delete_listener) {
+        this.level_delete_listener = delete_listener;
     }
 
     public void draw() {
@@ -383,6 +387,7 @@ public class CollisionHandler {
             if (new_health <= 0) {
                 // TILE DESTROYED
 
+                level_delete_listener.notifyForDeletion(enemy_windmills.get(idx));
                 enemy_windmills.remove(idx);
 
                 // look what tile lies below destroyed windmill (grass, dirt or concrete)
@@ -418,6 +423,9 @@ public class CollisionHandler {
                     // show smoke animation only when drove over tile, not bullet destruction
                     MovableWarAttender playerWarAttender = player.getWarAttender();
                     smokeAnimation.play(playerWarAttender.position.x, playerWarAttender.position.y, playerWarAttender.getRotation());
+                } else {
+                    // destroyed by bullet, show destruction animation using level listener
+                    level_delete_listener.notifyForDeletion(xPos * TILE_WIDTH + 20, yPos * TILE_HEIGHT + 20);
                 }
                 level_map.setTileId(xPos, yPos, LANDSCAPE_TILES_LAYER_IDX, replaceTileIndex);
                 destructible_tiles_health_info.remove(key);
@@ -504,8 +512,13 @@ public class CollisionHandler {
         for (int idx = 0; idx < destructible_tile_indices.length; ++idx) {
             if (tile_ID == destructible_tile_indices[idx]) {
                 if (weapon instanceof RocketLauncher || weapon instanceof Shell) {
-                    // it's a one shot, destroy tile directly and maybe other tiles around
+                    // it's a one shot, destroy tile directly
                     bigExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, 90);
+
+                    // destroyed by bullet, show destruction animation using level listener
+                    level_delete_listener.notifyForDeletion(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20);
+
+                    // maybe also destroy other tiles around
                     doCollateralTileDamage(x, y, idx);
                 } else {
                     if (weapon instanceof Uzi) {

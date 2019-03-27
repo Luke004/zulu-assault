@@ -1,6 +1,5 @@
 package models.war_attenders;
 
-import logic.ItemChangeListener;
 import logic.WarAttenderDeleteListener;
 import models.CollisionModel;
 import models.weapons.Weapon;
@@ -14,6 +13,7 @@ public abstract class MovableWarAttender extends WarAttender {
     // model related
     public Image base_image;
     public CollisionModel collisionModel;
+    public int WIDTH_HALF, HEIGHT_HALF;
 
     // math related
     public Vector2f dir;
