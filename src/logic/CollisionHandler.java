@@ -1,10 +1,7 @@
 package logic;
 
 import models.CollisionModel;
-import models.animations.AbstractAnimation;
-import models.animations.SmokeAnimation;
-import models.animations.UziDamageAnimation;
-import models.animations.UziHitExplosionAnimation;
+import models.animations.*;
 import models.interaction_circles.HealthCircle;
 import models.interaction_circles.InteractionCircle;
 import models.interaction_circles.TeleportCircle;
@@ -13,10 +10,7 @@ import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.Soldier;
 import models.war_attenders.windmills.Windmill;
 import models.weapons.*;
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TileSet;
 import org.newdawn.slick.tiled.TiledMap;
 import player.Player;
@@ -45,6 +39,7 @@ public class CollisionHandler {
     private SmokeAnimation smokeAnimation;
     private UziHitExplosionAnimation uziHitExplosionAnimation;
     private UziDamageAnimation uziDamageAnimation;
+    private BigExplosionAnimation bigExplosionAnimation;
     private Random random;
 
 
@@ -117,6 +112,7 @@ public class CollisionHandler {
         smokeAnimation = new SmokeAnimation(1);
         uziHitExplosionAnimation = new UziHitExplosionAnimation(10);
         uziDamageAnimation = new UziDamageAnimation(5);
+        bigExplosionAnimation = new BigExplosionAnimation(5);
         random = new Random();
     }
 
@@ -124,12 +120,14 @@ public class CollisionHandler {
         smokeAnimation.draw();
         uziHitExplosionAnimation.draw();
         uziDamageAnimation.draw();
+        bigExplosionAnimation.draw();
     }
 
     public void update(GameContainer gameContainer, int deltaTime) {
         smokeAnimation.update(deltaTime);
         uziHitExplosionAnimation.update(deltaTime);
         uziDamageAnimation.update(deltaTime);
+        bigExplosionAnimation.update(deltaTime);
 
         MovableWarAttender player_warAttender = player.getWarAttender();
         handlePlayerCollisions(player_warAttender);
@@ -313,6 +311,8 @@ public class CollisionHandler {
                                 uziDamageAnimation.play(b.bullet_pos.x, b.bullet_pos.y, b.bullet_image.getRotation() - 90
                                 + random.nextInt(30 + 1 + 30) - 30);  // add random extra rotation [-30 , +30]
                             }
+                        }  else if(weapon instanceof Shell || weapon instanceof RocketLauncher){
+                            bigExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, 90);
                         }
                         hostile_war_attenders.get(idx).changeHealth(-weapon.getBulletDamage()); //drain health of hit tank
                         bullet_iterator.remove();   // remove bullet
@@ -458,14 +458,7 @@ public class CollisionHandler {
 
                 // HOSTILE SHOT COLLISION WITH PLAYER
                 if (b.getCollisionModel().intersects(player.getCollisionModel())) {
-                    if (weapon instanceof Uzi) {
-                        uziHitExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, random.nextInt(360));
-
-                        if(!(player instanceof Soldier)){
-                            uziDamageAnimation.play(b.bullet_pos.x, b.bullet_pos.y, b.bullet_image.getRotation() - 90
-                                    + random.nextInt(30 + 1 + 30) - 30);  // add random extra rotation [-30 , +30]
-                        }
-                    }
+                    showBulletHitAnimation(weapon, b);
                     bullet_iterator.remove();   // remove bullet
                     if (!player.isInvincible()) {
                         player.changeHealth(-weapon.getBulletDamage());  //drain health of player
@@ -483,11 +476,23 @@ public class CollisionHandler {
                 // HOSTILE SHOT COLLISION WITH FRIENDLY WAR ATTENDERS
                 for (MovableWarAttender friendly_warAttender : friendly_war_attenders) {
                     if (b.getCollisionModel().intersects(friendly_warAttender.getCollisionModel())) {
+                        showBulletHitAnimation(weapon, b);
+
                         bullet_iterator.remove();
                         friendly_warAttender.changeHealth(-weapon.getBulletDamage());  //drain health of friend
                     }
                 }
             }
+        }
+    }
+
+    private void showBulletHitAnimation(Weapon weapon, Bullet b) {
+        if (weapon instanceof Uzi) {
+            uziHitExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, random.nextInt(360));
+            uziDamageAnimation.play(b.bullet_pos.x, b.bullet_pos.y, b.bullet_image.getRotation() - 90
+                        + random.nextInt(30 + 1 + 30) - 30);  // add random extra rotation [-30 , +30]
+        } else if(weapon instanceof Shell || weapon instanceof RocketLauncher){
+            bigExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, 90);
         }
     }
 
@@ -500,6 +505,7 @@ public class CollisionHandler {
             if (tile_ID == destructible_tile_indices[idx]) {
                 if (weapon instanceof RocketLauncher || weapon instanceof Shell) {
                     // it's a one shot, destroy tile directly and maybe other tiles around
+                    bigExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, 90);
                     doCollateralTileDamage(x, y, idx);
                 } else {
                     if (weapon instanceof Uzi) {
@@ -581,13 +587,7 @@ public class CollisionHandler {
             if (tile_ID == windmill_indices[idx]) {
                 damageWindmill(x, y, weapon);
                 if (weapon instanceof MegaPulse) continue;
-                else if (weapon instanceof Uzi) {
-                    uziHitExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, random.nextInt(360));
-                    uziDamageAnimation.play(b.bullet_pos.x, b.bullet_pos.y, b.bullet_image.getRotation() - 90
-                            + random.nextInt(30 + 1 + 30) - 30);  // add random extra rotation [-30 , +30]
-                }
-
-
+                else showBulletHitAnimation(weapon, b);
                 bullet_iterator.remove();
             }
         }

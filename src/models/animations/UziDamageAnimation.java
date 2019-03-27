@@ -6,12 +6,8 @@ import org.newdawn.slick.SlickException;
 
 public class UziDamageAnimation extends AbstractAnimation {
 
-    final int ANIMATION_WIDTH_HALF, ANIMATION_HEIGHT_HALF;
-
     public UziDamageAnimation(final int BUFFER_SIZE) {
         super(BUFFER_SIZE);
-        ANIMATION_WIDTH_HALF = buffered_instances.get(0).animation.getCurrentFrame().getWidth() / 2;
-        ANIMATION_HEIGHT_HALF = buffered_instances.get(0).animation.getCurrentFrame().getHeight() / 2;
     }
     @Override
     public void addNewInstance() throws SlickException {
