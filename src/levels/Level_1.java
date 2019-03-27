@@ -3,9 +3,7 @@ package levels;
 import models.interaction_circles.HealthCircle;
 import models.interaction_circles.InteractionCircle;
 import models.war_attenders.MovableWarAttender;
-import models.war_attenders.WarAttender;
 import models.war_attenders.robots.PlasmaRobot;
-import models.war_attenders.robots.ShellRobot;
 import models.war_attenders.soldiers.EnemySoldier;
 import models.war_attenders.soldiers.RocketSoldier;
 import models.war_attenders.tanks.*;
@@ -33,7 +31,7 @@ public class Level_1 extends AbstractLevel {
         hostile_war_attenders.add(enemy_soldier_2);
 
         // SETUP PLAYER'S DRIVABLE WAR ATTENDERS
-        MovableWarAttender player_drivable_tank_1 = new MediumTank(new Vector2f(700.f, 300.f), false);
+        MovableWarAttender player_drivable_tank_1 = new ShellTank(new Vector2f(700.f, 300.f), false);
         friendly_war_attenders.add(player_drivable_tank_1);
 
         // SETUP INTERACTION CIRCLES
@@ -42,7 +40,7 @@ public class Level_1 extends AbstractLevel {
 
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
         Vector2f playerStartPos = new Vector2f(450, 250);
-        MovableWarAttender tank = new PlasmaRobot(playerStartPos, false);
+        MovableWarAttender tank = new NapalmTank(playerStartPos, false);
         //MovableWarAttender soldier = new PlayerSoldier(gameContainer.getWidth() / 2, gameContainer.getHeight() / 2, false);
         player.init(tank);
 

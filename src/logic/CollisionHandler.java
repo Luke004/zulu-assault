@@ -10,6 +10,7 @@ import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.Soldier;
 import models.war_attenders.windmills.Windmill;
 import models.weapons.*;
+import org.lwjgl.Sys;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.tiled.TileSet;
 import org.newdawn.slick.tiled.TiledMap;
@@ -212,7 +213,7 @@ public class CollisionHandler {
                         // damage ONLY when we are not a solider
                         if (player_warAttender instanceof Soldier) return;
 
-                        damageTile(x, y, MovableWarAttender.DAMAGE_TO_DESTRUCTIBLE_TILE, destructible_tile_replace_indices[idx]);
+                        damageTile(x, y, null, destructible_tile_replace_indices[idx]);
                         return;
                     }
                 }
@@ -307,8 +308,8 @@ public class CollisionHandler {
                 // PLAYER BULLET COLLISION WITH HOSTILE WAR ATTENDER
                 for (int idx = 0; idx < hostile_war_attenders.size(); ++idx) {
                     if (b.getCollisionModel().intersects(hostile_war_attenders.get(idx).getCollisionModel())) {
-                        if (weapon instanceof MegaPulse) {
-                            if (!((MegaPulse) weapon).hasAlreadyHit(idx)) {
+                        if (weapon instanceof PiercingWeapon) {
+                            if (!((PiercingWeapon) weapon).hasAlreadyHit(idx)) {
                                 hostile_war_attenders.get(idx).changeHealth(-weapon.getBulletDamage()); //drain health of hit tank
                             }
                             continue;
@@ -317,11 +318,11 @@ public class CollisionHandler {
                                 uziHitExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, random.nextInt(360));
 
                                 uziDamageAnimation.play(b.bullet_pos.x, b.bullet_pos.y, b.bullet_image.getRotation() - 90
-                                + random.nextInt(30 + 1 + 30) - 30);  // add random extra rotation [-30 , +30]
+                                        + random.nextInt(30 + 1 + 30) - 30);  // add random extra rotation [-30 , +30]
                             }
-                        }  else if(weapon instanceof Shell || weapon instanceof RocketLauncher){
+                        } else if (weapon instanceof Shell || weapon instanceof RocketLauncher) {
                             bigExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, 90);
-                        } else if (weapon instanceof Plasma){
+                        } else if (weapon instanceof Plasma) {
                             plasmaHitAnimation.play(b.bullet_pos.x, b.bullet_pos.y, 0);
                         }
                         hostile_war_attenders.get(idx).changeHealth(-weapon.getBulletDamage()); //drain health of hit tank
@@ -349,13 +350,13 @@ public class CollisionHandler {
 
     private void damageWindmill(int xPos, int yPos, Weapon weapon) {
         // use a map to track current destructible tile health
-        int key = xPos > yPos ? -xPos * yPos : xPos * yPos;
+        int key = generateKey(xPos, yPos);
         int idx;
 
-        if (weapon instanceof MegaPulse) {
+        if (weapon instanceof PiercingWeapon) {
             for (idx = 0; idx < enemy_windmills.size(); ++idx) {
                 if (enemy_windmills.get(idx).getKey() == key) {
-                    if (!((MegaPulse) weapon).hasAlreadyHit(key)) {
+                    if (!((PiercingWeapon) weapon).hasAlreadyHit(key)) {
                         enemy_windmills.get(idx).changeHealth(-weapon.getBulletDamage()); //drain health of hit tank
                         break;
                     }
@@ -418,20 +419,25 @@ public class CollisionHandler {
         }
     }
 
-    private void damageTile(int xPos, int yPos, float damage, int replaceTileIndex) {
+    private void damageTile(int xPos, int yPos, Weapon weapon, int replaceTileIndex) {
+        // if weapon is null, the tile was damaged by contact
+        float bullet_damage = weapon == null ? MovableWarAttender.DAMAGE_TO_DESTRUCTIBLE_TILE : weapon.getBulletDamage();
         // use a map to track current destructible tile health
-        int key = xPos > yPos ? -xPos * yPos : xPos * yPos;
+        int key = generateKey(xPos, yPos);
         if (destructible_tiles_health_info.containsKey(key)) {
-            float new_health = destructible_tiles_health_info.get(key) - damage / DESTRUCTIBLE_TILE_NORMAL_ARMOR;
+            float new_health = destructible_tiles_health_info.get(key) - bullet_damage / DESTRUCTIBLE_TILE_NORMAL_ARMOR;
             if (new_health <= 0) {
                 // TILE DESTROYED
-                if (damage == MovableWarAttender.DAMAGE_TO_DESTRUCTIBLE_TILE) {
+                if (weapon == null) {
                     // show smoke animation only when drove over tile, not bullet destruction
                     MovableWarAttender playerWarAttender = player.getWarAttender();
                     smokeAnimation.play(playerWarAttender.position.x, playerWarAttender.position.y, playerWarAttender.getRotation());
                 } else {
                     // destroyed by bullet, show destruction animation using level listener
-                    level_delete_listener.notifyForDeletion(xPos * TILE_WIDTH + 20, yPos * TILE_HEIGHT + 20);
+                    if (weapon instanceof Plasma)
+                        bigExplosionAnimation.play(xPos * TILE_WIDTH + 20, yPos * TILE_HEIGHT + 20, 0);
+                    else if (!(weapon instanceof Napalm))
+                        level_delete_listener.notifyForDeletion(xPos * TILE_WIDTH + 20, yPos * TILE_HEIGHT + 20);
                 }
                 level_map.setTileId(xPos, yPos, LANDSCAPE_TILES_LAYER_IDX, replaceTileIndex);
                 destructible_tiles_health_info.remove(key);
@@ -440,10 +446,10 @@ public class CollisionHandler {
             }
         } else {
             if (replaceTileIndex == 44) {  // this ONE low health tile cactus thing LOL
-                destructible_tiles_health_info.put(key, TILE_HEALTH - damage / DESTRUCTIBLE_TILE_LOW_ARMOR);
+                destructible_tiles_health_info.put(key, TILE_HEALTH - bullet_damage / DESTRUCTIBLE_TILE_LOW_ARMOR);
                 return;
             }
-            destructible_tiles_health_info.put(key, TILE_HEALTH - damage / DESTRUCTIBLE_TILE_NORMAL_ARMOR);
+            destructible_tiles_health_info.put(key, TILE_HEALTH - bullet_damage / DESTRUCTIBLE_TILE_NORMAL_ARMOR);
         }
     }
 
@@ -504,10 +510,10 @@ public class CollisionHandler {
         if (weapon instanceof Uzi) {
             uziHitExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, random.nextInt(360));
             uziDamageAnimation.play(b.bullet_pos.x, b.bullet_pos.y, b.bullet_image.getRotation() - 90
-                        + random.nextInt(30 + 1 + 30) - 30);  // add random extra rotation [-30 , +30]
-        } else if(weapon instanceof Shell || weapon instanceof RocketLauncher){
+                    + random.nextInt(30 + 1 + 30) - 30);  // add random extra rotation [-30 , +30]
+        } else if (weapon instanceof Shell || weapon instanceof RocketLauncher) {
             bigExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, 90);
-        } else if(weapon instanceof Plasma){
+        } else if (weapon instanceof Plasma) {
             plasmaHitAnimation.play(b.bullet_pos.x, b.bullet_pos.y, 0);
         }
     }
@@ -516,6 +522,7 @@ public class CollisionHandler {
         int x = (int) b.bullet_pos.x / TILE_WIDTH;
         int y = (int) b.bullet_pos.y / TILE_HEIGHT;
         int tile_ID = level_map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
+
 
         for (int idx = 0; idx < destructible_tile_indices.length; ++idx) {
             if (tile_ID == destructible_tile_indices[idx]) {
@@ -526,17 +533,28 @@ public class CollisionHandler {
                     // destroyed by bullet, show destruction animation using level listener
                     level_delete_listener.notifyForDeletion(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20);
 
+                    // destroy the hit tile directly
+                    level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
+
                     // maybe also destroy other tiles around
                     doCollateralTileDamage(x, y, idx);
                 } else {
-                    if (weapon instanceof Uzi) {
+                    if (weapon instanceof PiercingWeapon) {
+                        if (weapon instanceof MegaPulse) {
+                            // it's a one shot, destroy tile directly
+                            level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
+                            level_delete_listener.notifyForDeletion(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20);
+                        } else if (!((PiercingWeapon) weapon).hasAlreadyHit(generateKey(x, y))) {
+                            damageTile(x, y, weapon, destructible_tile_replace_indices[idx]);
+                        }
+                        continue;
+                    } else if (weapon instanceof Uzi) {
                         uziHitExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, random.nextInt(360));
-                    } else if(weapon instanceof Plasma){
+                    } else if (weapon instanceof Plasma) {
                         plasmaHitAnimation.play(b.bullet_pos.x, b.bullet_pos.y, 0);
                     }
-                    damageTile(x, y, weapon.getBulletDamage(), destructible_tile_replace_indices[idx]);
+                    damageTile(x, y, weapon, destructible_tile_replace_indices[idx]);
                 }
-                if (weapon instanceof MegaPulse) continue;
                 bullet_iterator.remove();
                 return true;
             }
@@ -545,9 +563,6 @@ public class CollisionHandler {
     }
 
     private void doCollateralTileDamage(int x, int y, int idx) {
-        // destroy the hit tile directly
-        level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
-
         // maybe destroy nearby tiles
         List<Tile> tiles = new ArrayList<>();
         if (y > 0) {
@@ -609,7 +624,7 @@ public class CollisionHandler {
             int tile_ID = level_map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
             if (tile_ID == windmill_indices[idx]) {
                 damageWindmill(x, y, weapon);
-                if (weapon instanceof MegaPulse) continue;
+                if (weapon instanceof PiercingWeapon) continue;
                 else showBulletHitAnimation(weapon, b);
                 bullet_iterator.remove();
             }
@@ -634,6 +649,10 @@ public class CollisionHandler {
         return false;
     }
 
+    private int generateKey(int xPos, int yPos) {
+        return xPos > yPos ? -xPos * yPos : xPos * yPos;
+    }
+
     private class Tile {
         int tileID, xVal, yVal, key;
 
@@ -641,7 +660,7 @@ public class CollisionHandler {
             this.tileID = tileID;
             this.xVal = xVal;
             this.yVal = yVal;
-            this.key = xVal > yVal ? -xVal * yVal : xVal * yVal;
+            this.key = generateKey(xVal, yVal);
         }
     }
 }

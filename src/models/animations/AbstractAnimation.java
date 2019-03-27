@@ -44,17 +44,14 @@ public abstract class AbstractAnimation {
     }
 
     private AnimationInstance getNextAvailableInstance() {
-        /*
-        if (buffered_instances.size() == 0) {
-            // just in case the instances aren't enough during runtime, add another one ad hoc
-            SmokeInstance newSmokeInstance = new SmokeInstance(smoke_animation.copy());
-            active_instances.add(newSmokeInstance);
-            return newSmokeInstance;
+        AnimationInstance instance = null;
+        try {
+            instance = buffered_instances.get(0);
+            active_instances.add(instance);
+            buffered_instances.remove(instance);
+        } catch (Exception e) {
+            System.out.println("Instance size too low! Increase size of buffered_instances list!");
         }
-        */
-        AnimationInstance instance = buffered_instances.get(0);
-        active_instances.add(instance);
-        buffered_instances.remove(instance);
         return instance;
     }
 

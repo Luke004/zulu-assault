@@ -67,7 +67,7 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         }
         player.getWarAttender().addListener(this);
         collisionHandler.addListener(this);
-        bigExplosionAnimation = new BigExplosionAnimation(50);
+        bigExplosionAnimation = new BigExplosionAnimation(100);
         imageDrawer = new ImageDrawer();
     }
 

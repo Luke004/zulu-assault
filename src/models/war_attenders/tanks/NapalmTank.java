@@ -1,17 +1,18 @@
 package models.war_attenders.tanks;
 
 import models.CollisionModel;
+import models.weapons.Napalm;
 import models.weapons.Plasma;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
-public class FlamethrowerTank extends Tank {
+public class NapalmTank extends Tank {
 
-    public FlamethrowerTank(Vector2f startPos, boolean isHostile) {
+    public NapalmTank(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
 
-        // individual MediumTank attributes
+        // individual ShellTank attributes
         max_health = 100;
         current_health = max_health;
         armor = 75;
@@ -22,6 +23,7 @@ public class FlamethrowerTank extends Tank {
         rotate_speed = 0.15f;
         turret_rotate_speed = 0.2f;
         weapons.add(new Plasma());  // WEAPON_1
+        weapons.add(new Napalm());  // WEAPON_2
 
         try {
             base_image = new Image("assets/war_attenders/tanks/flamethrower_tank.png");

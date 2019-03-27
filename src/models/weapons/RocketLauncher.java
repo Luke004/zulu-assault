@@ -85,20 +85,21 @@ public class RocketLauncher extends Weapon {
     }
 
     private Animation getNextFreshRocket() {
-        if (buffered_rockets.get(0) != null) {
-            Animation rocket = buffered_rockets.get(0);
+        Animation rocket = null;
+        try {
+            rocket = buffered_rockets.get(0);
             active_rockets.add(rocket);
             buffered_rockets.remove(rocket);
-            return rocket;
-        } else throw new IllegalAccessError("Not enough buffered rockets in buffered_rockets list!");
+        } catch (Exception e) {
+            System.out.println("Buffered rockets size too low! Increase size of buffered_rockets list!");
+        }
+        return rocket;
     }
 
     private void putRocketBackToBuffer() {
         Animation rocket = active_rockets.get(active_rockets.size() - 1);
-        if (rocket != null) {
-            buffered_rockets.add(rocket);
-            active_rockets.remove(rocket);
-        }
+        buffered_rockets.add(rocket);
+        active_rockets.remove(rocket);
     }
 
     public class Rocket extends Bullet {
