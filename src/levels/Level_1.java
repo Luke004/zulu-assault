@@ -23,14 +23,17 @@ public class Level_1 extends AbstractLevel {
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
         // SETUP ENEMY WAR ATTENDERS
-        MovableWarAttender enemy_tank_1 = new ShellRobot(new Vector2f(100.f, 100.f), true);
+        MovableWarAttender enemy_tank_1 = new PlasmaRobot(new Vector2f(100.f, 100.f), true);
         hostile_war_attenders.add(enemy_tank_1);
 
         MovableWarAttender enemy_soldier_1 = new RocketSoldier(new Vector2f(450.f, 400.f), true);
         hostile_war_attenders.add(enemy_soldier_1);
 
+        MovableWarAttender enemy_soldier_2 = new EnemySoldier(new Vector2f(2000.f, 2500.f), true);
+        hostile_war_attenders.add(enemy_soldier_2);
+
         // SETUP PLAYER'S DRIVABLE WAR ATTENDERS
-        MovableWarAttender player_drivable_tank_1 = new AgileTank(new Vector2f(700.f, 300.f), false);
+        MovableWarAttender player_drivable_tank_1 = new MediumTank(new Vector2f(700.f, 300.f), false);
         friendly_war_attenders.add(player_drivable_tank_1);
 
         // SETUP INTERACTION CIRCLES
@@ -39,7 +42,7 @@ public class Level_1 extends AbstractLevel {
 
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
         Vector2f playerStartPos = new Vector2f(450, 250);
-        MovableWarAttender tank = new FlamethrowerTank(playerStartPos, false);
+        MovableWarAttender tank = new PlasmaRobot(playerStartPos, false);
         //MovableWarAttender soldier = new PlayerSoldier(gameContainer.getWidth() / 2, gameContainer.getHeight() / 2, false);
         player.init(tank);
 

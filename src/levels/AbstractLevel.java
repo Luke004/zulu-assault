@@ -10,22 +10,17 @@ import models.interaction_circles.InteractionCircle;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.Soldier;
-import models.war_attenders.tanks.FlamethrowerTank;
 import models.war_attenders.windmills.Windmill;
 import models.war_attenders.windmills.WindmillGreen;
 import models.war_attenders.windmills.WindmillGrey;
 import models.war_attenders.windmills.WindmillYellow;
-import org.newdawn.slick.BasicGame;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TileSet;
 import org.newdawn.slick.tiled.TiledMap;
 import player.Player;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public abstract class AbstractLevel extends BasicGame implements WarAttenderDeleteListener {
@@ -38,7 +33,12 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
     CollisionHandler collisionHandler;
     private Camera camera;
     private HUD hud;
+
+    // for destruction of tanks or robots
     private BigExplosionAnimation bigExplosionAnimation;
+
+    // for death of soldiers
+    ImageDrawer imageDrawer;
 
     public AbstractLevel(String title) {
         super(title);
@@ -68,6 +68,7 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         player.getWarAttender().addListener(this);
         collisionHandler.addListener(this);
         bigExplosionAnimation = new BigExplosionAnimation(50);
+        imageDrawer = new ImageDrawer();
     }
 
     private void setupWindmills() {
@@ -128,6 +129,7 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         keyInputHandler.update(gameContainer, deltaTime);
         collisionHandler.update(gameContainer, deltaTime);
         hud.update(deltaTime);
+        imageDrawer.update(deltaTime);
         bigExplosionAnimation.update(deltaTime);
         camera.centerOn(player.getWarAttender().position.x, player.getWarAttender().position.y);
     }
@@ -150,6 +152,7 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
             enemy_windmills.get(idx).draw(graphics);
         }
         collisionHandler.draw();
+        imageDrawer.draw();
         bigExplosionAnimation.draw();
 
         // un-translate graphics to draw the HUD- items
@@ -166,10 +169,12 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
                 bigExplosionAnimation.playTenTimes(warAttender.position.x + 20, warAttender.position.y + 20, 0);
             } else {
                 hostile_war_attenders.remove(warAttender);
-                if(warAttender instanceof Soldier) return;
-                bigExplosionAnimation.playTenTimes(warAttender.position.x, warAttender.position.y, 0);
+                if(warAttender instanceof Soldier) imageDrawer.drawSeconds(3, warAttender);
+                else bigExplosionAnimation.playTenTimes(warAttender.position.x, warAttender.position.y, 0);
             }
         } else {
+            if(warAttender instanceof Soldier) imageDrawer.drawSeconds(3, warAttender);
+            else bigExplosionAnimation.playTenTimes(warAttender.position.x, warAttender.position.y, 0);
             friendly_war_attenders.remove(warAttender);
             //friendly_war_attenders.removeIf(friend -> friend.isDestroyed);
         }
@@ -184,5 +189,47 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
     @Override
     public void keyReleased(int key, char c) {
         keyInputHandler.onKeyRelease(key);
+    }
+
+    private class ImageDrawer {
+        private Image dead_body_image_friendly;
+        private Image dead_body_image_hostile;
+        private int DRAW_TIME;
+        private int current_time;
+        private boolean isStopped, isHostile;
+        private float xPos, yPos;
+
+        ImageDrawer(){
+            try {
+                dead_body_image_friendly = new Image("assets/war_attenders/soldiers/player_soldier_dead.png");
+                dead_body_image_hostile = new Image("assets/war_attenders/soldiers/enemy_soldier_dead.png");
+            } catch (SlickException e) {
+                e.printStackTrace();
+            }
+            isStopped = true;
+        }
+
+        void update(int deltaTime){
+            if(isStopped) return;
+            current_time += deltaTime;
+            if(current_time > DRAW_TIME){
+                isStopped = true;
+            }
+        }
+
+        void draw(){
+            if(isStopped) return;
+            if(isHostile) dead_body_image_hostile.drawCentered(xPos, yPos);
+            else dead_body_image_friendly.draw(xPos, yPos);
+        }
+
+        void drawSeconds(int seconds, WarAttender soldier){
+            this.DRAW_TIME = seconds * 1000;
+            current_time = 0;
+            isStopped = false;
+            this.isHostile = soldier.isHostile;
+            this.xPos = soldier.position.x;
+            this.yPos = soldier.position.y;
+        }
     }
 }

@@ -42,6 +42,10 @@ public abstract class Soldier extends MovableWarAttender {
     public void update(GameContainer gameContainer, int deltaTime) {
         super.update(gameContainer, deltaTime);
         animation.update(deltaTime);
+
+        if(isDestroyed){
+            level_delete_listener.notifyForDeletion(this);
+        }
     }
 
     @Override
