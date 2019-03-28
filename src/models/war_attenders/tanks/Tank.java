@@ -184,13 +184,6 @@ public abstract class Tank extends MovableWarAttender {
         // plane instanceof is not needed, nothing happens there
     }
 
-    /*
-    @Override
-    protected void showDestructionAnimation(Graphics graphics) {
-
-    }
-    */
-
     @Override
     public void blockMovement() {
         position.sub(dir);  // set the position on last position before the collision
@@ -207,7 +200,14 @@ public abstract class Tank extends MovableWarAttender {
 
     @Override
     public void setRotation(float angle) {
-        turret.setRotation(angle);
+        float rotation = getShortestRotation(turret.getRotation(), angle);
+        if(rotation == 0) return;
+
+        if (rotation < 0) {
+            turret.rotate(-turret_rotate_speed);
+        } else {
+            turret.rotate(turret_rotate_speed);
+        }
     }
 
     @Override

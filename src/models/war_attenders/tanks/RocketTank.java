@@ -20,7 +20,7 @@ public class RocketTank extends Tank {
         acceleration_factor = 0.0001f;
         deceleration_factor = 0.0009f;
         rotate_speed = 0.15f;
-        turret_rotate_speed = 0.2f;
+        turret_rotate_speed = 0.35f;
         weapons.add(new RocketLauncher(isHostile));   // WEAPON_1
 
         try {

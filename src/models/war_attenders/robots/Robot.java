@@ -8,6 +8,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 public abstract class Robot extends MovableWarAttender {
     Animation walking_animation;
+    float turret_rotate_speed;
 
     public Robot(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
@@ -136,7 +137,14 @@ public abstract class Robot extends MovableWarAttender {
 
     @Override
     public void setRotation(float angle) {
-        base_image.setRotation(angle);
+        float rotation = getShortestRotation(base_image.getRotation(), angle);
+        if(rotation == 0) return;
+
+        if (rotation < 0) {
+            base_image.rotate(-turret_rotate_speed);
+        } else {
+            base_image.rotate(turret_rotate_speed);
+        }
     }
 
     @Override

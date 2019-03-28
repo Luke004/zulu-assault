@@ -21,7 +21,7 @@ public class NapalmTank extends Tank {
         acceleration_factor = 0.00005f;
         deceleration_factor = 0.0009f;
         rotate_speed = 0.15f;
-        turret_rotate_speed = 0.2f;
+        turret_rotate_speed = 0.4f;
         weapons.add(new Plasma());  // WEAPON_1
         weapons.add(new Napalm());  // WEAPON_2
 

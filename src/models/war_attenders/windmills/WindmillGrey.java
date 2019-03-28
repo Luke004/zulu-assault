@@ -11,6 +11,7 @@ public class WindmillGrey extends Windmill {
         super(startPos, isHostile, key);
 
         // individual WindmillGrey attributes
+        turret_rotate_speed = 0.4f;
         weapons.add(new Shell());  // WEAPON_1
 
         try {

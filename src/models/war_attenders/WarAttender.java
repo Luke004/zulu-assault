@@ -183,6 +183,30 @@ public abstract class WarAttender {
         return current_health;
     }
 
+    public static float getShortestRotation(float a, float b) {
+        float small, big;
+        if (a < b) {
+            small = a;
+            big = b;
+        }
+        else if (a > b) {
+            small = b;
+            big = a;
+        }
+        else {
+            return 0;
+        }
+        float result = (360 - big) + small;
+
+        if (result > big - small) {
+            result = big - small;
+        }
+        if ((a + result) % 360 != b){
+            result = -result;
+        }
+        return result;
+    }
+
     public enum WeaponType {
         WEAPON_1, WEAPON_2, MEGA_PULSE
     }

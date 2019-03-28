@@ -80,7 +80,14 @@ public abstract class Windmill extends WarAttender {
 
     @Override
     public void setRotation(float angle) {
-        turret.setRotation(angle);
+        float rotation = getShortestRotation(turret.getRotation(), angle);
+        if(rotation == 0) return;
+
+        if (rotation < 0) {
+            turret.rotate(-turret_rotate_speed);
+        } else {
+            turret.rotate(turret_rotate_speed);
+        }
     }
 
     public int getKey(){

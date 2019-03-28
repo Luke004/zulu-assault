@@ -1,10 +1,6 @@
 package models.war_attenders.robots;
 
-import models.CollisionModel;
 import models.weapons.DoublePlasma;
-import models.weapons.Plasma;
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
@@ -21,6 +17,7 @@ public class PlasmaRobot extends Robot {
         max_speed = 0.15f;
         current_speed = max_speed;
         rotate_speed = 0.25f;
+        turret_rotate_speed = 0.5f;
         weapons.add(new DoublePlasma());
 
         try {

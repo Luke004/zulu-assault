@@ -11,6 +11,7 @@ public class WindmillYellow extends Windmill {
         super(startPos, isHostile, key);
 
         // individual WindmillYellow attributes
+        turret_rotate_speed = 0.45f;
         weapons.add(new RocketLauncher(isHostile));   // WEAPON_1
 
         try {

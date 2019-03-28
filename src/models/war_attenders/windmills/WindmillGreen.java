@@ -12,6 +12,7 @@ public class WindmillGreen extends Windmill {
         super(startPos, isHostile, key);
 
         // individual WindmillGreen attributes
+        turret_rotate_speed = 0.5f;
         weapons.add(new Uzi());  // WEAPON_1
 
         try {

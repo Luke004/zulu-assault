@@ -17,6 +17,7 @@ public class ShellRobot extends Robot{
         max_speed = 0.15f;
         current_speed = max_speed;
         rotate_speed = 0.25f;
+        turret_rotate_speed = 0.3f;
         weapons.add(new DoubleShell());
 
         try {

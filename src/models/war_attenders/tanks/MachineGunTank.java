@@ -22,7 +22,7 @@ public class MachineGunTank extends Tank {
         acceleration_factor = 0.0005f;
         deceleration_factor = 0.0005f;
         rotate_speed = 0.15f;
-        turret_rotate_speed = 0.2f;
+        turret_rotate_speed = 0.5f;
         weapons.add(new MachineGun());  // WEAPON_1
 
         try {

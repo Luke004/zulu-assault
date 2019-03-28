@@ -124,8 +124,18 @@ public abstract class Soldier extends MovableWarAttender {
 
     @Override
     public void setRotation(float angle) {
-        for (int idx = 0; idx < animation.getFrameCount(); ++idx) {
-            animation.getImage(idx).setRotation(angle);
+        float rotation = getShortestRotation(animation.getImage(0).getRotation(), angle);
+        System.out.println(rotation);
+        if(rotation == 0) return;
+
+        if (rotation < 0) {
+            for (int idx = 0; idx < animation.getFrameCount(); ++idx) {
+                animation.getImage(idx).rotate(-rotate_speed * 5);
+            }
+        } else {
+            for (int idx = 0; idx < animation.getFrameCount(); ++idx) {
+                animation.getImage(idx).rotate(rotate_speed * 5);
+            }
         }
     }
 
