@@ -29,12 +29,10 @@ public class WaypointManager {
     public void adjustAfterRotation(Vector2f pos, float angle) {
         float angle2 = calculateAngle(pos, waypoints.get(current_point_idx));
         float shortest_angle = getShortestAngle(angle2, angle);
-        System.out.println("shortest angle:" + shortest_angle);
         if (shortest_angle < 0) rotate_direction = MovableWarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT;
         else rotate_direction = MovableWarAttender.RotateDirection.ROTATE_DIRECTION_LEFT;
         wish_angle = (int) (angle - shortest_angle);
         if (wish_angle >= 360) wish_angle -= 360;
-        System.out.println("wish angle " + wish_angle);
     }
 
     public float distToNextVector(Vector2f position) {

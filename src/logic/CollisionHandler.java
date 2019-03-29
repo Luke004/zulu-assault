@@ -10,7 +10,6 @@ import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.Soldier;
 import models.war_attenders.windmills.Windmill;
 import models.weapons.*;
-import org.lwjgl.Sys;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.tiled.TileSet;
 import org.newdawn.slick.tiled.TiledMap;
@@ -21,7 +20,7 @@ import java.util.*;
 
 public class CollisionHandler {
     private Player player;
-    private List<MovableWarAttender> friendly_war_attenders, hostile_war_attenders;
+    private List<MovableWarAttender> friendly_war_attenders, hostile_war_attenders, all_movable_war_attenders;
     private List<Windmill> enemy_windmills;
     private List<InteractionCircle> interaction_circles;
     private TiledMap level_map;
@@ -53,6 +52,12 @@ public class CollisionHandler {
         this.interaction_circles = interaction_circles;
         this.player = player;
         this.level_map = level_map;
+
+        // create a global movableWarAttender list for collisions between them
+        all_movable_war_attenders = new ArrayList<>(friendly_war_attenders);
+        all_movable_war_attenders.addAll(hostile_war_attenders);
+        all_movable_war_attenders.add(player.getWarAttender());
+
         TILE_WIDTH = level_map.getTileWidth();
         TILE_HEIGHT = level_map.getTileHeight();
         MAP_WIDTH = level_map.getWidth() * TILE_WIDTH;
@@ -139,9 +144,9 @@ public class CollisionHandler {
         plasmaHitAnimation.update(deltaTime);
 
         MovableWarAttender player_warAttender = player.getWarAttender();
-        handlePlayerCollisions(player_warAttender);
+        handleMovableWarAttenderCollisions(player_warAttender);
         handleBulletCollisions(player_warAttender);
-        updateHostileShots(player_warAttender, friendly_war_attenders, deltaTime);
+        handleHostileCollisions(player_warAttender, friendly_war_attenders, deltaTime);
 
         for (InteractionCircle interaction_circle : interaction_circles) {
             if (player_warAttender.getCollisionModel().intersects(interaction_circle.getCollisionModel())) {
@@ -192,9 +197,9 @@ public class CollisionHandler {
         */
     }
 
-    private void handlePlayerCollisions(MovableWarAttender player_warAttender) {
-        if (player_warAttender.isMoving()) {
-            CollisionModel.Point[] playerCorners = player_warAttender.getCollisionModel().getPoints();
+    private void handleMovableWarAttenderCollisions(MovableWarAttender current_warAttender) {
+        if (current_warAttender.isMoving()) {
+            CollisionModel.Point[] playerCorners = current_warAttender.getCollisionModel().getPoints();
             int idx, landscape_layer_tile_ID, item_layer_tile_ID, enemy_layer_tile_ID, x, y;
 
             for (CollisionModel.Point p : playerCorners) {
@@ -204,46 +209,50 @@ public class CollisionHandler {
                 item_layer_tile_ID = level_map.getTileId(x, y, ITEM_TILES_LAYER_IDX);
                 enemy_layer_tile_ID = level_map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
 
-                // COLLISION BETWEEN PLAYER ITSELF AND DESTRUCTIBLE TILES
+                // COLLISION BETWEEN WAR ATTENDER ITSELF AND DESTRUCTIBLE TILES
                 for (idx = 0; idx < destructible_tile_indices.length; ++idx) {
                     if (landscape_layer_tile_ID == destructible_tile_indices[idx]) {
                         // block movement as long as tile exists and damage the destructible tile
-                        player_warAttender.blockMovement();
+                        current_warAttender.blockMovement();
 
                         // damage ONLY when we are not a solider
-                        if (player_warAttender instanceof Soldier) return;
+                        if (current_warAttender instanceof Soldier) return;
 
-                        damageTile(x, y, null, destructible_tile_replace_indices[idx]);
+                        damageTile(x, y, null, destructible_tile_replace_indices[idx], current_warAttender);
                         return;
                     }
                 }
 
-                // COLLISION BETWEEN PLAYER ITSELF AND INDESTRUCTIBLE TILES
+                // COLLISION BETWEEN WAR ATTENDER ITSELF AND INDESTRUCTIBLE TILES
                 for (idx = 0; idx < indestructible_tile_indices.length; ++idx) {
                     if (landscape_layer_tile_ID == indestructible_tile_indices[idx]) {
                         // block movement forever because tile is indestructible
-                        player_warAttender.blockMovement();
+                        current_warAttender.blockMovement();
                         return;
                     }
                 }
 
-                // COLLISION BETWEEN PLAYER ITSELF AND WINDMILLS
-                for (idx = 0; idx < windmill_indices.length; ++idx) {
-                    if (enemy_layer_tile_ID == windmill_indices[idx]) {
-                        // block movement as long as tile exists and damage the destructible tile
-                        player_warAttender.blockMovement();
+                if (!current_warAttender.isHostile) {
+                    // COLLISION BETWEEN FRIENDLY WAR ATTENDER AND WINDMILLS
+                    for (idx = 0; idx < windmill_indices.length; ++idx) {
+                        if (enemy_layer_tile_ID == windmill_indices[idx]) {
+                            // block movement as long as tile exists and damage the destructible tile
+                            current_warAttender.blockMovement();
 
-                        // damage ONLY when we are not a solider
-                        if (player_warAttender instanceof Soldier) return;
+                            // damage ONLY when we are not a solider
+                            if (current_warAttender instanceof Soldier) return;
 
-                        damageWindmill(x, y, 1.f);
-                        return;
+                            damageWindmill(x, y, MovableWarAttender.DAMAGE_TO_DESTRUCTIBLE_TILE);
+                            return;
+                        }
                     }
                 }
 
-                // COLLISION BETWEEN PLAYER ITSELF AND ITEMS
+                // COLLISION BETWEEN WAR ATTENDER ITSELF AND ITEMS
                 for (idx = 0; idx < item_indices.length; ++idx) {
                     if (item_layer_tile_ID == item_indices[idx]) {
+                        level_map.setTileId(x, y, ITEM_TILES_LAYER_IDX, 0); // delete the item tile
+                        if(current_warAttender != player.getWarAttender()) return; // don't give item on non player pickup
                         switch (idx) {
                             case 0:
                                 player.addItem(Player.Item.INVINCIBLE);
@@ -259,34 +268,26 @@ public class CollisionHandler {
                                 break;
                             case 4: // silver wrench
                                 // don't take the wrench if player is at max health
-                                if (player_warAttender.isMaxHealth()) return;
-                                player_warAttender.changeHealth(10);
+                                if (current_warAttender.isMaxHealth()) return;
+                                current_warAttender.changeHealth(10);
                                 break;
                             case 5: // golden wrench
                                 // don't take the wrench if player is at max health
-                                if (player_warAttender.isMaxHealth()) return;
-                                player_warAttender.changeHealth(50);
+                                if (current_warAttender.isMaxHealth()) return;
+                                current_warAttender.changeHealth(50);
                                 break;
                             default:
                                 return;
                         }
-                        level_map.setTileId(x, y, ITEM_TILES_LAYER_IDX, 0); // delete the item tile
                     }
                 }
             }
 
-
-            // COLLISION BETWEEN PLAYER ITSELF AND FRIENDLY WAR ATTENDERS
-            for (MovableWarAttender warAttender : friendly_war_attenders) {
-                if (player_warAttender.getCollisionModel().intersects(warAttender.getCollisionModel())) {
-                    player_warAttender.onCollision(warAttender);
-                    return;
-                }
-            }
-            // COLLISION BETWEEN PLAYER ITSELF AND HOSTILE WAR ATTENDERS
-            for (MovableWarAttender hostile_warAttender : hostile_war_attenders) {
-                if (player_warAttender.getCollisionModel().intersects(hostile_warAttender.getCollisionModel())) {
-                    player_warAttender.onCollision(hostile_warAttender);
+            // COLLISION BETWEEN WAR ATTENDER ITSELF AND OTHER WAR ATTENDERS
+            for(MovableWarAttender movableWarAttender : all_movable_war_attenders){
+                if (movableWarAttender.position == current_warAttender.position) continue;    // its himself
+                if (current_warAttender.getCollisionModel().intersects(movableWarAttender.getCollisionModel())) {
+                    current_warAttender.onCollision(movableWarAttender);
                     return;
                 }
             }
@@ -419,7 +420,7 @@ public class CollisionHandler {
         }
     }
 
-    private void damageTile(int xPos, int yPos, Weapon weapon, int replaceTileIndex) {
+    private void damageTile(int xPos, int yPos, Weapon weapon, int replaceTileIndex, MovableWarAttender warAttender) {
         // if weapon is null, the tile was damaged by contact
         float bullet_damage = weapon == null ? MovableWarAttender.DAMAGE_TO_DESTRUCTIBLE_TILE : weapon.getBulletDamage();
         // use a map to track current destructible tile health
@@ -430,8 +431,7 @@ public class CollisionHandler {
                 // TILE DESTROYED
                 if (weapon == null) {
                     // show smoke animation only when drove over tile, not bullet destruction
-                    MovableWarAttender playerWarAttender = player.getWarAttender();
-                    smokeAnimation.play(playerWarAttender.position.x, playerWarAttender.position.y, playerWarAttender.getRotation());
+                    smokeAnimation.play(warAttender.position.x, warAttender.position.y, warAttender.getRotation());
                 } else {
                     // destroyed by bullet, show destruction animation using level listener
                     if (weapon instanceof Plasma)
@@ -453,10 +453,11 @@ public class CollisionHandler {
         }
     }
 
-    private void updateHostileShots(MovableWarAttender player_warAttender, List<MovableWarAttender> friendly_war_attenders, int deltaTime) {
+    private void handleHostileCollisions(MovableWarAttender player_warAttender, List<MovableWarAttender> friendly_war_attenders, int deltaTime) {
         for (MovableWarAttender hostile_warAttender : hostile_war_attenders) {
             hostile_warAttender.shootAtEnemies(player_warAttender, friendly_war_attenders, deltaTime);
             hostileShotCollision(hostile_warAttender, player_warAttender);
+            handleMovableWarAttenderCollisions(hostile_warAttender);
         }
 
         for (WarAttender enemy_windmill : enemy_windmills) {
@@ -545,7 +546,7 @@ public class CollisionHandler {
                             level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
                             level_delete_listener.notifyForDeletion(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20);
                         } else if (!((PiercingWeapon) weapon).hasAlreadyHit(generateKey(x, y))) {
-                            damageTile(x, y, weapon, destructible_tile_replace_indices[idx]);
+                            damageTile(x, y, weapon, destructible_tile_replace_indices[idx], null);
                         }
                         continue;
                     } else if (weapon instanceof Uzi) {
@@ -553,7 +554,7 @@ public class CollisionHandler {
                     } else if (weapon instanceof Plasma) {
                         plasmaHitAnimation.play(b.bullet_pos.x, b.bullet_pos.y, 0);
                     }
-                    damageTile(x, y, weapon, destructible_tile_replace_indices[idx]);
+                    damageTile(x, y, weapon, destructible_tile_replace_indices[idx], null);
                 }
                 bullet_iterator.remove();
                 return true;
