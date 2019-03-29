@@ -1,5 +1,6 @@
 package models.war_attenders.robots;
 
+import logic.WaypointManager;
 import models.CollisionModel;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.tanks.Tank;
@@ -137,7 +138,7 @@ public abstract class Robot extends MovableWarAttender {
 
     @Override
     public void setRotation(float angle) {
-        float rotation = getShortestRotation(base_image.getRotation(), angle);
+        float rotation = WaypointManager.getShortestAngle(base_image.getRotation(), angle);
         if(rotation == 0) return;
 
         if (rotation < 0) {

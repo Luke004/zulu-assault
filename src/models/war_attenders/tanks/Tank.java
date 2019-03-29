@@ -1,8 +1,10 @@
 package models.war_attenders.tanks;
 
+import logic.WaypointManager;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.soldiers.Soldier;
 import models.weapons.Weapon;
+import org.lwjgl.Sys;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -48,10 +50,25 @@ public abstract class Tank extends MovableWarAttender {
             decelerate(deltaTime);
         }
 
-        if(isDestroyed) {
+        if (isDestroyed) {
             destructionAnimation.update(deltaTime);
-            if(destructionAnimation.hasFinished()){
+            if (destructionAnimation.hasFinished()) {
                 level_delete_listener.notifyForDeletion(this);
+            }
+        }
+
+        //WAYPOINTS
+        if (waypointManager != null) {
+            // move to next vector
+            accelerate(deltaTime);
+            // rotate the tank towards the next vector until it's pointing towards it
+            if (waypointManager.wish_angle != (int) getRotation()) {
+                rotate(waypointManager.rotate_direction, deltaTime);
+                waypointManager.adjustAfterRotation(this.position, getRotation());
+            }
+
+            if(waypointManager.distToNextVector(this.position) < HEIGHT_HALF * 2){
+                waypointManager.setupNextWaypoint(this.position, getRotation());
             }
         }
     }
@@ -76,7 +93,7 @@ public abstract class Tank extends MovableWarAttender {
             accessible_animation.draw(position.x - (WIDTH_HALF * 2) / 4, position.y - (HEIGHT_HALF * 2) + 17);
         }
 
-        if(isDestroyed) {
+        if (isDestroyed) {
             destructionAnimation.draw(graphics);
         }
     }
@@ -200,8 +217,8 @@ public abstract class Tank extends MovableWarAttender {
 
     @Override
     public void setRotation(float angle) {
-        float rotation = getShortestRotation(turret.getRotation(), angle);
-        if(rotation == 0) return;
+        float rotation = WaypointManager.getShortestAngle(turret.getRotation(), angle);
+        if (rotation == 0) return;
 
         if (rotation < 0) {
             turret.rotate(-turret_rotate_speed);
@@ -260,7 +277,7 @@ public abstract class Tank extends MovableWarAttender {
                 my_second_line.oscillateMidPoints();
             }
             if (line_change_timer > LINE_CHANGE) {
-                finish_destruction_counter ++;
+                finish_destruction_counter++;
                 line_change_timer = 0;
                 my_first_line.defineNewLine();
                 my_second_line.defineNewLine();

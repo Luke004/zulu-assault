@@ -1,5 +1,6 @@
 package models.war_attenders;
 
+import logic.WaypointManager;
 import models.weapons.MegaPulse;
 import models.weapons.Weapon;
 import org.newdawn.slick.*;
@@ -119,18 +120,8 @@ public abstract class WarAttender {
         float rotationDegree;
         if (dist < 500) {
             // aim at player and fire
-            float m = (position.y - yPos) / (position.x - xPos);
-            float x = xPos - position.x;
+            rotationDegree = WaypointManager.calculateAngle(position, new Vector2f(xPos, yPos));
 
-            if ((x > 0) && m > 0) {
-                rotationDegree = (float) (Math.abs(Math.atan(m / 1) * 180.0 / Math.PI) + 90.f);
-            } else if (x > 0 && m <= 0) {
-                rotationDegree = (float) Math.abs((Math.atan(1 / m) * 180.0 / Math.PI));
-            } else if ((x < 0) && (m <= 0)) {
-                rotationDegree = (float) (Math.abs((Math.atan(1 / m) * 180.0 / Math.PI)) + 180.f);
-            } else {
-                rotationDegree = (float) (Math.abs((Math.atan(m / 1) * 180.0 / Math.PI)) + 270.f);
-            }
             setRotation(rotationDegree);
 
             fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
@@ -181,30 +172,6 @@ public abstract class WarAttender {
 
     public float getHealth() {
         return current_health;
-    }
-
-    public static float getShortestRotation(float a, float b) {
-        float small, big;
-        if (a < b) {
-            small = a;
-            big = b;
-        }
-        else if (a > b) {
-            small = b;
-            big = a;
-        }
-        else {
-            return 0;
-        }
-        float result = (360 - big) + small;
-
-        if (result > big - small) {
-            result = big - small;
-        }
-        if ((a + result) % 360 != b){
-            result = -result;
-        }
-        return result;
     }
 
     public enum WeaponType {

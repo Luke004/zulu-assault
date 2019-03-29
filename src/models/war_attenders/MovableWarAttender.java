@@ -1,11 +1,16 @@
 package models.war_attenders;
 
 import logic.WarAttenderDeleteListener;
+import logic.WaypointManager;
 import models.CollisionModel;
+import models.weapons.MegaPulse;
 import models.weapons.Weapon;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import player.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class MovableWarAttender extends WarAttender {
     // listener
@@ -17,6 +22,9 @@ public abstract class MovableWarAttender extends WarAttender {
 
     // math related
     public Vector2f dir;
+
+    // way-points related
+    public WaypointManager waypointManager;
 
     // specs related
     public static final float DAMAGE_TO_DESTRUCTIBLE_TILE = 5.f;
@@ -37,6 +45,15 @@ public abstract class MovableWarAttender extends WarAttender {
     public MovableWarAttender(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
         dir = new Vector2f(0, 0);
+    }
+
+    public void init() {
+        if (isHostile) {    // double the reload time if its an enemy
+            max_speed = max_speed / 3;
+        } else {
+
+        }
+        super.init();
     }
 
 
@@ -90,6 +107,10 @@ public abstract class MovableWarAttender extends WarAttender {
 
     public void addListener(WarAttenderDeleteListener delete_listener) {
         this.level_delete_listener = delete_listener;
+    }
+
+    public void addWaypoints(WaypointManager waypointManager){
+        this.waypointManager = waypointManager;
     }
 
     public void calculateMovementVector(int deltaTime, Direction direction) {

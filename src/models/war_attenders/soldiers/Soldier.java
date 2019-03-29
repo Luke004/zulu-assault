@@ -1,5 +1,6 @@
 package models.war_attenders.soldiers;
 
+import logic.WaypointManager;
 import models.CollisionModel;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.robots.Robot;
@@ -124,8 +125,7 @@ public abstract class Soldier extends MovableWarAttender {
 
     @Override
     public void setRotation(float angle) {
-        float rotation = getShortestRotation(animation.getImage(0).getRotation(), angle);
-        System.out.println(rotation);
+        float rotation = WaypointManager.getShortestAngle(animation.getImage(0).getRotation(), angle);
         if(rotation == 0) return;
 
         if (rotation < 0) {
@@ -194,19 +194,8 @@ public abstract class Soldier extends MovableWarAttender {
             moveForward(deltaTime);
         } else if (dist < 500) {
             // aim at the closest enemy and fire
-            float rotationDegree;
-            float m = (position.y - yPos) / (position.x - xPos);
-            float x = xPos - position.x;
+            float rotationDegree = WaypointManager.calculateAngle(position, new Vector2f(xPos, yPos));
 
-            if ((x > 0) && m > 0) {
-                rotationDegree = (float) (Math.abs(Math.atan(m / 1) * 180.0 / Math.PI) + 90.f);
-            } else if (x > 0 && m <= 0) {
-                rotationDegree = (float) Math.abs((Math.atan(1 / m) * 180.0 / Math.PI));
-            } else if ((x < 0) && (m <= 0)) {
-                rotationDegree = (float) (Math.abs((Math.atan(1 / m) * 180.0 / Math.PI)) + 180.f);
-            } else {
-                rotationDegree = (float) (Math.abs((Math.atan(m / 1) * 180.0 / Math.PI)) + 270.f);
-            }
             setRotation(rotationDegree);
 
             fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);

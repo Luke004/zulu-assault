@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractLevel extends BasicGame implements WarAttenderDeleteListener {
+    List<Vector2f> waypoints_tank_1;
     Player player;
     TiledMap map;
     List<Windmill> enemy_windmills;
@@ -51,6 +52,13 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
 
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
+        waypoints_tank_1 = new ArrayList<>();
+        waypoints_tank_1.add(new Vector2f(500.f, 500.f));
+        waypoints_tank_1.add(new Vector2f(1000.f, 500.f));
+        waypoints_tank_1.add(new Vector2f(1000.f, 1000.f));
+        waypoints_tank_1.add(new Vector2f(500.f, 1000.f));
+
+
         setupWindmills();
         camera = new Camera(gameContainer, map);
         hud = new HUD(player, gameContainer);
@@ -154,10 +162,14 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         collisionHandler.draw();
         imageDrawer.draw();
         bigExplosionAnimation.draw();
-
+        for(Vector2f waypoint : waypoints_tank_1){
+            graphics.drawRect(waypoint.x, waypoint.y, 10, 10);
+        }
         // un-translate graphics to draw the HUD- items
         camera.untranslateGraphics();
         hud.draw();
+
+
 
     }
 
