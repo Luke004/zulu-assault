@@ -1,10 +1,9 @@
 package models.war_attenders.tanks;
 
-import logic.WaypointManager;
+import logic.WayPointManager;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.soldiers.Soldier;
 import models.weapons.Weapon;
-import org.lwjgl.Sys;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -30,6 +29,11 @@ public abstract class Tank extends MovableWarAttender {
         super(startPos, isHostile);
     }
 
+    public Tank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
+        super(startPos, isHostile, isDrivable);
+    }
+
+
     public void init() {
         WIDTH_HALF = base_image.getWidth() / 2;
         HEIGHT_HALF = base_image.getHeight() / 2;
@@ -43,14 +47,15 @@ public abstract class Tank extends MovableWarAttender {
     public void update(GameContainer gc, int deltaTime) {
         super.update(gc, deltaTime);
 
-        if (show_accessible_animation) {
-            accessible_animation.update(deltaTime);
+        if (show_drivable_animation) {
+            drivable_animation.update(deltaTime);
         }
         if (decelerate) {
             decelerate(deltaTime);
         }
 
         if (isDestroyed) {
+            if(waypointManager != null) current_speed = 0.f; // stop the tank if it was moving
             destructionAnimation.update(deltaTime);
             if (destructionAnimation.hasFinished()) {
                 level_delete_listener.notifyForDeletion(this);
@@ -89,8 +94,8 @@ public abstract class Tank extends MovableWarAttender {
             turret.draw(position.x - TURRET_WIDTH_HALF, position.y - TURRET_HEIGHT_HALF);
         }
 
-        if (show_accessible_animation) {
-            accessible_animation.draw(position.x - (WIDTH_HALF * 2) / 4, position.y - (HEIGHT_HALF * 2) + 17);
+        if (show_drivable_animation) {
+            drivable_animation.draw(position.x - (WIDTH_HALF * 2) / 4, position.y - (HEIGHT_HALF * 2) + 17);
         }
 
         if (isDestroyed) {
@@ -217,7 +222,7 @@ public abstract class Tank extends MovableWarAttender {
 
     @Override
     public void setRotation(float angle) {
-        float rotation = WaypointManager.getShortestAngle(turret.getRotation(), angle);
+        float rotation = WayPointManager.getShortestAngle(turret.getRotation(), angle);
         if (rotation == 0) return;
 
         if (rotation < 0) {

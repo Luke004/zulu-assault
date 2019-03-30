@@ -20,7 +20,7 @@ import java.util.*;
 
 public class CollisionHandler {
     private Player player;
-    private List<MovableWarAttender> friendly_war_attenders, hostile_war_attenders, all_movable_war_attenders;
+    private List<MovableWarAttender> friendly_war_attenders, hostile_war_attenders, drivable_war_attenders, all_movable_war_attenders;
     private List<Windmill> enemy_windmills;
     private List<InteractionCircle> interaction_circles;
     private TiledMap level_map;
@@ -45,9 +45,11 @@ public class CollisionHandler {
 
 
     public CollisionHandler(Player player, TiledMap level_map, List<MovableWarAttender> friendly_war_attenders,
-                            List<MovableWarAttender> hostile_war_attenders, List<Windmill> enemy_windmills, List<InteractionCircle> interaction_circles) {
+                            List<MovableWarAttender> hostile_war_attenders, List<MovableWarAttender> drivable_war_attenders,
+                            List<Windmill> enemy_windmills, List<InteractionCircle> interaction_circles) {
         this.friendly_war_attenders = friendly_war_attenders;
         this.hostile_war_attenders = hostile_war_attenders;
+        this.drivable_war_attenders = drivable_war_attenders;
         this.enemy_windmills = enemy_windmills;
         this.interaction_circles = interaction_circles;
         this.player = player;
@@ -57,6 +59,7 @@ public class CollisionHandler {
         all_movable_war_attenders = new ArrayList<>(friendly_war_attenders);
         all_movable_war_attenders.addAll(hostile_war_attenders);
         all_movable_war_attenders.add(player.getWarAttender());
+        all_movable_war_attenders.addAll(drivable_war_attenders);
 
         TILE_WIDTH = level_map.getTileWidth();
         TILE_HEIGHT = level_map.getTileHeight();

@@ -12,6 +12,15 @@ public class MachineGunTank_v2 extends MachineGunTank {
         // individual MachineGunTank attributes
         // EVERYTHING = MachineGunTank here, the only diff is the 'base_image'
 
+        init();
+    }
+
+    public MachineGunTank_v2(Vector2f startPos, boolean isHostile, boolean isDrivable) {
+        super(startPos, isHostile, isDrivable);
+        init();
+    }
+
+    public void  init(){
         try {
             base_image = new Image("assets/war_attenders/tanks/agile_tank_v2.png");
             turret = new Image("assets/war_attenders/tanks/agile_tank_v2_turret.png");

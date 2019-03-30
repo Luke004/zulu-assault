@@ -10,7 +10,7 @@ public class PlasmaRobot extends Robot {
     public PlasmaRobot(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
 
-        // individual PlasmaRobot attributes
+        // individual PlasmaRobot attributes for bots
         max_health = 100;
         current_health = max_health;
         armor = 75;
@@ -18,6 +18,26 @@ public class PlasmaRobot extends Robot {
         current_speed = max_speed;
         rotate_speed = 0.25f;
         turret_rotate_speed = 0.5f;
+
+        init();
+    }
+
+    public PlasmaRobot(Vector2f startPos, boolean isHostile, boolean isDrivable) {
+        super(startPos, isHostile, isDrivable);
+
+        // individual PlasmaRobot attributes for human player
+        max_health = 100;
+        current_health = max_health;
+        armor = 75;
+        max_speed = 0.15f;
+        current_speed = max_speed;
+        rotate_speed = 0.25f;
+        turret_rotate_speed = 0.5f;
+
+        init();
+    }
+
+    public void init(){
         weapons.add(new DoublePlasma());
 
         try {

@@ -1,6 +1,6 @@
 package models.war_attenders;
 
-import logic.WaypointManager;
+import logic.WayPointManager;
 import models.weapons.MegaPulse;
 import models.weapons.Weapon;
 import org.newdawn.slick.*;
@@ -12,9 +12,6 @@ import java.util.List;
 public abstract class WarAttender {
     public List<Weapon> weapons;
     public Image health_bar_image;
-    public Animation accessible_animation;
-    public Image accessible_animation_image;
-    public boolean show_accessible_animation;
     // specs related
     public float current_health, max_health, armor;
     public boolean isHostile, isDestroyed;
@@ -37,7 +34,6 @@ public abstract class WarAttender {
             } catch (SlickException e) {
                 e.printStackTrace();
             }
-            initAccessibleAnimation();
         }
     }
 
@@ -74,27 +70,6 @@ public abstract class WarAttender {
         }
     }
 
-    private void initAccessibleAnimation() {
-        show_accessible_animation = true;
-        try {
-            accessible_animation_image = new Image("assets/healthbars/accessible_arrow_animation.png");
-        } catch (SlickException e) {
-            e.printStackTrace();
-        }
-        accessible_animation = new Animation(false);
-
-        int x = 0;
-        do {
-            accessible_animation.addFrame(accessible_animation_image.getSubImage(x, 0, 17, 28), 1000);
-            x += 17;
-        } while (x <= 34);
-        accessible_animation.setCurrentFrame(1);
-    }
-
-    public void showAccessibleAnimation(boolean activate) {
-        show_accessible_animation = activate;
-    }
-
     public void shootAtEnemies(MovableWarAttender player, List<MovableWarAttender> friendly_war_attenders, int deltaTime) {
         if(isDestroyed) return;
         // calculate dist between the player and the enemy
@@ -120,7 +95,7 @@ public abstract class WarAttender {
         float rotationDegree;
         if (dist < 500) {
             // aim at player and fire
-            rotationDegree = WaypointManager.calculateAngle(position, new Vector2f(xPos, yPos));
+            rotationDegree = WayPointManager.calculateAngle(position, new Vector2f(xPos, yPos));
 
             setRotation(rotationDegree);
 

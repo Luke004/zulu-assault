@@ -1,6 +1,6 @@
 package models.war_attenders.soldiers;
 
-import logic.WaypointManager;
+import logic.WayPointManager;
 import models.CollisionModel;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.robots.Robot;
@@ -125,7 +125,7 @@ public abstract class Soldier extends MovableWarAttender {
 
     @Override
     public void setRotation(float angle) {
-        float rotation = WaypointManager.getShortestAngle(animation.getImage(0).getRotation(), angle);
+        float rotation = WayPointManager.getShortestAngle(animation.getImage(0).getRotation(), angle);
         if(rotation == 0) return;
 
         if (rotation < 0) {
@@ -194,7 +194,7 @@ public abstract class Soldier extends MovableWarAttender {
             moveForward(deltaTime);
         } else if (dist < 500) {
             // aim at the closest enemy and fire
-            float rotationDegree = WaypointManager.calculateAngle(position, new Vector2f(xPos, yPos));
+            float rotationDegree = WayPointManager.calculateAngle(position, new Vector2f(xPos, yPos));
 
             setRotation(rotationDegree);
 

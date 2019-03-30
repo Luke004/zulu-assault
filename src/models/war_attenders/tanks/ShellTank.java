@@ -12,7 +12,7 @@ public class ShellTank extends Tank {
     public ShellTank(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
 
-        // individual ShellTank attributes
+        // individual ShellTank attributes for bots
         max_health = 100;
         current_health = max_health;
         armor = 60;
@@ -22,6 +22,28 @@ public class ShellTank extends Tank {
         deceleration_factor = 0.0009f;
         rotate_speed = 0.05f;
         turret_rotate_speed = 0.3f;
+
+        init();
+    }
+
+    public ShellTank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
+        super(startPos, isHostile, isDrivable);
+
+        // individual ShellTank attributes for human players
+        max_health = 100;
+        current_health = max_health;
+        armor = 60;
+        max_speed = 0.15f;
+        backwards_speed = max_speed / 2;
+        acceleration_factor = 0.00005f;
+        deceleration_factor = 0.0009f;
+        rotate_speed = 0.2f;
+        turret_rotate_speed = 0.2f;
+
+        init();
+    }
+
+    public void init(){
         weapons.add(new Shell());   // WEAPON_1
 
         try {
@@ -33,5 +55,4 @@ public class ShellTank extends Tank {
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
         super.init();
     }
-
 }

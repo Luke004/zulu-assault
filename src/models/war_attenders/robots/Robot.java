@@ -1,6 +1,6 @@
 package models.war_attenders.robots;
 
-import logic.WaypointManager;
+import logic.WayPointManager;
 import models.CollisionModel;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.tanks.Tank;
@@ -13,6 +13,10 @@ public abstract class Robot extends MovableWarAttender {
 
     public Robot(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
+    }
+
+    public Robot(Vector2f startPos, boolean isHostile, boolean isDrivable) {
+        super(startPos, isHostile, isDrivable);
     }
 
     public void init() {
@@ -138,7 +142,7 @@ public abstract class Robot extends MovableWarAttender {
 
     @Override
     public void setRotation(float angle) {
-        float rotation = WaypointManager.getShortestAngle(base_image.getRotation(), angle);
+        float rotation = WayPointManager.getShortestAngle(base_image.getRotation(), angle);
         if(rotation == 0) return;
 
         if (rotation < 0) {

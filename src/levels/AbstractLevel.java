@@ -28,7 +28,7 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
     TiledMap map;
     List<Windmill> enemy_windmills;
     List<InteractionCircle> interaction_circles;
-    List<MovableWarAttender> friendly_war_attenders, hostile_war_attenders;
+    List<MovableWarAttender> friendly_war_attenders, hostile_war_attenders, drivable_war_attenders;
     KeyInputHandler keyInputHandler;
     CollisionHandler collisionHandler;
     private Camera camera;
@@ -44,6 +44,7 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         super(title);
         hostile_war_attenders = new ArrayList<>();
         friendly_war_attenders = new ArrayList<>();
+        drivable_war_attenders = new ArrayList<>();
         enemy_windmills = new ArrayList<>();
         interaction_circles = new ArrayList<>();
         player = new Player();
@@ -55,8 +56,8 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         camera = new Camera(gameContainer, map);
         hud = new HUD(player, gameContainer);
         player.addListener(hud);
-        keyInputHandler = new KeyInputHandler(player, friendly_war_attenders);     // handle key inputs
-        collisionHandler = new CollisionHandler(player, map, friendly_war_attenders, hostile_war_attenders, enemy_windmills, interaction_circles);    // handle collisions
+        keyInputHandler = new KeyInputHandler(player, drivable_war_attenders);     // handle key inputs
+        collisionHandler = new CollisionHandler(player, map, friendly_war_attenders, hostile_war_attenders, drivable_war_attenders, enemy_windmills, interaction_circles);    // handle collisions
 
         // add listeners for destruction of warAttenders
         for (MovableWarAttender warAttender : friendly_war_attenders) {
@@ -123,6 +124,9 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         for(int idx = 0; idx < enemy_windmills.size(); ++idx){
             enemy_windmills.get(idx).update(gameContainer, deltaTime);
         }
+        for(int idx = 0; idx < drivable_war_attenders.size(); ++idx){
+            drivable_war_attenders.get(idx).update(gameContainer, deltaTime);
+        }
         for (InteractionCircle interaction_circle : interaction_circles) {
             interaction_circle.update(deltaTime);
         }
@@ -150,6 +154,9 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         }
         for(int idx = 0; idx < enemy_windmills.size(); ++idx){
             enemy_windmills.get(idx).draw(graphics);
+        }
+        for(int idx = 0; idx < drivable_war_attenders.size(); ++idx){
+            drivable_war_attenders.get(idx).draw(graphics);
         }
         collisionHandler.draw();
         imageDrawer.draw();

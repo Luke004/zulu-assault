@@ -1,11 +1,10 @@
 package models.war_attenders.windmills;
 
-import logic.WaypointManager;
+import logic.WayPointManager;
 import models.animations.SmokeAnimation;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
 import models.weapons.Weapon;
-import org.lwjgl.Sys;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -81,7 +80,7 @@ public abstract class Windmill extends WarAttender {
 
     @Override
     public void setRotation(float angle) {
-        float rotation = WaypointManager.getShortestAngle(turret.getRotation(), angle);
+        float rotation = WayPointManager.getShortestAngle(turret.getRotation(), angle);
         if(rotation == 0) return;
 
         if (rotation < 0) {

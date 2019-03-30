@@ -1,16 +1,12 @@
 package models.war_attenders;
 
 import logic.WarAttenderDeleteListener;
-import logic.WaypointManager;
+import logic.WayPointManager;
 import models.CollisionModel;
-import models.weapons.MegaPulse;
 import models.weapons.Weapon;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import player.Player;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class MovableWarAttender extends WarAttender {
     // listener
@@ -20,11 +16,16 @@ public abstract class MovableWarAttender extends WarAttender {
     public CollisionModel collisionModel;
     public int WIDTH_HALF, HEIGHT_HALF;
 
+    // drivable related
+    public Animation drivable_animation;
+    public Image drivable_animation_image;
+    public boolean show_drivable_animation;
+
     // math related
     public Vector2f dir;
 
     // way-points related
-    public WaypointManager waypointManager;
+    public WayPointManager waypointManager;
 
     // specs related
     public static final float DAMAGE_TO_DESTRUCTIBLE_TILE = 5.f;
@@ -32,7 +33,7 @@ public abstract class MovableWarAttender extends WarAttender {
     public float rotate_speed;
 
     // booleans
-    public boolean isMoving;
+    public boolean isMoving, isDrivable;
 
     // invincibility item related
     public boolean isInvincible, invincibility_animation_switch;
@@ -47,11 +48,16 @@ public abstract class MovableWarAttender extends WarAttender {
         dir = new Vector2f(0, 0);
     }
 
+    public MovableWarAttender(Vector2f startPos, boolean isHostile, boolean isDrivable) {
+        this(startPos, isHostile);
+        this.isDrivable = isDrivable;
+    }
+
     public void init() {
         if (isHostile) {    // double the reload time if its an enemy
             max_speed = max_speed / 3;
         } else {
-
+            if (isDrivable) initAccessibleAnimation();
         }
         super.init();
     }
@@ -109,8 +115,29 @@ public abstract class MovableWarAttender extends WarAttender {
         this.level_delete_listener = delete_listener;
     }
 
-    public void addWaypoints(WaypointManager waypointManager){
+    public void addWayPoints(WayPointManager waypointManager) {
         this.waypointManager = waypointManager;
+    }
+
+    private void initAccessibleAnimation() {
+        show_drivable_animation = true;
+        try {
+            drivable_animation_image = new Image("assets/healthbars/accessible_arrow_animation.png");
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
+        drivable_animation = new Animation(false);
+
+        int x = 0;
+        do {
+            drivable_animation.addFrame(drivable_animation_image.getSubImage(x, 0, 17, 28), 1000);
+            x += 17;
+        } while (x <= 34);
+        drivable_animation.setCurrentFrame(1);
+    }
+
+    public void showAccessibleAnimation(boolean activate) {
+        show_drivable_animation = activate;
     }
 
     public void calculateMovementVector(int deltaTime, Direction direction) {
@@ -151,7 +178,6 @@ public abstract class MovableWarAttender extends WarAttender {
     public abstract float getRotation();
 
     public abstract void rotate(RotateDirection r, int deltaTime);
-
 
 
     public void activateItem(Player.Item item) {

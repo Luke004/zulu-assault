@@ -6,14 +6,14 @@ import org.newdawn.slick.geom.Vector2f;
 
 import java.util.List;
 
-public class WaypointManager {
+public class WayPointManager {
     private boolean adjuster;
     List<Vector2f> waypoints;
     private int current_point_idx;
     public int wish_angle;
     public MovableWarAttender.RotateDirection rotate_direction;
 
-    public WaypointManager(List<Vector2f> waypoints, Vector2f pos, float angle) {
+    public WayPointManager(List<Vector2f> waypoints, Vector2f pos, float angle) {
         this.waypoints = waypoints;
         wish_angle = -123456;
         current_point_idx = -1;

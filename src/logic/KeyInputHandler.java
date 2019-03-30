@@ -12,11 +12,11 @@ import java.util.List;
 
 public class KeyInputHandler {
     private Player player;
-    private List<MovableWarAttender> friendly_war_attenders;
+    private List<MovableWarAttender> drivable_war_attenders;
     private boolean KEY_UP_RELEASED, KEY_DOWN_RELEASED;
 
-    public KeyInputHandler(Player player, List<MovableWarAttender> friendly_war_attenders) {
-        this.friendly_war_attenders = friendly_war_attenders;
+    public KeyInputHandler(Player player, List<MovableWarAttender> drivable_war_attenders) {
+        this.drivable_war_attenders = drivable_war_attenders;
         this.player = player;
     }
 
@@ -79,12 +79,12 @@ public class KeyInputHandler {
 
                 // get into MovableWarAttender
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
-                    for (MovableWarAttender warAttender : friendly_war_attenders) {
+                    for (MovableWarAttender warAttender : drivable_war_attenders) {
                         if (warAttender.getCollisionModel().intersects(soldier.getCollisionModel())) {
                             warAttender.setMoving(true);
                             warAttender.showAccessibleAnimation(false);
                             player.setWarAttender(warAttender, Player.EnterAction.ENTERING);
-                            friendly_war_attenders.remove(warAttender);
+                            drivable_war_attenders.remove(warAttender);
                             break;
                         }
                     }
@@ -165,7 +165,7 @@ public class KeyInputHandler {
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
                     if (!tank.isMoving()) {
                         tank.showAccessibleAnimation(true);
-                        friendly_war_attenders.add(tank);
+                        drivable_war_attenders.add(tank);
                         player.setWarAttender(tank, Player.EnterAction.LEAVING);
                     }
                 }

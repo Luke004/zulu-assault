@@ -12,7 +12,7 @@ public class NapalmTank extends Tank {
     public NapalmTank(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
 
-        // individual ShellTank attributes
+        // individual ShellTank attributes for bots
         max_health = 100;
         current_health = max_health;
         armor = 75;
@@ -22,6 +22,28 @@ public class NapalmTank extends Tank {
         deceleration_factor = 0.0009f;
         rotate_speed = 0.15f;
         turret_rotate_speed = 0.4f;
+
+        init();
+    }
+
+    public NapalmTank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
+        super(startPos, isHostile, isDrivable);
+
+        // individual ShellTank attributes for human players
+        max_health = 100;
+        current_health = max_health;
+        armor = 75;
+        max_speed = 0.1f;
+        backwards_speed = max_speed / 2;
+        acceleration_factor = 0.00005f;
+        deceleration_factor = 0.0009f;
+        rotate_speed = 0.15f;
+        turret_rotate_speed = 0.4f;
+
+        init();
+    }
+
+    public void init(){
         weapons.add(new Plasma());  // WEAPON_1
         weapons.add(new Napalm());  // WEAPON_2
 

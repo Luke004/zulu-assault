@@ -10,7 +10,7 @@ public class ShellRobot extends Robot{
     public ShellRobot(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
 
-        // individual PlasmaRobot attributes
+        // individual ShellRobot attributes for bots
         max_health = 100;
         current_health = max_health;
         armor = 75;
@@ -18,6 +18,27 @@ public class ShellRobot extends Robot{
         current_speed = max_speed;
         rotate_speed = 0.25f;
         turret_rotate_speed = 0.3f;
+
+        init();
+    }
+
+    public ShellRobot(Vector2f startPos, boolean isHostile, boolean isDrivable) {
+        super(startPos, isHostile, isDrivable);
+
+        // individual ShellRobot attributes for human player
+        max_health = 100;
+        current_health = max_health;
+        armor = 75;
+        max_speed = 0.15f;
+        current_speed = max_speed;
+        rotate_speed = 0.25f;
+        turret_rotate_speed = 0.3f;
+
+        init();
+    }
+
+    public void init(){
+        // first weapon
         weapons.add(new DoubleShell());
 
         try {
