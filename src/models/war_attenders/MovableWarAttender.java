@@ -3,6 +3,7 @@ package models.war_attenders;
 import logic.WarAttenderDeleteListener;
 import logic.WayPointManager;
 import models.CollisionModel;
+import models.weapons.MegaPulse;
 import models.weapons.Weapon;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
@@ -54,10 +55,9 @@ public abstract class MovableWarAttender extends WarAttender {
     }
 
     public void init() {
-        if (isHostile) {    // double the reload time if its an enemy
-            max_speed = max_speed / 3;
-        } else {
-            if (isDrivable) initAccessibleAnimation();
+        if (isDrivable) {
+            initAccessibleAnimation();
+            weapons.add(new MegaPulse());  // add the MEGA_PULSE (special item)
         }
         super.init();
     }

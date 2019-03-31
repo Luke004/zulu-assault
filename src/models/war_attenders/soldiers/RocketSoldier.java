@@ -18,7 +18,7 @@ public class RocketSoldier extends Soldier {
         max_speed = 0.05f;
         current_speed = max_speed;
         rotate_speed = 0.25f;
-        weapons.add(new RocketLauncher(isHostile));
+        weapons.add(new RocketLauncher(false));
 
         try {
             base_image = new Image("assets/war_attenders/soldiers/rocket_soldier_animation.png");

@@ -10,7 +10,8 @@ import java.util.Iterator;
 
 public class Shell extends Weapon {
     SmokeAnimation smokeAnimation;
-    public Shell() {
+
+    public Shell(boolean isDrivable) {
         super();
         smokeAnimation = new SmokeAnimation(1);
         try {
@@ -22,6 +23,7 @@ public class Shell extends Weapon {
         bullet_damage = 750;
         bullet_speed = 0.8f;
         shot_reload_time = 1000;
+        if (!isDrivable) shot_reload_time *= 5;
     }
 
     @Override

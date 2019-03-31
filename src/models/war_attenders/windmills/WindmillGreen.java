@@ -13,7 +13,7 @@ public class WindmillGreen extends Windmill {
 
         // individual WindmillGreen attributes
         turret_rotate_speed = 0.5f;
-        weapons.add(new Uzi());  // WEAPON_1
+        weapons.add(new Uzi(false));  // WEAPON_1
 
         try {
             turret = new Image("assets/war_attenders/windmills/GreenWindmill_turret.png");

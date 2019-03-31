@@ -68,13 +68,6 @@ public abstract class Weapon {
         return bullet_list.iterator();
     }
 
-    /*
-    for KI to shoot slower than player (less difficult)
-     */
-    public void multiplyShotReloadTime(int factor) {
-        shot_reload_time *= factor;
-    }
-
     public float getBulletDamage() {
         return bullet_damage;
     }

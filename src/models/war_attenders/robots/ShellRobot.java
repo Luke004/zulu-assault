@@ -39,7 +39,7 @@ public class ShellRobot extends Robot{
 
     public void init(){
         // first weapon
-        weapons.add(new DoubleShell());
+        weapons.add(new DoubleShell(isDrivable));
 
         try {
             base_image = new Image("assets/war_attenders/robots/shell_robot.png");

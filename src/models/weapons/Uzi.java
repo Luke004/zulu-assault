@@ -14,7 +14,7 @@ public class Uzi extends Weapon {
     Animation fire_animation;
     float xPos, yPos;
 
-    public Uzi() {
+    public Uzi(boolean isDrivable) {
         super();
         Image fire_animation_image;
         try {
@@ -36,6 +36,7 @@ public class Uzi extends Weapon {
         bullet_damage = 50;
         bullet_speed = 0.8f;
         shot_reload_time = 300;
+        if (!isDrivable) shot_reload_time *= 5;
     }
 
     @Override

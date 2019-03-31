@@ -3,6 +3,7 @@ package models.war_attenders.soldiers;
 import logic.WayPointManager;
 import models.CollisionModel;
 import models.war_attenders.MovableWarAttender;
+import models.war_attenders.WarAttender;
 import models.war_attenders.robots.Robot;
 import models.war_attenders.tanks.Tank;
 import org.newdawn.slick.Animation;
@@ -166,7 +167,7 @@ public abstract class Soldier extends MovableWarAttender {
     }
 
     @Override
-    public void shootAtEnemies(MovableWarAttender player, List<MovableWarAttender> friendly_war_attenders, int deltaTime) {
+    public void shootAtEnemies(MovableWarAttender player, List<? extends WarAttender> friendly_war_attenders, int deltaTime) {
         MovableWarAttender closest_warAttender = player;
         // calculate dist between the player and the enemy
         float xPos = player.position.x;
@@ -175,7 +176,7 @@ public abstract class Soldier extends MovableWarAttender {
                 + (yPos - position.y) * (yPos - position.y));
 
         // calculate dist between each friend and the enemy
-        for (MovableWarAttender friendly_war_attender : friendly_war_attenders) {
+        for (WarAttender friendly_war_attender : friendly_war_attenders) {
             float next_xPos = friendly_war_attender.position.x;
             float next_yPos = friendly_war_attender.position.y;
             float next_dist = (float) Math.sqrt((next_xPos - position.x) * (next_xPos - position.x)
@@ -184,7 +185,7 @@ public abstract class Soldier extends MovableWarAttender {
                 dist = next_dist;
                 xPos = next_xPos;
                 yPos = next_yPos;
-                closest_warAttender = friendly_war_attender;
+                closest_warAttender = (MovableWarAttender) friendly_war_attender;
             }
         }
 

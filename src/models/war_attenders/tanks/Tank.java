@@ -25,14 +25,9 @@ public abstract class Tank extends MovableWarAttender {
 
     private DestructionAnimation destructionAnimation;
 
-    public Tank(Vector2f startPos, boolean isHostile) {
-        super(startPos, isHostile);
-    }
-
     public Tank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
     }
-
 
     public void init() {
         WIDTH_HALF = base_image.getWidth() / 2;
@@ -73,7 +68,7 @@ public abstract class Tank extends MovableWarAttender {
             }
 
             if(waypointManager.distToNextVector(this.position) < HEIGHT_HALF * 2){
-                waypointManager.setupNextWaypoint(this.position, getRotation());
+                waypointManager.setupNextWayPoint(this.position, getRotation());
             }
         }
     }

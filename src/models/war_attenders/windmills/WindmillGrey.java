@@ -12,7 +12,7 @@ public class WindmillGrey extends Windmill {
 
         // individual WindmillGrey attributes
         turret_rotate_speed = 0.4f;
-        weapons.add(new Shell());  // WEAPON_1
+        weapons.add(new Shell(false));  // WEAPON_1
 
         try {
             turret = new Image("assets/war_attenders/windmills/GreyWindmill_turret.png");

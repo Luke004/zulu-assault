@@ -38,13 +38,7 @@ public abstract class WarAttender {
     }
 
     public void init() {
-        if (isHostile) {    // double the reload time if its an enemy
-            for (Weapon weapon : weapons) {
-                weapon.multiplyShotReloadTime(5);
-            }
-        } else {
-            weapons.add(new MegaPulse());  // add the MEGA_PULSE (special item)
-        }
+
     }
 
     public void update(GameContainer gc, int deltaTime) {
@@ -55,11 +49,11 @@ public abstract class WarAttender {
     }
 
     public void draw(Graphics graphics) {
-        health_bar_image.draw(position.x  - 7.5f, position.y - 15);
+        health_bar_image.draw(position.x - 7.5f, position.y - 15);
         // draw health bar damage using a black rectangle
         graphics.setColor(Color.black);
         if (current_health > 0) {
-            graphics.fillRect(position.x + 36, position.y - 14, -(29 - (( current_health) / (( max_health) / 29))), 5);
+            graphics.fillRect(position.x + 36, position.y - 14, -(29 - ((current_health) / ((max_health) / 29))), 5);
         } else {    // destroyed (rectangle is full black size)
             graphics.fillRect(position.x + 36, position.y - 14, -29, 5);
         }
@@ -70,25 +64,33 @@ public abstract class WarAttender {
         }
     }
 
-    public void shootAtEnemies(MovableWarAttender player, List<MovableWarAttender> friendly_war_attenders, int deltaTime) {
-        if(isDestroyed) return;
-        // calculate dist between the player and the enemy
-        float xPos = player.position.x;
-        float yPos = player.position.y;
-        float dist = (float) Math.sqrt((xPos - position.x) * (xPos - position.x)
-                + (yPos - position.y) * (yPos - position.y));
-
-        // calculate dist between each friend and the enemy
-        for(MovableWarAttender friendly_war_attender : friendly_war_attenders){
-           float next_xPos = friendly_war_attender.position.x;
-           float next_yPos = friendly_war_attender.position.y;
-           float next_dist = (float) Math.sqrt((next_xPos - position.x) * (next_xPos - position.x)
-                   + (next_yPos - position.y) * (next_yPos - position.y));
-           if(next_dist < dist) {
-               dist = next_dist;
-               xPos = next_xPos;
-               yPos = next_yPos;
-           }
+    public void shootAtEnemies(MovableWarAttender player, List<? extends WarAttender> enemies_of_tank, int deltaTime) {
+        if (isDestroyed) return;
+        float xPos, yPos, dist;
+        if (player != null) {
+            // player not null means it's a hostile tank
+            // calculate dist between the player and the enemy
+            xPos = player.position.x;
+            yPos = player.position.y;
+            dist = (float) Math.sqrt((xPos - position.x) * (xPos - position.x)
+                    + (yPos - position.y) * (yPos - position.y));
+        } else {
+            // player null means it's a friendly tank
+            xPos = 0;
+            yPos = 0;
+            dist = Float.MAX_VALUE;
+        }
+        // calculate dist between each tank and all its enemies
+        for (WarAttender enemy_war_attender : enemies_of_tank) {
+            float next_xPos = enemy_war_attender.position.x;
+            float next_yPos = enemy_war_attender.position.y;
+            float next_dist = (float) Math.sqrt((next_xPos - position.x) * (next_xPos - position.x)
+                    + (next_yPos - position.y) * (next_yPos - position.y));
+            if (next_dist < dist) {
+                dist = next_dist;
+                xPos = next_xPos;
+                yPos = next_yPos;
+            }
         }
 
         // aim at the closest enemy
@@ -126,16 +128,16 @@ public abstract class WarAttender {
     }
 
     public void changeHealth(float amount) {
-        if(amount < 0){
+        if (amount < 0) {
             // damage
             current_health += amount / armor;
-            if(current_health <= 0){
+            if (current_health <= 0) {
                 isDestroyed = true;
             }
         } else {
             // heal
             current_health += amount;
-            if(current_health > max_health) current_health = max_health;
+            if (current_health > max_health) current_health = max_health;
         }
     }
 

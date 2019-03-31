@@ -5,8 +5,8 @@ import org.newdawn.slick.geom.Vector2f;
 public class DoublePlasma extends Plasma {
     private boolean switch_turret;
 
-    public DoublePlasma() {
-        super();
+    public DoublePlasma(boolean isDrivable) {
+        super(isDrivable);
         shot_reload_time = shot_reload_time / 2;
     }
 

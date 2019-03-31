@@ -9,42 +9,33 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class NapalmTank extends Tank {
 
-    public NapalmTank(Vector2f startPos, boolean isHostile) {
-        super(startPos, isHostile);
-
-        // individual ShellTank attributes for bots
-        max_health = 100;
-        current_health = max_health;
-        armor = 75;
-        max_speed = 0.1f;
-        backwards_speed = max_speed / 2;
-        acceleration_factor = 0.00005f;
-        deceleration_factor = 0.0009f;
-        rotate_speed = 0.15f;
-        turret_rotate_speed = 0.4f;
-
-        init();
-    }
-
     public NapalmTank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
 
-        // individual ShellTank attributes for human players
+        // attributes equal for humans and bots
         max_health = 100;
         current_health = max_health;
         armor = 75;
-        max_speed = 0.1f;
-        backwards_speed = max_speed / 2;
-        acceleration_factor = 0.00005f;
-        deceleration_factor = 0.0009f;
-        rotate_speed = 0.15f;
-        turret_rotate_speed = 0.4f;
 
-        init();
-    }
+        if (isDrivable) {
+            // individual NapalmTank attributes for human players
+            max_speed = 0.1f;
+            backwards_speed = max_speed / 2;
+            acceleration_factor = 0.00005f;
+            deceleration_factor = 0.0009f;
+            rotate_speed = 0.15f;
+            turret_rotate_speed = 0.4f;
+        } else {
+            // individual NapalmTank attributes for bots
+            max_speed = 0.05f;
+            backwards_speed = max_speed / 2;
+            acceleration_factor = 0.00005f;
+            deceleration_factor = 0.0009f;
+            rotate_speed = 0.15f;
+            turret_rotate_speed = 0.4f;
+        }
 
-    public void init(){
-        weapons.add(new Plasma());  // WEAPON_1
+        weapons.add(new Plasma(isDrivable));  // WEAPON_1
         weapons.add(new Napalm());  // WEAPON_2
 
         try {

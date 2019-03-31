@@ -12,7 +12,7 @@ public class WindmillYellow extends Windmill {
 
         // individual WindmillYellow attributes
         turret_rotate_speed = 0.45f;
-        weapons.add(new RocketLauncher(isHostile));   // WEAPON_1
+        weapons.add(new RocketLauncher(false));   // WEAPON_1
 
         try {
             turret = new Image("assets/war_attenders/windmills/YellowWindmill_turret.png");

@@ -9,42 +9,33 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class ShellTank extends Tank {
 
-    public ShellTank(Vector2f startPos, boolean isHostile) {
-        super(startPos, isHostile);
-
-        // individual ShellTank attributes for bots
-        max_health = 100;
-        current_health = max_health;
-        armor = 60;
-        max_speed = 0.15f;
-        backwards_speed = max_speed / 2;
-        acceleration_factor = 0.00005f;
-        deceleration_factor = 0.0009f;
-        rotate_speed = 0.05f;
-        turret_rotate_speed = 0.3f;
-
-        init();
-    }
-
     public ShellTank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
 
-        // individual ShellTank attributes for human players
+        // attributes equal for humans and bots
         max_health = 100;
         current_health = max_health;
         armor = 60;
-        max_speed = 0.15f;
-        backwards_speed = max_speed / 2;
-        acceleration_factor = 0.00005f;
-        deceleration_factor = 0.0009f;
-        rotate_speed = 0.2f;
-        turret_rotate_speed = 0.2f;
 
-        init();
-    }
+        if (isDrivable) {
+            // individual ShellTank attributes for human players
+            max_speed = 0.15f;
+            backwards_speed = max_speed / 2;
+            acceleration_factor = 0.00005f;
+            deceleration_factor = 0.0009f;
+            rotate_speed = 0.2f;
+            turret_rotate_speed = 0.2f;
+        } else {
+            // individual ShellTank attributes for bots
+            max_speed = 0.05f;
+            backwards_speed = max_speed / 2;
+            acceleration_factor = 0.00005f;
+            deceleration_factor = 0.0009f;
+            rotate_speed = 0.05f;
+            turret_rotate_speed = 0.3f;
+        }
 
-    public void init(){
-        weapons.add(new Shell());   // WEAPON_1
+        weapons.add(new Shell(isDrivable));   // WEAPON_1
 
         try {
             base_image = new Image("assets/war_attenders/tanks/medium_tank.png");

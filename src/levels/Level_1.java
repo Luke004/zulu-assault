@@ -4,6 +4,7 @@ import logic.WayPointManager;
 import models.interaction_circles.HealthCircle;
 import models.interaction_circles.InteractionCircle;
 import models.war_attenders.MovableWarAttender;
+import models.war_attenders.robots.ShellRobot;
 import models.war_attenders.tanks.*;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
@@ -23,7 +24,7 @@ public class Level_1 extends AbstractLevel {
     public void init(GameContainer gameContainer) throws SlickException {
         // SETUP ENEMY WAR ATTENDERS
         List<Vector2f> waypoints;
-        MovableWarAttender enemy_tank_1 = new ShellTank(new Vector2f(2100.f, 2000.f), true);
+        MovableWarAttender enemy_tank_1 = new ShellTank(new Vector2f(2100.f, 2000.f), true, false);
         enemy_tank_1.setMoving(true);
         enemy_tank_1.base_image.setRotation(180);
         waypoints = new ArrayList<>();
@@ -34,7 +35,7 @@ public class Level_1 extends AbstractLevel {
         enemy_tank_1.addWayPoints(new WayPointManager(waypoints, enemy_tank_1.position, enemy_tank_1.getRotation()));
         hostile_war_attenders.add(enemy_tank_1);
 
-        MovableWarAttender enemy_tank_2 = new ShellTank(new Vector2f(1600.f, 2600.f), true);
+        MovableWarAttender enemy_tank_2 = new ShellTank(new Vector2f(1600.f, 2600.f), true, false);
         enemy_tank_2.setMoving(true);
         waypoints = new ArrayList<>();
         waypoints.add(new Vector2f(1600.f, 2500.f));
@@ -44,21 +45,27 @@ public class Level_1 extends AbstractLevel {
         enemy_tank_2.addWayPoints(new WayPointManager(waypoints, enemy_tank_2.position, enemy_tank_2.getRotation()));
         hostile_war_attenders.add(enemy_tank_2);
 
-        MovableWarAttender enemy_tank_3 = new RocketTank(new Vector2f(300.f, 300.f), true);
+        /*
+        MovableWarAttender enemy_tank_3 = new RocketTank(new Vector2f(300.f, 300.f), true, false);
         enemy_tank_3.setMoving(true);
         waypoints = new ArrayList<>();
         waypoints.add(new Vector2f(1200.f, 1000.f));
         waypoints.add(new Vector2f(100.f, 100.f));
         enemy_tank_3.addWayPoints(new WayPointManager(waypoints, enemy_tank_3.position, enemy_tank_3.getRotation()));
         hostile_war_attenders.add(enemy_tank_3);
-
+*/
         /*
         MovableWarAttender enemy_soldier_2 = new EnemySoldier(new Vector2f(2000.f, 2500.f), true);
         hostile_war_attenders.add(enemy_soldier_2);
         */
 
         // SETUP PLAYER'S FRIENDLY WAR ATTENDER ALLIES
-        MovableWarAttender player_ally_1 = new ShellTank(new Vector2f(1000.f, 300.f), false);
+        MovableWarAttender player_ally_1 = new NapalmTank(new Vector2f(1000.f, 300.f), false, false);
+        player_ally_1.setMoving(true);
+        waypoints = new ArrayList<>();
+        waypoints.add(new Vector2f(1001.f, 3000.f));
+        waypoints.add(new Vector2f(1000.f, 300.f));
+        player_ally_1.addWayPoints(new WayPointManager(waypoints, player_ally_1.position, player_ally_1.getRotation()));
         friendly_war_attenders.add(player_ally_1);
 
         // SETUP PLAYER'S DRIVABLE WAR ATTENDERS
@@ -71,7 +78,7 @@ public class Level_1 extends AbstractLevel {
 
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
         Vector2f playerStartPos = new Vector2f(100, 200);
-        MovableWarAttender tank = new MachineGunTank(playerStartPos, false, true);
+        MovableWarAttender tank = new RocketTank(playerStartPos, false, true);
         //MovableWarAttender soldier = new PlayerSoldier(playerStartPos, false);
         player.init(tank);
 

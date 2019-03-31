@@ -17,7 +17,7 @@ public class PlayerSoldier extends Soldier {
         max_speed = 0.1f;
         current_speed = max_speed;
         rotate_speed = 0.25f;
-        weapons.add(new Uzi());
+        weapons.add(new Uzi(true));
 
         try {
             base_image = new Image("assets/war_attenders/soldiers/player_soldier_animation.png");

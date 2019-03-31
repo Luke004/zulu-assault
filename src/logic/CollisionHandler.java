@@ -255,7 +255,8 @@ public class CollisionHandler {
                 for (idx = 0; idx < item_indices.length; ++idx) {
                     if (item_layer_tile_ID == item_indices[idx]) {
                         level_map.setTileId(x, y, ITEM_TILES_LAYER_IDX, 0); // delete the item tile
-                        if(current_warAttender != player.getWarAttender()) return; // don't give item on non player pickup
+                        if (current_warAttender != player.getWarAttender())
+                            return; // don't give item on non player pickup
                         switch (idx) {
                             case 0:
                                 player.addItem(Player.Item.INVINCIBLE);
@@ -287,7 +288,7 @@ public class CollisionHandler {
             }
 
             // COLLISION BETWEEN WAR ATTENDER ITSELF AND OTHER WAR ATTENDERS
-            for(MovableWarAttender movableWarAttender : all_movable_war_attenders){
+            for (MovableWarAttender movableWarAttender : all_movable_war_attenders) {
                 if (movableWarAttender.position == current_warAttender.position) continue;    // its himself
                 if (current_warAttender.getCollisionModel().intersects(movableWarAttender.getCollisionModel())) {
                     current_warAttender.onCollision(movableWarAttender);
@@ -467,6 +468,13 @@ public class CollisionHandler {
             enemy_windmill.shootAtEnemies(player_warAttender, friendly_war_attenders, deltaTime);
             hostileShotCollision(enemy_windmill, player_warAttender);
         }
+
+        for (MovableWarAttender friendly_war_attender : friendly_war_attenders) {
+            friendly_war_attender.shootAtEnemies(null, hostile_war_attenders, deltaTime);
+            friendly_war_attender.shootAtEnemies(null, enemy_windmills, deltaTime);
+            handleMovableWarAttenderCollisions(friendly_war_attender);
+            hostileShotCollision(friendly_war_attender, null);
+        }
     }
 
     private void hostileShotCollision(WarAttender w, MovableWarAttender player) {
@@ -480,30 +488,42 @@ public class CollisionHandler {
 
                 if (canContinue) continue;
 
-                // HOSTILE SHOT COLLISION WITH PLAYER
-                if (b.getCollisionModel().intersects(player.getCollisionModel())) {
-                    showBulletHitAnimation(weapon, b);
-                    bullet_iterator.remove();   // remove bullet
-                    if (!player.isInvincible()) {
-                        player.changeHealth(-weapon.getBulletDamage());  //drain health of player
+                if (player != null) {
+                    // HOSTILE SHOT COLLISION WITH PLAYER
+                    if (b.getCollisionModel().intersects(player.getCollisionModel())) {
+                        showBulletHitAnimation(weapon, b);
+                        bullet_iterator.remove();   // remove bullet
+                        if (!player.isInvincible()) {
+                            player.changeHealth(-weapon.getBulletDamage());  //drain health of player
+                        }
+                        continue;
                     }
-                    canContinue = true;
                 }
-
-                if (canContinue) continue;
 
                 // HOSTILE BULLET COLLISION WITH DESTRUCTIBLE MAP TILE
                 canContinue = handleBulletTileCollision(b, weapon, bullet_iterator);
 
                 if (canContinue) continue;
 
-                // HOSTILE SHOT COLLISION WITH FRIENDLY WAR ATTENDERS
-                for (MovableWarAttender friendly_warAttender : friendly_war_attenders) {
-                    if (b.getCollisionModel().intersects(friendly_warAttender.getCollisionModel())) {
-                        showBulletHitAnimation(weapon, b);
-
-                        bullet_iterator.remove();
-                        friendly_warAttender.changeHealth(-weapon.getBulletDamage());  //drain health of friend
+                if (player == null) {
+                    // FRIENDLY SHOT COLLISION WITH HOSTILE WAR ATTENDERS
+                    for (MovableWarAttender hostile_warAttender : hostile_war_attenders) {
+                        if (b.getCollisionModel().intersects(hostile_warAttender.getCollisionModel())) {
+                            showBulletHitAnimation(weapon, b);
+                            bullet_iterator.remove();
+                            hostile_warAttender.changeHealth(-weapon.getBulletDamage());  //drain health of enemy
+                        }
+                    }
+                    // FRIENDLY SHOT COLLISION WITH WINDMILLS
+                    handleBulletWindmillCollision(b, weapon, bullet_iterator);
+                } else {
+                    // HOSTILE SHOT COLLISION WITH FRIENDLY WAR ATTENDERS
+                    for (MovableWarAttender friendly_warAttender : friendly_war_attenders) {
+                        if (b.getCollisionModel().intersects(friendly_warAttender.getCollisionModel())) {
+                            showBulletHitAnimation(weapon, b);
+                            bullet_iterator.remove();
+                            friendly_warAttender.changeHealth(-weapon.getBulletDamage());  //drain health of friend
+                        }
                     }
                 }
             }

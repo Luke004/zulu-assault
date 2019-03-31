@@ -38,7 +38,7 @@ public class PlasmaRobot extends Robot {
     }
 
     public void init(){
-        weapons.add(new DoublePlasma());
+        weapons.add(new DoublePlasma(isDrivable));
 
         try {
             base_image = new Image("assets/war_attenders/robots/plasma_robot.png");

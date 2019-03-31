@@ -1,33 +1,31 @@
 package logic;
 
 import models.war_attenders.MovableWarAttender;
-import org.lwjgl.Sys;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.List;
 
 public class WayPointManager {
-    private boolean adjuster;
-    List<Vector2f> waypoints;
+    private List<Vector2f> wayPoints;
     private int current_point_idx;
     public int wish_angle;
     public MovableWarAttender.RotateDirection rotate_direction;
 
-    public WayPointManager(List<Vector2f> waypoints, Vector2f pos, float angle) {
-        this.waypoints = waypoints;
+    public WayPointManager(List<Vector2f> wayPoints, Vector2f pos, float angle) {
+        this.wayPoints = wayPoints;
         wish_angle = -123456;
         current_point_idx = -1;
-        setupNextWaypoint(pos, angle);
+        setupNextWayPoint(pos, angle);
     }
 
-    public void setupNextWaypoint(Vector2f pos, float angle) {
-        if (current_point_idx + 1 == waypoints.size()) current_point_idx = -1;
+    public void setupNextWayPoint(Vector2f pos, float angle) {
+        if (current_point_idx + 1 == wayPoints.size()) current_point_idx = -1;
         current_point_idx++;
         adjustAfterRotation(pos, angle);
     }
 
     public void adjustAfterRotation(Vector2f pos, float angle) {
-        float angle2 = calculateAngle(pos, waypoints.get(current_point_idx));
+        float angle2 = calculateAngle(pos, wayPoints.get(current_point_idx));
         float shortest_angle = getShortestAngle(angle2, angle);
         if (shortest_angle < 0) rotate_direction = MovableWarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT;
         else rotate_direction = MovableWarAttender.RotateDirection.ROTATE_DIRECTION_LEFT;
@@ -36,8 +34,8 @@ public class WayPointManager {
     }
 
     public float distToNextVector(Vector2f position) {
-        return (float) Math.sqrt((waypoints.get(current_point_idx).x - position.x) * (waypoints.get(current_point_idx).x - position.x)
-                + (waypoints.get(current_point_idx).y - position.y) * (waypoints.get(current_point_idx).y - position.y));
+        return (float) Math.sqrt((wayPoints.get(current_point_idx).x - position.x) * (wayPoints.get(current_point_idx).x - position.x)
+                + (wayPoints.get(current_point_idx).y - position.y) * (wayPoints.get(current_point_idx).y - position.y));
     }
 
     /*

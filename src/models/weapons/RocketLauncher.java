@@ -14,35 +14,36 @@ public class RocketLauncher extends Weapon {
     private List<Animation> active_rockets;
     private List<Animation> buffered_rockets;
 
-    public RocketLauncher(boolean isHostile) {
+    public RocketLauncher(boolean isDrivable) {
         super();
 
         // individual RocketLauncher specs
         bullet_damage = 500;
         bullet_speed = 0.5f;
         shot_reload_time = 800;
+        if (!isDrivable) shot_reload_time *= 5;
 
-        Image rocket_animation_image;
         try {
             bullet_texture = new Image("assets/bullets/shell.png").getTexture();
-            rocket_animation_image = new Image("assets/bullets/rocket_animation.png");
             final int BUFFER_SIZE;
-            if (isHostile) {
-                BUFFER_SIZE = 2;
+            if (!isDrivable) {
+                BUFFER_SIZE = 3;
             } else {
-                BUFFER_SIZE = 4;    // player needs more buffer_size, since he can shoot more often
+                BUFFER_SIZE = 5;    // player needs more buffer_size, since he can shoot more often
             }
             buffered_rockets = new ArrayList<>();
-            Animation rocket_animation = new Animation(false);
             int IMAGE_COUNT = 8;
-            int x = 0;
+            int x;
             int idx;
-            for (idx = 0; idx < IMAGE_COUNT; ++idx) {
-                rocket_animation.addFrame(rocket_animation_image.getSubImage(x, 0, 20, 123), 200);
-                x += 20;
-            }
             for (idx = 0; idx < BUFFER_SIZE; ++idx) {
-                buffered_rockets.add(rocket_animation.copy());
+                x = 0;
+                Image rocket_animation_image = new Image("assets/bullets/rocket_animation.png");
+                Animation rocket_animation = new Animation(false);
+                for (int idx2 = 0; idx2 < IMAGE_COUNT; ++idx2) {
+                    rocket_animation.addFrame(rocket_animation_image.getSubImage(x, 0, 20, 123), 200);
+                    x += 20;
+                }
+                buffered_rockets.add(rocket_animation);
             }
             active_rockets = new ArrayList<>();
         } catch (SlickException e) {

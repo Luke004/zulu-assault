@@ -5,7 +5,8 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class DoubleShell extends Shell {
 
-    public DoubleShell(){
+    public DoubleShell(boolean isDrivable){
+        super(isDrivable);
         try {
             smokeAnimation.addNewInstance();   // add another instance
         } catch (SlickException e) {

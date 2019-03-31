@@ -5,8 +5,8 @@ import org.newdawn.slick.geom.Vector2f;
 public class MachineGun extends Uzi {
     private boolean switch_bullet_spawn_side;
 
-    public MachineGun() {
-        super();
+    public MachineGun(boolean isDrivable) {
+        super(isDrivable);
     }
 
     @Override
