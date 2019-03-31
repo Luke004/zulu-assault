@@ -27,9 +27,9 @@
    H4sIAAAAAAAACu3UsQ3AIBADQBgg+0/GCIxAGYmeIkoTiKW75qV348qlAECWq55uAECC8fIHkMKGfa8/ZPe2FpDPXu0zlguQqp0uAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD83gRDJJAt0J0AAA==
   </data>
  </layer>
- <layer name="enemy_tiles" width="101" height="100" locked="1">
+ <layer name="enemy_tiles" width="101" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3csQ5AEQwFUI///2e7iHTBwzmjqYm0d2pTAgAAAAAAAAAAAAAAeEfZXQAAAADAob7dBQBwBXkCwEpyB4BVcvANAEbkCQAAAAAAAAAAwBztjomdEwAAoMf98n/zPxCnX4CTmWEQo1d4XQVhQZ1h0J0AAA==
+   H4sIAAAAAAAACu3cQQ7AEBAAQNr//7mH3ppqpJVazFyIk2BXJEgJ2sq9OwB8kgt1/mf8+4xBLpSwIusfiEyOgpNYAAAAAAAAAHhn790BAAAAgEG5xw5AC/YTAABgRltlGwA8sZ8AAABALM7lAAAAAADzuL5t9NYRAAC44//y2MwP1BMvwMjkMKgjVljdAfALMHvQnQAA
   </data>
  </layer>
 </map>

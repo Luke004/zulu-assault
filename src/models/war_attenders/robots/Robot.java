@@ -10,6 +10,7 @@ import org.newdawn.slick.geom.Vector2f;
 public abstract class Robot extends MovableWarAttender {
     Animation walking_animation;
     float turret_rotate_speed;
+    private float BASE_WIDTH_HALF, BASE_HEIGHT_HALF;
 
     public Robot(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
@@ -37,6 +38,8 @@ public abstract class Robot extends MovableWarAttender {
         }
         WIDTH_HALF = walking_animation.getImage(0).getWidth() / 2;
         HEIGHT_HALF = walking_animation.getImage(0).getHeight() / 2;
+        BASE_WIDTH_HALF = base_image.getWidth() / 2;
+        BASE_HEIGHT_HALF = base_image.getHeight() / 2;
         // just use index 0, all indices are same width and height
         collisionModel = new CollisionModel(position, walking_animation.getImage(0).getWidth(), walking_animation.getImage(0).getHeight());
         super.init();
@@ -56,18 +59,25 @@ public abstract class Robot extends MovableWarAttender {
         if (isInvincible) {
             if (!invincibility_animation_switch) {
                 walking_animation.getCurrentFrame().drawFlash(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
-                base_image.drawFlash(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
+                base_image.drawFlash(position.x - BASE_WIDTH_HALF, position.y - BASE_HEIGHT_HALF);
             } else {
                 walking_animation.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
-                base_image.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
+                base_image.draw(position.x - BASE_WIDTH_HALF, position.y - BASE_HEIGHT_HALF);
             }
         } else {
             walking_animation.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
-            base_image.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
+            base_image.draw(position.x - BASE_WIDTH_HALF, position.y - BASE_HEIGHT_HALF);
         }
         super.draw(graphics);
 
         //collisionModel.draw(graphics);
+    }
+
+    @Override
+    public void showDrivableAnimation(){
+        if (show_drivable_animation) {
+            drivable_animation.draw(position.x - 8, position.y - (BASE_HEIGHT_HALF * 2));
+        }
     }
 
     public void startAnimation() {

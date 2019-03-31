@@ -13,7 +13,7 @@ import org.newdawn.slick.geom.Vector2f;
 import java.util.Random;
 
 public abstract class Tank extends MovableWarAttender {
-    Image turret;
+    public Image turret;
     float turret_rotate_speed;
     float backwards_speed;
     private boolean decelerate;
@@ -42,9 +42,6 @@ public abstract class Tank extends MovableWarAttender {
     public void update(GameContainer gc, int deltaTime) {
         super.update(gc, deltaTime);
 
-        if (show_drivable_animation) {
-            drivable_animation.update(deltaTime);
-        }
         if (decelerate) {
             decelerate(deltaTime);
         }
@@ -87,10 +84,6 @@ public abstract class Tank extends MovableWarAttender {
         } else {
             base_image.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
             turret.draw(position.x - TURRET_WIDTH_HALF, position.y - TURRET_HEIGHT_HALF);
-        }
-
-        if (show_drivable_animation) {
-            drivable_animation.draw(position.x - (WIDTH_HALF * 2) / 4, position.y - (HEIGHT_HALF * 2) + 17);
         }
 
         if (isDestroyed) {

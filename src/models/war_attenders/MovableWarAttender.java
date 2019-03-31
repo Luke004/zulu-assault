@@ -66,6 +66,10 @@ public abstract class MovableWarAttender extends WarAttender {
     public void update(GameContainer gc, int deltaTime) {
         super.update(gc, deltaTime);
 
+        if (show_drivable_animation) {
+            drivable_animation.update(deltaTime);
+        }
+
         // COLLISION RELATED STUFF
         collisionModel.update(base_image.getRotation());
 
@@ -102,6 +106,9 @@ public abstract class MovableWarAttender extends WarAttender {
             graphics.fillRect(position.x + 14, position.y - base_image.getHeight() / 2 - 14, -29, 5);
         }
 
+        // DRAW DRIVABLE ANIMATION
+        showDrivableAnimation();
+
         // BULLETS
         for (Weapon weapon : weapons) {
             weapon.draw(graphics);
@@ -109,6 +116,12 @@ public abstract class MovableWarAttender extends WarAttender {
 
         // COLLISION RELATED STUFF
         collisionModel.draw(graphics);
+    }
+
+    public void showDrivableAnimation(){
+        if (show_drivable_animation) {
+            drivable_animation.draw(position.x - (WIDTH_HALF * 2) / 4, position.y - (HEIGHT_HALF * 2) + 17);
+        }
     }
 
     public void addListener(WarAttenderDeleteListener delete_listener) {
