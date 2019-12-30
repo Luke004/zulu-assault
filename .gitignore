@@ -1,6 +1,5 @@
-
-\.idea/
-\out/
-
+out/
+native/
+.idea/
 
 *.class
