@@ -27,6 +27,7 @@ public abstract class Tank extends MovableWarAttender {
 
     public Tank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
+        scoreValue = 1000;
     }
 
     public void init() {

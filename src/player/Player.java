@@ -16,6 +16,7 @@ public class Player {
     private MovableWarAttender current_warAttender;
     private ItemChangeListener GUI_listener;
     private int[] item_amounts;
+    private int points;
     private TiledMap map;
     private int MAP_WIDTH, MAP_HEIGHT;
 
@@ -150,5 +151,13 @@ public class Player {
 
     public enum WarAttenderType {
         SOLDIER, PLANE, TANK, ROBOT
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void addPoints(int amount) {
+        this.points += amount;
     }
 }

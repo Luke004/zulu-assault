@@ -4,8 +4,8 @@ import logic.Camera;
 import logic.CollisionHandler;
 import logic.KeyInputHandler;
 import logic.WarAttenderDeleteListener;
-import models.HUD;
 import models.animations.BigExplosionAnimation;
+import models.hud.HUD;
 import models.interaction_circles.InteractionCircle;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
@@ -115,16 +115,16 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
     @Override
     public void update(GameContainer gameContainer, int deltaTime) {
         player.update(gameContainer, deltaTime);
-        for(int idx = 0; idx < friendly_war_attenders.size(); ++idx){
+        for (int idx = 0; idx < friendly_war_attenders.size(); ++idx) {
             friendly_war_attenders.get(idx).update(gameContainer, deltaTime);
         }
-        for(int idx = 0; idx < hostile_war_attenders.size(); ++idx){
+        for (int idx = 0; idx < hostile_war_attenders.size(); ++idx) {
             hostile_war_attenders.get(idx).update(gameContainer, deltaTime);
         }
-        for(int idx = 0; idx < enemy_windmills.size(); ++idx){
+        for (int idx = 0; idx < enemy_windmills.size(); ++idx) {
             enemy_windmills.get(idx).update(gameContainer, deltaTime);
         }
-        for(int idx = 0; idx < drivable_war_attenders.size(); ++idx){
+        for (int idx = 0; idx < drivable_war_attenders.size(); ++idx) {
             drivable_war_attenders.get(idx).update(gameContainer, deltaTime);
         }
         for (InteractionCircle interaction_circle : interaction_circles) {
@@ -146,16 +146,16 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
             interaction_circle.draw();
         }
         player.draw(graphics);
-        for(int idx = 0; idx < friendly_war_attenders.size(); ++idx){
+        for (int idx = 0; idx < friendly_war_attenders.size(); ++idx) {
             friendly_war_attenders.get(idx).draw(graphics);
         }
-        for(int idx = 0; idx < hostile_war_attenders.size(); ++idx){
+        for (int idx = 0; idx < hostile_war_attenders.size(); ++idx) {
             hostile_war_attenders.get(idx).draw(graphics);
         }
-        for(int idx = 0; idx < enemy_windmills.size(); ++idx){
+        for (int idx = 0; idx < enemy_windmills.size(); ++idx) {
             enemy_windmills.get(idx).draw(graphics);
         }
-        for(int idx = 0; idx < drivable_war_attenders.size(); ++idx){
+        for (int idx = 0; idx < drivable_war_attenders.size(); ++idx) {
             drivable_war_attenders.get(idx).draw(graphics);
         }
         collisionHandler.draw();
@@ -166,22 +166,25 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         hud.draw();
 
 
-
     }
 
     @Override
     public void notifyForDeletion(WarAttender warAttender) {
-        if(warAttender.isHostile){
+        // TODO: add points according to the class of the enemy/warAttender
+
+        if (warAttender.isHostile) {
+            player.addPoints(warAttender.getScoreValue());  // add points
+
             //hostile_war_attenders.removeIf(enemy -> enemy.isDestroyed);
-            if(warAttender instanceof Windmill){
+            if (warAttender instanceof Windmill) {
                 bigExplosionAnimation.playTenTimes(warAttender.position.x + 20, warAttender.position.y + 20, 0);
             } else {
                 hostile_war_attenders.remove(warAttender);
-                if(warAttender instanceof Soldier) imageDrawer.drawSeconds(3, warAttender);
+                if (warAttender instanceof Soldier) imageDrawer.drawSeconds(3, warAttender);
                 else bigExplosionAnimation.playTenTimes(warAttender.position.x, warAttender.position.y, 0);
             }
         } else {
-            if(warAttender instanceof Soldier) imageDrawer.drawSeconds(3, warAttender);
+            if (warAttender instanceof Soldier) imageDrawer.drawSeconds(3, warAttender);
             else bigExplosionAnimation.playTenTimes(warAttender.position.x, warAttender.position.y, 0);
             friendly_war_attenders.remove(warAttender);
             //friendly_war_attenders.removeIf(friend -> friend.isDestroyed);
@@ -207,7 +210,7 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         private boolean isStopped, isHostile;
         private float xPos, yPos;
 
-        ImageDrawer(){
+        ImageDrawer() {
             try {
                 dead_body_image_friendly = new Image("assets/war_attenders/soldiers/player_soldier_dead.png");
                 dead_body_image_hostile = new Image("assets/war_attenders/soldiers/enemy_soldier_dead.png");
@@ -217,21 +220,21 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
             isStopped = true;
         }
 
-        void update(int deltaTime){
-            if(isStopped) return;
+        void update(int deltaTime) {
+            if (isStopped) return;
             current_time += deltaTime;
-            if(current_time > DRAW_TIME){
+            if (current_time > DRAW_TIME) {
                 isStopped = true;
             }
         }
 
-        void draw(){
-            if(isStopped) return;
-            if(isHostile) dead_body_image_hostile.drawCentered(xPos, yPos);
+        void draw() {
+            if (isStopped) return;
+            if (isHostile) dead_body_image_hostile.drawCentered(xPos, yPos);
             else dead_body_image_friendly.draw(xPos, yPos);
         }
 
-        void drawSeconds(int seconds, WarAttender soldier){
+        void drawSeconds(int seconds, WarAttender soldier) {
             this.DRAW_TIME = seconds * 1000;
             current_time = 0;
             isStopped = false;
