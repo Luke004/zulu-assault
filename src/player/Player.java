@@ -9,17 +9,24 @@ import models.war_attenders.tanks.Tank;
 import models.weapons.MegaPulse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.tiled.TiledMap;
 
 public class Player {
     private MovableWarAttender base_soldier;
     private MovableWarAttender current_warAttender;
     private ItemChangeListener GUI_listener;
     private int[] item_amounts;
+    private TiledMap map;
+    private int MAP_WIDTH, MAP_HEIGHT;
 
-    public void init(MovableWarAttender current_warAttender) {
+    public void init(MovableWarAttender current_warAttender, TiledMap map) {
         current_warAttender.showAccessibleAnimation(false);
         this.current_warAttender = current_warAttender;
         item_amounts = new int[4];
+        // pass the map
+        this.map = map;
+        MAP_WIDTH = map.getWidth() * map.getTileWidth();
+        MAP_HEIGHT = map.getHeight() * map.getTileHeight();
     }
 
     public void draw(Graphics graphics) {
@@ -28,6 +35,17 @@ public class Player {
 
     public void update(GameContainer gameContainer, int deltaTime) {
         current_warAttender.update(gameContainer, deltaTime);
+
+        // check for map boundaries, don't let the player cross them
+        if (current_warAttender.position.x <= 0) {
+            current_warAttender.position.x = 0;
+        } else if (current_warAttender.position.x >= MAP_WIDTH) {
+            current_warAttender.position.x = MAP_WIDTH;
+        } else if (current_warAttender.position.y <= 0) {
+            current_warAttender.position.y = 0;
+        } else if (current_warAttender.position.y >= MAP_HEIGHT) {
+            current_warAttender.position.y = MAP_HEIGHT;
+        }
     }
 
     public WarAttenderType getWarAttenderType() {

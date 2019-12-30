@@ -13,6 +13,7 @@ import models.weapons.Plasma;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TiledMap;
+import player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,13 +108,14 @@ public class Level_1 extends AbstractLevel {
 
 
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
-        Vector2f playerStartPos = new Vector2f(2420, 340);
-        Robot tank = new PlasmaRobot(playerStartPos, false, true);
+        Vector2f playerStartPos = new Vector2f(1000, 1000);
+        Tank tank = new MachineGunTank(playerStartPos, false, true);
         //MovableWarAttender soldier = new PlayerSoldier(playerStartPos, false);
-        player.init(tank);
 
         // DEFINE THE MAP
         map = new TiledMap("assets/maps/level_1.tmx");
+
+        player.init(tank, map);
 
         super.init(gameContainer);
     }

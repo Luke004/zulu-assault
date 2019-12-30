@@ -10,6 +10,7 @@ import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.Soldier;
 import models.war_attenders.windmills.Windmill;
 import models.weapons.*;
+import org.lwjgl.Sys;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.tiled.TileSet;
 import org.newdawn.slick.tiled.TiledMap;
@@ -208,6 +209,10 @@ public class CollisionHandler {
             for (CollisionModel.Point p : playerCorners) {
                 x = (int) p.x / TILE_WIDTH;
                 y = (int) p.y / TILE_HEIGHT;
+
+                // return when "out of map"
+                if (x < 0 || x >= level_map.getWidth() || y < 0 || y >= level_map.getHeight()) return;
+
                 landscape_layer_tile_ID = level_map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
                 item_layer_tile_ID = level_map.getTileId(x, y, ITEM_TILES_LAYER_IDX);
                 enemy_layer_tile_ID = level_map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
