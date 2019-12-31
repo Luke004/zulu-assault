@@ -14,6 +14,7 @@ public abstract class Robot extends MovableWarAttender {
 
     public Robot(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
+        scoreValue = 3000;
     }
 
     public Robot(Vector2f startPos, boolean isHostile, boolean isDrivable) {

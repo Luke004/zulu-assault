@@ -19,13 +19,14 @@ import models.weapons.Weapon.*;
 
 import java.util.*;
 
+import static levels.LevelInfo.*;
+
 public class CollisionHandler {
     private Player player;
     private List<MovableWarAttender> friendly_war_attenders, hostile_war_attenders, drivable_war_attenders, all_movable_war_attenders;
     private List<Windmill> enemy_windmills;
     private List<InteractionCircle> interaction_circles;
     private TiledMap level_map;
-    private final int MAP_WIDTH, MAP_HEIGHT, TILE_WIDTH, TILE_HEIGHT;
     private int[] destructible_tile_indices, indestructible_tile_indices, destructible_tile_replace_indices, item_indices,
             windmill_indices, windmill_replace_indices;
     private final float TILE_HEALTH = 100;
@@ -61,11 +62,6 @@ public class CollisionHandler {
         all_movable_war_attenders.addAll(hostile_war_attenders);
         all_movable_war_attenders.add(player.getWarAttender());
         all_movable_war_attenders.addAll(drivable_war_attenders);
-
-        TILE_WIDTH = level_map.getTileWidth();
-        TILE_HEIGHT = level_map.getTileHeight();
-        MAP_WIDTH = level_map.getWidth() * TILE_WIDTH;
-        MAP_HEIGHT = level_map.getHeight() * TILE_HEIGHT;
 
         // TileMap related stuff
         item_indices = new int[]{0, 16, 32, 40, 56};
@@ -668,10 +664,10 @@ public class CollisionHandler {
         } else if (b.bullet_pos.y < 0) {
             bullet_iterator.remove();
             return true;
-        } else if (b.bullet_pos.x > MAP_WIDTH - 1) {
+        } else if (b.bullet_pos.x > LEVEL_WIDTH_PIXELS - 1) {
             bullet_iterator.remove();
             return true;
-        } else if (b.bullet_pos.y > MAP_HEIGHT - 1) {
+        } else if (b.bullet_pos.y > LEVEL_HEIGHT_PIXELS - 1) {
             bullet_iterator.remove();
             return true;
         }

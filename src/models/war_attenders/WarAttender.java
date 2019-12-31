@@ -15,6 +15,7 @@ public abstract class WarAttender {
     // specs related
     public float current_health, max_health, armor;
     public boolean isHostile, isDestroyed;
+    protected int scoreValue;
 
     public Vector2f position;
 
@@ -35,6 +36,8 @@ public abstract class WarAttender {
                 e.printStackTrace();
             }
         }
+
+        scoreValue = 100;   // default score value
     }
 
     public void init() {
@@ -147,8 +150,12 @@ public abstract class WarAttender {
         return current_health == max_health;
     }
 
-    public float getHealth() {
-        return current_health;
+    public int getHealth() {
+        return (int) current_health;
+    }
+
+    public int getScoreValue() {
+        return scoreValue;
     }
 
     public enum WeaponType {

@@ -32,6 +32,7 @@ public abstract class Windmill extends WarAttender {
         armor = 10;
         current_health = max_health;
         turret_rotate_speed = 0.2f;
+        scoreValue = 200;
     }
 
     public void init() {

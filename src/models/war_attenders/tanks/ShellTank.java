@@ -17,6 +17,8 @@ public class ShellTank extends Tank {
         current_health = max_health;
         armor = 60;
 
+        scoreValue = 1000;
+
         if (isDrivable) {
             // individual ShellTank attributes for human players
             max_speed = 0.15f;

@@ -18,6 +18,7 @@ public abstract class Soldier extends MovableWarAttender {
 
     public Soldier(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
+        scoreValue = 100;
     }
 
     public void init() {

@@ -93,7 +93,7 @@ public class CollisionModel {
         return collision_points;
     }
 
-    public class Point {
+    public static class Point {
         public float x, y;
 
         Point(float x, float y) {
