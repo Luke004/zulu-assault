@@ -12,7 +12,6 @@ public class HUD implements ItemChangeListener {
     public static int GAME_HEIGHT, GAME_WIDTH;
 
     public HUD(Player player, GameContainer gc) {
-        //this.player = player;
         GAME_HEIGHT = gc.getHeight();
         GAME_WIDTH = gc.getWidth();
 

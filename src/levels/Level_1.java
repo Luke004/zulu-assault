@@ -10,6 +10,7 @@ import models.war_attenders.robots.ShellRobot;
 import models.war_attenders.soldiers.EnemySoldier;
 import models.war_attenders.tanks.*;
 import models.weapons.Plasma;
+import models.weapons.Shell;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TiledMap;
@@ -115,7 +116,7 @@ public class Level_1 extends AbstractLevel {
         // DEFINE THE MAP
         map = new TiledMap("assets/maps/level_1.tmx");
 
-        player.init(tank, map);
+        player.init(tank);
 
         super.init(gameContainer);
     }

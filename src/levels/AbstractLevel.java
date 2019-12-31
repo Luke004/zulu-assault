@@ -19,6 +19,7 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TileSet;
 import org.newdawn.slick.tiled.TiledMap;
 import player.Player;
+import screen_drawer.ScreenDrawer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +38,7 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
     // for destruction of tanks or robots
     private BigExplosionAnimation bigExplosionAnimation;
 
-    // for death of soldiers
-    ImageDrawer imageDrawer;
+    ScreenDrawer screenDrawer;
 
     public AbstractLevel(String title) {
         super(title);
@@ -52,6 +52,14 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
 
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
+        // init the level info
+        LevelInfo.TILE_WIDTH = map.getTileWidth();
+        LevelInfo.TILE_HEIGHT = map.getTileHeight();
+        LevelInfo.LEVEL_WIDTH_TILES = map.getWidth();
+        LevelInfo.LEVEL_HEIGHT_TILES = map.getHeight();
+        LevelInfo.LEVEL_WIDTH_PIXELS = LevelInfo.LEVEL_WIDTH_TILES * LevelInfo.TILE_WIDTH;
+        LevelInfo.LEVEL_HEIGHT_PIXELS = LevelInfo.LEVEL_HEIGHT_TILES * LevelInfo.TILE_HEIGHT;
+
         setupWindmills();
         camera = new Camera(gameContainer, map);
         hud = new HUD(player, gameContainer);
@@ -69,7 +77,7 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         player.getWarAttender().addListener(this);
         collisionHandler.addListener(this);
         bigExplosionAnimation = new BigExplosionAnimation(100);
-        imageDrawer = new ImageDrawer();
+        screenDrawer = new ScreenDrawer();
     }
 
     private void setupWindmills() {
@@ -133,7 +141,7 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         keyInputHandler.update(gameContainer, deltaTime);
         collisionHandler.update(gameContainer, deltaTime);
         hud.update(deltaTime);
-        imageDrawer.update(deltaTime);
+        screenDrawer.update(deltaTime);
         bigExplosionAnimation.update(deltaTime);
         camera.centerOn(player.getWarAttender().position.x, player.getWarAttender().position.y);
     }
@@ -159,7 +167,7 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
             drivable_war_attenders.get(idx).draw(graphics);
         }
         collisionHandler.draw();
-        imageDrawer.draw();
+        screenDrawer.draw();
         bigExplosionAnimation.draw();
         // un-translate graphics to draw the HUD- items
         camera.untranslateGraphics();
@@ -174,17 +182,18 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
 
         if (warAttender.isHostile) {
             player.addPoints(warAttender.getScoreValue());  // add points
+            screenDrawer.drawScoreValue(5, warAttender);    // draw the score on the screen
 
             //hostile_war_attenders.removeIf(enemy -> enemy.isDestroyed);
             if (warAttender instanceof Windmill) {
                 bigExplosionAnimation.playTenTimes(warAttender.position.x + 20, warAttender.position.y + 20, 0);
             } else {
                 hostile_war_attenders.remove(warAttender);
-                if (warAttender instanceof Soldier) imageDrawer.drawSeconds(3, warAttender);
+                if (warAttender instanceof Soldier) screenDrawer.drawDeadSoldierBody(3, warAttender);
                 else bigExplosionAnimation.playTenTimes(warAttender.position.x, warAttender.position.y, 0);
             }
         } else {
-            if (warAttender instanceof Soldier) imageDrawer.drawSeconds(3, warAttender);
+            if (warAttender instanceof Soldier) screenDrawer.drawDeadSoldierBody(3, warAttender);
             else bigExplosionAnimation.playTenTimes(warAttender.position.x, warAttender.position.y, 0);
             friendly_war_attenders.remove(warAttender);
             //friendly_war_attenders.removeIf(friend -> friend.isDestroyed);
@@ -202,45 +211,4 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         keyInputHandler.onKeyRelease(key);
     }
 
-    private class ImageDrawer {
-        private Image dead_body_image_friendly;
-        private Image dead_body_image_hostile;
-        private int DRAW_TIME;
-        private int current_time;
-        private boolean isStopped, isHostile;
-        private float xPos, yPos;
-
-        ImageDrawer() {
-            try {
-                dead_body_image_friendly = new Image("assets/war_attenders/soldiers/player_soldier_dead.png");
-                dead_body_image_hostile = new Image("assets/war_attenders/soldiers/enemy_soldier_dead.png");
-            } catch (SlickException e) {
-                e.printStackTrace();
-            }
-            isStopped = true;
-        }
-
-        void update(int deltaTime) {
-            if (isStopped) return;
-            current_time += deltaTime;
-            if (current_time > DRAW_TIME) {
-                isStopped = true;
-            }
-        }
-
-        void draw() {
-            if (isStopped) return;
-            if (isHostile) dead_body_image_hostile.drawCentered(xPos, yPos);
-            else dead_body_image_friendly.draw(xPos, yPos);
-        }
-
-        void drawSeconds(int seconds, WarAttender soldier) {
-            this.DRAW_TIME = seconds * 1000;
-            current_time = 0;
-            isStopped = false;
-            this.isHostile = soldier.isHostile;
-            this.xPos = soldier.position.x;
-            this.yPos = soldier.position.y;
-        }
-    }
 }
