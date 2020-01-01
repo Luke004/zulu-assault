@@ -1,7 +1,6 @@
 package screen_drawer.drawings;
 
 import models.war_attenders.WarAttender;
-import org.lwjgl.Sys;
 
 public abstract class Drawing {
     protected int DRAW_TIME;
