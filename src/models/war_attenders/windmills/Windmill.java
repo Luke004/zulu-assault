@@ -16,8 +16,8 @@ public abstract class Windmill extends WarAttender {
     Image turret;
     float turret_rotate_speed;
     private int key;
-    public final static int ARMOR = 10;
-    public final static int HEALTH = 100;
+    public final static float ARMOR = 10.f;
+    public final static float HEALTH = 100.f;
     private SmokeAnimation smokeAnimation;
     private final int SMOKE_ANIMATION_FREQUENCY = 300;  // two per second
     private int smoke_animation_timer;

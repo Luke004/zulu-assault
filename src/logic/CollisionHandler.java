@@ -29,7 +29,7 @@ public class CollisionHandler {
     private TiledMap level_map;
     private int[] destructible_tile_indices, indestructible_tile_indices, destructible_tile_replace_indices, item_indices,
             windmill_indices, windmill_replace_indices;
-    private final float TILE_HEALTH = 100;
+    private final float TILE_HEALTH = 100.f;
     private final float DESTRUCTIBLE_TILE_NORMAL_ARMOR = 5.f;
     private final float DESTRUCTIBLE_TILE_LOW_ARMOR = 1.f;
     private final int LANDSCAPE_TILES_LAYER_IDX = 0;
@@ -389,7 +389,7 @@ public class CollisionHandler {
 
         for (idx = 0; idx < enemy_windmills.size(); ++idx) {
             if (enemy_windmills.get(idx).getKey() == key) {
-                enemy_windmills.get(idx).changeHealth(-damage / Windmill.ARMOR);
+                enemy_windmills.get(idx).changeHealth(-damage);
                 break;
             }
         }
