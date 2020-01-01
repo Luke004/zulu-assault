@@ -15,7 +15,7 @@ public class ScoreValueDrawer extends Drawing {
     private String score_value_string;
 
     public ScoreValueDrawer() {
-        Font awtFont = new Font("Century Gothic", Font.PLAIN, 14);
+        Font awtFont = new Font("Arial", Font.PLAIN, 12);
         point_text = new TrueTypeFont(awtFont, false);
     }
 
