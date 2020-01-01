@@ -198,103 +198,105 @@ public class CollisionHandler {
     }
 
     private void handleMovableWarAttenderCollisions(MovableWarAttender current_warAttender) {
-        if (current_warAttender.isMoving()) {
-            CollisionModel.Point[] playerCorners = current_warAttender.getCollisionModel().getPoints();
-            int idx, landscape_layer_tile_ID, item_layer_tile_ID, enemy_layer_tile_ID, x, y;
+        if (!current_warAttender.isMoving()) return;
 
-            for (CollisionModel.Point p : playerCorners) {
-                x = (int) p.x / TILE_WIDTH;
-                y = (int) p.y / TILE_HEIGHT;
+        CollisionModel.Point[] playerCorners = current_warAttender.getCollisionModel().getPoints();
+        int idx, landscape_layer_tile_ID, item_layer_tile_ID, enemy_layer_tile_ID, x, y;
 
-                // return when "out of map"
-                if (x < 0 || x >= level_map.getWidth() || y < 0 || y >= level_map.getHeight()) return;
+        for (CollisionModel.Point p : playerCorners) {
+            x = (int) p.x / TILE_WIDTH;
+            y = (int) p.y / TILE_HEIGHT;
 
-                landscape_layer_tile_ID = level_map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
-                item_layer_tile_ID = level_map.getTileId(x, y, ITEM_TILES_LAYER_IDX);
-                enemy_layer_tile_ID = level_map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
+            // return when "out of map"
+            if (x < 0 || x >= level_map.getWidth() || y < 0 || y >= level_map.getHeight()) return;
 
-                // COLLISION BETWEEN WAR ATTENDER ITSELF AND DESTRUCTIBLE TILES
-                for (idx = 0; idx < destructible_tile_indices.length; ++idx) {
-                    if (landscape_layer_tile_ID == destructible_tile_indices[idx]) {
+            landscape_layer_tile_ID = level_map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
+            item_layer_tile_ID = level_map.getTileId(x, y, ITEM_TILES_LAYER_IDX);
+            enemy_layer_tile_ID = level_map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
+
+            // COLLISION BETWEEN WAR ATTENDER ITSELF AND DESTRUCTIBLE TILES
+            for (idx = 0; idx < destructible_tile_indices.length; ++idx) {
+                if (landscape_layer_tile_ID == destructible_tile_indices[idx]) {
+                    // block movement as long as tile exists and damage the destructible tile
+                    current_warAttender.blockMovement();
+
+                    // damage ONLY when we are not a solider
+                    if (current_warAttender instanceof Soldier) return;
+
+                    damageTile(x, y, null, destructible_tile_replace_indices[idx], current_warAttender);
+                    return;
+                }
+            }
+
+            // COLLISION BETWEEN WAR ATTENDER ITSELF AND INDESTRUCTIBLE TILES
+            for (idx = 0; idx < indestructible_tile_indices.length; ++idx) {
+                if (landscape_layer_tile_ID == indestructible_tile_indices[idx]) {
+                    // block movement forever because tile is indestructible
+                    current_warAttender.blockMovement();
+                    return;
+                }
+            }
+
+            if (!current_warAttender.isHostile) {
+                // COLLISION BETWEEN FRIENDLY WAR ATTENDER AND WINDMILLS
+                for (idx = 0; idx < windmill_indices.length; ++idx) {
+                    if (enemy_layer_tile_ID == windmill_indices[idx]) {
                         // block movement as long as tile exists and damage the destructible tile
                         current_warAttender.blockMovement();
 
                         // damage ONLY when we are not a solider
                         if (current_warAttender instanceof Soldier) return;
 
-                        damageTile(x, y, null, destructible_tile_replace_indices[idx], current_warAttender);
+                        damageWindmill(x, y, MovableWarAttender.DAMAGE_TO_DESTRUCTIBLE_TILE);
                         return;
-                    }
-                }
-
-                // COLLISION BETWEEN WAR ATTENDER ITSELF AND INDESTRUCTIBLE TILES
-                for (idx = 0; idx < indestructible_tile_indices.length; ++idx) {
-                    if (landscape_layer_tile_ID == indestructible_tile_indices[idx]) {
-                        // block movement forever because tile is indestructible
-                        current_warAttender.blockMovement();
-                        return;
-                    }
-                }
-
-                if (!current_warAttender.isHostile) {
-                    // COLLISION BETWEEN FRIENDLY WAR ATTENDER AND WINDMILLS
-                    for (idx = 0; idx < windmill_indices.length; ++idx) {
-                        if (enemy_layer_tile_ID == windmill_indices[idx]) {
-                            // block movement as long as tile exists and damage the destructible tile
-                            current_warAttender.blockMovement();
-
-                            // damage ONLY when we are not a solider
-                            if (current_warAttender instanceof Soldier) return;
-
-                            damageWindmill(x, y, MovableWarAttender.DAMAGE_TO_DESTRUCTIBLE_TILE);
-                            return;
-                        }
-                    }
-                }
-
-                // COLLISION BETWEEN WAR ATTENDER ITSELF AND ITEMS
-                for (idx = 0; idx < item_indices.length; ++idx) {
-                    if (item_layer_tile_ID == item_indices[idx]) {
-                        level_map.setTileId(x, y, ITEM_TILES_LAYER_IDX, 0); // delete the item tile
-                        if (current_warAttender != player.getWarAttender())
-                            return; // don't give item on non player pickup
-                        switch (idx) {
-                            case 0:
-                                player.addItem(Player.Item.INVINCIBLE);
-                                break;
-                            case 1:
-                                player.addItem(Player.Item.EMP);
-                                break;
-                            case 2:
-                                player.addItem(Player.Item.MEGA_PULSE);
-                                break;
-                            case 3:
-                                player.addItem(Player.Item.EXPAND);
-                                break;
-                            case 4: // silver wrench
-                                // don't take the wrench if player is at max health
-                                if (current_warAttender.isMaxHealth()) return;
-                                current_warAttender.changeHealth(10);
-                                break;
-                            case 5: // golden wrench
-                                // don't take the wrench if player is at max health
-                                if (current_warAttender.isMaxHealth()) return;
-                                current_warAttender.changeHealth(50);
-                                break;
-                            default:
-                                return;
-                        }
                     }
                 }
             }
 
-            // COLLISION BETWEEN WAR ATTENDER ITSELF AND OTHER WAR ATTENDERS
-            for (MovableWarAttender movableWarAttender : all_movable_war_attenders) {
-                if (movableWarAttender.position == current_warAttender.position) continue;    // its himself
-                if (current_warAttender.getCollisionModel().intersects(movableWarAttender.getCollisionModel())) {
-                    current_warAttender.onCollision(movableWarAttender);
-                    return;
+            // COLLISION BETWEEN WAR ATTENDER ITSELF AND ITEMS
+            for (idx = 0; idx < item_indices.length; ++idx) {
+                if (item_layer_tile_ID == item_indices[idx]) {
+                    if (current_warAttender.isHostile) return;   // enemies can't pick ups items
+                    switch (idx) {
+                        case 0:
+                            if (current_warAttender != player.getWarAttender()) break;
+                            player.addItem(Player.Item.INVINCIBLE);
+                            break;
+                        case 1:
+                            if (current_warAttender != player.getWarAttender()) break;
+                            player.addItem(Player.Item.EMP);
+                            break;
+                        case 2:
+                            if (current_warAttender != player.getWarAttender()) break;
+                            player.addItem(Player.Item.MEGA_PULSE);
+                            break;
+                        case 3:
+                            if (current_warAttender != player.getWarAttender()) break;
+                            player.addItem(Player.Item.EXPAND);
+                            break;
+                        case 4: // silver wrench
+                            // don't take the wrench if warAttender is at max health
+                            if (current_warAttender.isMaxHealth()) return;
+                            current_warAttender.changeHealth(10);
+                            break;
+                        case 5: // golden wrench
+                            if (current_warAttender.isMaxHealth()) return;
+                            current_warAttender.changeHealth(50);
+                            break;
+                        default:
+                            return;
+                    }
+                    level_map.setTileId(x, y, ITEM_TILES_LAYER_IDX, 0); // delete the item tile
                 }
+            }
+        }
+
+        // COLLISION BETWEEN WAR ATTENDER ITSELF AND OTHER WAR ATTENDERS
+        for (MovableWarAttender movableWarAttender : all_movable_war_attenders) {
+            if (movableWarAttender.position == current_warAttender.position) continue;    // its himself
+            if (current_warAttender.getCollisionModel().intersects(movableWarAttender.getCollisionModel())) {
+                current_warAttender.onCollision(movableWarAttender);
+                return;
             }
         }
     }
