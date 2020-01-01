@@ -23,6 +23,7 @@ import screen_drawer.ScreenDrawer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 public abstract class AbstractLevel extends BasicGame implements WarAttenderDeleteListener {
     Player player;
@@ -104,13 +105,19 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
                         int windmill_key = x > y ? -x * y : x * y;
                         switch (idx) {
                             case 0: // green windmill
-                                windmill = new WindmillGreen(new Vector2f(x * 40, y * 40), true, windmill_key);
+                                windmill = new WindmillGreen(
+                                        new Vector2f(x * LevelInfo.TILE_WIDTH, y * LevelInfo.TILE_HEIGHT),
+                                        true, windmill_key);
                                 break;
                             case 1: // grey windmill
-                                windmill = new WindmillGrey(new Vector2f(x * 40, y * 40), true, windmill_key);
+                                windmill = new WindmillGrey(
+                                        new Vector2f(x * LevelInfo.TILE_WIDTH, y * LevelInfo.TILE_HEIGHT),
+                                        true, windmill_key);
                                 break;
                             case 2: // yellow windmill
-                                windmill = new WindmillYellow(new Vector2f(x * 40, y * 40), true, windmill_key);
+                                windmill = new WindmillYellow(
+                                        new Vector2f(x * LevelInfo.TILE_WIDTH, y * LevelInfo.TILE_HEIGHT),
+                                        true, windmill_key);
                                 break;
                         }
                         enemy_windmills.add(windmill);

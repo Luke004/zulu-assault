@@ -247,7 +247,7 @@ public class CollisionHandler {
                         // damage ONLY when we are not a solider
                         if (current_warAttender instanceof Soldier) return;
 
-                        damageWindmill(x, y, MovableWarAttender.DAMAGE_TO_DESTRUCTIBLE_TILE);
+                        damageWindmill(x, y);
                         return;
                     }
                 }
@@ -361,70 +361,55 @@ public class CollisionHandler {
         int key = generateKey(xPos, yPos);
         int idx;
 
-        if (weapon instanceof PiercingWeapon) {
-            for (idx = 0; idx < enemy_windmills.size(); ++idx) {
-                if (enemy_windmills.get(idx).getKey() == key) {
-                    if (!((PiercingWeapon) weapon).hasAlreadyHit(key)) {
-                        enemy_windmills.get(idx).changeHealth(-weapon.getBulletDamage()); //drain health of hit tank
-                        break;
-                    }
-                    return;
-                }
-            }
-        } else {
-            for (idx = 0; idx < enemy_windmills.size(); ++idx) {
-                if (enemy_windmills.get(idx).getKey() == key) {
-                    enemy_windmills.get(idx).changeHealth(-weapon.getBulletDamage());
+        for (idx = 0; idx < enemy_windmills.size(); ++idx) {
+            if (enemy_windmills.get(idx).getKey() != key) continue;
+            if (weapon instanceof PiercingWeapon) {
+                if (!((PiercingWeapon) weapon).hasAlreadyHit(key)) {
+                    enemy_windmills.get(idx).changeHealth(-weapon.getBulletDamage()); //drain health of hit tank
                     break;
                 }
+            } else {
+                enemy_windmills.get(idx).changeHealth(-weapon.getBulletDamage());
+            }
+            if (enemy_windmills.get(idx).isDestroyed) {
+                replaceWindmillTile(idx, xPos, yPos);
             }
         }
-        damageWindmill_part2(key, idx, xPos, yPos, weapon.getBulletDamage());
     }
 
-    private void damageWindmill(int xPos, int yPos, float damage) {
-        // use a map to track current destructible tile health
+    private void damageWindmill(int xPos, int yPos) {
+        // find the windmill by its key
         int key = xPos > yPos ? -xPos * yPos : xPos * yPos;
         int idx;
 
         for (idx = 0; idx < enemy_windmills.size(); ++idx) {
             if (enemy_windmills.get(idx).getKey() == key) {
-                enemy_windmills.get(idx).changeHealth(-damage);
+                enemy_windmills.get(idx).changeHealth(-MovableWarAttender.DAMAGE_TO_DESTRUCTIBLE_TILE);
+                if (enemy_windmills.get(idx).isDestroyed) {
+                    replaceWindmillTile(idx, xPos, yPos);
+                }
                 break;
             }
         }
-        damageWindmill_part2(key, idx, xPos, yPos, damage);
     }
 
-    private void damageWindmill_part2(int key, int idx, int xPos, int yPos, float damage) {
-        if (destructible_tiles_health_info.containsKey(key)) {
-            float new_health = destructible_tiles_health_info.get(key) - damage / Windmill.ARMOR;
-            if (new_health <= 0) {
-                // TILE DESTROYED
+    private void replaceWindmillTile(int idx, int xPos, int yPos) {
+        level_delete_listener.notifyForDeletion(enemy_windmills.get(idx));
+        enemy_windmills.remove(idx);
 
-                level_delete_listener.notifyForDeletion(enemy_windmills.get(idx));
-                enemy_windmills.remove(idx);
+        // look what tile lies below destroyed windmill (grass, dirt or concrete)
+        int tileID = level_map.getTileId(xPos, yPos, LANDSCAPE_TILES_LAYER_IDX);
+        int replacement_idx = windmill_replace_indices[3];  // standard damaged tile with transparent background
 
-                // look what tile lies below destroyed windmill (grass, dirt or concrete)
-                int tileID = level_map.getTileId(xPos, yPos, LANDSCAPE_TILES_LAYER_IDX);
-                int replacement_idx = windmill_replace_indices[3];  // standard damaged tile with transparent background
-
-                if (tileID == CONCRETE_IDX) {
-                    replacement_idx = windmill_replace_indices[1];
-                } else if (tileID == DIRT_IDX) {
-                    replacement_idx = windmill_replace_indices[0];
-                } else if (tileID == GRASS_IDX) {
-                    replacement_idx = windmill_replace_indices[2];
-                }
-                level_map.setTileId(xPos, yPos, ENEMY_TILES_LAYER_IDX, 0);
-                level_map.setTileId(xPos, yPos, LANDSCAPE_TILES_LAYER_IDX, replacement_idx);
-                destructible_tiles_health_info.remove(key);
-            } else {
-                destructible_tiles_health_info.put(key, new_health);
-            }
-        } else {
-            destructible_tiles_health_info.put(key, Windmill.HEALTH - damage / Windmill.ARMOR);
+        if (tileID == CONCRETE_IDX) {
+            replacement_idx = windmill_replace_indices[1];
+        } else if (tileID == DIRT_IDX) {
+            replacement_idx = windmill_replace_indices[0];
+        } else if (tileID == GRASS_IDX) {
+            replacement_idx = windmill_replace_indices[2];
         }
+        level_map.setTileId(xPos, yPos, ENEMY_TILES_LAYER_IDX, 0);
+        level_map.setTileId(xPos, yPos, LANDSCAPE_TILES_LAYER_IDX, replacement_idx);
     }
 
     private void damageTile(int xPos, int yPos, Weapon weapon, int replaceTileIndex, MovableWarAttender warAttender) {
