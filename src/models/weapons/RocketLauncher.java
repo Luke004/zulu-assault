@@ -13,6 +13,7 @@ import java.util.Random;
 public class RocketLauncher extends Weapon {
     private List<Animation> active_rockets;
     private List<Animation> buffered_rockets;
+    int BUFFER_SIZE;
 
     public RocketLauncher(boolean isDrivable) {
         super();
@@ -25,7 +26,6 @@ public class RocketLauncher extends Weapon {
 
         try {
             bullet_texture = new Image("assets/bullets/shell.png").getTexture();
-            final int BUFFER_SIZE;
             if (!isDrivable) {
                 BUFFER_SIZE = 3;
             } else {
@@ -40,7 +40,7 @@ public class RocketLauncher extends Weapon {
                 Image rocket_animation_image = new Image("assets/bullets/rocket_animation.png");
                 Animation rocket_animation = new Animation(false);
                 for (int idx2 = 0; idx2 < IMAGE_COUNT; ++idx2) {
-                    rocket_animation.addFrame(rocket_animation_image.getSubImage(x, 0, 20, 123), 200);
+                    rocket_animation.addFrame(rocket_animation_image.getSubImage(x, 0, 20, 123), 50);
                     x += 20;
                 }
                 buffered_rockets.add(rocket_animation);
@@ -51,6 +51,7 @@ public class RocketLauncher extends Weapon {
         }
     }
 
+    @Override
     public void update(int deltaTime) {
         super.update(deltaTime);
         if (active_rockets.size() == 0) return;
@@ -85,7 +86,7 @@ public class RocketLauncher extends Weapon {
         }
     }
 
-    private Animation getNextFreshRocket() {
+    protected Animation getNextFreshRocket() {
         Animation rocket = null;
         try {
             rocket = buffered_rockets.get(0);

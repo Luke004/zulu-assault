@@ -1,6 +1,7 @@
 package logic;
 
 import models.war_attenders.MovableWarAttender;
+import models.war_attenders.planes.Plane;
 import models.war_attenders.robots.Robot;
 import models.war_attenders.tanks.Tank;
 import player.Player;
@@ -110,7 +111,7 @@ public class KeyInputHandler {
                 if (input.isKeyPressed(Input.KEY_DOWN)) {
                     tank.setMoving(true);
                     tank.setCurrentSpeed(MovableWarAttender.Direction.BACKWARDS);
-                } else if(KEY_DOWN_RELEASED){
+                } else if (KEY_DOWN_RELEASED) {
                     tank.setMoving(false);
                     KEY_DOWN_RELEASED = false;
                 }
@@ -235,9 +236,33 @@ public class KeyInputHandler {
                 break;
 
             case PLANE:     // player is in a plane
+                Plane plane = (Plane) player.getWarAttender();
 
+                // left turn
+                if (input.isKeyDown(Input.KEY_LEFT)) {
+                    plane.rotate(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
+                }
+
+                // right turn
+                if (input.isKeyDown(Input.KEY_RIGHT)) {
+                    plane.rotate(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
+                }
+
+                // fire weapon1
+                if (input.isKeyDown(Input.KEY_LCONTROL) || input.isKeyPressed(Input.KEY_RCONTROL)) {
+                    plane.fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
+                }
+
+                // fire weapon2
+                if (input.isKeyDown(Input.KEY_LALT) || input.isKeyPressed(Input.KEY_RALT)) {
+                    plane.fireWeapon(MovableWarAttender.WeaponType.WEAPON_2);
+                }
+
+                // activate invincibility
+                if (input.isKeyPressed(Input.KEY_1)) {
+                    plane.activateItem(Player.Item.INVINCIBLE);
+                }
                 break;
-
         }
 
     }
