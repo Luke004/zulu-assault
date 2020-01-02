@@ -23,7 +23,6 @@ import screen_drawer.ScreenDrawer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 public abstract class AbstractLevel extends BasicGame implements WarAttenderDeleteListener {
     Player player;
@@ -66,7 +65,9 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         hud = new HUD(player, gameContainer);
         player.addListener(hud);
         keyInputHandler = new KeyInputHandler(player, drivable_war_attenders);     // handle key inputs
-        collisionHandler = new CollisionHandler(player, map, friendly_war_attenders, hostile_war_attenders, drivable_war_attenders, enemy_windmills, interaction_circles);    // handle collisions
+        // handle collisions
+        collisionHandler = new CollisionHandler(player, map, friendly_war_attenders, hostile_war_attenders,
+                drivable_war_attenders, enemy_windmills, interaction_circles);
 
         // add listeners for destruction of warAttenders
         for (MovableWarAttender warAttender : friendly_war_attenders) {

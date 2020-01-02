@@ -9,7 +9,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class DoubleRocketLauncher extends RocketLauncher {
 
-    private BigExplosionAnimation bigExplosionAnimation;
+    private static BigExplosionAnimation bigExplosionAnimation;
 
     public DoubleRocketLauncher(boolean isDrivable) {
         super(isDrivable);
@@ -59,7 +59,7 @@ public class DoubleRocketLauncher extends RocketLauncher {
                 fresh_rocket2.getImage(idx).setRotation(rotation_angle);
             }
             fresh_rocket2.setPingPong(true);
-            fresh_rocket.setLooping(false);
+            fresh_rocket2.setLooping(false);
             fresh_rocket2.setCurrentFrame(0);
             fresh_rocket2.start();
 
@@ -80,7 +80,7 @@ public class DoubleRocketLauncher extends RocketLauncher {
         bigExplosionAnimation.draw();
     }
 
-    public void playDestructionAnimation(float xPos, float yPos) {
+    public static void playDestructionAnimation(float xPos, float yPos) {
         bigExplosionAnimation.playTenTimes(xPos, yPos, 90);
     }
 }

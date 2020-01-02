@@ -2,6 +2,7 @@ package models.war_attenders.planes;
 
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.tanks.Tank;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -36,6 +37,10 @@ public abstract class Plane extends MovableWarAttender {
     @Override
     public void draw(Graphics graphics) {
         super.draw(graphics);
+        // draw the plane's shadow
+        base_image.drawFlash(position.x, position.y,
+                WIDTH_HALF * 2, HEIGHT_HALF * 2, Color.black);
+
         if (isInvincible) {
             if (!invincibility_animation_switch) {
                 base_image.drawFlash(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);

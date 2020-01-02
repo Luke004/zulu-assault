@@ -1,6 +1,7 @@
 package models.weapons.projectiles;
 
 import models.CollisionModel;
+import models.weapons.DoubleRocketLauncher;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -17,7 +18,7 @@ public class AirRocket extends Rocket implements iAirProjectile {
     public AirRocket(Vector2f startPos, Vector2f dir, float rotation, Texture bullet_texture, Animation rocket_animation) {
         super(startPos, dir, rotation, bullet_texture, rocket_animation);
         this.isGroundProjectile = false;
-        this.max_lifetime = 500;   // maximum lifetime is 0.8 sec
+        this.max_lifetime = 650;   // maximum lifetime is 0.65 sec
         // special air rocket collision model (collision model is an impact rectangle 30x30px)
         this.collision_model = new CollisionModel(pos, 30, 30);
         checkedTargets = new HashMap<>();
@@ -25,14 +26,18 @@ public class AirRocket extends Rocket implements iAirProjectile {
 
     @Override
     public void update(int deltaTime) {
-        super.update(deltaTime);
-        rocket_animation.update(deltaTime);
-
-        // only update the collision model in the last 100 milliseconds
-        if (lifetime >= max_lifetime - 50) {
-            if (!hasHitGround()) setHitGround();
-            collision_model.update(deltaTime);
+        if (lifetime <= max_lifetime - 200) {
+            super.update(deltaTime);
+        } else {
+            this.lifetime += deltaTime;
+            if (!hasHitGround()) {
+                setHitGround();
+                DoubleRocketLauncher.playDestructionAnimation(pos.x, pos.y);
+                // only update the collision model in the last 200 milliseconds
+                collision_model.update(deltaTime);
+            }
         }
+        rocket_animation.update(deltaTime);
     }
 
     @Override
@@ -53,7 +58,7 @@ public class AirRocket extends Rocket implements iAirProjectile {
 
     @Override
     public boolean hasChecked(Target target) {
-        if(checkedTargets.get(target) == null) return false;
+        if (checkedTargets.get(target) == null) return false;
         return checkedTargets.get(target);
     }
 

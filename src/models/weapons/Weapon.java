@@ -32,10 +32,6 @@ public abstract class Weapon {
             // remove bullet if if max lifetime was reached
             if (projectile.lifetime > projectile.max_lifetime) {
                 iter.remove();
-
-                if (this instanceof DoubleRocketLauncher) {
-                    ((DoubleRocketLauncher) this).playDestructionAnimation(projectile.pos.x, projectile.pos.y);
-                }
             }
         }
     }
