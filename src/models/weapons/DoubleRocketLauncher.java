@@ -1,8 +1,6 @@
 package models.weapons;
 
 import models.animations.BigExplosionAnimation;
-import models.weapons.bullets.AirRocket;
-import models.weapons.bullets.Bullet;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -45,7 +43,7 @@ public class DoubleRocketLauncher extends RocketLauncher {
             fresh_rocket.setCurrentFrame(0);
             fresh_rocket.start();
 
-            Bullet bullet = new AirRocket(bullet_spawn, bullet_dir, rotation_angle, fresh_rocket);
+            Bullet bullet = new Rocket(bullet_spawn, bullet_dir, rotation_angle, fresh_rocket);
             bullet_list.add(bullet);
 
             // second bullet (left turret)
@@ -65,7 +63,7 @@ public class DoubleRocketLauncher extends RocketLauncher {
             fresh_rocket2.setCurrentFrame(0);
             fresh_rocket2.start();
 
-            Bullet bullet2 = new AirRocket(bullet_spawn2, bullet_dir, rotation_angle, fresh_rocket2);
+            Bullet bullet2 = new Rocket(bullet_spawn2, bullet_dir, rotation_angle, fresh_rocket2);
             bullet_list.add(bullet2);
         }
     }
