@@ -10,12 +10,13 @@ import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.Soldier;
 import models.war_attenders.windmills.Windmill;
 import models.weapons.*;
+import models.weapons.projectiles.Projectile;
+import models.weapons.projectiles.iAirProjectile;
 import org.lwjgl.Sys;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.tiled.TileSet;
 import org.newdawn.slick.tiled.TiledMap;
 import player.Player;
-import models.weapons.Weapon.*;
 
 import java.util.*;
 
@@ -304,56 +305,190 @@ public class CollisionHandler {
     private void handleBulletCollisions(MovableWarAttender player_warAttender) {
         // PLAYER BULLET COLLISIONS
         for (Weapon weapon : player_warAttender.getWeapons()) {
-            Iterator<Bullet> bullet_iterator = weapon.getBullets();
-            while (bullet_iterator.hasNext()) {
-                Bullet b = bullet_iterator.next();
+            Iterator<Projectile> projectile_iterator = weapon.getProjectiles();
+            while (projectile_iterator.hasNext()) {
+                Projectile projectile = projectile_iterator.next();
                 boolean canContinue;
 
-                canContinue = removeBulletAtMapEdge(b, bullet_iterator);
+                canContinue = removeProjectileAtMapEdge(projectile, projectile_iterator);
 
                 if (canContinue) continue;
 
-                // PLAYER BULLET COLLISION WITH HOSTILE WAR ATTENDER
-                for (int idx = 0; idx < hostile_war_attenders.size(); ++idx) {
-                    if (b.getCollisionModel().intersects(hostile_war_attenders.get(idx).getCollisionModel())) {
-                        if (weapon instanceof PiercingWeapon) {
-                            if (!((PiercingWeapon) weapon).hasAlreadyHit(idx)) {
-                                hostile_war_attenders.get(idx).changeHealth(-weapon.getBulletDamage()); //drain health of hit tank
-                            }
-                            continue;
-                        } else if (weapon instanceof Uzi) {
-                            if (!(hostile_war_attenders.get(idx) instanceof Soldier)) {
-                                uziHitExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, random.nextInt(360));
+                if (projectile.isGroundProjectile) {
+                    // PLAYER GROUND PROJECTILE COLLISION WITH HOSTILE WAR ATTENDER
+                    canContinue = handleGroundProjectileWarAttenderCollision(projectile, weapon, projectile_iterator);
 
-                                uziDamageAnimation.play(b.bullet_pos.x, b.bullet_pos.y, b.bullet_image.getRotation() - 90
-                                        + random.nextInt(30 + 1 + 30) - 30);  // add random extra rotation [-30 , +30]
-                            }
-                        } else if (weapon instanceof Shell || weapon instanceof RocketLauncher) {
-                            bigExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, 90);
-                        } else if (weapon instanceof Plasma) {
-                            plasmaHitAnimation.play(b.bullet_pos.x, b.bullet_pos.y, 0);
-                        }
-                        hostile_war_attenders.get(idx).changeHealth(-weapon.getBulletDamage()); //drain health of hit tank
-                        bullet_iterator.remove();   // remove bullet
-                        canContinue = true;
-                        break;
+                    if (canContinue) continue;
+
+                    // PLAYER GROUND PROJECTILE COLLISION WITH DESTRUCTIBLE MAP TILE
+                    canContinue = handleGroundProjectileTileCollision(projectile, weapon, projectile_iterator);
+
+                    if (canContinue) continue;
+
+                    // PLAYER GROUND PROJECTILE COLLISION WITH WINDMILL
+                    handleGroundProjectileWindmillCollision(projectile, weapon, projectile_iterator);
+                } else {
+                    if (!((iAirProjectile) projectile).hasHitGround()) {
+                        continue;    // wait, since the projectile has not hit the ground yet
                     }
+
+                    // PLAYER AIR PROJECTILE COLLISION WITH HOSTILE WAR ATTENDER
+                    handleAirProjectileWarAttenderCollision(projectile, weapon);
+
+                    // PLAYER AIR PROJECTILE COLLISION WITH DESTRUCTIBLE MAP TILE
+                    handleAirProjectileTileCollision(projectile, weapon);
+
+                    // PLAYER AIR PROJECTILE COLLISION WITH WINDMILL
+                    handleAirProjectileWindmillCollision(projectile, weapon);
                 }
-
-                if (canContinue) continue;
-
-                // PLAYER BULLET COLLISION WITH DESTRUCTIBLE MAP TILE
-                canContinue = handleBulletTileCollision(b, weapon, bullet_iterator);
-
-                if (canContinue) continue;
-
-                // PLAYER BULLET COLLISION WITH WINDMILL
-                handleBulletWindmillCollision(b, weapon, bullet_iterator);
-
             }
         }
+    }
+
+    private boolean handleGroundProjectileWarAttenderCollision(Projectile projectile, Weapon weapon, Iterator<Projectile> projectile_iterator) {
+        for (int idx = 0; idx < hostile_war_attenders.size(); ++idx) {
+            if (projectile.getCollisionModel().intersects(hostile_war_attenders.get(idx).getCollisionModel())) {
+                if (weapon instanceof PiercingWeapon) {
+                    if (!((PiercingWeapon) weapon).hasAlreadyHit(idx)) {
+                        //drain health of hit tank:
+                        hostile_war_attenders.get(idx).changeHealth(-weapon.getBulletDamage());
+                    }
+                    continue;
+                } else if (weapon instanceof Uzi) {
+                    if (!(hostile_war_attenders.get(idx) instanceof Soldier)) {
+                        uziHitExplosionAnimation.play(projectile.pos.x, projectile.pos.y,
+                                random.nextInt(360));
+
+                        uziDamageAnimation.play(projectile.pos.x, projectile.pos.y,
+                                projectile.image.getRotation() - 90
+                                        + random.nextInt(30 + 1 + 30) - 30);
+                        // add random extra rotation [-30 , +30]
+                    }
+                } else if (weapon instanceof Shell || weapon instanceof RocketLauncher) {
+                    bigExplosionAnimation.play(projectile.pos.x, projectile.pos.y, 90);
+                } else if (weapon instanceof Plasma) {
+                    plasmaHitAnimation.play(projectile.pos.x, projectile.pos.y, 0);
+                }
+                hostile_war_attenders.get(idx).changeHealth(-weapon.getBulletDamage());
+                projectile_iterator.remove();   // remove bullet
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean handleGroundProjectileTileCollision(Projectile projectile, Weapon weapon, Iterator<Projectile> bullet_iterator) {
+        int x = (int) projectile.pos.x / TILE_WIDTH;
+        int y = (int) projectile.pos.y / TILE_HEIGHT;
+        int tile_ID = level_map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
 
 
+        for (int idx = 0; idx < destructible_tile_indices.length; ++idx) {
+            if (tile_ID == destructible_tile_indices[idx]) {
+                if (weapon instanceof RocketLauncher || weapon instanceof Shell) {
+                    // it's a one shot, destroy tile directly
+                    bigExplosionAnimation.play(projectile.pos.x, projectile.pos.y, 90);
+
+                    // destroyed by bullet, show destruction animation using level listener
+                    level_delete_listener.notifyForDeletion(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20);
+
+                    // destroy the hit tile directly
+                    level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
+
+                    // maybe also destroy other tiles around
+                    doCollateralTileDamage(x, y, idx);
+                } else {
+                    if (weapon instanceof PiercingWeapon) {
+                        if (weapon instanceof MegaPulse) {
+                            // it's a one shot, destroy tile directly
+                            level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
+                            level_delete_listener.notifyForDeletion(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20);
+                        } else if (!((PiercingWeapon) weapon).hasAlreadyHit(generateKey(x, y))) {
+                            damageTile(x, y, weapon, destructible_tile_replace_indices[idx], null);
+                        }
+                        continue;
+                    } else if (weapon instanceof Uzi) {
+                        uziHitExplosionAnimation.play(projectile.pos.x, projectile.pos.y, random.nextInt(360));
+                    } else if (weapon instanceof Plasma) {
+                        plasmaHitAnimation.play(projectile.pos.x, projectile.pos.y, 0);
+                    }
+                    damageTile(x, y, weapon, destructible_tile_replace_indices[idx], null);
+                }
+                bullet_iterator.remove();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void handleGroundProjectileWindmillCollision(Projectile projectile, Weapon weapon, Iterator<Projectile> bullet_iterator) {
+        for (int idx = 0; idx < windmill_indices.length; ++idx) {
+            int x = (int) projectile.pos.x / TILE_WIDTH;
+            int y = (int) projectile.pos.y / TILE_HEIGHT;
+            int tile_ID = level_map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
+            if (tile_ID == windmill_indices[idx]) {
+                damageWindmill(x, y, weapon);
+                if (weapon instanceof PiercingWeapon) continue;
+                else showBulletHitAnimation(weapon, projectile);
+                bullet_iterator.remove();
+            }
+        }
+    }
+
+    private void handleAirProjectileWarAttenderCollision(Projectile projectile, Weapon weapon) {
+        if (((iAirProjectile) projectile).hasChecked(iAirProjectile.Target.WarAttenders)) return;
+        for (int idx = 0; idx < hostile_war_attenders.size(); ++idx) {
+            if (projectile.getCollisionModel().intersects(hostile_war_attenders.get(idx).getCollisionModel())) {
+                if (weapon instanceof DoubleRocketLauncher) {
+                    //bigExplosionAnimation.play(projectile.pos.x, projectile.pos.y, 90);
+                }
+                hostile_war_attenders.get(idx).changeHealth(-weapon.getBulletDamage());
+            }
+        }
+        ((iAirProjectile) projectile).setChecked(iAirProjectile.Target.WarAttenders);
+    }
+
+    private void handleAirProjectileTileCollision(Projectile projectile, Weapon weapon) {
+        if (((iAirProjectile) projectile).hasChecked(iAirProjectile.Target.Tiles)) return;
+        CollisionModel.Point[] collision_points = projectile.getCollisionModel().collision_points;
+        for (int i = 0; i < collision_points.length; ++i) {
+            int x = (int) collision_points[i].x / TILE_WIDTH;
+            int y = (int) collision_points[i].y / TILE_HEIGHT;
+            int tile_ID = level_map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
+
+            for (int idx = 0; idx < destructible_tile_indices.length; ++idx) {
+                if (tile_ID == destructible_tile_indices[idx]) {
+                    if (weapon instanceof DoubleRocketLauncher) {
+                        // it's a one shot, destroy tile directly
+                        // destroyed by bullet, show destruction animation using level listener
+                        level_delete_listener.notifyForDeletion(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20);
+                        // destroy the hit tile directly
+                        level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
+                        // maybe also destroy other tiles around
+                        doCollateralTileDamage(x, y, idx);
+                    }
+                }
+            }
+        }
+        ((iAirProjectile) projectile).setChecked(iAirProjectile.Target.Tiles);
+    }
+
+    private void handleAirProjectileWindmillCollision(Projectile projectile, Weapon weapon) {
+        if (((iAirProjectile) projectile).hasChecked(iAirProjectile.Target.Windmills)) return;
+        CollisionModel.Point[] collision_points = projectile.getCollisionModel().collision_points;
+        for (int i = 0; i < collision_points.length; ++i) {
+            for (int idx = 0; idx < windmill_indices.length; ++idx) {
+                int x = (int) collision_points[i].x / TILE_WIDTH;
+                int y = (int) collision_points[i].y / TILE_HEIGHT;
+                int tile_ID = level_map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
+                if (tile_ID == windmill_indices[idx]) {
+                    damageWindmill(x, y, weapon);
+                    if (weapon instanceof PiercingWeapon) continue;
+                    else showBulletHitAnimation(weapon, projectile);
+                }
+            }
+        }
+        ((iAirProjectile) projectile).setChecked(iAirProjectile.Target.Windmills);
     }
 
     private void damageWindmill(int xPos, int yPos, Weapon weapon) {
@@ -467,12 +602,12 @@ public class CollisionHandler {
 
     private void hostileShotCollision(WarAttender w, MovableWarAttender player) {
         for (Weapon weapon : w.getWeapons()) {
-            Iterator<Bullet> bullet_iterator = weapon.getBullets();
+            Iterator<Projectile> bullet_iterator = weapon.getProjectiles();
             while (bullet_iterator.hasNext()) {
-                Bullet b = bullet_iterator.next();
+                Projectile b = bullet_iterator.next();
                 boolean canContinue;
 
-                canContinue = removeBulletAtMapEdge(b, bullet_iterator);
+                canContinue = removeProjectileAtMapEdge(b, bullet_iterator);
 
                 if (canContinue) continue;
 
@@ -489,7 +624,7 @@ public class CollisionHandler {
                 }
 
                 // HOSTILE BULLET COLLISION WITH DESTRUCTIBLE MAP TILE
-                canContinue = handleBulletTileCollision(b, weapon, bullet_iterator);
+                canContinue = handleGroundProjectileTileCollision(b, weapon, bullet_iterator);
 
                 if (canContinue) continue;
 
@@ -503,7 +638,7 @@ public class CollisionHandler {
                         }
                     }
                     // FRIENDLY SHOT COLLISION WITH WINDMILLS
-                    handleBulletWindmillCollision(b, weapon, bullet_iterator);
+                    handleGroundProjectileWindmillCollision(b, weapon, bullet_iterator);
                 } else {
                     // HOSTILE SHOT COLLISION WITH FRIENDLY WAR ATTENDERS
                     for (MovableWarAttender friendly_warAttender : friendly_war_attenders) {
@@ -518,61 +653,18 @@ public class CollisionHandler {
         }
     }
 
-    private void showBulletHitAnimation(Weapon weapon, Bullet b) {
+    private void showBulletHitAnimation(Weapon weapon, Projectile projectile) {
         if (weapon instanceof Uzi) {
-            uziHitExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, random.nextInt(360));
-            uziDamageAnimation.play(b.bullet_pos.x, b.bullet_pos.y, b.bullet_image.getRotation() - 90
+            uziHitExplosionAnimation.play(projectile.pos.x, projectile.pos.y, random.nextInt(360));
+            uziDamageAnimation.play(projectile.pos.x, projectile.pos.y, projectile.image.getRotation() - 90
                     + random.nextInt(30 + 1 + 30) - 30);  // add random extra rotation [-30 , +30]
         } else if (weapon instanceof Shell || weapon instanceof RocketLauncher) {
-            bigExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, 90);
+            bigExplosionAnimation.play(projectile.pos.x, projectile.pos.y, 90);
         } else if (weapon instanceof Plasma) {
-            plasmaHitAnimation.play(b.bullet_pos.x, b.bullet_pos.y, 0);
+            plasmaHitAnimation.play(projectile.pos.x, projectile.pos.y, 0);
         }
     }
 
-    private boolean handleBulletTileCollision(Bullet b, Weapon weapon, Iterator<Bullet> bullet_iterator) {
-        int x = (int) b.bullet_pos.x / TILE_WIDTH;
-        int y = (int) b.bullet_pos.y / TILE_HEIGHT;
-        int tile_ID = level_map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
-
-
-        for (int idx = 0; idx < destructible_tile_indices.length; ++idx) {
-            if (tile_ID == destructible_tile_indices[idx]) {
-                if (weapon instanceof RocketLauncher || weapon instanceof Shell) {
-                    // it's a one shot, destroy tile directly
-                    bigExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, 90);
-
-                    // destroyed by bullet, show destruction animation using level listener
-                    level_delete_listener.notifyForDeletion(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20);
-
-                    // destroy the hit tile directly
-                    level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
-
-                    // maybe also destroy other tiles around
-                    doCollateralTileDamage(x, y, idx);
-                } else {
-                    if (weapon instanceof PiercingWeapon) {
-                        if (weapon instanceof MegaPulse) {
-                            // it's a one shot, destroy tile directly
-                            level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
-                            level_delete_listener.notifyForDeletion(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20);
-                        } else if (!((PiercingWeapon) weapon).hasAlreadyHit(generateKey(x, y))) {
-                            damageTile(x, y, weapon, destructible_tile_replace_indices[idx], null);
-                        }
-                        continue;
-                    } else if (weapon instanceof Uzi) {
-                        uziHitExplosionAnimation.play(b.bullet_pos.x, b.bullet_pos.y, random.nextInt(360));
-                    } else if (weapon instanceof Plasma) {
-                        plasmaHitAnimation.play(b.bullet_pos.x, b.bullet_pos.y, 0);
-                    }
-                    damageTile(x, y, weapon, destructible_tile_replace_indices[idx], null);
-                }
-                bullet_iterator.remove();
-                return true;
-            }
-        }
-        return false;
-    }
 
     private void doCollateralTileDamage(int x, int y, int idx) {
         // maybe destroy nearby tiles
@@ -629,32 +721,18 @@ public class CollisionHandler {
         }
     }
 
-    private void handleBulletWindmillCollision(Bullet b, Weapon weapon, Iterator<Bullet> bullet_iterator) {
-        for (int idx = 0; idx < windmill_indices.length; ++idx) {
-            int x = (int) b.bullet_pos.x / TILE_WIDTH;
-            int y = (int) b.bullet_pos.y / TILE_HEIGHT;
-            int tile_ID = level_map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
-            if (tile_ID == windmill_indices[idx]) {
-                damageWindmill(x, y, weapon);
-                if (weapon instanceof PiercingWeapon) continue;
-                else showBulletHitAnimation(weapon, b);
-                bullet_iterator.remove();
-            }
-        }
-    }
-
-    private boolean removeBulletAtMapEdge(Bullet b, Iterator<Bullet> bullet_iterator) {
+    private boolean removeProjectileAtMapEdge(Projectile projectile, Iterator<Projectile> bullet_iterator) {
         // remove bullet if edge of map was reached
-        if (b.bullet_pos.x < 0) {
+        if (projectile.pos.x < 0) {
             bullet_iterator.remove();
             return true;
-        } else if (b.bullet_pos.y < 0) {
+        } else if (projectile.pos.y < 0) {
             bullet_iterator.remove();
             return true;
-        } else if (b.bullet_pos.x > LEVEL_WIDTH_PIXELS - 1) {
+        } else if (projectile.pos.x > LEVEL_WIDTH_PIXELS - 1) {
             bullet_iterator.remove();
             return true;
-        } else if (b.bullet_pos.y > LEVEL_HEIGHT_PIXELS - 1) {
+        } else if (projectile.pos.y > LEVEL_HEIGHT_PIXELS - 1) {
             bullet_iterator.remove();
             return true;
         }

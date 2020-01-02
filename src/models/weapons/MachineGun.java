@@ -1,5 +1,7 @@
 package models.weapons;
 
+import models.weapons.projectiles.Bullet;
+import models.weapons.projectiles.Projectile;
 import org.newdawn.slick.geom.Vector2f;
 
 public class MachineGun extends Uzi {
@@ -32,8 +34,8 @@ public class MachineGun extends Uzi {
             float dirY = (float) -Math.cos(rotation_angle * Math.PI / 180);
             Vector2f bullet_dir = new Vector2f(dirX, dirY);
 
-            Bullet bullet = new Bullet(bullet_spawn, bullet_dir, rotation_angle);
-            bullet_list.add(bullet);
+            Projectile bullet = new Bullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
+            projectile_list.add(bullet);
 
             for (int idx = 0; idx < fire_animation.getFrameCount(); ++idx) {
                 fire_animation.getImage(idx).setRotation(rotation_angle - 180);

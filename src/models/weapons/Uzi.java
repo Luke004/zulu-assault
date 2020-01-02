@@ -1,13 +1,12 @@
 package models.weapons;
 
+import models.weapons.projectiles.Bullet;
+import models.weapons.projectiles.Projectile;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Uzi extends Weapon {
 
@@ -18,7 +17,7 @@ public class Uzi extends Weapon {
         super();
         Image fire_animation_image;
         try {
-            bullet_texture = new Image("assets/bullets/bullet_small.png").getTexture();
+            projectile_texture = new Image("assets/bullets/bullet_small.png").getTexture();
             fire_animation_image = new Image("assets/animations/bullet_fire.png");
             fire_animation = new Animation(false);
             int IMAGE_COUNT = 5;
@@ -34,7 +33,6 @@ public class Uzi extends Weapon {
         }
         // individual Uzi specs
         bullet_damage = 50;
-        bullet_speed = 0.8f;
         shot_reload_time = 300;
         if (!isDrivable) shot_reload_time *= 5;
     }
@@ -65,8 +63,8 @@ public class Uzi extends Weapon {
             float yVal = (float) -Math.cos(rotation_angle * Math.PI / 180);
             Vector2f bullet_dir = new Vector2f(xVal, yVal);
 
-            Weapon.Bullet bullet = new Weapon.Bullet(bullet_spawn, bullet_dir, rotation_angle);
-            bullet_list.add(bullet);
+            Projectile bullet = new Bullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
+            projectile_list.add(bullet);
 
             for (int idx = 0; idx < fire_animation.getFrameCount(); ++idx) {
                 fire_animation.getImage(idx).setRotation(rotation_angle - 180);

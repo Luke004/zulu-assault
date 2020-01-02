@@ -1,6 +1,8 @@
 package models.weapons;
 
 import models.animations.BigExplosionAnimation;
+import models.weapons.projectiles.AirRocket;
+import models.weapons.projectiles.Projectile;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -12,8 +14,6 @@ public class DoubleRocketLauncher extends RocketLauncher {
     public DoubleRocketLauncher(boolean isDrivable) {
         super(isDrivable);
         BUFFER_SIZE *= 2;   // double the buffer size, since this is a double rocket launcher
-        MAX_BULLET_LIFETIME = 800;
-
         bigExplosionAnimation = new BigExplosionAnimation(100);
     }
 
@@ -43,8 +43,8 @@ public class DoubleRocketLauncher extends RocketLauncher {
             fresh_rocket.setCurrentFrame(0);
             fresh_rocket.start();
 
-            Bullet bullet = new Rocket(bullet_spawn, bullet_dir, rotation_angle, fresh_rocket);
-            bullet_list.add(bullet);
+            Projectile rocket1 = new AirRocket(bullet_spawn, bullet_dir, rotation_angle, projectile_texture, fresh_rocket);
+            projectile_list.add(rocket1);
 
             // second bullet (left turret)
             spawnX_1 = (float) (spawnX + Math.cos(((rotation_angle) * Math.PI) / 180) * -19.5f
@@ -63,8 +63,8 @@ public class DoubleRocketLauncher extends RocketLauncher {
             fresh_rocket2.setCurrentFrame(0);
             fresh_rocket2.start();
 
-            Bullet bullet2 = new Rocket(bullet_spawn2, bullet_dir, rotation_angle, fresh_rocket2);
-            bullet_list.add(bullet2);
+            Projectile airRocket2 = new AirRocket(bullet_spawn2, bullet_dir, rotation_angle, projectile_texture, fresh_rocket2);
+            projectile_list.add(airRocket2);
         }
     }
 

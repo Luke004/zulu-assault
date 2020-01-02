@@ -1,12 +1,12 @@
 package models.weapons;
 
 import models.animations.SmokeAnimation;
+import models.weapons.projectiles.Bullet;
+import models.weapons.projectiles.Projectile;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
-
-import java.util.Iterator;
 
 public class Shell extends Weapon {
     SmokeAnimation smokeAnimation;
@@ -15,13 +15,12 @@ public class Shell extends Weapon {
         super();
         smokeAnimation = new SmokeAnimation(1);
         try {
-            bullet_texture = new Image("assets/bullets/shell.png").getTexture();
+            projectile_texture = new Image("assets/bullets/shell.png").getTexture();
         } catch (SlickException e) {
             e.printStackTrace();
         }
         // individual Shell specs
         bullet_damage = 750;
-        bullet_speed = 0.8f;
         shot_reload_time = 1000;
         if (!isDrivable) shot_reload_time *= 5;
     }
@@ -50,8 +49,8 @@ public class Shell extends Weapon {
             float yVal = (float) -Math.cos(rotation_angle * Math.PI / 180);
             Vector2f bullet_dir = new Vector2f(xVal, yVal);
 
-            Weapon.Bullet bullet = new Weapon.Bullet(bullet_spawn, bullet_dir, rotation_angle);
-            bullet_list.add(bullet);
+            Projectile bullet = new Bullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
+            projectile_list.add(bullet);
 
             smokeAnimation.play(bullet_spawn.x, bullet_spawn.y, rotation_angle);
         }

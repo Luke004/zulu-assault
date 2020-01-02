@@ -1,5 +1,7 @@
 package models.weapons;
 
+import models.weapons.projectiles.Bullet;
+import models.weapons.projectiles.Projectile;
 import org.newdawn.slick.geom.Vector2f;
 
 public class DoublePlasma extends Plasma {
@@ -20,7 +22,7 @@ public class DoublePlasma extends Plasma {
             Vector2f bullet_dir = new Vector2f(xVal, yVal);
 
             Vector2f bullet_spawn;
-            Weapon.Bullet bullet;
+            Projectile bullet;
             if (switch_turret) {
                 switch_turret = false;
                 // right turret
@@ -29,7 +31,7 @@ public class DoublePlasma extends Plasma {
                 spawnY += (Math.sin(((rotation_angle) * Math.PI) / 180) * 19.5f
                         + Math.cos(((rotation_angle) * Math.PI) / 180) * -30.f);
                 bullet_spawn = new Vector2f(spawnX, spawnY);
-                bullet = new Weapon.Bullet(bullet_spawn, bullet_dir, rotation_angle);
+                bullet = new Bullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
             } else {
                 switch_turret = true;
                 // left turret
@@ -39,10 +41,10 @@ public class DoublePlasma extends Plasma {
                         + Math.cos(((rotation_angle) * Math.PI) / 180) * -30.f);
 
                 bullet_spawn = new Vector2f(spawnX, spawnY);
-                bullet = new Weapon.Bullet(bullet_spawn, bullet_dir, rotation_angle);
+                bullet = new Bullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
 
             }
-            bullet_list.add(bullet);
+            projectile_list.add(bullet);
         }
     }
 }
