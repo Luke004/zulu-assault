@@ -87,8 +87,12 @@ public abstract class WarAttender {
         for (WarAttender enemy_war_attender : enemies_of_tank) {
             float next_xPos = enemy_war_attender.position.x;
             float next_yPos = enemy_war_attender.position.y;
-            float next_dist = (float) Math.sqrt((next_xPos - position.x) * (next_xPos - position.x)
+            float next_dist = WayPointManager.dist(position, new Vector2f(next_xPos, next_yPos));
+                    /*
+                    (float) Math.sqrt((next_xPos - position.x) * (next_xPos - position.x)
                     + (next_yPos - position.y) * (next_yPos - position.y));
+
+                     */
             if (next_dist < dist) {
                 dist = next_dist;
                 xPos = next_xPos;

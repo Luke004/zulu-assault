@@ -68,8 +68,7 @@ public class Player {
                 this.current_warAttender = warAttender;
                 break;
             case LEAVING:
-                Tank tank = ((Tank) warAttender);
-                Vector2f spawn_position = tank.calculateSoldierSpawnPosition();
+                Vector2f spawn_position = warAttender.calculateSoldierSpawnPosition();
                 if (base_soldier == null) {
                     base_soldier = new PlayerSoldier(new Vector2f(spawn_position.x, spawn_position.y), false);
                 } else {
@@ -77,7 +76,7 @@ public class Player {
                     ((Soldier) base_soldier).setPosition(spawn_position);
                 }
                 // set soldiers rotation so he's facing towards the tank at its back
-                base_soldier.setRotation(tank.getRotation());
+                base_soldier.setRotation(warAttender.getRotation());
                 this.current_warAttender = base_soldier;
                 break;
         }

@@ -130,19 +130,6 @@ public abstract class Tank extends MovableWarAttender {
         position.add(dir);
     }
 
-    public Vector2f calculateSoldierSpawnPosition() {
-        // set player 10 pixels behind the tank
-        final float DISTANCE = 10;
-        final float SPAWN_X = 0;
-        final float SPAWN_Y = base_image.getHeight() / 2 + DISTANCE;
-
-        float xVal = (float) (Math.cos(((base_image.getRotation()) * Math.PI) / 180) * SPAWN_X
-                + -Math.sin(((base_image.getRotation()) * Math.PI) / 180) * SPAWN_Y);
-        float yVal = (float) (Math.sin(((base_image.getRotation()) * Math.PI) / 180) * SPAWN_X
-                + Math.cos(((base_image.getRotation()) * Math.PI) / 180) * SPAWN_Y);
-        return new Vector2f(xVal + position.x, yVal + position.y);
-    }
-
     public void rotateTurret(RotateDirection r, int deltaTime) {
         switch (r) {
             case ROTATE_DIRECTION_LEFT:

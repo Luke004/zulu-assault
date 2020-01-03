@@ -23,9 +23,10 @@ public class KeyInputHandler {
 
     public void update(GameContainer gameContainer, int deltaTime) {
         Input input = gameContainer.getInput();
+        MovableWarAttender playerWarAttender = player.getWarAttender();
         switch (player.getWarAttenderType()) {
             case SOLDIER:   // player is a soldier (goes by foot)
-                Soldier soldier = (Soldier) player.getWarAttender();
+                Soldier soldier = (Soldier) playerWarAttender;
 
                 // forward movement
                 if (input.isKeyPressed(Input.KEY_UP)) {
@@ -51,16 +52,6 @@ public class KeyInputHandler {
                 }
                 if (input.isKeyDown(Input.KEY_DOWN)) {
                     soldier.moveBackwards(deltaTime);
-                }
-
-                // left turn
-                if (input.isKeyDown(Input.KEY_LEFT)) {
-                    soldier.rotate(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
-                }
-
-                // right turn
-                if (input.isKeyDown(Input.KEY_RIGHT)) {
-                    soldier.rotate(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
                 }
 
                 // fire weapon1
@@ -92,7 +83,7 @@ public class KeyInputHandler {
                 }
                 break;
             case TANK:      // player is in a tank
-                Tank tank = (Tank) player.getWarAttender();
+                Tank tank = (Tank) playerWarAttender;
 
                 // forward movement
                 if (input.isKeyPressed(Input.KEY_UP)) {
@@ -120,46 +111,12 @@ public class KeyInputHandler {
                     tank.moveBackwards(deltaTime);  // drive tank backwards with its backwards_speed
                 }
 
-                if (input.isKeyDown(Input.KEY_LEFT)) {
-                    tank.rotate(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
-                }
-
-                if (input.isKeyDown(Input.KEY_RIGHT)) {
-                    tank.rotate(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
-                }
-
                 if (input.isKeyDown(Input.KEY_X)) {
                     tank.rotateTurret(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
                 }
 
                 if (input.isKeyDown(Input.KEY_Y)) {
                     tank.rotateTurret(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
-                }
-
-                // fire weapon1
-                if (input.isKeyDown(Input.KEY_LCONTROL) || input.isKeyPressed(Input.KEY_RCONTROL)) {
-                    tank.fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
-                }
-
-                // fire weapon2
-                if (input.isKeyDown(Input.KEY_LALT) || input.isKeyPressed(Input.KEY_RALT)) {
-                    tank.fireWeapon(MovableWarAttender.WeaponType.WEAPON_2);
-                }
-
-                if (input.isKeyPressed(Input.KEY_1)) {
-                    player.activateItem(Player.Item.INVINCIBLE);
-                }
-
-                if (input.isKeyPressed(Input.KEY_2)) {
-                    player.activateItem(Player.Item.EMP);
-                }
-
-                if (input.isKeyPressed(Input.KEY_3)) {
-                    player.activateItem(Player.Item.MEGA_PULSE);
-                }
-
-                if (input.isKeyPressed(Input.KEY_4)) {
-                    player.activateItem(Player.Item.EXPAND);
                 }
 
                 // get out of tank
@@ -173,7 +130,7 @@ public class KeyInputHandler {
                 break;
 
             case ROBOT:   // player is in a robot
-                Robot robot = (Robot) player.getWarAttender();
+                Robot robot = (Robot) playerWarAttender;
 
                 // forward movement
                 if (input.isKeyPressed(Input.KEY_UP)) {
@@ -201,16 +158,6 @@ public class KeyInputHandler {
                     robot.moveBackwards(deltaTime);
                 }
 
-                // left turn
-                if (input.isKeyDown(Input.KEY_LEFT)) {
-                    robot.rotate(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
-                }
-
-                // right turn
-                if (input.isKeyDown(Input.KEY_RIGHT)) {
-                    robot.rotate(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
-                }
-
                 if (input.isKeyDown(Input.KEY_X)) {
                     robot.rotateTurret(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
                 }
@@ -219,50 +166,69 @@ public class KeyInputHandler {
                     robot.rotateTurret(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
                 }
 
-                // fire weapon1
-                if (input.isKeyDown(Input.KEY_LCONTROL) || input.isKeyPressed(Input.KEY_RCONTROL)) {
-                    robot.fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
+                // get out of robot
+                if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
+                    if (!robot.isMoving()) {
+                        robot.showAccessibleAnimation(true);
+                        drivable_war_attenders.add(robot);
+                        player.setWarAttender(robot, Player.EnterAction.LEAVING);
+                    }
                 }
 
-                // fire weapon2
-                if (input.isKeyDown(Input.KEY_LALT) || input.isKeyPressed(Input.KEY_RALT)) {
-                    robot.fireWeapon(MovableWarAttender.WeaponType.WEAPON_2);
-                }
-
-                // activate invincibility
-                if (input.isKeyPressed(Input.KEY_1)) {
-                    robot.activateItem(Player.Item.INVINCIBLE);
-                }
                 break;
 
             case PLANE:     // player is in a plane
-                Plane plane = (Plane) player.getWarAttender();
+                Plane plane = (Plane) playerWarAttender;
 
-                // left turn
-                if (input.isKeyDown(Input.KEY_LEFT)) {
-                    plane.rotate(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
+                // get out of plane
+                if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
+                    plane.land();
+                }
+                if (plane.hasLanded()) {
+                    plane.showAccessibleAnimation(true);
+                    drivable_war_attenders.add(plane);
+                    player.setWarAttender(plane, Player.EnterAction.LEAVING);
                 }
 
-                // right turn
-                if (input.isKeyDown(Input.KEY_RIGHT)) {
-                    plane.rotate(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
-                }
-
-                // fire weapon1
-                if (input.isKeyDown(Input.KEY_LCONTROL) || input.isKeyPressed(Input.KEY_RCONTROL)) {
-                    plane.fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
-                }
-
-                // fire weapon2
-                if (input.isKeyDown(Input.KEY_LALT) || input.isKeyPressed(Input.KEY_RALT)) {
-                    plane.fireWeapon(MovableWarAttender.WeaponType.WEAPON_2);
-                }
-
-                // activate invincibility
-                if (input.isKeyPressed(Input.KEY_1)) {
-                    plane.activateItem(Player.Item.INVINCIBLE);
-                }
                 break;
+        }
+        // keys for all types:
+
+        // left turn
+        if (input.isKeyDown(Input.KEY_LEFT)) {
+            playerWarAttender.rotate(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
+        }
+
+        // right turn
+        if (input.isKeyDown(Input.KEY_RIGHT)) {
+            playerWarAttender.rotate(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
+        }
+
+        // fire weapon1
+        if (input.isKeyDown(Input.KEY_LCONTROL) || input.isKeyPressed(Input.KEY_RCONTROL)) {
+            playerWarAttender.fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
+        }
+
+        // fire weapon2
+        if (input.isKeyDown(Input.KEY_LALT) || input.isKeyPressed(Input.KEY_RALT)) {
+            playerWarAttender.fireWeapon(MovableWarAttender.WeaponType.WEAPON_2);
+        }
+
+        // activate items
+        if (input.isKeyPressed(Input.KEY_1)) {
+            player.activateItem(Player.Item.INVINCIBLE);
+        }
+
+        if (input.isKeyPressed(Input.KEY_2)) {
+            player.activateItem(Player.Item.EMP);
+        }
+
+        if (input.isKeyPressed(Input.KEY_3)) {
+            player.activateItem(Player.Item.MEGA_PULSE);
+        }
+
+        if (input.isKeyPressed(Input.KEY_4)) {
+            player.activateItem(Player.Item.EXPAND);
         }
 
     }

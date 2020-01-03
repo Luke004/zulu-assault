@@ -34,8 +34,17 @@ public class WayPointManager {
     }
 
     public float distToNextVector(Vector2f position) {
+        return dist(wayPoints.get(current_point_idx), position);
+        /*
         return (float) Math.sqrt((wayPoints.get(current_point_idx).x - position.x) * (wayPoints.get(current_point_idx).x - position.x)
                 + (wayPoints.get(current_point_idx).y - position.y) * (wayPoints.get(current_point_idx).y - position.y));
+
+         */
+    }
+
+    public static float dist(Vector2f pos1, Vector2f pos2) {
+        return (float) Math.sqrt((pos1.x - pos2.x) * (pos1.x - pos2.x)
+                + (pos1.y - pos2.y) * (pos1.y - pos2.y));
     }
 
     /*

@@ -43,7 +43,7 @@ public class AirRocket extends Rocket implements iAirProjectile {
     @Override
     public void draw(Graphics graphics) {
         super.draw(graphics);
-        collision_model.draw(graphics);
+        //collision_model.draw(graphics);
     }
 
     @Override

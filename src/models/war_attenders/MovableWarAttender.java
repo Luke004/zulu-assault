@@ -54,6 +54,7 @@ public abstract class MovableWarAttender extends WarAttender {
         this.isDrivable = isDrivable;
     }
 
+    @Override
     public void init() {
         if (isDrivable) {
             initAccessibleAnimation();
@@ -62,7 +63,7 @@ public abstract class MovableWarAttender extends WarAttender {
         super.init();
     }
 
-
+    @Override
     public void update(GameContainer gc, int deltaTime) {
         super.update(gc, deltaTime);
 
@@ -162,6 +163,19 @@ public abstract class MovableWarAttender extends WarAttender {
         }
         dir.x *= deltaTime * current_speed;
         dir.y *= deltaTime * current_speed;
+    }
+
+    public Vector2f calculateSoldierSpawnPosition() {
+        // set player 10 pixels behind the tank
+        final float DISTANCE = 10;
+        final float SPAWN_X = 0;
+        final float SPAWN_Y = base_image.getHeight() / 2.f + DISTANCE;
+
+        float xVal = (float) (Math.cos(((base_image.getRotation()) * Math.PI) / 180) * SPAWN_X
+                + -Math.sin(((base_image.getRotation()) * Math.PI) / 180) * SPAWN_Y);
+        float yVal = (float) (Math.sin(((base_image.getRotation()) * Math.PI) / 180) * SPAWN_X
+                + Math.cos(((base_image.getRotation()) * Math.PI) / 180) * SPAWN_Y);
+        return new Vector2f(xVal + position.x, yVal + position.y);
     }
 
     public CollisionModel getCollisionModel() {
