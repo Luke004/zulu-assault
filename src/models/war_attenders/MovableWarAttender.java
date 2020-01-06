@@ -3,8 +3,10 @@ package models.war_attenders;
 import logic.WarAttenderDeleteListener;
 import logic.WayPointManager;
 import models.CollisionModel;
+import models.war_attenders.planes.Plane;
 import models.weapons.MegaPulse;
 import models.weapons.Weapon;
+import org.lwjgl.Sys;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import player.Player;
@@ -16,6 +18,7 @@ public abstract class MovableWarAttender extends WarAttender {
     public Image base_image;
     public CollisionModel collisionModel;
     public int WIDTH_HALF, HEIGHT_HALF;
+    private Vector2f health_bar_offset;
 
     // drivable related
     public Animation drivable_animation;
@@ -60,6 +63,7 @@ public abstract class MovableWarAttender extends WarAttender {
             initAccessibleAnimation();
             weapons.add(new MegaPulse());  // add the MEGA_PULSE (special item)
         }
+        health_bar_offset = new Vector2f(30.f, base_image.getHeight() / 2.f + 14.f);
         super.init();
     }
 
@@ -67,9 +71,13 @@ public abstract class MovableWarAttender extends WarAttender {
     public void update(GameContainer gc, int deltaTime) {
         super.update(gc, deltaTime);
 
+        // GRAPHICS RELATED STUFF
         if (show_drivable_animation) {
             drivable_animation.update(deltaTime);
         }
+
+        health_bar_position.x = position.x - health_bar_offset.x;
+        health_bar_position.y = position.y - health_bar_offset.y;
 
         // COLLISION RELATED STUFF
         collisionModel.update(base_image.getRotation());
@@ -97,31 +105,18 @@ public abstract class MovableWarAttender extends WarAttender {
 
     @Override
     public void draw(Graphics graphics) {
-        health_bar_image.draw(position.x - health_bar_image.getWidth() / 2 - 7.5f, position.y - base_image.getHeight() / 2 - 15);
-
-        // draw health bar damage using a black rectangle
-        graphics.setColor(Color.black);
-        if (current_health > 0) {
-            graphics.fillRect(position.x + 14, position.y - base_image.getHeight() / 2 - 14, -(29 - (((float) current_health) / (((float) max_health) / 29))), 5);
-        } else {    // destroyed (rectangle is full black size)
-            graphics.fillRect(position.x + 14, position.y - base_image.getHeight() / 2 - 14, -29, 5);
-        }
+        super.draw(graphics);
 
         // DRAW DRIVABLE ANIMATION
         showDrivableAnimation();
-
-        // BULLETS
-        for (Weapon weapon : weapons) {
-            weapon.draw(graphics);
-        }
 
         // COLLISION RELATED STUFF
         collisionModel.draw(graphics);
     }
 
-    public void showDrivableAnimation(){
+    public void showDrivableAnimation() {
         if (show_drivable_animation) {
-            drivable_animation.draw(position.x - (WIDTH_HALF * 2) / 4, position.y - (HEIGHT_HALF * 2) + 17);
+            drivable_animation.draw(position.x - (WIDTH_HALF * 2) / 4.f, position.y - (HEIGHT_HALF * 2) + 17);
         }
     }
 

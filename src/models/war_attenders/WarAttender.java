@@ -12,6 +12,7 @@ import java.util.List;
 public abstract class WarAttender {
     public List<Weapon> weapons;
     public Image health_bar_image;
+    protected Vector2f health_bar_position;
     // specs related
     public float current_health, max_health, armor;
     public boolean isHostile, isDestroyed;
@@ -23,6 +24,7 @@ public abstract class WarAttender {
         this.isHostile = isHostile;
         this.position = startPos;
         weapons = new ArrayList<>();    // 3 weapons -> WEAPON_1, WEAPON_2 and MEGA_PULSE
+        health_bar_position = new Vector2f();
         if (isHostile) {
             try {
                 health_bar_image = new Image("assets/healthbars/healthbar_enemy.png");
@@ -52,13 +54,23 @@ public abstract class WarAttender {
     }
 
     public void draw(Graphics graphics) {
-        health_bar_image.draw(position.x - 7.5f, position.y - 15);
+        health_bar_image.draw(health_bar_position.x, health_bar_position.y);
         // draw health bar damage using a black rectangle
         graphics.setColor(Color.black);
         if (current_health > 0) {
-            graphics.fillRect(position.x + 36, position.y - 14, -(29 - ((current_health) / ((max_health) / 29))), 5);
+            graphics.fillRect(
+                    health_bar_position.x + 44.f,
+                    health_bar_position.y + 1.f,
+                    -(29 - ((current_health) / ((max_health) / 29))),
+                    5.f
+            );
         } else {    // destroyed (rectangle is full black size)
-            graphics.fillRect(position.x + 36, position.y - 14, -29, 5);
+            graphics.fillRect(
+                    health_bar_position.x + 44.f,
+                    health_bar_position.y + 1.f,
+                    -29.f,
+                    5.f
+            );
         }
 
         // BULLETS
@@ -67,7 +79,7 @@ public abstract class WarAttender {
         }
     }
 
-    public void shootAtEnemies(MovableWarAttender player, List<? extends WarAttender> enemies_of_tank, int deltaTime) {
+    public void shootAtEnemies(MovableWarAttender player, List<? extends WarAttender> enemies_of_warAttender, int deltaTime) {
         if (isDestroyed) return;
         float xPos, yPos, dist;
         if (player != null) {
@@ -84,7 +96,7 @@ public abstract class WarAttender {
             dist = Float.MAX_VALUE;
         }
         // calculate dist between each tank and all its enemies
-        for (WarAttender enemy_war_attender : enemies_of_tank) {
+        for (WarAttender enemy_war_attender : enemies_of_warAttender) {
             float next_xPos = enemy_war_attender.position.x;
             float next_yPos = enemy_war_attender.position.y;
             float next_dist = WayPointManager.dist(position, new Vector2f(next_xPos, next_yPos));

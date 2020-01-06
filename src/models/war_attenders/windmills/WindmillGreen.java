@@ -15,18 +15,13 @@ public class WindmillGreen extends Windmill {
         turret_rotate_speed = 0.5f;
         weapons.add(new Uzi(false));  // WEAPON_1
 
+        turret_position = new Vector2f(position.x - 3.f, position.y - 17.f);
         try {
             turret = new Image("assets/war_attenders/windmills/GreenWindmill_turret.png");
         } catch (SlickException e) {
             e.printStackTrace();
         }
         super.init();
-    }
-
-    @Override
-    public void draw(Graphics graphics) {
-        turret.draw(position.x + 17, position.y + 3);
-        super.draw(graphics);
     }
 
     @Override

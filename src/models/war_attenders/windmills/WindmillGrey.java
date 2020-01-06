@@ -14,18 +14,13 @@ public class WindmillGrey extends Windmill {
         turret_rotate_speed = 0.4f;
         weapons.add(new Shell(false));  // WEAPON_1
 
+        turret_position = new Vector2f(position.x - 4.f, position.y - 19.f);
         try {
             turret = new Image("assets/war_attenders/windmills/GreyWindmill_turret.png");
         } catch (SlickException e) {
             e.printStackTrace();
         }
         super.init();
-    }
-
-    @Override
-    public void draw(Graphics graphics) {
-        turret.draw(position.x + 16, position.y + 1);
-        super.draw(graphics);
     }
 
     @Override

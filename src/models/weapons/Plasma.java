@@ -14,6 +14,6 @@ public class Plasma extends Weapon {
         // individual Plasma specs
         bullet_damage = 100;
         shot_reload_time = 330;
-        if (!isDrivable) shot_reload_time *= 5;
+        if (!isDrivable) shot_reload_time *= 8;
     }
 }

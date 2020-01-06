@@ -46,7 +46,7 @@ public abstract class Soldier extends MovableWarAttender {
         super.update(gameContainer, deltaTime);
         animation.update(deltaTime);
 
-        if(isDestroyed){
+        if (isDestroyed) {
             level_delete_listener.notifyForDeletion(this);
         }
     }
@@ -128,7 +128,7 @@ public abstract class Soldier extends MovableWarAttender {
     @Override
     public void setRotation(float angle) {
         float rotation = WayPointManager.getShortestAngle(animation.getImage(0).getRotation(), angle);
-        if(rotation == 0) return;
+        if (rotation == 0) return;
 
         if (rotation < 0) {
             for (int idx = 0; idx < animation.getFrameCount(); ++idx) {
@@ -154,7 +154,7 @@ public abstract class Soldier extends MovableWarAttender {
                 weapons.get(0).fire(position.x, position.y, animation.getCurrentFrame().getRotation());
                 break;
             case WEAPON_2:
-                if (weapons.size() == 2) return;    // does not have a WEAPON_2, so return
+                if (weapons.size() < 2) return;    // does not have a WEAPON_2, so return
                 weapons.get(1).fire(position.x, position.y, animation.getCurrentFrame().getRotation());
                 break;
             case MEGA_PULSE:

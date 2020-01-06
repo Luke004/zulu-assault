@@ -23,6 +23,7 @@ import screen_drawer.ScreenDrawer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 public abstract class AbstractLevel extends BasicGame implements WarAttenderDeleteListener {
     Player player;
@@ -104,21 +105,20 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
                     if (map.getTileId(x, y, ENEMY_TILES_LAYER_IDX) == windmill_indices[idx]) {
                         Windmill windmill = null;
                         int windmill_key = x > y ? -x * y : x * y;
+                        // position is at middle of the tile
+                        Vector2f pos_windmill = new Vector2f(
+                                x * LevelInfo.TILE_WIDTH + LevelInfo.TILE_WIDTH / 2.f,
+                                y * LevelInfo.TILE_HEIGHT + LevelInfo.TILE_HEIGHT / 2.f
+                        );
                         switch (idx) {
                             case 0: // green windmill
-                                windmill = new WindmillGreen(
-                                        new Vector2f(x * LevelInfo.TILE_WIDTH, y * LevelInfo.TILE_HEIGHT),
-                                        true, windmill_key);
+                                windmill = new WindmillGreen(pos_windmill, true, windmill_key);
                                 break;
                             case 1: // grey windmill
-                                windmill = new WindmillGrey(
-                                        new Vector2f(x * LevelInfo.TILE_WIDTH, y * LevelInfo.TILE_HEIGHT),
-                                        true, windmill_key);
+                                windmill = new WindmillGrey(pos_windmill, true, windmill_key);
                                 break;
                             case 2: // yellow windmill
-                                windmill = new WindmillYellow(
-                                        new Vector2f(x * LevelInfo.TILE_WIDTH, y * LevelInfo.TILE_HEIGHT),
-                                        true, windmill_key);
+                                windmill = new WindmillYellow(pos_windmill, true, windmill_key);
                                 break;
                         }
                         enemy_windmills.add(windmill);
