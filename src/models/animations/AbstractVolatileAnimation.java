@@ -7,11 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public abstract class AbstractAnimation {
+/*
+A class for animations that only last for a few seconds
+ */
+public abstract class AbstractVolatileAnimation {
     private List<AnimationInstance> active_instances;
     protected List<AnimationInstance> buffered_instances;
 
-    public AbstractAnimation(final int BUFFER_SIZE) {
+    public AbstractVolatileAnimation(final int BUFFER_SIZE) {
         buffered_instances = new ArrayList<>();
         active_instances = new ArrayList<>();
         try {

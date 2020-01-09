@@ -1,10 +1,11 @@
-package models.animations;
+package models.animations.damage;
 
+import models.animations.AbstractVolatileAnimation;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-public class UziDamageAnimation extends AbstractAnimation {
+public class UziDamageAnimation extends AbstractVolatileAnimation {
 
     public UziDamageAnimation(final int BUFFER_SIZE) {
         super(BUFFER_SIZE);

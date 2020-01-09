@@ -1,14 +1,11 @@
-package models.animations;
+package models.animations.smoke;
 
+import models.animations.AbstractVolatileAnimation;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Vector2f;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class SmokeAnimation extends AbstractAnimation {
+public class SmokeAnimation extends AbstractVolatileAnimation {
     public SmokeAnimation(final int BUFFER_SIZE) {
         super(BUFFER_SIZE);
     }

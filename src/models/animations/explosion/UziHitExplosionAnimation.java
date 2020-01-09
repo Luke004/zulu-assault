@@ -1,10 +1,11 @@
-package models.animations;
+package models.animations.explosion;
 
+import models.animations.AbstractVolatileAnimation;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-public class UziHitExplosionAnimation extends AbstractAnimation {
+public class UziHitExplosionAnimation extends AbstractVolatileAnimation {
 
     public UziHitExplosionAnimation(final int BUFFER_SIZE) {
         super(BUFFER_SIZE);

@@ -1,12 +1,11 @@
-package models.animations;
+package models.animations.explosion;
 
+import models.animations.AbstractVolatileAnimation;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-import java.util.Random;
-
-public class BigExplosionAnimation extends AbstractAnimation {
+public class BigExplosionAnimation extends AbstractVolatileAnimation {
     public BigExplosionAnimation(final int BUFFER_SIZE) {
         super(BUFFER_SIZE);
     }

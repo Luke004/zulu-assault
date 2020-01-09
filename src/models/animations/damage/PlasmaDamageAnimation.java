@@ -1,11 +1,12 @@
-package models.animations;
+package models.animations.damage;
 
+import models.animations.AbstractVolatileAnimation;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-public class PlasmaHitAnimation extends AbstractAnimation{
-    public PlasmaHitAnimation(final int BUFFER_SIZE) {
+public class PlasmaDamageAnimation extends AbstractVolatileAnimation {
+    public PlasmaDamageAnimation(final int BUFFER_SIZE) {
         super(BUFFER_SIZE);
     }
 
