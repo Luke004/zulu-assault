@@ -126,7 +126,7 @@ public class Level_1 extends AbstractLevel {
         Item item_3 = new EMPItem(new Vector2f(1200.f, 1000.f));
         items.add(item_3);
 
-        Item item_4 = new SilverWrenchItem(new Vector2f(1400.f, 1000.f));
+        Item item_4 = new GoldenWrenchItem(new Vector2f(1400.f, 1000.f));
         items.add(item_4);
 
 

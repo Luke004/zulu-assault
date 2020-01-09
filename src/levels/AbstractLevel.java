@@ -39,6 +39,10 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
     private Camera camera;
     private HUD hud;
 
+    // layer indices from map
+    public static final int LANDSCAPE_TILES_LAYER_IDX = 0;
+    public static final int ENEMY_TILES_LAYER_IDX = 1;
+
     MegaPulseItem testItem;
     InvincibilityItem testItem2;
 
@@ -107,7 +111,6 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
             }
         }
 
-        final int ENEMY_TILES_LAYER_IDX = 3;
         for (int x = 0; x < map.getWidth(); ++x) {
             for (int y = 0; y < map.getHeight(); ++y) {
                 for (int idx = 0; idx < windmill_indices.length; ++idx) {
@@ -177,7 +180,7 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         for (InteractionCircle interaction_circle : interaction_circles) {
             interaction_circle.draw();
         }
-        for(Item item : items){
+        for (Item item : items) {
             item.draw();
         }
         player.draw(graphics);

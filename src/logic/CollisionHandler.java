@@ -1,5 +1,6 @@
 package logic;
 
+import levels.AbstractLevel;
 import models.CollisionModel;
 import models.animations.damage.PlasmaDamageAnimation;
 import models.animations.damage.UziDamageAnimation;
@@ -25,6 +26,8 @@ import player.Player;
 
 import java.util.*;
 
+import static levels.AbstractLevel.ENEMY_TILES_LAYER_IDX;
+import static levels.AbstractLevel.LANDSCAPE_TILES_LAYER_IDX;
 import static levels.LevelInfo.*;
 
 public class CollisionHandler {
@@ -34,19 +37,19 @@ public class CollisionHandler {
     private List<InteractionCircle> interaction_circles;
     private List<Item> items;
     private TiledMap level_map;
-    private int[] destructible_tile_indices, indestructible_tile_indices, destructible_tile_replace_indices, item_indices,
+    private int[] destructible_tile_indices, indestructible_tile_indices, destructible_tile_replace_indices,
             windmill_indices, windmill_replace_indices;
+
+    // tile specs TODO: create own tile helper class
     private final float TILE_HEALTH = 100.f;
     private final float DESTRUCTIBLE_TILE_NORMAL_ARMOR = 5.f;
     private final float DESTRUCTIBLE_TILE_LOW_ARMOR = 1.f;
-    private final int LANDSCAPE_TILES_LAYER_IDX = 0;
-    private final int ITEM_TILES_LAYER_IDX = 2;
-    private final int ENEMY_TILES_LAYER_IDX = 3;
+
     private final int GRASS_IDX, CONCRETE_IDX, DIRT_IDX;
     private Map<Integer, Float> destructible_tiles_health_info;
     protected WarAttenderDeleteListener level_delete_listener;
-    private models.animations.smoke.SmokeAnimation smokeAnimation;
-    private models.animations.explosion.UziHitExplosionAnimation uziHitExplosionAnimation;
+    private SmokeAnimation smokeAnimation;
+    private UziHitExplosionAnimation uziHitExplosionAnimation;
     private UziDamageAnimation uziDamageAnimation;
     private BigExplosionAnimation bigExplosionAnimation;
     private PlasmaDamageAnimation plasmaDamageAnimation;
@@ -72,7 +75,6 @@ public class CollisionHandler {
         all_movable_war_attenders.addAll(drivable_war_attenders);
 
         // TileMap related stuff
-        item_indices = new int[]{0, 16, 32, 40, 56};
         windmill_indices = new int[]{0, 1, 2};
         windmill_replace_indices = new int[]{96, 97, 98, 99};
         destructible_tile_indices = new int[]{1, 2, 18, 19, 25, 65, 68, 83, 88, 89};
@@ -102,17 +104,6 @@ public class CollisionHandler {
         GRASS_IDX = 0 + landscape_tiles.firstGID;
         DIRT_IDX = 16 + landscape_tiles.firstGID;
         CONCRETE_IDX = 80 + landscape_tiles.firstGID;
-
-        // create TileInfo for 'item_tiles' TileSet
-        final int ITEM_TILES_TILESET_IDX = 3;
-        TileSet item_tiles = level_map.getTileSet(ITEM_TILES_TILESET_IDX);
-        if (!item_tiles.name.equals("item_tiles"))
-            throw new IllegalAccessError("Wrong tileset index: [" + ITEM_TILES_TILESET_IDX + "] is not item_tiles");
-        else {
-            for (idx = 0; idx < item_indices.length; ++idx) {
-                item_indices[idx] += item_tiles.firstGID;
-            }
-        }
 
         // create TileInfo for 'enemy_tiles' TileSet
         final int ENEMY_TILES_TILESET_IDX = 0;
@@ -189,6 +180,10 @@ public class CollisionHandler {
                         if (player.getWarAttender().isMaxHealth()) return;
                         player.getWarAttender().changeHealth(10);
                         break;
+                    case "GOLDEN_WRENCH":
+                        if (player.getWarAttender().isMaxHealth()) return;
+                        player.getWarAttender().changeHealth(50);
+                        break;
                 }
                 items.remove(idx); // remove the item
                 break;
@@ -234,7 +229,7 @@ public class CollisionHandler {
         if (!current_warAttender.isMoving()) return;
 
         CollisionModel.Point[] playerCorners = current_warAttender.getCollisionModel().getPoints();
-        int idx, landscape_layer_tile_ID, item_layer_tile_ID, enemy_layer_tile_ID, x, y;
+        int idx, landscape_layer_tile_ID, enemy_layer_tile_ID, x, y;
 
         for (CollisionModel.Point p : playerCorners) {
             x = (int) p.x / TILE_WIDTH;
@@ -244,7 +239,6 @@ public class CollisionHandler {
             if (x < 0 || x >= level_map.getWidth() || y < 0 || y >= level_map.getHeight()) return;
 
             landscape_layer_tile_ID = level_map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
-            item_layer_tile_ID = level_map.getTileId(x, y, ITEM_TILES_LAYER_IDX);
             enemy_layer_tile_ID = level_map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
 
             // COLLISION BETWEEN WAR ATTENDER ITSELF AND DESTRUCTIBLE TILES
@@ -283,43 +277,6 @@ public class CollisionHandler {
                         damageWindmill(x, y);
                         return;
                     }
-                }
-            }
-
-            // COLLISION BETWEEN WAR ATTENDER ITSELF AND ITEMS
-            for (idx = 0; idx < item_indices.length; ++idx) {
-                if (item_layer_tile_ID == item_indices[idx]) {
-                    if (current_warAttender.isHostile) return;   // enemies can't pick ups items
-                    switch (idx) {
-                        case 0:
-                            if (current_warAttender != player.getWarAttender()) break;
-                            player.addItem(Player.Item_e.INVINCIBILITY);
-                            break;
-                        case 1:
-                            if (current_warAttender != player.getWarAttender()) break;
-                            player.addItem(Player.Item_e.EMP);
-                            break;
-                        case 2:
-                            if (current_warAttender != player.getWarAttender()) break;
-                            player.addItem(Player.Item_e.MEGA_PULSE);
-                            break;
-                        case 3:
-                            if (current_warAttender != player.getWarAttender()) break;
-                            player.addItem(Player.Item_e.EXPAND);
-                            break;
-                        case 4: // silver wrench
-                            // don't take the wrench if warAttender is at max health
-                            if (current_warAttender.isMaxHealth()) return;
-                            current_warAttender.changeHealth(10);
-                            break;
-                        case 5: // golden wrench
-                            if (current_warAttender.isMaxHealth()) return;
-                            current_warAttender.changeHealth(50);
-                            break;
-                        default:
-                            return;
-                    }
-                    level_map.setTileId(x, y, ITEM_TILES_LAYER_IDX, 0); // delete the item tile
                 }
             }
         }
