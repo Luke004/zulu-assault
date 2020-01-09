@@ -185,6 +185,10 @@ public class CollisionHandler {
                     case "EXPAND":
                         player.addItem(Player.Item_e.EXPAND);
                         break;
+                    case "SILVER_WRENCH":
+                        if (player.getWarAttender().isMaxHealth()) return;
+                        player.getWarAttender().changeHealth(10);
+                        break;
                 }
                 items.remove(idx); // remove the item
                 break;
