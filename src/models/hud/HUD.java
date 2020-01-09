@@ -16,10 +16,10 @@ public class HUD implements ItemChangeListener {
         GAME_WIDTH = gc.getWidth();
 
         items = new Item[4];
-        items[0] = (new Item(Player.Item.INVINCIBLE));
-        items[1] = (new Item(Player.Item.EMP));
-        items[2] = (new Item(Player.Item.MEGA_PULSE));
-        items[3] = (new Item(Player.Item.EXPAND));
+        items[0] = (new Item(Player.Item_e.INVINCIBILITY));
+        items[1] = (new Item(Player.Item_e.EMP));
+        items[2] = (new Item(Player.Item_e.MEGA_PULSE));
+        items[3] = (new Item(Player.Item_e.EXPAND));
 
         // draw damage and points
         HUDDrawer = new HUD_Drawer(player);

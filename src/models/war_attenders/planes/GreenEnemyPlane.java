@@ -26,12 +26,12 @@ public class GreenEnemyPlane extends Plane {
 
         if (isDrivable) {
             // individual GreenEnemyPlane attributes for human players
-            max_speed = 0.2f;
-            rotate_speed = 0.18f;
+            max_speed = 0.15f;
+            rotate_speed = 0.15f;
         } else {
             // individual GreenEnemyPlane attributes for bots
-            max_speed = 0.2f;
-            rotate_speed = 0.18f;
+            max_speed = 0.15f;
+            rotate_speed = 0.3f;
         }
 
         current_speed = max_speed;  // speed is always the same for this plane
@@ -100,6 +100,7 @@ public class GreenEnemyPlane extends Plane {
     @Override
     public void setRotation(float angle) {
         float rotation = WayPointManager.getShortestAngle(base_image.getRotation(), angle);
+        //System.out.println("shortest angle: " + rotation);
         if (rotation == 0) return;
 
         if (rotation < 0) {

@@ -66,7 +66,7 @@ public class KeyInputHandler {
 
                 // activate invincibility
                 if (input.isKeyPressed(Input.KEY_1)) {
-                    player.activateItem(Player.Item.INVINCIBLE);
+                    player.activateItem(Player.Item_e.INVINCIBILITY);
                 }
 
                 // get into MovableWarAttender
@@ -216,19 +216,19 @@ public class KeyInputHandler {
 
         // activate items
         if (input.isKeyPressed(Input.KEY_1)) {
-            player.activateItem(Player.Item.INVINCIBLE);
+            player.activateItem(Player.Item_e.INVINCIBILITY);
         }
 
         if (input.isKeyPressed(Input.KEY_2)) {
-            player.activateItem(Player.Item.EMP);
+            player.activateItem(Player.Item_e.EMP);
         }
 
         if (input.isKeyPressed(Input.KEY_3)) {
-            player.activateItem(Player.Item.MEGA_PULSE);
+            player.activateItem(Player.Item_e.MEGA_PULSE);
         }
 
         if (input.isKeyPressed(Input.KEY_4)) {
-            player.activateItem(Player.Item.EXPAND);
+            player.activateItem(Player.Item_e.EXPAND);
         }
 
     }

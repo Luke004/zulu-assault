@@ -24,7 +24,13 @@ public abstract class Plane extends MovableWarAttender {
         planeShadow = new PlaneShadow(new Vector2f(position));
 
         if (isHostile) hasStarted = true;    // hostile planes are already flying from the start
-        hasStarted = true;      // TODO: REMOVE THIS! (FOR TESTING PURPOSES)
+
+
+        // TODO: REMOVE THIS! (FOR TESTING PURPOSES)
+        // THIS EXISTS SO THAT WE CAN FLY FROM START ON IN A GREEN PLANE AND DONT HAVE TO ENTER IT FIRST
+        hasStarted = true;
+
+
         super.init();
     }
 
@@ -52,7 +58,6 @@ public abstract class Plane extends MovableWarAttender {
             Vector2f plane_pos = new Vector2f(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
             movePlaneShadow(deltaTime, plane_pos);  // move the plane's shadow towards the plane
 
-            System.out.println(WayPointManager.dist(planeShadow.current_shadow_pos, plane_pos));
             if (WayPointManager.dist(planeShadow.current_shadow_pos, plane_pos)
                     <= 2.f) {
                 hasLanded = true;

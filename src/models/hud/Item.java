@@ -20,32 +20,32 @@ class Item {
     private final int ITEM_START_Y = GAME_HEIGHT / (60 / 13);
     private final float FADE_SPEED = 0.05f; // how fast the item banner moves in and back out of the screen
 
-    Item(Player.Item item) {
+    Item(Player.Item_e item) {
         try {
             switch (item) {
-                case INVINCIBLE:
-                    item_image = new Image("assets/items/item_1.png");
+                case INVINCIBILITY:
+                    item_image = new Image("assets/items/invincibility/invincibility.png");
                     ITEM_HEIGHT = item_image.getHeight();
                     yPos = ITEM_START_Y;
                     text_y_pos = yPos + ITEM_HEIGHT / 2.5f;
                     ITEM_WIDTH = item_image.getWidth();
                     break;
                 case EMP:
-                    item_image = new Image("assets/items/item_2.png");
+                    item_image = new Image("assets/items/emp/emp.png");
                     ITEM_HEIGHT = item_image.getHeight();
                     yPos = ITEM_START_Y + ITEM_HEIGHT;
                     text_y_pos = yPos + ITEM_HEIGHT / 2.5f;
                     ITEM_WIDTH = item_image.getWidth();
                     break;
                 case MEGA_PULSE:
-                    item_image = new Image("assets/items/item_3.png");
+                    item_image = new Image("assets/items/mega_pulse/mega_pulse.png");
                     ITEM_HEIGHT = item_image.getHeight();
                     yPos = ITEM_START_Y + ITEM_HEIGHT * 2;
                     text_y_pos = yPos + ITEM_HEIGHT / 2.5f;
                     ITEM_WIDTH = item_image.getWidth();
                     break;
                 case EXPAND:
-                    item_image = new Image("assets/items/item_4.png");
+                    item_image = new Image("assets/items/expand/expand.png");
                     ITEM_HEIGHT = item_image.getHeight();
                     yPos = ITEM_START_Y + ITEM_HEIGHT * 3;
                     text_y_pos = yPos + ITEM_HEIGHT / 2.5f;

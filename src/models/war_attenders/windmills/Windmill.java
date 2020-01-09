@@ -1,11 +1,10 @@
 package models.war_attenders.windmills;
 
 import logic.WayPointManager;
-import models.animations.SmokeAnimation;
+import models.animations.smoke.SmokeAnimation;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
 import models.weapons.Weapon;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;

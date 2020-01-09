@@ -4,9 +4,12 @@ import logic.Camera;
 import logic.CollisionHandler;
 import logic.KeyInputHandler;
 import logic.WarAttenderDeleteListener;
-import models.animations.BigExplosionAnimation;
+import models.animations.explosion.BigExplosionAnimation;
 import models.hud.HUD;
 import models.interaction_circles.InteractionCircle;
+import models.items.InvincibilityItem;
+import models.items.Item;
+import models.items.MegaPulseItem;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.Soldier;
@@ -23,18 +26,21 @@ import screen_drawer.ScreenDrawer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 public abstract class AbstractLevel extends BasicGame implements WarAttenderDeleteListener {
     Player player;
     TiledMap map;
     List<Windmill> enemy_windmills;
     List<InteractionCircle> interaction_circles;
+    List<Item> items;
     List<MovableWarAttender> friendly_war_attenders, hostile_war_attenders, drivable_war_attenders;
     KeyInputHandler keyInputHandler;
     CollisionHandler collisionHandler;
     private Camera camera;
     private HUD hud;
+
+    MegaPulseItem testItem;
+    InvincibilityItem testItem2;
 
     // for destruction of tanks or robots
     private BigExplosionAnimation bigExplosionAnimation;
@@ -48,6 +54,7 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         drivable_war_attenders = new ArrayList<>();
         enemy_windmills = new ArrayList<>();
         interaction_circles = new ArrayList<>();
+        items = new ArrayList<>();
         player = new Player();
     }
 
@@ -61,6 +68,9 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         LevelInfo.LEVEL_WIDTH_PIXELS = LevelInfo.LEVEL_WIDTH_TILES * LevelInfo.TILE_WIDTH;
         LevelInfo.LEVEL_HEIGHT_PIXELS = LevelInfo.LEVEL_HEIGHT_TILES * LevelInfo.TILE_HEIGHT;
 
+        testItem = new MegaPulseItem(new Vector2f(1000.f, 1000.f));
+        testItem2 = new InvincibilityItem(new Vector2f(1100.f, 1000.f));
+
         setupWindmills();
         camera = new Camera(gameContainer, map);
         hud = new HUD(player, gameContainer);
@@ -68,7 +78,7 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         keyInputHandler = new KeyInputHandler(player, drivable_war_attenders);     // handle key inputs
         // handle collisions
         collisionHandler = new CollisionHandler(player, map, friendly_war_attenders, hostile_war_attenders,
-                drivable_war_attenders, enemy_windmills, interaction_circles);
+                drivable_war_attenders, enemy_windmills, interaction_circles, items);
 
         // add listeners for destruction of warAttenders
         for (MovableWarAttender warAttender : friendly_war_attenders) {
@@ -146,12 +156,18 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         for (InteractionCircle interaction_circle : interaction_circles) {
             interaction_circle.update(deltaTime);
         }
+        for (Item item : items) {
+            item.update(deltaTime);
+        }
         keyInputHandler.update(gameContainer, deltaTime);
         collisionHandler.update(gameContainer, deltaTime);
         hud.update(deltaTime);
         screenDrawer.update(deltaTime);
         bigExplosionAnimation.update(deltaTime);
         camera.centerOn(player.getWarAttender().position.x, player.getWarAttender().position.y);
+
+        testItem.update(deltaTime);
+        testItem2.update(deltaTime);
     }
 
     @Override
@@ -160,6 +176,9 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         camera.translateGraphics();
         for (InteractionCircle interaction_circle : interaction_circles) {
             interaction_circle.draw();
+        }
+        for(Item item : items){
+            item.draw();
         }
         player.draw(graphics);
         for (int idx = 0; idx < friendly_war_attenders.size(); ++idx) {

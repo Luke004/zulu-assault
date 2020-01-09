@@ -3,6 +3,7 @@ package levels;
 import logic.WayPointManager;
 import models.interaction_circles.HealthCircle;
 import models.interaction_circles.InteractionCircle;
+import models.items.*;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.planes.GreenEnemyPlane;
 import models.war_attenders.planes.Plane;
@@ -52,6 +53,12 @@ public class Level_1 extends AbstractLevel {
         wayPoints.add(new Vector2f(2100.f, 2500.f));
         enemy_tank_2_shell.addWayPoints(new WayPointManager(wayPoints, enemy_tank_2_shell.position, enemy_tank_2_shell.getRotation()));
         hostile_war_attenders.add(enemy_tank_2_shell);
+
+        MovableWarAttender enemy_plane_1 = new GreenEnemyPlane(new Vector2f(1000.f, 1000.f), true, false);
+        wayPoints = new ArrayList<>();
+        wayPoints.add(new Vector2f(1200.f, 1000.f));
+        enemy_tank_2_shell.addWayPoints(new WayPointManager(wayPoints, enemy_plane_1.position, enemy_plane_1.getRotation()));
+        hostile_war_attenders.add(enemy_plane_1);
 
         MovableWarAttender enemy_soldier_1 = new EnemySoldier(new Vector2f(1370.f, 3150.f), true);
         hostile_war_attenders.add(enemy_soldier_1);
@@ -109,18 +116,31 @@ public class Level_1 extends AbstractLevel {
         InteractionCircle health_circle_1 = new HealthCircle(new Vector2f(2420.f, 340.f));
         interaction_circles.add(health_circle_1);
 
+        // SETUP ITEMS
+        Item item_1 = new InvincibilityItem(new Vector2f(1000.f, 800.f));
+        items.add(item_1);
+
+        Item item_2 = new MegaPulseItem(new Vector2f(1100.f, 1000.f));
+        items.add(item_2);
+
+        Item item_3 = new EMPItem(new Vector2f(1200.f, 1000.f));
+        items.add(item_3);
+
+        Item item_4 = new ExpandItem(new Vector2f(1400.f, 1000.f));
+        items.add(item_4);
+
 
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
         Vector2f playerStartPos = new Vector2f(1000, 1000);
-        //Tank tank = new MachineGunTank(playerStartPos, false, true);
-        Plane plane = new GreenEnemyPlane(playerStartPos, false, true);
-        Robot robot = new ShellRobot(playerStartPos, false, true);
+        Tank tank = new MachineGunTank(playerStartPos, false, true);
+        //Plane plane = new GreenEnemyPlane(playerStartPos, false, true);
+        //Robot robot = new ShellRobot(playerStartPos, false, true);
         //MovableWarAttender soldier = new PlayerSoldier(playerStartPos, false);
 
         // DEFINE THE MAP
         map = new TiledMap("assets/maps/level_1.tmx");
 
-        player.init(plane);
+        player.init(tank);
 
         super.init(gameContainer);
     }

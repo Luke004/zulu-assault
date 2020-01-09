@@ -1,6 +1,6 @@
 package models.weapons;
 
-import models.animations.BigExplosionAnimation;
+import models.animations.explosion.BigExplosionAnimation;
 import models.weapons.projectiles.AirRocket;
 import models.weapons.projectiles.Projectile;
 import org.newdawn.slick.Animation;

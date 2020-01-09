@@ -1,6 +1,6 @@
 package models.weapons;
 
-import models.animations.SmokeAnimation;
+import models.animations.smoke.SmokeAnimation;
 import models.weapons.projectiles.Bullet;
 import models.weapons.projectiles.Projectile;
 import org.newdawn.slick.Graphics;

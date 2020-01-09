@@ -10,7 +10,6 @@ import models.war_attenders.tanks.Tank;
 import models.weapons.MegaPulse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.tiled.TiledMap;
 
 import static levels.LevelInfo.LEVEL_HEIGHT_PIXELS;
 import static levels.LevelInfo.LEVEL_WIDTH_PIXELS;
@@ -90,10 +89,10 @@ public class Player {
         this.GUI_listener = gui;
     }
 
-    public void addItem(Item item) {
+    public void addItem(Item_e item) {
         int idx = -1;
         switch (item) {
-            case INVINCIBLE:
+            case INVINCIBILITY:
                 idx = 0;
                 break;
             case EMP:
@@ -112,10 +111,10 @@ public class Player {
         GUI_listener.itemAdded(idx);
     }
 
-    public void activateItem(Item item) {
+    public void activateItem(Item_e item) {
         int idx = -1;
         switch (item) {
-            case INVINCIBLE:
+            case INVINCIBILITY:
                 if (current_warAttender.isInvincible()) return;
                 idx = 0;
                 break;
@@ -140,8 +139,8 @@ public class Player {
         GUI_listener.itemActivated(idx);
     }
 
-    public enum Item {
-        INVINCIBLE, EMP, MEGA_PULSE, EXPAND
+    public enum Item_e {
+        INVINCIBILITY, EMP, MEGA_PULSE, EXPAND
     }
 
     public enum EnterAction {

@@ -1,39 +1,31 @@
 package models.interaction_circles;
 
 import models.CollisionModel;
-import models.war_attenders.MovableWarAttender;
+import models.StaticCollisionEntity;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
-public abstract class InteractionCircle {
-    private Image innerCircle;
-    Image outerCircle;
-    private final CollisionModel collisionModel;
-    final Vector2f position;
+public abstract class InteractionCircle extends StaticCollisionEntity {
+    protected Image outerCircle;
 
-    public InteractionCircle(Vector2f map_position) {
-        this.position = map_position;
+    public InteractionCircle(Vector2f position) {
+        super(position);
         try {
-            this.innerCircle = new Image("assets/interaction_circles/inner_circle.png");
+            this.base_image = new Image("assets/interaction_circles/inner_circle.png");
         } catch (SlickException e) {
             e.printStackTrace();
         }
-        collisionModel = new CollisionModel(map_position, innerCircle.getWidth()/3, innerCircle.getHeight()/3);
-        collisionModel.update(0);
+        initCollisionModel(base_image.getWidth() / 3, base_image.getHeight() / 3);
     }
 
+    @Override
     public void update(int deltaTime) {
-        innerCircle.rotate(-0.1f * deltaTime);
+        base_image.rotate(-0.1f * deltaTime);
     }
 
-    public void draw(){
-        innerCircle.drawCentered(position.x, position.y);
+    @Override
+    public void draw() {
+        base_image.drawCentered(position.x, position.y);
     }
-
-    public CollisionModel getCollisionModel(){
-        return collisionModel;
-    }
-
-
 }

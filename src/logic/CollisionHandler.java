@@ -1,10 +1,16 @@
 package logic;
 
 import models.CollisionModel;
-import models.animations.*;
+import models.animations.damage.PlasmaDamageAnimation;
+import models.animations.damage.UziDamageAnimation;
+import models.animations.explosion.BigExplosionAnimation;
+import models.animations.explosion.UziHitExplosionAnimation;
+import models.animations.smoke.SmokeAnimation;
 import models.interaction_circles.HealthCircle;
 import models.interaction_circles.InteractionCircle;
 import models.interaction_circles.TeleportCircle;
+import models.items.Item;
+import models.items.MegaPulseItem;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.Soldier;
@@ -12,7 +18,6 @@ import models.war_attenders.windmills.Windmill;
 import models.weapons.*;
 import models.weapons.projectiles.Projectile;
 import models.weapons.projectiles.iAirProjectile;
-import org.lwjgl.Sys;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.tiled.TileSet;
 import org.newdawn.slick.tiled.TiledMap;
@@ -27,6 +32,7 @@ public class CollisionHandler {
     private List<MovableWarAttender> friendly_war_attenders, hostile_war_attenders, drivable_war_attenders, all_movable_war_attenders;
     private List<Windmill> enemy_windmills;
     private List<InteractionCircle> interaction_circles;
+    private List<Item> items;
     private TiledMap level_map;
     private int[] destructible_tile_indices, indestructible_tile_indices, destructible_tile_replace_indices, item_indices,
             windmill_indices, windmill_replace_indices;
@@ -39,22 +45,23 @@ public class CollisionHandler {
     private final int GRASS_IDX, CONCRETE_IDX, DIRT_IDX;
     private Map<Integer, Float> destructible_tiles_health_info;
     protected WarAttenderDeleteListener level_delete_listener;
-    private SmokeAnimation smokeAnimation;
-    private UziHitExplosionAnimation uziHitExplosionAnimation;
+    private models.animations.smoke.SmokeAnimation smokeAnimation;
+    private models.animations.explosion.UziHitExplosionAnimation uziHitExplosionAnimation;
     private UziDamageAnimation uziDamageAnimation;
     private BigExplosionAnimation bigExplosionAnimation;
-    private PlasmaHitAnimation plasmaHitAnimation;
+    private PlasmaDamageAnimation plasmaDamageAnimation;
     private Random random;
 
 
     public CollisionHandler(Player player, TiledMap level_map, List<MovableWarAttender> friendly_war_attenders,
                             List<MovableWarAttender> hostile_war_attenders, List<MovableWarAttender> drivable_war_attenders,
-                            List<Windmill> enemy_windmills, List<InteractionCircle> interaction_circles) {
+                            List<Windmill> enemy_windmills, List<InteractionCircle> interaction_circles, List<Item> items) {
         this.friendly_war_attenders = friendly_war_attenders;
         this.hostile_war_attenders = hostile_war_attenders;
         this.drivable_war_attenders = drivable_war_attenders;
         this.enemy_windmills = enemy_windmills;
         this.interaction_circles = interaction_circles;
+        this.items = items;
         this.player = player;
         this.level_map = level_map;
 
@@ -121,7 +128,7 @@ public class CollisionHandler {
         uziHitExplosionAnimation = new UziHitExplosionAnimation(10);
         uziDamageAnimation = new UziDamageAnimation(10);
         bigExplosionAnimation = new BigExplosionAnimation(10);
-        plasmaHitAnimation = new PlasmaHitAnimation(10);
+        plasmaDamageAnimation = new PlasmaDamageAnimation(10);
         random = new Random();
     }
 
@@ -134,7 +141,7 @@ public class CollisionHandler {
         uziHitExplosionAnimation.draw();
         uziDamageAnimation.draw();
         bigExplosionAnimation.draw();
-        plasmaHitAnimation.draw();
+        plasmaDamageAnimation.draw();
     }
 
     public void update(GameContainer gameContainer, int deltaTime) {
@@ -142,7 +149,7 @@ public class CollisionHandler {
         uziHitExplosionAnimation.update(deltaTime);
         uziDamageAnimation.update(deltaTime);
         bigExplosionAnimation.update(deltaTime);
-        plasmaHitAnimation.update(deltaTime);
+        plasmaDamageAnimation.update(deltaTime);
 
         MovableWarAttender player_warAttender = player.getWarAttender();
         handleMovableWarAttenderCollisions(player_warAttender);
@@ -154,12 +161,33 @@ public class CollisionHandler {
                 if (interaction_circle instanceof HealthCircle) {
                     if (player_warAttender.isMaxHealth()) return;
                     player_warAttender.changeHealth(HealthCircle.HEAL_SPEED);
-                    return;
+                    break;
                 }
                 if (interaction_circle instanceof TeleportCircle) {
                     // TODO: teleport player here
-                    return;
+                    break;
                 }
+            }
+        }
+
+        for (int idx = 0; idx < items.size(); ++idx) {
+            if (player_warAttender.getCollisionModel().intersects(items.get(idx).getCollisionModel())) {
+                switch (items.get(idx).getName()) {
+                    case "MEGA_PULSE":
+                        player.addItem(Player.Item_e.MEGA_PULSE);
+                        break;
+                    case "INVINCIBILITY":
+                        player.addItem(Player.Item_e.INVINCIBILITY);
+                        break;
+                    case "EMP":
+                        player.addItem(Player.Item_e.EMP);
+                        break;
+                    case "EXPAND":
+                        player.addItem(Player.Item_e.EXPAND);
+                        break;
+                }
+                items.remove(idx); // remove the item
+                break;
             }
         }
 
@@ -261,19 +289,19 @@ public class CollisionHandler {
                     switch (idx) {
                         case 0:
                             if (current_warAttender != player.getWarAttender()) break;
-                            player.addItem(Player.Item.INVINCIBLE);
+                            player.addItem(Player.Item_e.INVINCIBILITY);
                             break;
                         case 1:
                             if (current_warAttender != player.getWarAttender()) break;
-                            player.addItem(Player.Item.EMP);
+                            player.addItem(Player.Item_e.EMP);
                             break;
                         case 2:
                             if (current_warAttender != player.getWarAttender()) break;
-                            player.addItem(Player.Item.MEGA_PULSE);
+                            player.addItem(Player.Item_e.MEGA_PULSE);
                             break;
                         case 3:
                             if (current_warAttender != player.getWarAttender()) break;
-                            player.addItem(Player.Item.EXPAND);
+                            player.addItem(Player.Item_e.EXPAND);
                             break;
                         case 4: // silver wrench
                             // don't take the wrench if warAttender is at max health
@@ -367,7 +395,7 @@ public class CollisionHandler {
                 } else if (weapon instanceof Shell || weapon instanceof RocketLauncher) {
                     bigExplosionAnimation.play(projectile.pos.x, projectile.pos.y, 90);
                 } else if (weapon instanceof Plasma) {
-                    plasmaHitAnimation.play(projectile.pos.x, projectile.pos.y, 0);
+                    plasmaDamageAnimation.play(projectile.pos.x, projectile.pos.y, 0);
                 }
                 hostile_war_attenders.get(idx).changeHealth(-weapon.getBulletDamage());
                 projectile_iterator.remove();   // remove bullet
@@ -410,7 +438,7 @@ public class CollisionHandler {
                     } else if (weapon instanceof Uzi) {
                         uziHitExplosionAnimation.play(projectile.pos.x, projectile.pos.y, random.nextInt(360));
                     } else if (weapon instanceof Plasma) {
-                        plasmaHitAnimation.play(projectile.pos.x, projectile.pos.y, 0);
+                        plasmaDamageAnimation.play(projectile.pos.x, projectile.pos.y, 0);
                     }
                     damageTile(x, y, weapon, destructible_tile_replace_indices[idx], null);
                 }
@@ -661,7 +689,7 @@ public class CollisionHandler {
         } else if (weapon instanceof Shell || weapon instanceof RocketLauncher) {
             bigExplosionAnimation.play(projectile.pos.x, projectile.pos.y, 90);
         } else if (weapon instanceof Plasma) {
-            plasmaHitAnimation.play(projectile.pos.x, projectile.pos.y, 0);
+            plasmaDamageAnimation.play(projectile.pos.x, projectile.pos.y, 0);
         }
     }
 

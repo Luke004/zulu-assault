@@ -3,10 +3,7 @@ package models.war_attenders;
 import logic.WarAttenderDeleteListener;
 import logic.WayPointManager;
 import models.CollisionModel;
-import models.war_attenders.planes.Plane;
 import models.weapons.MegaPulse;
-import models.weapons.Weapon;
-import org.lwjgl.Sys;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import player.Player;
@@ -202,9 +199,9 @@ public abstract class MovableWarAttender extends WarAttender {
     public abstract void rotate(RotateDirection r, int deltaTime);
 
 
-    public void activateItem(Player.Item item) {
+    public void activateItem(Player.Item_e item) {
         switch (item) {
-            case INVINCIBLE:
+            case INVINCIBILITY:
                 isInvincible = true;
                 break;
             case EMP:
