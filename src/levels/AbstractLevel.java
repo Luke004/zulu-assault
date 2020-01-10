@@ -4,14 +4,14 @@ import logic.Camera;
 import logic.CollisionHandler;
 import logic.KeyInputHandler;
 import logic.WarAttenderDeleteListener;
+import models.StaticWarAttender;
 import models.animations.explosion.BigExplosionAnimation;
 import models.hud.HUD;
 import models.interaction_circles.InteractionCircle;
-import models.items.InvincibilityItem;
 import models.items.Item;
-import models.items.MegaPulseItem;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
+import models.war_attenders.planes.StaticEnemyPlane;
 import models.war_attenders.soldiers.Soldier;
 import models.war_attenders.windmills.Windmill;
 import models.war_attenders.windmills.WindmillGreen;
@@ -30,7 +30,7 @@ import java.util.List;
 public abstract class AbstractLevel extends BasicGame implements WarAttenderDeleteListener {
     Player player;
     TiledMap map;
-    List<Windmill> enemy_windmills;
+    List<StaticWarAttender> static_enemies;
     List<InteractionCircle> interaction_circles;
     List<Item> items;
     List<MovableWarAttender> friendly_war_attenders, hostile_war_attenders, drivable_war_attenders;
@@ -42,9 +42,22 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
     // layer indices from map
     public static final int LANDSCAPE_TILES_LAYER_IDX = 0;
     public static final int ENEMY_TILES_LAYER_IDX = 1;
-
-    MegaPulseItem testItem;
-    InvincibilityItem testItem2;
+    public static final int ENEMY_TILES_TILESET_IDX = 0, PLANE_TILES_TILESET_IDX = 2;
+    public static final int[] windmill_indices = new int[]{0, 1, 2};
+    // indices for plane creation
+    public static final int[] static_plane_creation_indices = new int[]{
+            22, // the plane that's facing right in the tileset
+            27, // the plane that's facing down in the tileset
+            72, // the plane that's facing left in the tileset
+            77  // the plane that's facing up in the tileset
+    };
+    // indices for plane collision
+    public static final int[] static_plane_collision_indices = new int[]{
+            12, 21, 22, 23, 32,  // the plane that's facing right in the tileset
+            17, 26, 27, 28, 37,  // the plane that's facing down in the tileset
+            62, 71, 72, 73, 82,  // the plane that's facing left in the tileset
+            67, 76, 77, 78, 87   // the plane that's facing up in the tileset
+    };
 
     // for destruction of tanks or robots
     private BigExplosionAnimation bigExplosionAnimation;
@@ -56,7 +69,7 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         hostile_war_attenders = new ArrayList<>();
         friendly_war_attenders = new ArrayList<>();
         drivable_war_attenders = new ArrayList<>();
-        enemy_windmills = new ArrayList<>();
+        static_enemies = new ArrayList<>();
         interaction_circles = new ArrayList<>();
         items = new ArrayList<>();
         player = new Player();
@@ -72,17 +85,14 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         LevelInfo.LEVEL_WIDTH_PIXELS = LevelInfo.LEVEL_WIDTH_TILES * LevelInfo.TILE_WIDTH;
         LevelInfo.LEVEL_HEIGHT_PIXELS = LevelInfo.LEVEL_HEIGHT_TILES * LevelInfo.TILE_HEIGHT;
 
-        testItem = new MegaPulseItem(new Vector2f(1000.f, 1000.f));
-        testItem2 = new InvincibilityItem(new Vector2f(1100.f, 1000.f));
-
-        setupWindmills();
+        createWarAttendersFromTiles();
         camera = new Camera(gameContainer, map);
         hud = new HUD(player, gameContainer);
         player.addListener(hud);
         keyInputHandler = new KeyInputHandler(player, drivable_war_attenders);     // handle key inputs
         // handle collisions
         collisionHandler = new CollisionHandler(player, map, friendly_war_attenders, hostile_war_attenders,
-                drivable_war_attenders, enemy_windmills, interaction_circles, items);
+                drivable_war_attenders, static_enemies, interaction_circles, items);
 
         // add listeners for destruction of warAttenders
         for (MovableWarAttender warAttender : friendly_war_attenders) {
@@ -97,11 +107,12 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         screenDrawer = new ScreenDrawer();
     }
 
-    private void setupWindmills() {
+    /*
+    this method creates additional java-objects from special tiles that act as warAttenders
+     */
+    private void createWarAttendersFromTiles() {
         // SETUP WINDMILLS USING MAP DATA
-        int[] windmill_indices = new int[]{0, 1, 2};
         // create TileInfo for 'enemy_tiles' TileSet
-        final int ENEMY_TILES_TILESET_IDX = 0;
         TileSet enemy_tiles = map.getTileSet(ENEMY_TILES_TILESET_IDX);
         if (!enemy_tiles.name.equals("enemy_tiles"))
             throw new IllegalAccessError("Wrong tileset index: [" + ENEMY_TILES_TILESET_IDX + "] is not enemy_tiles");
@@ -117,7 +128,7 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
                     //int tileID = map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
                     if (map.getTileId(x, y, ENEMY_TILES_LAYER_IDX) == windmill_indices[idx]) {
                         Windmill windmill = null;
-                        int windmill_key = x > y ? -x * y : x * y;
+                        Vector2f tile_position = new Vector2f(x, y);    // to find this tile again in CollisionHandler
                         // position is at middle of the tile
                         Vector2f pos_windmill = new Vector2f(
                                 x * LevelInfo.TILE_WIDTH + LevelInfo.TILE_WIDTH / 2.f,
@@ -125,20 +136,62 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
                         );
                         switch (idx) {
                             case 0: // green windmill
-                                windmill = new WindmillGreen(pos_windmill, true, windmill_key);
+                                windmill = new WindmillGreen(pos_windmill, true, tile_position);
                                 break;
                             case 1: // grey windmill
-                                windmill = new WindmillGrey(pos_windmill, true, windmill_key);
+                                windmill = new WindmillGrey(pos_windmill, true, tile_position);
                                 break;
                             case 2: // yellow windmill
-                                windmill = new WindmillYellow(pos_windmill, true, windmill_key);
+                                windmill = new WindmillYellow(pos_windmill, true, tile_position);
                                 break;
                         }
-                        enemy_windmills.add(windmill);
+                        static_enemies.add(windmill);
                     }
                 }
             }
         }
+
+        // SETUP PLANES USING MAP DATA
+        // create TileInfo for 'plane_tiles' TileSet
+        TileSet plane_tiles = map.getTileSet(PLANE_TILES_TILESET_IDX);
+        if (!plane_tiles.name.equals("plane_tiles"))
+            throw new IllegalAccessError("Wrong tileset index: [" + PLANE_TILES_TILESET_IDX + "] is not plane_tiles");
+        else {
+            for (int idx = 0; idx < static_plane_creation_indices.length; ++idx) {
+                static_plane_creation_indices[idx] += plane_tiles.firstGID;
+            }
+            for (int idx = 0; idx < static_plane_collision_indices.length; ++idx) {
+                static_plane_collision_indices[idx] += plane_tiles.firstGID;
+            }
+        }
+
+        for (int x = 0; x < map.getWidth(); ++x) {
+            for (int y = 0; y < map.getHeight(); ++y) {
+                for (int idx = 0; idx < static_plane_creation_indices.length; ++idx) {
+                    //int tileID = map.getTileId(x, y, PLANE_TILES_TILESET_IDX);
+                    if (map.getTileId(x, y, ENEMY_TILES_LAYER_IDX) == static_plane_creation_indices[idx]) {
+                        // to find this tile again in CollisionHandler:
+                        Vector2f[] tile_positions = new Vector2f[5];
+                        // add all tile positions of this warAttender to its object
+                        tile_positions[0] = new Vector2f(x, y - 1);
+                        tile_positions[1] = new Vector2f(x - 1, y);
+                        tile_positions[2] = new Vector2f(x, y);
+                        tile_positions[3] = new Vector2f(x + 1, y);
+                        tile_positions[4] = new Vector2f(x, y + 1);
+
+                        // position is at middle of the tile
+                        Vector2f pos_staticEnemyPlane = new Vector2f(
+                                x * LevelInfo.TILE_WIDTH + LevelInfo.TILE_WIDTH / 2.f,
+                                y * LevelInfo.TILE_HEIGHT + LevelInfo.TILE_HEIGHT / 2.f
+                        );
+                        StaticEnemyPlane staticEnemyPlane = new StaticEnemyPlane(pos_staticEnemyPlane, true,
+                                tile_positions);
+                        static_enemies.add(staticEnemyPlane);
+                    }
+                }
+            }
+        }
+
     }
 
     @Override
@@ -150,8 +203,8 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         for (int idx = 0; idx < hostile_war_attenders.size(); ++idx) {
             hostile_war_attenders.get(idx).update(gameContainer, deltaTime);
         }
-        for (int idx = 0; idx < enemy_windmills.size(); ++idx) {
-            enemy_windmills.get(idx).update(gameContainer, deltaTime);
+        for (int idx = 0; idx < static_enemies.size(); ++idx) {
+            static_enemies.get(idx).update(gameContainer, deltaTime);
         }
         for (int idx = 0; idx < drivable_war_attenders.size(); ++idx) {
             drivable_war_attenders.get(idx).update(gameContainer, deltaTime);
@@ -168,9 +221,6 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         screenDrawer.update(deltaTime);
         bigExplosionAnimation.update(deltaTime);
         camera.centerOn(player.getWarAttender().position.x, player.getWarAttender().position.y);
-
-        testItem.update(deltaTime);
-        testItem2.update(deltaTime);
     }
 
     @Override
@@ -190,8 +240,8 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
         for (int idx = 0; idx < hostile_war_attenders.size(); ++idx) {
             hostile_war_attenders.get(idx).draw(graphics);
         }
-        for (int idx = 0; idx < enemy_windmills.size(); ++idx) {
-            enemy_windmills.get(idx).draw(graphics);
+        for (int idx = 0; idx < static_enemies.size(); ++idx) {
+            static_enemies.get(idx).draw(graphics);
         }
         for (int idx = 0; idx < drivable_war_attenders.size(); ++idx) {
             drivable_war_attenders.get(idx).draw(graphics);

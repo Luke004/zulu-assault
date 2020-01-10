@@ -1,7 +1,7 @@
 package logic;
 
-import levels.AbstractLevel;
 import models.CollisionModel;
+import models.StaticWarAttender;
 import models.animations.damage.PlasmaDamageAnimation;
 import models.animations.damage.UziDamageAnimation;
 import models.animations.explosion.BigExplosionAnimation;
@@ -11,11 +11,9 @@ import models.interaction_circles.HealthCircle;
 import models.interaction_circles.InteractionCircle;
 import models.interaction_circles.TeleportCircle;
 import models.items.Item;
-import models.items.MegaPulseItem;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
 import models.war_attenders.soldiers.Soldier;
-import models.war_attenders.windmills.Windmill;
 import models.weapons.*;
 import models.weapons.projectiles.Projectile;
 import models.weapons.projectiles.iAirProjectile;
@@ -26,19 +24,18 @@ import player.Player;
 
 import java.util.*;
 
-import static levels.AbstractLevel.ENEMY_TILES_LAYER_IDX;
-import static levels.AbstractLevel.LANDSCAPE_TILES_LAYER_IDX;
+import static levels.AbstractLevel.*;
 import static levels.LevelInfo.*;
 
 public class CollisionHandler {
     private Player player;
     private List<MovableWarAttender> friendly_war_attenders, hostile_war_attenders, drivable_war_attenders, all_movable_war_attenders;
-    private List<Windmill> enemy_windmills;
+    private List<StaticWarAttender> static_enemies;
     private List<InteractionCircle> interaction_circles;
     private List<Item> items;
     private TiledMap level_map;
     private int[] destructible_tile_indices, indestructible_tile_indices, destructible_tile_replace_indices,
-            windmill_indices, windmill_replace_indices;
+            windmill_replace_indices;
 
     // tile specs TODO: create own tile helper class
     private final float TILE_HEALTH = 100.f;
@@ -58,11 +55,11 @@ public class CollisionHandler {
 
     public CollisionHandler(Player player, TiledMap level_map, List<MovableWarAttender> friendly_war_attenders,
                             List<MovableWarAttender> hostile_war_attenders, List<MovableWarAttender> drivable_war_attenders,
-                            List<Windmill> enemy_windmills, List<InteractionCircle> interaction_circles, List<Item> items) {
+                            List<StaticWarAttender> static_enemies, List<InteractionCircle> interaction_circles, List<Item> items) {
         this.friendly_war_attenders = friendly_war_attenders;
         this.hostile_war_attenders = hostile_war_attenders;
         this.drivable_war_attenders = drivable_war_attenders;
-        this.enemy_windmills = enemy_windmills;
+        this.static_enemies = static_enemies;
         this.interaction_circles = interaction_circles;
         this.items = items;
         this.player = player;
@@ -75,7 +72,6 @@ public class CollisionHandler {
         all_movable_war_attenders.addAll(drivable_war_attenders);
 
         // TileMap related stuff
-        windmill_indices = new int[]{0, 1, 2};
         windmill_replace_indices = new int[]{96, 97, 98, 99};
         destructible_tile_indices = new int[]{1, 2, 18, 19, 25, 65, 68, 83, 88, 89};
         destructible_tile_replace_indices = new int[]{32, 33, 34, 35, 36, 37, 95, 94, 93, 91};
@@ -105,16 +101,6 @@ public class CollisionHandler {
         DIRT_IDX = 16 + landscape_tiles.firstGID;
         CONCRETE_IDX = 80 + landscape_tiles.firstGID;
 
-        // create TileInfo for 'enemy_tiles' TileSet
-        final int ENEMY_TILES_TILESET_IDX = 0;
-        TileSet enemy_tiles = level_map.getTileSet(ENEMY_TILES_TILESET_IDX);
-        if (!enemy_tiles.name.equals("enemy_tiles"))
-            throw new IllegalAccessError("Wrong tileset index: [" + ENEMY_TILES_TILESET_IDX + "] is not enemy_tiles");
-        else {
-            for (idx = 0; idx < windmill_indices.length; ++idx) {
-                windmill_indices[idx] += enemy_tiles.firstGID;
-            }
-        }
         smokeAnimation = new SmokeAnimation(3);
         uziHitExplosionAnimation = new UziHitExplosionAnimation(10);
         uziDamageAnimation = new UziDamageAnimation(10);
@@ -274,10 +260,25 @@ public class CollisionHandler {
                         // damage ONLY when we are not a solider
                         if (current_warAttender instanceof Soldier) return;
 
-                        damageWindmill(x, y);
+                        damageStaticWarAttender(x, y);
                         return;
                     }
                 }
+                // COLLISION BETWEEN FRIENDLY WAR ATTENDER AND PLANES
+                for (idx = 0; idx < static_plane_collision_indices.length; ++idx) {
+                    if (enemy_layer_tile_ID == static_plane_collision_indices[idx]) {
+                        // block movement as long as tile exists and damage the destructible tile
+                        current_warAttender.blockMovement();
+
+                        // damage ONLY when we are not a solider
+                        if (current_warAttender instanceof Soldier) return;
+
+                        damageStaticWarAttender(x, y);
+                        return;
+                    }
+                }
+
+                //plane_indices
             }
         }
 
@@ -335,6 +336,37 @@ public class CollisionHandler {
     }
 
     private boolean handleGroundProjectileWarAttenderCollision(Projectile projectile, Weapon weapon, Iterator<Projectile> projectile_iterator) {
+        for (MovableWarAttender hostileWarAttender : hostile_war_attenders) {
+            if (projectile.getCollisionModel().intersects(hostileWarAttender.getCollisionModel())) {
+                if (weapon instanceof PiercingWeapon) {
+                    if (!((PiercingWeapon) weapon).hasAlreadyHit(hostileWarAttender)) {
+                        //drain health of hit tank:
+                        hostileWarAttender.changeHealth(-weapon.getBulletDamage());
+                    }
+                    continue;
+                } else if (weapon instanceof Uzi) {
+                    if (!(hostileWarAttender instanceof Soldier)) {
+                        uziHitExplosionAnimation.play(projectile.pos.x, projectile.pos.y,
+                                random.nextInt(360));
+
+                        uziDamageAnimation.play(projectile.pos.x, projectile.pos.y,
+                                projectile.image.getRotation() - 90
+                                        + random.nextInt(30 + 1 + 30) - 30);
+                        // add random extra rotation [-30 , +30]
+                    }
+                } else if (weapon instanceof Shell || weapon instanceof RocketLauncher) {
+                    bigExplosionAnimation.play(projectile.pos.x, projectile.pos.y, 90);
+                } else if (weapon instanceof Plasma) {
+                    plasmaDamageAnimation.play(projectile.pos.x, projectile.pos.y, 0);
+                }
+                hostileWarAttender.changeHealth(-weapon.getBulletDamage());
+                projectile_iterator.remove();   // remove bullet
+                return true;
+            }
+        }
+        return false;
+
+        /*
         for (int idx = 0; idx < hostile_war_attenders.size(); ++idx) {
             if (projectile.getCollisionModel().intersects(hostile_war_attenders.get(idx).getCollisionModel())) {
                 if (weapon instanceof PiercingWeapon) {
@@ -364,6 +396,7 @@ public class CollisionHandler {
             }
         }
         return false;
+        */
     }
 
     private boolean handleGroundProjectileTileCollision(Projectile projectile, Weapon weapon, Iterator<Projectile> bullet_iterator) {
@@ -416,7 +449,7 @@ public class CollisionHandler {
             int y = (int) projectile.pos.y / TILE_HEIGHT;
             int tile_ID = level_map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
             if (tile_ID == windmill_indices[idx]) {
-                damageWindmill(x, y, weapon);
+                damageStaticWarAttender(x, y, weapon);
                 if (weapon instanceof PiercingWeapon) continue;
                 else showBulletHitAnimation(weapon, projectile);
                 bullet_iterator.remove();
@@ -471,7 +504,7 @@ public class CollisionHandler {
                 int y = (int) collision_points[i].y / TILE_HEIGHT;
                 int tile_ID = level_map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
                 if (tile_ID == windmill_indices[idx]) {
-                    damageWindmill(x, y, weapon);
+                    damageStaticWarAttender(x, y, weapon);
                     if (weapon instanceof PiercingWeapon) continue;
                     else showBulletHitAnimation(weapon, projectile);
                 }
@@ -480,36 +513,29 @@ public class CollisionHandler {
         ((iAirProjectile) projectile).setChecked(iAirProjectile.Target.Windmills);
     }
 
-    private void damageWindmill(int xPos, int yPos, Weapon weapon) {
-        // use a map to track current destructible tile health
-        int key = generateKey(xPos, yPos);
-        int idx;
-
-        for (idx = 0; idx < enemy_windmills.size(); ++idx) {
-            if (enemy_windmills.get(idx).getKey() != key) continue;
+    private void damageStaticWarAttender(int xPos, int yPos, Weapon weapon) {
+        for (int idx = 0; idx < static_enemies.size(); ++idx) {
+            StaticWarAttender staticWarAttender = static_enemies.get(idx);
+            if (!staticWarAttender.containsTilePosition(xPos, yPos)) continue;
             if (weapon instanceof PiercingWeapon) {
-                if (!((PiercingWeapon) weapon).hasAlreadyHit(key)) {
-                    enemy_windmills.get(idx).changeHealth(-weapon.getBulletDamage()); //drain health of hit tank
+                if (!((PiercingWeapon) weapon).hasAlreadyHit(staticWarAttender)) {
+                    staticWarAttender.changeHealth(-weapon.getBulletDamage()); //drain health of hit tank
                     break;
                 }
             } else {
-                enemy_windmills.get(idx).changeHealth(-weapon.getBulletDamage());
+                staticWarAttender.changeHealth(-weapon.getBulletDamage());
             }
-            if (enemy_windmills.get(idx).isDestroyed) {
+            if (staticWarAttender.isDestroyed) {
                 replaceWindmillTile(idx, xPos, yPos);
             }
         }
     }
 
-    private void damageWindmill(int xPos, int yPos) {
-        // find the windmill by its key
-        int key = xPos > yPos ? -xPos * yPos : xPos * yPos;
-        int idx;
-
-        for (idx = 0; idx < enemy_windmills.size(); ++idx) {
-            if (enemy_windmills.get(idx).getKey() == key) {
-                enemy_windmills.get(idx).changeHealth(-MovableWarAttender.DAMAGE_TO_DESTRUCTIBLE_TILE);
-                if (enemy_windmills.get(idx).isDestroyed) {
+    private void damageStaticWarAttender(int xPos, int yPos) {
+        for (int idx = 0; idx < static_enemies.size(); ++idx) {
+            if (static_enemies.get(idx).containsTilePosition(xPos, yPos)) {   // find the windmill by its tile position
+                static_enemies.get(idx).changeHealth(-MovableWarAttender.DAMAGE_TO_DESTRUCTIBLE_TILE);
+                if (static_enemies.get(idx).isDestroyed) {
                     replaceWindmillTile(idx, xPos, yPos);
                 }
                 break;
@@ -518,8 +544,8 @@ public class CollisionHandler {
     }
 
     private void replaceWindmillTile(int idx, int xPos, int yPos) {
-        level_delete_listener.notifyForDeletion(enemy_windmills.get(idx));
-        enemy_windmills.remove(idx);
+        level_delete_listener.notifyForDeletion(static_enemies.get(idx));
+        static_enemies.remove(idx);
 
         // look what tile lies below destroyed windmill (grass, dirt or concrete)
         int tileID = level_map.getTileId(xPos, yPos, LANDSCAPE_TILES_LAYER_IDX);
@@ -576,14 +602,14 @@ public class CollisionHandler {
             handleMovableWarAttenderCollisions(hostile_warAttender);
         }
 
-        for (WarAttender enemy_windmill : enemy_windmills) {
-            enemy_windmill.shootAtEnemies(player_warAttender, friendly_war_attenders, deltaTime);
-            hostileShotCollision(enemy_windmill, player_warAttender);
+        for (StaticWarAttender enemy_staticWarAttender : static_enemies) {
+            enemy_staticWarAttender.shootAtEnemies(player_warAttender, friendly_war_attenders, deltaTime);
+            hostileShotCollision(enemy_staticWarAttender, player_warAttender);
         }
 
         for (MovableWarAttender friendly_war_attender : friendly_war_attenders) {
             friendly_war_attender.shootAtEnemies(null, hostile_war_attenders, deltaTime);
-            friendly_war_attender.shootAtEnemies(null, enemy_windmills, deltaTime);
+            friendly_war_attender.shootAtEnemies(null, static_enemies, deltaTime);
             handleMovableWarAttenderCollisions(friendly_war_attender);
             hostileShotCollision(friendly_war_attender, null);
         }
@@ -728,11 +754,11 @@ public class CollisionHandler {
         return false;
     }
 
-    private int generateKey(int xPos, int yPos) {
+    private static int generateKey(int xPos, int yPos) {
         return xPos > yPos ? -xPos * yPos : xPos * yPos;
     }
 
-    private class Tile {
+    private static class Tile {
         int tileID, xVal, yVal, key;
 
         Tile(int xVal, int yVal, int tileID) {

@@ -6,8 +6,8 @@
  <tileset firstgid="9" name="landscape_tiles" tilewidth="40" tileheight="40" tilecount="104" columns="8">
   <image source="../tilesets/landscape_tiles.png" width="320" height="520"/>
  </tileset>
- <tileset firstgid="113" name="big_landscape_tiles" tilewidth="40" tileheight="40" tilecount="100" columns="10">
-  <image source="../tilesets/big_landscape_tiles.png" width="400" height="400"/>
+ <tileset firstgid="113" name="plane_tiles" tilewidth="40" tileheight="40" tilecount="100" columns="10">
+  <image source="../tilesets/plane_tiles.png" width="400" height="400"/>
  </tileset>
  <tileset firstgid="213" name="item_tiles" tilewidth="40" tileheight="40" tilecount="88" columns="8">
   <image source="../tilesets/item_tiles.png" width="320" height="440"/>

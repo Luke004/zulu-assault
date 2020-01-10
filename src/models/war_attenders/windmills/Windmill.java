@@ -1,6 +1,7 @@
 package models.war_attenders.windmills;
 
 import logic.WayPointManager;
+import models.StaticWarAttender;
 import models.animations.smoke.SmokeAnimation;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
@@ -12,21 +13,22 @@ import org.newdawn.slick.geom.Vector2f;
 
 import java.util.Random;
 
-public abstract class Windmill extends WarAttender {
+public abstract class Windmill extends StaticWarAttender {
     Image turret;
     protected Vector2f turret_position;
     float turret_rotate_speed;
-    private int key;
     private SmokeAnimation smokeAnimation;
     private final int SMOKE_ANIMATION_FREQUENCY = 300;  // two per second
     private int smoke_animation_timer;
     private Random random;
 
-    public Windmill(Vector2f startPos, boolean isHostile, int key) {
+    private Vector2f tile_position;
+
+    public Windmill(Vector2f startPos, boolean isHostile, Vector2f tile_position) {
         super(startPos, isHostile);
+        this.tile_position = tile_position;
         random = new Random();
         smokeAnimation = new SmokeAnimation(3);
-        this.key = key;
         max_health = 100.f;
         armor = 10.f;
         current_health = max_health;
@@ -94,7 +96,13 @@ public abstract class Windmill extends WarAttender {
         }
     }
 
-    public int getKey() {
-        return key;
+    @Override
+    public boolean containsTilePosition(int xPos, int yPos) {
+        return (tile_position.x == xPos && tile_position.y == yPos);
+    }
+
+    @Override
+    public Vector2f getTilePosition() {
+        return tile_position;
     }
 }

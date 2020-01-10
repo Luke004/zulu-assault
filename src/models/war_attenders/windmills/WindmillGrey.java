@@ -7,8 +7,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
 public class WindmillGrey extends Windmill {
-    public WindmillGrey(Vector2f startPos, boolean isHostile, int key) {
-        super(startPos, isHostile, key);
+    public WindmillGrey(Vector2f startPos, boolean isHostile, Vector2f tile_position) {
+        super(startPos, isHostile, tile_position);
 
         // individual WindmillGrey attributes
         turret_rotate_speed = 0.4f;

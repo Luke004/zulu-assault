@@ -132,7 +132,8 @@ public class Level_1 extends AbstractLevel {
 
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
         Vector2f playerStartPos = new Vector2f(1000, 1000);
-        Tank tank = new MachineGunTank(playerStartPos, false, true);
+        Tank tank = new NapalmTank(playerStartPos, false, true);
+        //Tank tank = new MachineGunTank(playerStartPos, false, true);
         //Plane plane = new GreenEnemyPlane(playerStartPos, false, true);
         //Robot robot = new ShellRobot(playerStartPos, false, true);
         //MovableWarAttender soldier = new PlayerSoldier(playerStartPos, false);

@@ -8,8 +8,8 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class WindmillGreen extends Windmill {
 
-    public WindmillGreen(Vector2f startPos, boolean isHostile, int key) {
-        super(startPos, isHostile, key);
+    public WindmillGreen(Vector2f startPos, boolean isHostile, Vector2f tile_position) {
+        super(startPos, isHostile, tile_position);
 
         // individual WindmillGreen attributes
         turret_rotate_speed = 0.5f;

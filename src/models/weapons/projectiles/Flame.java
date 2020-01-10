@@ -1,5 +1,6 @@
 package models.weapons.projectiles;
 
+import models.CollisionModel;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -27,6 +28,7 @@ public class Flame extends Projectile {
         explosion_animations = new ArrayList<>();
         buffered_explosions = new ArrayList<>();
         active_explosions = new ArrayList<>();
+        random = new Random();
         final int FLAMES_TO_CREATE = max_lifetime / CREATE_NEW_FLAME_TIMER;
         int counter = 0;
         do {
@@ -34,10 +36,15 @@ public class Flame extends Projectile {
             counter++;
         } while (counter < FLAMES_TO_CREATE);
 
+        // individual napalm specs
+        speed = 0.17f;
+        max_lifetime = 1000;
+
+        this.collision_model = new CollisionModel(pos, WIDTH_HALF * 2, HEIGHT_HALF * 2);
+
         starting_flame = createNewExplosionInstance();
         ANIMATION_HEIGHT_HALF = starting_flame.getCurrentFrame().getHeight() / 2.f;
         ANIMATION_WIDTH_HALF = starting_flame.getCurrentFrame().getWidth() / 2.f;
-        random = new Random();
     }
 
     private Animation createNewExplosionInstance() {
@@ -50,8 +57,11 @@ public class Flame extends Projectile {
         int IMAGE_COUNT = 4;
         int x = 0;
         Animation explosion_animation = new Animation(false);
+        int random_flame_rotation = random.nextInt(360);
         for (int idx = 0; idx < IMAGE_COUNT; ++idx) {
-            explosion_animation.addFrame(explosion_animation_image.getSubImage(x, 0, 40, 50), 100);
+            Image subImage = explosion_animation_image.getSubImage(x, 0, 40, 50);
+            subImage.rotate(random_flame_rotation);
+            explosion_animation.addFrame(subImage, 200);
             x += 40;
         }
         explosion_animation.setLooping(false);

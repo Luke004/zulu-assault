@@ -1,12 +1,14 @@
 package models.weapons;
 
+import models.war_attenders.WarAttender;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class PiercingWeapon extends Weapon {
     private List<Integer> hit_indices;
 
-    public PiercingWeapon(){
+    public PiercingWeapon() {
         super();
         hit_indices = new ArrayList<>();
     }
@@ -18,7 +20,14 @@ public abstract class PiercingWeapon extends Weapon {
         } else return true;
     }
 
-    public void clearHitList(){
+    public boolean hasAlreadyHit(WarAttender warAttender) {
+        if (!hit_indices.contains(warAttender.hashCode())) {
+            hit_indices.add(warAttender.hashCode());
+            return false;
+        } else return true;
+    }
+
+    public void clearHitList() {
         hit_indices.clear();
     }
 }
