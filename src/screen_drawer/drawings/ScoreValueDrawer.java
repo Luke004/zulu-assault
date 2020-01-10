@@ -42,12 +42,6 @@ public class ScoreValueDrawer extends Drawing {
         this.xPos -= textWidth / 2.f;
         int textHeight = point_text.getHeight(score_value_string);
         this.yPos -= textHeight / 2.f;
-
-        // if it's a MovableWarAttender, the x and y pos are already centered, so do nothing
-        if (!(warAttender instanceof MovableWarAttender)) { // center using default values (TILE specs)
-            this.xPos += TILE_WIDTH / 2.f;
-            this.yPos += TILE_HEIGHT / 2.f;
-        }
     }
 
     @Override
