@@ -2,7 +2,7 @@ package models.weapons.projectiles;
 
 public interface iAirProjectile {
     public enum Target {
-        WarAttenders, Tiles, Windmills
+        WarAttenders, Tiles, StaticWarAttender
     }
 
     boolean hasHitGround();

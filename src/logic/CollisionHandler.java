@@ -42,6 +42,8 @@ public class CollisionHandler {
     private final float DESTRUCTIBLE_TILE_NORMAL_ARMOR = 5.f;
     private final float DESTRUCTIBLE_TILE_LOW_ARMOR = 1.f;
 
+    private int[] staticWarAttender_indices;
+
     private final int GRASS_IDX, CONCRETE_IDX, DIRT_IDX;
     private Map<Integer, Float> destructible_tiles_health_info;
     protected WarAttenderDeleteListener level_delete_listener;
@@ -70,6 +72,13 @@ public class CollisionHandler {
         all_movable_war_attenders.addAll(hostile_war_attenders);
         all_movable_war_attenders.add(player.getWarAttender());
         all_movable_war_attenders.addAll(drivable_war_attenders);
+
+        staticWarAttender_indices = new int[static_plane_collision_indices.length + windmill_indices.length];
+        for (int i = 0; i < staticWarAttender_indices.length; ++i) {
+            if (i < static_plane_collision_indices.length)
+                staticWarAttender_indices[i] = static_plane_collision_indices[i];
+            else staticWarAttender_indices[i] = windmill_indices[i - static_plane_collision_indices.length];
+        }
 
         // TileMap related stuff
         windmill_replace_indices = new int[]{96, 97, 98, 99};
@@ -251,9 +260,9 @@ public class CollisionHandler {
             }
 
             if (!current_warAttender.isHostile) {
-                // COLLISION BETWEEN FRIENDLY WAR ATTENDER AND WINDMILLS
-                for (idx = 0; idx < windmill_indices.length; ++idx) {
-                    if (enemy_layer_tile_ID == windmill_indices[idx]) {
+                // COLLISION BETWEEN FRIENDLY WAR ATTENDER AND STATIC WAR ATTENDERS
+                for (idx = 0; idx < staticWarAttender_indices.length; ++idx) {
+                    if (enemy_layer_tile_ID == staticWarAttender_indices[idx]) {
                         // block movement as long as tile exists and damage the destructible tile
                         current_warAttender.blockMovement();
 
@@ -315,8 +324,8 @@ public class CollisionHandler {
 
                     if (canContinue) continue;
 
-                    // PLAYER GROUND PROJECTILE COLLISION WITH WINDMILL
-                    handleGroundProjectileWindmillCollision(projectile, weapon, projectile_iterator);
+                    // PLAYER GROUND PROJECTILE COLLISION WITH STATIC WAR ATTENDERS
+                    handleGroundProjectileStaticWarAttenderCollision(projectile, weapon, projectile_iterator);
                 } else {
                     if (!((iAirProjectile) projectile).hasHitGround()) {
                         continue;    // wait, since the projectile has not hit the ground yet
@@ -328,8 +337,8 @@ public class CollisionHandler {
                     // PLAYER AIR PROJECTILE COLLISION WITH DESTRUCTIBLE MAP TILE
                     handleAirProjectileTileCollision(projectile, weapon);
 
-                    // PLAYER AIR PROJECTILE COLLISION WITH WINDMILL
-                    handleAirProjectileWindmillCollision(projectile, weapon);
+                    // PLAYER AIR PROJECTILE COLLISION WITH STATIC WAR ATTENDERS
+                    handleAirProjectileStaticWarAttenderCollision(projectile, weapon);
                 }
             }
         }
@@ -443,12 +452,13 @@ public class CollisionHandler {
         return false;
     }
 
-    private void handleGroundProjectileWindmillCollision(Projectile projectile, Weapon weapon, Iterator<Projectile> bullet_iterator) {
-        for (int idx = 0; idx < windmill_indices.length; ++idx) {
-            int x = (int) projectile.pos.x / TILE_WIDTH;
-            int y = (int) projectile.pos.y / TILE_HEIGHT;
-            int tile_ID = level_map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
-            if (tile_ID == windmill_indices[idx]) {
+    private void handleGroundProjectileStaticWarAttenderCollision(Projectile projectile, Weapon weapon, Iterator<Projectile> bullet_iterator) {
+        int x = (int) projectile.pos.x / TILE_WIDTH;
+        int y = (int) projectile.pos.y / TILE_HEIGHT;
+        int tile_ID = level_map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
+
+        for (int idx = 0; idx < staticWarAttender_indices.length; ++idx) {
+            if (tile_ID == staticWarAttender_indices[idx]) {
                 damageStaticWarAttender(x, y, weapon);
                 if (weapon instanceof PiercingWeapon) continue;
                 else showBulletHitAnimation(weapon, projectile);
@@ -495,22 +505,22 @@ public class CollisionHandler {
         ((iAirProjectile) projectile).setChecked(iAirProjectile.Target.Tiles);
     }
 
-    private void handleAirProjectileWindmillCollision(Projectile projectile, Weapon weapon) {
-        if (((iAirProjectile) projectile).hasChecked(iAirProjectile.Target.Windmills)) return;
+    private void handleAirProjectileStaticWarAttenderCollision(Projectile projectile, Weapon weapon) {
+        if (((iAirProjectile) projectile).hasChecked(iAirProjectile.Target.StaticWarAttender)) return;
         CollisionModel.Point[] collision_points = projectile.getCollisionModel().collision_points;
         for (int i = 0; i < collision_points.length; ++i) {
-            for (int idx = 0; idx < windmill_indices.length; ++idx) {
+            for (int idx = 0; idx < staticWarAttender_indices.length; ++idx) {
                 int x = (int) collision_points[i].x / TILE_WIDTH;
                 int y = (int) collision_points[i].y / TILE_HEIGHT;
                 int tile_ID = level_map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
-                if (tile_ID == windmill_indices[idx]) {
+                if (tile_ID == staticWarAttender_indices[idx]) {
                     damageStaticWarAttender(x, y, weapon);
                     if (weapon instanceof PiercingWeapon) continue;
                     else showBulletHitAnimation(weapon, projectile);
                 }
             }
         }
-        ((iAirProjectile) projectile).setChecked(iAirProjectile.Target.Windmills);
+        ((iAirProjectile) projectile).setChecked(iAirProjectile.Target.StaticWarAttender);
     }
 
     private void damageStaticWarAttender(int xPos, int yPos, Weapon weapon) {
@@ -653,7 +663,7 @@ public class CollisionHandler {
                         }
                     }
                     // FRIENDLY SHOT COLLISION WITH WINDMILLS
-                    handleGroundProjectileWindmillCollision(b, weapon, bullet_iterator);
+                    handleGroundProjectileWarAttenderCollision(b, weapon, bullet_iterator);
                 } else {
                     // HOSTILE SHOT COLLISION WITH FRIENDLY WAR ATTENDERS
                     for (MovableWarAttender friendly_warAttender : friendly_war_attenders) {
