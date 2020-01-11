@@ -1,6 +1,7 @@
 package main;
 
 import levels.Level_1;
+import levels.Level_2;
 import menus.MainMenu;
 import org.lwjgl.LWJGLUtil;
 import org.newdawn.slick.AppGameContainer;
@@ -17,11 +18,14 @@ public class ZuluAssault extends StateBasedGame {
 
     public static final int MAIN_MENU = 0;
     public static final int LEVEL_1 = 1;
+    public static final int LEVEL_2 = 2;
 
     public ZuluAssault(String name) {
         super(name);
         this.addState(new MainMenu());
         this.addState(new Level_1());
+        this.addState(new Level_2());
+
     }
 
     public static void main(String[] args) {
