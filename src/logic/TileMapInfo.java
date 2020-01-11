@@ -104,19 +104,6 @@ public class TileMapInfo {
             else staticWarAttender_indices[i] = windmill_indices[i - static_plane_collision_indices.length];
         }
 
-        // create TileInfo for 'plane_tiles' TileSet
-        TileSet plane_tiles = map.getTileSet(PLANE_TILES_TILESET_IDX);
-        if (!plane_tiles.name.equals("plane_tiles"))
-            throw new IllegalAccessError("Wrong tileset index: [" + PLANE_TILES_TILESET_IDX + "] is not plane_tiles");
-        else {
-            for (int idx = 0; idx < static_plane_creation_indices.length; ++idx) {
-                static_plane_creation_indices[idx] += plane_tiles.firstGID;
-            }
-            for (int idx = 0; idx < static_plane_collision_indices.length; ++idx) {
-                static_plane_collision_indices[idx] += plane_tiles.firstGID;
-            }
-        }
-
         destructible_tiles_health_info = new HashMap<>();
     }
 
