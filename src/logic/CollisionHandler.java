@@ -608,39 +608,40 @@ public class CollisionHandler {
     private void handleHostileCollisions(MovableWarAttender player_warAttender, List<MovableWarAttender> friendly_war_attenders, int deltaTime) {
         for (MovableWarAttender hostile_warAttender : hostile_war_attenders) {
             hostile_warAttender.shootAtEnemies(player_warAttender, friendly_war_attenders, deltaTime);
-            hostileShotCollision(hostile_warAttender, player_warAttender);
+            handleShotCollisions(hostile_warAttender, player_warAttender);
             handleMovableWarAttenderCollisions(hostile_warAttender);
         }
 
         for (StaticWarAttender enemy_staticWarAttender : static_enemies) {
             enemy_staticWarAttender.shootAtEnemies(player_warAttender, friendly_war_attenders, deltaTime);
-            hostileShotCollision(enemy_staticWarAttender, player_warAttender);
+            handleShotCollisions(enemy_staticWarAttender, player_warAttender);
         }
 
         for (MovableWarAttender friendly_war_attender : friendly_war_attenders) {
             friendly_war_attender.shootAtEnemies(null, hostile_war_attenders, deltaTime);
             friendly_war_attender.shootAtEnemies(null, static_enemies, deltaTime);
             handleMovableWarAttenderCollisions(friendly_war_attender);
-            hostileShotCollision(friendly_war_attender, null);
+            handleShotCollisions(friendly_war_attender, null);
         }
     }
 
-    private void hostileShotCollision(WarAttender w, MovableWarAttender player) {
+    private void handleShotCollisions(WarAttender w, MovableWarAttender player) {
         for (Weapon weapon : w.getWeapons()) {
-            Iterator<Projectile> bullet_iterator = weapon.getProjectiles();
-            while (bullet_iterator.hasNext()) {
-                Projectile b = bullet_iterator.next();
+            Iterator<Projectile> projectile_iterator = weapon.getProjectiles();
+
+            while (projectile_iterator.hasNext()) {
+                Projectile projectile = projectile_iterator.next();
                 boolean canContinue;
 
-                canContinue = removeProjectileAtMapEdge(b, bullet_iterator);
+                canContinue = removeProjectileAtMapEdge(projectile, projectile_iterator);
 
                 if (canContinue) continue;
 
                 if (player != null) {
                     // HOSTILE SHOT COLLISION WITH PLAYER
-                    if (b.getCollisionModel().intersects(player.getCollisionModel())) {
-                        showBulletHitAnimation(weapon, b);
-                        bullet_iterator.remove();   // remove bullet
+                    if (projectile.getCollisionModel().intersects(player.getCollisionModel())) {
+                        showBulletHitAnimation(weapon, projectile);
+                        projectile_iterator.remove();   // remove bullet
                         if (!player.isInvincible()) {
                             player.changeHealth(-weapon.getBulletDamage());  //drain health of player
                         }
@@ -648,28 +649,30 @@ public class CollisionHandler {
                     }
                 }
 
-                // HOSTILE BULLET COLLISION WITH DESTRUCTIBLE MAP TILE
-                canContinue = handleGroundProjectileTileCollision(b, weapon, bullet_iterator);
+                // BULLET COLLISION WITH DESTRUCTIBLE MAP TILE
+                canContinue = handleGroundProjectileTileCollision(projectile, weapon, projectile_iterator);
 
                 if (canContinue) continue;
 
                 if (player == null) {
                     // FRIENDLY SHOT COLLISION WITH HOSTILE WAR ATTENDERS
                     for (MovableWarAttender hostile_warAttender : hostile_war_attenders) {
-                        if (b.getCollisionModel().intersects(hostile_warAttender.getCollisionModel())) {
-                            showBulletHitAnimation(weapon, b);
-                            bullet_iterator.remove();
+                        if (projectile.getCollisionModel().intersects(hostile_warAttender.getCollisionModel())) {
+                            showBulletHitAnimation(weapon, projectile);
+                            projectile_iterator.remove();
                             hostile_warAttender.changeHealth(-weapon.getBulletDamage());  //drain health of enemy
+                            canContinue = true;
                         }
                     }
-                    // FRIENDLY SHOT COLLISION WITH WINDMILLS
-                    handleGroundProjectileWarAttenderCollision(b, weapon, bullet_iterator);
+                    if (canContinue) continue;
+                    // FRIENDLY SHOT COLLISION WITH STATIC WAR ATTENDERS
+                    handleGroundProjectileStaticWarAttenderCollision(projectile, weapon, projectile_iterator);
                 } else {
                     // HOSTILE SHOT COLLISION WITH FRIENDLY WAR ATTENDERS
                     for (MovableWarAttender friendly_warAttender : friendly_war_attenders) {
-                        if (b.getCollisionModel().intersects(friendly_warAttender.getCollisionModel())) {
-                            showBulletHitAnimation(weapon, b);
-                            bullet_iterator.remove();
+                        if (projectile.getCollisionModel().intersects(friendly_warAttender.getCollisionModel())) {
+                            showBulletHitAnimation(weapon, projectile);
+                            projectile_iterator.remove();
                             friendly_warAttender.changeHealth(-weapon.getBulletDamage());  //drain health of friend
                         }
                     }
