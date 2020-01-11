@@ -1,5 +1,6 @@
 package logic;
 
+import levels.AbstractLevel;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.planes.Plane;
 import models.war_attenders.robots.Robot;
@@ -15,11 +16,6 @@ public class KeyInputHandler {
     private Player player;
     private List<MovableWarAttender> drivable_war_attenders;
     private boolean KEY_UP_RELEASED, KEY_DOWN_RELEASED;
-
-    public KeyInputHandler(Player player, List<MovableWarAttender> drivable_war_attenders) {
-        this.drivable_war_attenders = drivable_war_attenders;
-        this.player = player;
-    }
 
     public void update(GameContainer gameContainer, int deltaTime) {
         Input input = gameContainer.getInput();
@@ -242,5 +238,10 @@ public class KeyInputHandler {
                 KEY_DOWN_RELEASED = true;
                 break;
         }
+    }
+
+    public void setLevel(AbstractLevel level) {
+        this.player = level.player;
+        this.drivable_war_attenders = level.drivable_war_attenders;
     }
 }

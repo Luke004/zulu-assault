@@ -32,19 +32,21 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
 
     private static boolean firstCall;
 
-    Player player;
-    TiledMap map;
-    List<StaticWarAttender> static_enemies;
-    List<InteractionCircle> interaction_circles;
-    List<Item> items;
-    List<MovableWarAttender> friendly_war_attenders, hostile_war_attenders, drivable_war_attenders;
-    KeyInputHandler keyInputHandler;
-    CollisionHandler collisionHandler;
+    public Player player;
+    public TiledMap map;
+    public List<StaticWarAttender> static_enemies;
+    public List<InteractionCircle> interaction_circles;
+    public List<Item> items;
+    public List<MovableWarAttender> friendly_war_attenders, hostile_war_attenders, drivable_war_attenders;
+
+    private static KeyInputHandler keyInputHandler;
+    private static CollisionHandler collisionHandler;
     private Camera camera;
+
     private HUD hud;
 
     // for destruction of tanks or robots
-    private BigExplosionAnimation bigExplosionAnimation;
+    private static BigExplosionAnimation bigExplosionAnimation;
 
     ScreenDrawer screenDrawer;
 
@@ -69,18 +71,20 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             // this gets only executed once
             firstCall = false;
             TileMapInfo.init(map);
-        } else {
-            TileMapInfo.reset();
+
+            collisionHandler = new CollisionHandler();
+            keyInputHandler = new KeyInputHandler();
+            bigExplosionAnimation = new BigExplosionAnimation(100);
         }
 
         createWarAttendersFromTiles();
-        camera = new Camera(gameContainer, map);
         hud = new HUD(player, gameContainer);
         player.addListener(hud);
-        keyInputHandler = new KeyInputHandler(player, drivable_war_attenders);     // handle key inputs
+
+        camera = new Camera(gameContainer, map);
+
         // handle collisions
-        collisionHandler = new CollisionHandler(player, map, friendly_war_attenders, hostile_war_attenders,
-                drivable_war_attenders, static_enemies, interaction_circles, items);
+        //collisionHandler = new CollisionHandler();
 
         // add listeners for destruction of warAttenders
         for (MovableWarAttender warAttender : friendly_war_attenders) {
@@ -90,8 +94,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             warAttender.addListener(this);
         }
         player.getWarAttender().addListener(this);
-        collisionHandler.addListener(this);
-        bigExplosionAnimation = new BigExplosionAnimation(100);
+        //collisionHandler.addListener(this);
         screenDrawer = new ScreenDrawer();
     }
 
@@ -157,6 +160,18 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             }
         }
 
+    }
+
+    @Override
+    public void enter(GameContainer var1, StateBasedGame var2) {
+        collisionHandler.setLevel(this);
+        collisionHandler.addListener(this);
+        keyInputHandler.setLevel(this);
+    }
+
+    @Override
+    public void leave(GameContainer var1, StateBasedGame var2) {
+        TileMapInfo.reset();
     }
 
     @Override
@@ -244,6 +259,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             //friendly_war_attenders.removeIf(friend -> friend.isDestroyed);
         }
     }
+
 
     @Override
     public void notifyForDeletion(float xPos, float yPos) {

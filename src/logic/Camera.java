@@ -1,5 +1,6 @@
 package logic;
 
+import levels.AbstractLevel;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.tiled.TiledMap;
@@ -145,5 +146,4 @@ public class Camera {
     public void untranslateGraphics() {
         gc.getGraphics().translate(cameraX, cameraY);
     }
-
 }

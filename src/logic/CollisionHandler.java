@@ -1,5 +1,6 @@
 package logic;
 
+import levels.AbstractLevel;
 import models.CollisionModel;
 import models.StaticWarAttender;
 import models.animations.damage.PlasmaDamageAnimation;
@@ -18,7 +19,6 @@ import models.weapons.*;
 import models.weapons.projectiles.Projectile;
 import models.weapons.projectiles.iAirProjectile;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.tiled.TileSet;
 import org.newdawn.slick.tiled.TiledMap;
 import player.Player;
 
@@ -34,12 +34,12 @@ public class CollisionHandler {
     private List<StaticWarAttender> static_enemies;
     private List<InteractionCircle> interaction_circles;
     private List<Item> items;
-    private TiledMap level_map;
+    private TiledMap map;
 
     // tile specs TODO: create own tile helper class
-    private final float TILE_HEALTH = 100.f;
-    private final float DESTRUCTIBLE_TILE_NORMAL_ARMOR = 5.f;
-    private final float DESTRUCTIBLE_TILE_LOW_ARMOR = 1.f;
+    private static final float TILE_HEALTH = 100.f;
+    private static final float DESTRUCTIBLE_TILE_NORMAL_ARMOR = 5.f;
+    private static final float DESTRUCTIBLE_TILE_LOW_ARMOR = 1.f;
 
     protected WarAttenderDeleteListener level_delete_listener;
     private static SmokeAnimation smokeAnimation;
@@ -48,26 +48,6 @@ public class CollisionHandler {
     private static BigExplosionAnimation bigExplosionAnimation;
     private static PlasmaDamageAnimation plasmaDamageAnimation;
     private static Random random;
-
-
-    public CollisionHandler(Player player, TiledMap level_map, List<MovableWarAttender> friendly_war_attenders,
-                            List<MovableWarAttender> hostile_war_attenders, List<MovableWarAttender> drivable_war_attenders,
-                            List<StaticWarAttender> static_enemies, List<InteractionCircle> interaction_circles, List<Item> items) {
-        this.friendly_war_attenders = friendly_war_attenders;
-        this.hostile_war_attenders = hostile_war_attenders;
-        this.drivable_war_attenders = drivable_war_attenders;
-        this.static_enemies = static_enemies;
-        this.interaction_circles = interaction_circles;
-        this.items = items;
-        this.player = player;
-        this.level_map = level_map;
-
-        // create a global movableWarAttender list for collisions between them
-        all_movable_war_attenders = new ArrayList<>(friendly_war_attenders);
-        all_movable_war_attenders.addAll(hostile_war_attenders);
-        all_movable_war_attenders.add(player.getWarAttender());
-        all_movable_war_attenders.addAll(drivable_war_attenders);
-    }
 
     static {
         smokeAnimation = new SmokeAnimation(3);
@@ -157,10 +137,10 @@ public class CollisionHandler {
             y = (int) p.y / TILE_HEIGHT;
 
             // return when "out of map"
-            if (x < 0 || x >= level_map.getWidth() || y < 0 || y >= level_map.getHeight()) return;
+            if (x < 0 || x >= map.getWidth() || y < 0 || y >= map.getHeight()) return;
 
-            landscape_layer_tile_ID = level_map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
-            enemy_layer_tile_ID = level_map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
+            landscape_layer_tile_ID = map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
+            enemy_layer_tile_ID = map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
 
             // COLLISION BETWEEN WAR ATTENDER ITSELF AND DESTRUCTIBLE TILES
             for (idx = 0; idx < destructible_tile_indices.length; ++idx) {
@@ -337,7 +317,7 @@ public class CollisionHandler {
     private boolean handleGroundProjectileTileCollision(Projectile projectile, Weapon weapon, Iterator<Projectile> bullet_iterator) {
         int x = (int) projectile.pos.x / TILE_WIDTH;
         int y = (int) projectile.pos.y / TILE_HEIGHT;
-        int tile_ID = level_map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
+        int tile_ID = map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
 
 
         for (int idx = 0; idx < destructible_tile_indices.length; ++idx) {
@@ -350,7 +330,7 @@ public class CollisionHandler {
                     level_delete_listener.notifyForDeletion(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20);
 
                     // destroy the hit tile directly
-                    level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
+                    map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
 
                     // maybe also destroy other tiles around
                     doCollateralTileDamage(x, y, idx);
@@ -358,7 +338,7 @@ public class CollisionHandler {
                     if (weapon instanceof PiercingWeapon) {
                         if (weapon instanceof MegaPulse) {
                             // it's a one shot, destroy tile directly
-                            level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
+                            map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
                             level_delete_listener.notifyForDeletion(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20);
                         } else if (!((PiercingWeapon) weapon).hasAlreadyHit(generateKey(x, y))) {
                             damageTile(x, y, weapon, destructible_tile_replace_indices[idx], null);
@@ -381,7 +361,7 @@ public class CollisionHandler {
     private void handleGroundProjectileStaticWarAttenderCollision(Projectile projectile, Weapon weapon, Iterator<Projectile> bullet_iterator) {
         int x = (int) projectile.pos.x / TILE_WIDTH;
         int y = (int) projectile.pos.y / TILE_HEIGHT;
-        int tile_ID = level_map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
+        int tile_ID = map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
 
         for (int idx = 0; idx < staticWarAttender_indices.length; ++idx) {
             if (tile_ID == staticWarAttender_indices[idx]) {
@@ -412,7 +392,7 @@ public class CollisionHandler {
         for (int i = 0; i < collision_points.length; ++i) {
             int x = (int) collision_points[i].x / TILE_WIDTH;
             int y = (int) collision_points[i].y / TILE_HEIGHT;
-            int tile_ID = level_map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
+            int tile_ID = map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
 
             for (int idx = 0; idx < destructible_tile_indices.length; ++idx) {
                 if (tile_ID == destructible_tile_indices[idx]) {
@@ -421,7 +401,7 @@ public class CollisionHandler {
                         // destroyed by bullet, show destruction animation using level listener
                         level_delete_listener.notifyForDeletion(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20);
                         // destroy the hit tile directly
-                        level_map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
+                        map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
                         // maybe also destroy other tiles around
                         doCollateralTileDamage(x, y, idx);
                     }
@@ -438,7 +418,7 @@ public class CollisionHandler {
             for (int idx = 0; idx < staticWarAttender_indices.length; ++idx) {
                 int x = (int) collision_points[i].x / TILE_WIDTH;
                 int y = (int) collision_points[i].y / TILE_HEIGHT;
-                int tile_ID = level_map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
+                int tile_ID = map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
                 if (tile_ID == staticWarAttender_indices[idx]) {
                     damageStaticWarAttender(x, y, weapon);
                     if (weapon instanceof PiercingWeapon) continue;
@@ -484,7 +464,7 @@ public class CollisionHandler {
         static_enemies.remove(idx);
 
         // look what tile lies below destroyed windmill (grass, dirt or concrete)
-        int tileID = level_map.getTileId(xPos, yPos, LANDSCAPE_TILES_LAYER_IDX);
+        int tileID = map.getTileId(xPos, yPos, LANDSCAPE_TILES_LAYER_IDX);
         int replacement_idx = windmill_replace_indices[3];  // standard damaged tile with transparent background
 
         if (tileID == CONCRETE_IDX) {
@@ -494,8 +474,8 @@ public class CollisionHandler {
         } else if (tileID == GRASS_IDX) {
             replacement_idx = windmill_replace_indices[2];
         }
-        level_map.setTileId(xPos, yPos, ENEMY_TILES_LAYER_IDX, 0);
-        level_map.setTileId(xPos, yPos, LANDSCAPE_TILES_LAYER_IDX, replacement_idx);
+        map.setTileId(xPos, yPos, ENEMY_TILES_LAYER_IDX, 0);
+        map.setTileId(xPos, yPos, LANDSCAPE_TILES_LAYER_IDX, replacement_idx);
     }
 
     private void damageTile(int xPos, int yPos, Weapon weapon, int replaceTileIndex, MovableWarAttender warAttender) {
@@ -517,7 +497,7 @@ public class CollisionHandler {
                     else if (!(weapon instanceof Napalm))
                         level_delete_listener.notifyForDeletion(xPos * TILE_WIDTH + 20, yPos * TILE_HEIGHT + 20);
                 }
-                level_map.setTileId(xPos, yPos, LANDSCAPE_TILES_LAYER_IDX, replaceTileIndex);
+                map.setTileId(xPos, yPos, LANDSCAPE_TILES_LAYER_IDX, replaceTileIndex);
                 destructible_tiles_health_info.remove(key);
             } else {
                 destructible_tiles_health_info.put(key, new_health);
@@ -625,38 +605,38 @@ public class CollisionHandler {
         List<Tile> tiles = new ArrayList<>();
         if (y > 0) {
             // top tile
-            tiles.add(new Tile(x, y - 1, level_map.getTileId(x, y - 1, LANDSCAPE_TILES_LAYER_IDX)));
+            tiles.add(new Tile(x, y - 1, map.getTileId(x, y - 1, LANDSCAPE_TILES_LAYER_IDX)));
             if (x > 0) {
                 // top left tile
-                tiles.add(new Tile(x - 1, y - 1, level_map.getTileId(x - 1, y - 1, LANDSCAPE_TILES_LAYER_IDX)));
+                tiles.add(new Tile(x - 1, y - 1, map.getTileId(x - 1, y - 1, LANDSCAPE_TILES_LAYER_IDX)));
             }
-            if (x < level_map.getWidth() - 1) {
+            if (x < map.getWidth() - 1) {
                 // top right tile
-                tiles.add(new Tile(x + 1, y - 1, level_map.getTileId(x + 1, y - 1, LANDSCAPE_TILES_LAYER_IDX)));
+                tiles.add(new Tile(x + 1, y - 1, map.getTileId(x + 1, y - 1, LANDSCAPE_TILES_LAYER_IDX)));
             }
         }
 
-        if (y < level_map.getHeight() - 1) {
+        if (y < map.getHeight() - 1) {
             // bottom tile
-            tiles.add(new Tile(x, y + 1, level_map.getTileId(x, y + 1, LANDSCAPE_TILES_LAYER_IDX)));
+            tiles.add(new Tile(x, y + 1, map.getTileId(x, y + 1, LANDSCAPE_TILES_LAYER_IDX)));
             if (x > 0) {
                 // bottom left tile
-                tiles.add(new Tile(x - 1, y + 1, level_map.getTileId(x - 1, y + 1, LANDSCAPE_TILES_LAYER_IDX)));
+                tiles.add(new Tile(x - 1, y + 1, map.getTileId(x - 1, y + 1, LANDSCAPE_TILES_LAYER_IDX)));
             }
-            if (x < level_map.getWidth() - 1) {
+            if (x < map.getWidth() - 1) {
                 // bottom right tile
-                tiles.add(new Tile(x + 1, y + 1, level_map.getTileId(x + 1, y + 1, LANDSCAPE_TILES_LAYER_IDX)));
+                tiles.add(new Tile(x + 1, y + 1, map.getTileId(x + 1, y + 1, LANDSCAPE_TILES_LAYER_IDX)));
             }
         }
 
         if (x > 0) {
             // left tile
-            tiles.add(new Tile(x - 1, y, level_map.getTileId(x - 1, y, LANDSCAPE_TILES_LAYER_IDX)));
+            tiles.add(new Tile(x - 1, y, map.getTileId(x - 1, y, LANDSCAPE_TILES_LAYER_IDX)));
         }
 
-        if (x < level_map.getWidth() - 1) {
+        if (x < map.getWidth() - 1) {
             // right tile
-            tiles.add(new Tile(x + 1, y, level_map.getTileId(x + 1, y, LANDSCAPE_TILES_LAYER_IDX)));
+            tiles.add(new Tile(x + 1, y, map.getTileId(x + 1, y, LANDSCAPE_TILES_LAYER_IDX)));
         }
 
         for (Tile tile : tiles) {
@@ -665,7 +645,7 @@ public class CollisionHandler {
                     double d = Math.random();
                     if (d < 0.3) {
                         // 30% chance of tile getting destroyed
-                        level_map.setTileId(tile.xVal, tile.yVal, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx2]);
+                        map.setTileId(tile.xVal, tile.yVal, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx2]);
                         if (destructible_tiles_health_info.containsKey(tile.key)) {
                             destructible_tiles_health_info.remove(tile.key);
                         }
@@ -706,5 +686,22 @@ public class CollisionHandler {
             this.yVal = yVal;
             this.key = generateKey(xVal, yVal);
         }
+    }
+
+    public void setLevel(AbstractLevel level) {
+        this.friendly_war_attenders = level.friendly_war_attenders;
+        this.hostile_war_attenders = level.hostile_war_attenders;
+        this.drivable_war_attenders = level.drivable_war_attenders;
+        this.static_enemies = level.static_enemies;
+        this.interaction_circles = level.interaction_circles;
+        this.items = level.items;
+        this.player = level.player;
+        this.map = level.map;
+
+        // create a global movableWarAttender list for collisions between them
+        all_movable_war_attenders = new ArrayList<>(friendly_war_attenders);
+        all_movable_war_attenders.addAll(hostile_war_attenders);
+        all_movable_war_attenders.add(player.getWarAttender());
+        all_movable_war_attenders.addAll(drivable_war_attenders);
     }
 }
