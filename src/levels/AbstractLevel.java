@@ -19,6 +19,8 @@ import models.war_attenders.windmills.WindmillGrey;
 import models.war_attenders.windmills.WindmillYellow;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.state.BasicGameState;
+import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TileSet;
 import org.newdawn.slick.tiled.TiledMap;
 import player.Player;
@@ -27,7 +29,7 @@ import screen_drawer.ScreenDrawer;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractLevel extends BasicGame implements WarAttenderDeleteListener {
+public abstract class AbstractLevel extends BasicGameState implements WarAttenderDeleteListener {
     Player player;
     TiledMap map;
     List<StaticWarAttender> static_enemies;
@@ -64,8 +66,7 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
 
     ScreenDrawer screenDrawer;
 
-    public AbstractLevel(String title) {
-        super(title);
+    public AbstractLevel() {
         hostile_war_attenders = new ArrayList<>();
         friendly_war_attenders = new ArrayList<>();
         drivable_war_attenders = new ArrayList<>();
@@ -76,7 +77,7 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
     }
 
     @Override
-    public void init(GameContainer gameContainer) throws SlickException {
+    public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         // init the level info
         LevelInfo.TILE_WIDTH = map.getTileWidth();
         LevelInfo.TILE_HEIGHT = map.getTileHeight();
@@ -195,7 +196,7 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
     }
 
     @Override
-    public void update(GameContainer gameContainer, int deltaTime) {
+    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int deltaTime) {
         player.update(gameContainer, deltaTime);
         for (int idx = 0; idx < friendly_war_attenders.size(); ++idx) {
             friendly_war_attenders.get(idx).update(gameContainer, deltaTime);
@@ -224,7 +225,7 @@ public abstract class AbstractLevel extends BasicGame implements WarAttenderDele
     }
 
     @Override
-    public void render(GameContainer gameContainer, Graphics graphics) {
+    public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) {
         camera.drawMap();
         camera.translateGraphics();
         for (InteractionCircle interaction_circle : interaction_circles) {
