@@ -44,9 +44,9 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     private HUD hud;
 
     // for destruction of tanks or robots
-    private BigExplosionAnimation bigExplosionAnimation;
+    private static BigExplosionAnimation bigExplosionAnimation;
 
-    ScreenDrawer screenDrawer;
+    private ScreenDrawer screenDrawer;
 
     public AbstractLevel() {
         hostile_war_attenders = new ArrayList<>();
@@ -60,6 +60,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
 
     static {
         firstCall = true;
+        bigExplosionAnimation = new BigExplosionAnimation(100);
     }
 
     @Override
@@ -91,7 +92,6 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         }
         player.getWarAttender().addListener(this);
         collisionHandler.addListener(this);
-        bigExplosionAnimation = new BigExplosionAnimation(100);
         screenDrawer = new ScreenDrawer();
     }
 
@@ -130,19 +130,6 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         }
 
         // SETUP PLANES USING MAP DATA
-        // create TileInfo for 'plane_tiles' TileSet
-        TileSet plane_tiles = map.getTileSet(PLANE_TILES_TILESET_IDX);
-        if (!plane_tiles.name.equals("plane_tiles"))
-            throw new IllegalAccessError("Wrong tileset index: [" + PLANE_TILES_TILESET_IDX + "] is not plane_tiles");
-        else {
-            for (int idx = 0; idx < static_plane_creation_indices.length; ++idx) {
-                static_plane_creation_indices[idx] += plane_tiles.firstGID;
-            }
-            for (int idx = 0; idx < static_plane_collision_indices.length; ++idx) {
-                static_plane_collision_indices[idx] += plane_tiles.firstGID;
-            }
-        }
-
         for (int x = 0; x < map.getWidth(); ++x) {
             for (int y = 0; y < map.getHeight(); ++y) {
                 for (int idx = 0; idx < static_plane_creation_indices.length; ++idx) {
@@ -230,8 +217,6 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         // un-translate graphics to draw the HUD- items
         camera.untranslateGraphics();
         hud.draw();
-
-
     }
 
     @Override
