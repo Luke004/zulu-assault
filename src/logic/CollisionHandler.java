@@ -22,37 +22,32 @@ import org.newdawn.slick.tiled.TileSet;
 import org.newdawn.slick.tiled.TiledMap;
 import player.Player;
 
+import static logic.TileMapInfo.*;
+
 import java.util.*;
 
-import static levels.AbstractLevel.*;
-import static levels.LevelInfo.*;
 
 public class CollisionHandler {
     private Player player;
-    private List<MovableWarAttender> friendly_war_attenders, hostile_war_attenders, drivable_war_attenders, all_movable_war_attenders;
+    private List<MovableWarAttender> friendly_war_attenders, hostile_war_attenders, drivable_war_attenders,
+            all_movable_war_attenders;
     private List<StaticWarAttender> static_enemies;
     private List<InteractionCircle> interaction_circles;
     private List<Item> items;
     private TiledMap level_map;
-    private int[] destructible_tile_indices, indestructible_tile_indices, destructible_tile_replace_indices,
-            windmill_replace_indices;
 
     // tile specs TODO: create own tile helper class
     private final float TILE_HEALTH = 100.f;
     private final float DESTRUCTIBLE_TILE_NORMAL_ARMOR = 5.f;
     private final float DESTRUCTIBLE_TILE_LOW_ARMOR = 1.f;
 
-    private int[] staticWarAttender_indices;
-
-    private final int GRASS_IDX, CONCRETE_IDX, DIRT_IDX;
-    private Map<Integer, Float> destructible_tiles_health_info;
     protected WarAttenderDeleteListener level_delete_listener;
-    private SmokeAnimation smokeAnimation;
-    private UziHitExplosionAnimation uziHitExplosionAnimation;
-    private UziDamageAnimation uziDamageAnimation;
-    private BigExplosionAnimation bigExplosionAnimation;
-    private PlasmaDamageAnimation plasmaDamageAnimation;
-    private Random random;
+    private static SmokeAnimation smokeAnimation;
+    private static UziHitExplosionAnimation uziHitExplosionAnimation;
+    private static UziDamageAnimation uziDamageAnimation;
+    private static BigExplosionAnimation bigExplosionAnimation;
+    private static PlasmaDamageAnimation plasmaDamageAnimation;
+    private static Random random;
 
 
     public CollisionHandler(Player player, TiledMap level_map, List<MovableWarAttender> friendly_war_attenders,
@@ -72,44 +67,9 @@ public class CollisionHandler {
         all_movable_war_attenders.addAll(hostile_war_attenders);
         all_movable_war_attenders.add(player.getWarAttender());
         all_movable_war_attenders.addAll(drivable_war_attenders);
+    }
 
-        staticWarAttender_indices = new int[static_plane_collision_indices.length + windmill_indices.length];
-        for (int i = 0; i < staticWarAttender_indices.length; ++i) {
-            if (i < static_plane_collision_indices.length)
-                staticWarAttender_indices[i] = static_plane_collision_indices[i];
-            else staticWarAttender_indices[i] = windmill_indices[i - static_plane_collision_indices.length];
-        }
-
-        // TileMap related stuff
-        windmill_replace_indices = new int[]{96, 97, 98, 99};
-        destructible_tile_indices = new int[]{1, 2, 18, 19, 25, 65, 68, 83, 88, 89};
-        destructible_tile_replace_indices = new int[]{32, 33, 34, 35, 36, 37, 95, 94, 93, 91};
-        indestructible_tile_indices = new int[]{40, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 64, 66, 67, 68,
-                72, 73, 74, 75, 76, 77};
-        destructible_tiles_health_info = new HashMap<>();
-
-        int idx;
-        // create TileInfo for 'landscape_tiles' TileSet
-        final int LANDSCAPE_TILES_TILESET_IDX = 1;
-        TileSet landscape_tiles = level_map.getTileSet(LANDSCAPE_TILES_TILESET_IDX);
-        if (!landscape_tiles.name.equals("landscape_tiles"))
-            throw new IllegalAccessError("Wrong tileset index: [" + LANDSCAPE_TILES_TILESET_IDX + "] is not landscape_tiles");
-        else {
-            for (idx = 0; idx < destructible_tile_indices.length; ++idx) {
-                destructible_tile_indices[idx] += landscape_tiles.firstGID;
-                destructible_tile_replace_indices[idx] += landscape_tiles.firstGID;
-            }
-            for (idx = 0; idx < indestructible_tile_indices.length; ++idx) {
-                indestructible_tile_indices[idx] += landscape_tiles.firstGID;
-            }
-            for (idx = 0; idx < windmill_replace_indices.length; ++idx) {
-                windmill_replace_indices[idx] += landscape_tiles.firstGID;
-            }
-        }
-        GRASS_IDX = 0 + landscape_tiles.firstGID;
-        DIRT_IDX = 16 + landscape_tiles.firstGID;
-        CONCRETE_IDX = 80 + landscape_tiles.firstGID;
-
+    static {
         smokeAnimation = new SmokeAnimation(3);
         uziHitExplosionAnimation = new UziHitExplosionAnimation(10);
         uziDamageAnimation = new UziDamageAnimation(10);
@@ -184,40 +144,6 @@ public class CollisionHandler {
                 break;
             }
         }
-
-        /*
-        // make enemy soldiers flee from player if he's in a tank or robot
-        if(player_warAttender instanceof Tank || player_warAttender instanceof Robot){
-            for(MovableWarAttender enemy_soldier : hostile_war_attenders){
-                if(enemy_soldier instanceof Soldier){
-                    ((Soldier)enemy_soldier).fleeFromPlayer(player_warAttender);
-                }
-            }
-        }
-
-*/
-
-        /*
-
-        switch (player.getWarAttenderType()) {
-            case SOLDIER:   // player is a soldier (goes by foot)
-                Soldier soldier = (Soldier) player_warAttender;
-
-
-
-
-                break;
-            case TANK:      // player is in a tank
-                Tank tank = (Tank) player.getWarAttender();
-
-
-                break;
-            case PLANE:     // player is in a plane
-
-                break;
-
-        }
-        */
     }
 
     private void handleMovableWarAttenderCollisions(MovableWarAttender current_warAttender) {

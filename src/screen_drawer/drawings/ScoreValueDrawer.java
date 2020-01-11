@@ -1,16 +1,11 @@
 package screen_drawer.drawings;
 
-import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
-import org.lwjgl.Sys;
 import org.newdawn.slick.TrueTypeFont;
 
 import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-import static levels.LevelInfo.TILE_HEIGHT;
-import static levels.LevelInfo.TILE_WIDTH;
 
 public class ScoreValueDrawer extends Drawing {
 

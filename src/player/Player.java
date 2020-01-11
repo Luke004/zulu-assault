@@ -11,8 +11,8 @@ import models.weapons.MegaPulse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
-import static levels.LevelInfo.LEVEL_HEIGHT_PIXELS;
-import static levels.LevelInfo.LEVEL_WIDTH_PIXELS;
+import static logic.TileMapInfo.LEVEL_HEIGHT_PIXELS;
+import static logic.TileMapInfo.LEVEL_WIDTH_PIXELS;
 
 public class Player {
     private MovableWarAttender base_soldier;

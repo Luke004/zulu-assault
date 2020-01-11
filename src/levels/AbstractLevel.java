@@ -1,9 +1,6 @@
 package levels;
 
-import logic.Camera;
-import logic.CollisionHandler;
-import logic.KeyInputHandler;
-import logic.WarAttenderDeleteListener;
+import logic.*;
 import models.StaticWarAttender;
 import models.animations.explosion.BigExplosionAnimation;
 import models.hud.HUD;
@@ -29,7 +26,12 @@ import screen_drawer.ScreenDrawer;
 import java.util.ArrayList;
 import java.util.List;
 
+import static logic.TileMapInfo.*;
+
 public abstract class AbstractLevel extends BasicGameState implements WarAttenderDeleteListener {
+
+    private static boolean firstCall;
+
     Player player;
     TiledMap map;
     List<StaticWarAttender> static_enemies;
@@ -40,26 +42,6 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     CollisionHandler collisionHandler;
     private Camera camera;
     private HUD hud;
-
-    // layer indices from map
-    public static final int LANDSCAPE_TILES_LAYER_IDX = 0;
-    public static final int ENEMY_TILES_LAYER_IDX = 1;
-    public static final int ENEMY_TILES_TILESET_IDX = 0, PLANE_TILES_TILESET_IDX = 2;
-    public static final int[] windmill_indices = new int[]{0, 1, 2};
-    // indices for plane creation
-    public static final int[] static_plane_creation_indices = new int[]{
-            22, // the plane that's facing right in the tileset
-            27, // the plane that's facing down in the tileset
-            72, // the plane that's facing left in the tileset
-            77  // the plane that's facing up in the tileset
-    };
-    // indices for plane collision
-    public static final int[] static_plane_collision_indices = new int[]{
-            12, 21, 22, 23, 32,  // the plane that's facing right in the tileset
-            17, 26, 27, 28, 37,  // the plane that's facing down in the tileset
-            62, 71, 72, 73, 82,  // the plane that's facing left in the tileset
-            67, 76, 77, 78, 87   // the plane that's facing up in the tileset
-    };
 
     // for destruction of tanks or robots
     private BigExplosionAnimation bigExplosionAnimation;
@@ -76,15 +58,20 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         player = new Player();
     }
 
+    static {
+        firstCall = true;
+    }
+
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-        // init the level info
-        LevelInfo.TILE_WIDTH = map.getTileWidth();
-        LevelInfo.TILE_HEIGHT = map.getTileHeight();
-        LevelInfo.LEVEL_WIDTH_TILES = map.getWidth();
-        LevelInfo.LEVEL_HEIGHT_TILES = map.getHeight();
-        LevelInfo.LEVEL_WIDTH_PIXELS = LevelInfo.LEVEL_WIDTH_TILES * LevelInfo.TILE_WIDTH;
-        LevelInfo.LEVEL_HEIGHT_PIXELS = LevelInfo.LEVEL_HEIGHT_TILES * LevelInfo.TILE_HEIGHT;
+        // reset the level info
+        if (firstCall) {
+            // this gets only executed once
+            firstCall = false;
+            TileMapInfo.init(map);
+        } else {
+            TileMapInfo.reset();
+        }
 
         createWarAttendersFromTiles();
         camera = new Camera(gameContainer, map);
@@ -113,16 +100,6 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
      */
     private void createWarAttendersFromTiles() {
         // SETUP WINDMILLS USING MAP DATA
-        // create TileInfo for 'enemy_tiles' TileSet
-        TileSet enemy_tiles = map.getTileSet(ENEMY_TILES_TILESET_IDX);
-        if (!enemy_tiles.name.equals("enemy_tiles"))
-            throw new IllegalAccessError("Wrong tileset index: [" + ENEMY_TILES_TILESET_IDX + "] is not enemy_tiles");
-        else {
-            for (int idx = 0; idx < windmill_indices.length; ++idx) {
-                windmill_indices[idx] += enemy_tiles.firstGID;
-            }
-        }
-
         for (int x = 0; x < map.getWidth(); ++x) {
             for (int y = 0; y < map.getHeight(); ++y) {
                 for (int idx = 0; idx < windmill_indices.length; ++idx) {
@@ -132,8 +109,8 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
                         Vector2f tile_position = new Vector2f(x, y);    // to find this tile again in CollisionHandler
                         // position is at middle of the tile
                         Vector2f pos_windmill = new Vector2f(
-                                x * LevelInfo.TILE_WIDTH + LevelInfo.TILE_WIDTH / 2.f,
-                                y * LevelInfo.TILE_HEIGHT + LevelInfo.TILE_HEIGHT / 2.f
+                                x * TILE_WIDTH + TILE_WIDTH / 2.f,
+                                y * TILE_HEIGHT + TILE_HEIGHT / 2.f
                         );
                         switch (idx) {
                             case 0: // green windmill
@@ -182,8 +159,8 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
 
                         // position is at middle of the tile
                         Vector2f pos_staticEnemyPlane = new Vector2f(
-                                x * LevelInfo.TILE_WIDTH + LevelInfo.TILE_WIDTH / 2.f,
-                                y * LevelInfo.TILE_HEIGHT + LevelInfo.TILE_HEIGHT / 2.f
+                                x * TILE_WIDTH + TILE_WIDTH / 2.f,
+                                y * TILE_HEIGHT + TILE_HEIGHT / 2.f
                         );
                         StaticEnemyPlane staticEnemyPlane = new StaticEnemyPlane(pos_staticEnemyPlane, true,
                                 tile_positions);
