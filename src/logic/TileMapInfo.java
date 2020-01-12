@@ -20,15 +20,16 @@ public class TileMapInfo {
     // layers
     public static final int LANDSCAPE_TILES_LAYER_IDX = 0;
     public static final int ENEMY_TILES_LAYER_IDX = 1;
+    public static final int DESTRUCTION_TILES_LAYER_IDX = 2;
 
-    public static int GRASS_IDX, CONCRETE_IDX, DIRT_IDX;
+    public static int[] CLASS_GRASS, CLASS_CONCRETE, CLASS_DIRT;
 
     public static int[] staticWarAttender_indices;
 
     public static final int[] windmill_indices;
     public static final int[] static_plane_creation_indices;
     public static final int[] static_plane_collision_indices;
-    public static final int[] windmill_replace_indices;
+    public static final int[] collision_replace_indices;
     public static final int[] destructible_tile_indices;
     public static final int[] destructible_tile_replace_indices;
     public static final int[] indestructible_tile_indices;
@@ -49,7 +50,11 @@ public class TileMapInfo {
                 62, 71, 72, 73, 82,  // the plane that's facing left in the tileset
                 67, 76, 77, 78, 87   // the plane that's facing up in the tileset
         };
-        windmill_replace_indices = new int[]{96, 97, 98, 99};
+        collision_replace_indices = new int[]{
+                96, // DIRT
+                97, // CONCRETE
+                98 // GRASS
+        };
         destructible_tile_indices = new int[]{1, 2, 18, 19, 25, 65, 68, 83, 88, 89};
         destructible_tile_replace_indices = new int[]{32, 33, 34, 35, 36, 37, 95, 94, 93, 91};
         indestructible_tile_indices = new int[]{40, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 64, 66, 67,
@@ -78,14 +83,35 @@ public class TileMapInfo {
             for (idx = 0; idx < indestructible_tile_indices.length; ++idx) {
                 indestructible_tile_indices[idx] += landscape_tiles.firstGID;
             }
-            for (idx = 0; idx < windmill_replace_indices.length; ++idx) {
-                windmill_replace_indices[idx] += landscape_tiles.firstGID;
+            for (idx = 0; idx < collision_replace_indices.length; ++idx) {
+                collision_replace_indices[idx] += landscape_tiles.firstGID;
             }
         }
-        GRASS_IDX = landscape_tiles.firstGID;
-        DIRT_IDX = 16 + landscape_tiles.firstGID;
-        CONCRETE_IDX = 80 + landscape_tiles.firstGID;
 
+        // init tiles of grass for tile replacement
+        int[] grass_indices = new int[]{
+                0, 3, 8, 20, 21, 22, 23
+        };
+        CLASS_GRASS = new int[grass_indices.length];
+        for (int i = 0; i < grass_indices.length; ++i) {
+            CLASS_GRASS[i] = landscape_tiles.firstGID + grass_indices[i];
+        }
+        // init tiles of concrete for tile replacement
+        int[] concrete_indices = new int[]{
+                62, 63, 70, 71, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 90
+        };
+        CLASS_CONCRETE = new int[concrete_indices.length];
+        for (int i = 0; i < concrete_indices.length; ++i) {
+            CLASS_CONCRETE[i] = landscape_tiles.firstGID + concrete_indices[i];
+        }
+        // init tiles of dirt for tile replacement
+        int[] dirt_indices = new int[]{
+                4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 27, 28, 29
+        };
+        CLASS_DIRT = new int[dirt_indices.length];
+        for (int i = 0; i < dirt_indices.length; ++i) {
+            CLASS_DIRT[i] = landscape_tiles.firstGID + dirt_indices[i];
+        }
 
         // create TileInfo for 'enemy_tiles' TileSet
         TileSet enemy_tiles = map.getTileSet(ENEMY_TILES_TILESET_IDX);
@@ -95,13 +121,6 @@ public class TileMapInfo {
             for (int idx = 0; idx < windmill_indices.length; ++idx) {
                 windmill_indices[idx] += enemy_tiles.firstGID;
             }
-        }
-
-        staticWarAttender_indices = new int[static_plane_collision_indices.length + windmill_indices.length];
-        for (int i = 0; i < staticWarAttender_indices.length; ++i) {
-            if (i < static_plane_collision_indices.length)
-                staticWarAttender_indices[i] = static_plane_collision_indices[i];
-            else staticWarAttender_indices[i] = windmill_indices[i - static_plane_collision_indices.length];
         }
 
         // create TileInfo for 'plane_tiles' TileSet
@@ -117,12 +136,32 @@ public class TileMapInfo {
             }
         }
 
+        staticWarAttender_indices = new int[static_plane_collision_indices.length + windmill_indices.length];
+        for (int i = 0; i < staticWarAttender_indices.length; ++i) {
+            if (i < static_plane_collision_indices.length)
+                staticWarAttender_indices[i] = static_plane_collision_indices[i];
+            else staticWarAttender_indices[i] = windmill_indices[i - static_plane_collision_indices.length];
+        }
+
         destructible_tiles_health_info = new HashMap<>();
     }
 
     public static void reset() {
         if (destructible_tiles_health_info == null) destructible_tiles_health_info = new HashMap<>();
         else destructible_tiles_health_info.clear();
+    }
+
+    public static int getReplacementTileID(int tileID) {
+        for (int value : CLASS_DIRT) {
+            if (tileID == value) return collision_replace_indices[0];
+        }
+        for (int value : CLASS_CONCRETE) {
+            if (tileID == value) return collision_replace_indices[1];
+        }
+        for (int value : CLASS_GRASS) {
+            if (tileID == value) return collision_replace_indices[2];
+        }
+        return collision_replace_indices[2];    // return grass by default
     }
 
 }

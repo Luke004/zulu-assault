@@ -19,6 +19,7 @@ import models.weapons.*;
 import models.weapons.projectiles.Projectile;
 import models.weapons.projectiles.iAirProjectile;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TiledMap;
 import player.Player;
 
@@ -179,21 +180,6 @@ public class CollisionHandler {
                         return;
                     }
                 }
-                // COLLISION BETWEEN FRIENDLY WAR ATTENDER AND PLANES
-                for (idx = 0; idx < static_plane_collision_indices.length; ++idx) {
-                    if (enemy_layer_tile_ID == static_plane_collision_indices[idx]) {
-                        // block movement as long as tile exists and damage the destructible tile
-                        current_warAttender.blockMovement();
-
-                        // damage ONLY when we are not a solider
-                        if (current_warAttender instanceof Soldier) return;
-
-                        damageStaticWarAttender(x, y);
-                        return;
-                    }
-                }
-
-                //plane_indices
             }
         }
 
@@ -442,7 +428,7 @@ public class CollisionHandler {
                 staticWarAttender.changeHealth(-weapon.getBulletDamage());
             }
             if (staticWarAttender.isDestroyed) {
-                replaceWindmillTile(idx, xPos, yPos);
+                replaceStaticWarAttenderTile(idx);
             }
         }
     }
@@ -452,30 +438,35 @@ public class CollisionHandler {
             if (static_enemies.get(idx).containsTilePosition(xPos, yPos)) {   // find the windmill by its tile position
                 static_enemies.get(idx).changeHealth(-MovableWarAttender.DAMAGE_TO_DESTRUCTIBLE_TILE);
                 if (static_enemies.get(idx).isDestroyed) {
-                    replaceWindmillTile(idx, xPos, yPos);
+                    replaceStaticWarAttenderTile(idx);
                 }
                 break;
             }
         }
     }
 
-    private void replaceWindmillTile(int idx, int xPos, int yPos) {
-        level_delete_listener.notifyForDeletion(static_enemies.get(idx));
+    private void replaceStaticWarAttenderTile(int idx) {
+        StaticWarAttender staticWarAttender = static_enemies.get(idx);
+        level_delete_listener.notifyForDeletion(staticWarAttender);
         static_enemies.remove(idx);
 
-        // look what tile lies below destroyed windmill (grass, dirt or concrete)
-        int tileID = map.getTileId(xPos, yPos, LANDSCAPE_TILES_LAYER_IDX);
-        int replacement_idx = windmill_replace_indices[3];  // standard damaged tile with transparent background
+        Vector2f[] collision_tiles = staticWarAttender.getCollisionTiles();
 
-        if (tileID == CONCRETE_IDX) {
-            replacement_idx = windmill_replace_indices[1];
-        } else if (tileID == DIRT_IDX) {
-            replacement_idx = windmill_replace_indices[0];
-        } else if (tileID == GRASS_IDX) {
-            replacement_idx = windmill_replace_indices[2];
+        for (Vector2f collision_tile : collision_tiles) {
+            // look what tile lies below destroyed windmill (grass, dirt or concrete)
+            int tileID = map.getTileId((int) collision_tile.x, (int) collision_tile.y, LANDSCAPE_TILES_LAYER_IDX);
+            int replacement_tile_id = TileMapInfo.getReplacementTileID(tileID);
+            map.setTileId((int) collision_tile.x, (int) collision_tile.y, ENEMY_TILES_LAYER_IDX, 0);
+            map.setTileId((int) collision_tile.x, (int) collision_tile.y, DESTRUCTION_TILES_LAYER_IDX, replacement_tile_id);
         }
-        map.setTileId(xPos, yPos, ENEMY_TILES_LAYER_IDX, 0);
-        map.setTileId(xPos, yPos, LANDSCAPE_TILES_LAYER_IDX, replacement_idx);
+
+        Vector2f[] replacement_tiles = staticWarAttender.getReplacementTiles();
+        if (replacement_tiles == null) return;
+
+        for (Vector2f replacement_tile : replacement_tiles) {
+            // simply remove the replacement tiles
+            map.setTileId((int) replacement_tile.x, (int) replacement_tile.y, ENEMY_TILES_LAYER_IDX, 0);
+        }
     }
 
     private void damageTile(int xPos, int yPos, Weapon weapon, int replaceTileIndex, MovableWarAttender warAttender) {

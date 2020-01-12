@@ -109,7 +109,9 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
                     //int tileID = map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
                     if (map.getTileId(x, y, ENEMY_TILES_LAYER_IDX) == windmill_indices[idx]) {
                         Windmill windmill = null;
-                        Vector2f tile_position = new Vector2f(x, y);    // to find this tile again in CollisionHandler
+                        Vector2f[] collision_tiles = new Vector2f[1];
+                        // add all tile positions of this warAttender to its object
+                        collision_tiles[0] = new Vector2f(x, y);
                         // position is at middle of the tile
                         Vector2f pos_windmill = new Vector2f(
                                 x * TILE_WIDTH + TILE_WIDTH / 2.f,
@@ -117,13 +119,13 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
                         );
                         switch (idx) {
                             case 0: // green windmill
-                                windmill = new WindmillGreen(pos_windmill, true, tile_position);
+                                windmill = new WindmillGreen(pos_windmill, true, collision_tiles);
                                 break;
                             case 1: // grey windmill
-                                windmill = new WindmillGrey(pos_windmill, true, tile_position);
+                                windmill = new WindmillGrey(pos_windmill, true, collision_tiles);
                                 break;
                             case 2: // yellow windmill
-                                windmill = new WindmillYellow(pos_windmill, true, tile_position);
+                                windmill = new WindmillYellow(pos_windmill, true, collision_tiles);
                                 break;
                         }
                         static_enemies.add(windmill);
@@ -138,22 +140,57 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
                 for (int idx = 0; idx < static_plane_creation_indices.length; ++idx) {
                     //int tileID = map.getTileId(x, y, PLANE_TILES_TILESET_IDX);
                     if (map.getTileId(x, y, ENEMY_TILES_LAYER_IDX) == static_plane_creation_indices[idx]) {
-                        // to find this tile again in CollisionHandler:
-                        Vector2f[] tile_positions = new Vector2f[5];
-                        // add all tile positions of this warAttender to its object
-                        tile_positions[0] = new Vector2f(x, y - 1);
-                        tile_positions[1] = new Vector2f(x - 1, y);
-                        tile_positions[2] = new Vector2f(x, y);
-                        tile_positions[3] = new Vector2f(x + 1, y);
-                        tile_positions[4] = new Vector2f(x, y + 1);
-
+                        Vector2f[] collision_tiles = new Vector2f[5];
+                        // add all collision tiles of this warAttender to its object
+                        collision_tiles[0] = new Vector2f(x, y - 1);
+                        collision_tiles[1] = new Vector2f(x - 1, y);
+                        collision_tiles[2] = new Vector2f(x, y);
+                        collision_tiles[3] = new Vector2f(x + 1, y);
+                        collision_tiles[4] = new Vector2f(x, y + 1);
+                        // add more tile positions for later tile replacement on destruction
+                        // these tiles do not have collisions
+                        Vector2f[] replacement_tiles = new Vector2f[6];
+                        switch (idx) {
+                            case 0: // the plane that's facing right in the tileset
+                                replacement_tiles[0] = new Vector2f(x, y - 2);
+                                replacement_tiles[1] = new Vector2f(x - 2, y - 1);
+                                replacement_tiles[2] = new Vector2f(x - 2, y);
+                                replacement_tiles[3] = new Vector2f(x - 2, y + 1);
+                                replacement_tiles[4] = new Vector2f(x + 2, y);
+                                replacement_tiles[5] = new Vector2f(x, y + 2);
+                                break;
+                            case 1: // the plane that's facing down in the tileset
+                                replacement_tiles[0] = new Vector2f(x - 1, y - 2);
+                                replacement_tiles[1] = new Vector2f(x, y - 2);
+                                replacement_tiles[2] = new Vector2f(x + 1, y - 2);
+                                replacement_tiles[3] = new Vector2f(x - 2, y);
+                                replacement_tiles[4] = new Vector2f(x + 2, y);
+                                replacement_tiles[5] = new Vector2f(x, y + 2);
+                                break;
+                            case 2: // the plane that's facing left in the tileset
+                                replacement_tiles[0] = new Vector2f(x, y - 2);
+                                replacement_tiles[1] = new Vector2f(x - 2, y);
+                                replacement_tiles[2] = new Vector2f(x + 2, y - 1);
+                                replacement_tiles[3] = new Vector2f(x + 2, y);
+                                replacement_tiles[4] = new Vector2f(x + 2, y + 1);
+                                replacement_tiles[5] = new Vector2f(x, y + 2);
+                                break;
+                            case 3:  // the plane that's facing up in the tileset
+                                replacement_tiles[0] = new Vector2f(x, y - 2);
+                                replacement_tiles[1] = new Vector2f(x - 2, y);
+                                replacement_tiles[2] = new Vector2f(x + 2, y);
+                                replacement_tiles[3] = new Vector2f(x - 1, y + 2);
+                                replacement_tiles[4] = new Vector2f(x, y + 2);
+                                replacement_tiles[5] = new Vector2f(x + 1, y + 2);
+                                break;
+                        }
                         // position is at middle of the tile
                         Vector2f pos_staticEnemyPlane = new Vector2f(
                                 x * TILE_WIDTH + TILE_WIDTH / 2.f,
                                 y * TILE_HEIGHT + TILE_HEIGHT / 2.f
                         );
                         StaticEnemyPlane staticEnemyPlane = new StaticEnemyPlane(pos_staticEnemyPlane, true,
-                                tile_positions);
+                                collision_tiles, replacement_tiles);
                         static_enemies.add(staticEnemyPlane);
                     }
                 }

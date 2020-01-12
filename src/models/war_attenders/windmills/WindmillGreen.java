@@ -8,7 +8,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class WindmillGreen extends Windmill {
 
-    public WindmillGreen(Vector2f startPos, boolean isHostile, Vector2f tile_position) {
+    public WindmillGreen(Vector2f startPos, boolean isHostile, Vector2f [] tile_position) {
         super(startPos, isHostile, tile_position);
 
         // individual WindmillGreen attributes

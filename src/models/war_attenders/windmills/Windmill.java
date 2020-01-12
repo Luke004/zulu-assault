@@ -4,7 +4,6 @@ import logic.WayPointManager;
 import models.StaticWarAttender;
 import models.animations.smoke.SmokeAnimation;
 import models.war_attenders.MovableWarAttender;
-import models.war_attenders.WarAttender;
 import models.weapons.Weapon;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -22,11 +21,8 @@ public abstract class Windmill extends StaticWarAttender {
     private int smoke_animation_timer;
     private Random random;
 
-    private Vector2f tile_position;
-
-    public Windmill(Vector2f startPos, boolean isHostile, Vector2f tile_position) {
-        super(startPos, isHostile);
-        this.tile_position = tile_position;
+    public Windmill(Vector2f startPos, boolean isHostile, Vector2f[] tile_positions) {
+        super(startPos, isHostile, tile_positions);
         random = new Random();
         smokeAnimation = new SmokeAnimation(3);
         max_health = 100.f;
@@ -94,15 +90,5 @@ public abstract class Windmill extends StaticWarAttender {
         } else {
             turret.rotate(turret_rotate_speed);
         }
-    }
-
-    @Override
-    public boolean containsTilePosition(int xPos, int yPos) {
-        return (tile_position.x == xPos && tile_position.y == yPos);
-    }
-
-    @Override
-    public Vector2f getTilePosition() {
-        return tile_position;
     }
 }

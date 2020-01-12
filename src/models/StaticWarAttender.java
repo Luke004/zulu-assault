@@ -8,12 +8,26 @@ StaticWarAttender are created from the tile map and each object has an individua
  */
 public abstract class StaticWarAttender extends WarAttender {
 
-    public StaticWarAttender(Vector2f startPos, boolean isHostile) {
+    protected Vector2f[] collision_tiles;
+    protected Vector2f[] replacement_tiles;
+
+    public StaticWarAttender(Vector2f startPos, boolean isHostile, Vector2f[] collision_tiles) {
         super(startPos, isHostile);
+        this.collision_tiles = collision_tiles;
     }
 
-    abstract public boolean containsTilePosition(int xPos, int yPos);
+    public Vector2f[] getCollisionTiles() {
+        return collision_tiles;
+    }
 
-    abstract public Vector2f getTilePosition();
+    public Vector2f[] getReplacementTiles() {
+        return replacement_tiles;
+    }
 
+    public boolean containsTilePosition(int xPos, int yPos) {
+        for (Vector2f collision_tile : collision_tiles) {
+            if (collision_tile.x == xPos && collision_tile.y == yPos) return true;
+        }
+        return false;
+    }
 }

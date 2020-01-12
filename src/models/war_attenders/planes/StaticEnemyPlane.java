@@ -5,11 +5,9 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class StaticEnemyPlane extends StaticWarAttender {
 
-    private Vector2f[] tile_positions;
-
-    public StaticEnemyPlane(Vector2f startPos, boolean isHostile, Vector2f[] tile_positions) {
-        super(startPos, isHostile);
-        this.tile_positions = tile_positions;
+    public StaticEnemyPlane(Vector2f startPos, boolean isHostile, Vector2f[] collision_tiles, Vector2f[] replacement_tiles) {
+        super(startPos, isHostile, collision_tiles);
+        this.replacement_tiles = replacement_tiles;
 
         max_health = 100.f;
         armor = 10.f;
@@ -28,18 +26,5 @@ public class StaticEnemyPlane extends StaticWarAttender {
     @Override
     public void setRotation(float degree) {
 
-    }
-
-    @Override
-    public boolean containsTilePosition(int xPos, int yPos) {
-        for (int i = 0; i < tile_positions.length; ++i) {
-            if (tile_positions[i].x == xPos && tile_positions[i].y == yPos) return true;
-        }
-        return false;
-    }
-
-    @Override
-    public Vector2f getTilePosition() {
-        return tile_positions[0];
     }
 }
