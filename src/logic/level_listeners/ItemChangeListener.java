@@ -1,4 +1,4 @@
-package logic;
+package logic.level_listeners;
 
 public interface ItemChangeListener {
     void itemAdded(int idx);

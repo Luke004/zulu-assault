@@ -1,15 +1,18 @@
 package models.weapons;
 
+import logic.level_listeners.GroundTileDamageListener;
 import models.animations.explosion.BigExplosionAnimation;
 import models.weapons.projectiles.AirRocket;
 import models.weapons.projectiles.Projectile;
+import models.weapons.projectiles.iGroundTileDamageWeapon;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
-public class DoubleRocketLauncher extends RocketLauncher {
+public class DoubleRocketLauncher extends RocketLauncher implements iGroundTileDamageWeapon {
 
     private static BigExplosionAnimation bigExplosionAnimation;
+    public GroundTileDamageListener groundTileDamageListener;
 
     public DoubleRocketLauncher(boolean isDrivable) {
         super(isDrivable);
@@ -82,5 +85,15 @@ public class DoubleRocketLauncher extends RocketLauncher {
 
     public static void playDestructionAnimation(float xPos, float yPos) {
         bigExplosionAnimation.playTenTimes(xPos, yPos, 90);
+    }
+
+    @Override
+    public void addListener(GroundTileDamageListener groundTileDamageListener) {
+        this.groundTileDamageListener = groundTileDamageListener;
+    }
+
+    @Override
+    public GroundTileDamageListener getListener() {
+        return groundTileDamageListener;
     }
 }

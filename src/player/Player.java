@@ -1,6 +1,6 @@
 package player;
 
-import logic.ItemChangeListener;
+import logic.level_listeners.ItemChangeListener;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.planes.Plane;
 import models.war_attenders.robots.Robot;

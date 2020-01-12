@@ -1,9 +1,12 @@
 package models.war_attenders;
 
-import logic.WarAttenderDeleteListener;
+import levels.AbstractLevel;
+import logic.level_listeners.WarAttenderDeleteListener;
 import logic.WayPointManager;
 import models.CollisionModel;
 import models.weapons.MegaPulse;
+import models.weapons.Weapon;
+import models.weapons.projectiles.iGroundTileDamageWeapon;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import player.Player;
@@ -117,8 +120,13 @@ public abstract class MovableWarAttender extends WarAttender {
         }
     }
 
-    public void addListener(WarAttenderDeleteListener delete_listener) {
-        this.level_delete_listener = delete_listener;
+    public void addListeners(AbstractLevel abstractLevel) {
+        this.level_delete_listener = abstractLevel;
+        for (Weapon weapon : weapons) {
+            if (weapon instanceof iGroundTileDamageWeapon) {
+                ((iGroundTileDamageWeapon) weapon).addListener(abstractLevel);
+            }
+        }
     }
 
     public void addWayPoints(WayPointManager waypointManager) {

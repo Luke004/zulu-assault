@@ -2,6 +2,7 @@ package models.weapons;
 
 import models.weapons.projectiles.Bullet;
 import models.weapons.projectiles.Projectile;
+import models.weapons.projectiles.iGroundTileDamageWeapon;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
@@ -31,6 +32,13 @@ public abstract class Weapon {
 
             // remove bullet if if max lifetime was reached
             if (projectile.lifetime > projectile.max_lifetime) {
+
+                // check if a ground tile is damaged
+                if (this instanceof iGroundTileDamageWeapon) {
+                    ((iGroundTileDamageWeapon) this).getListener().notifyForGroundTileDamage(projectile.pos.x,
+                            projectile.pos.y);
+                }
+
                 iter.remove();
             }
         }

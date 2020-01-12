@@ -51,7 +51,7 @@ public abstract class Tank extends MovableWarAttender {
             if(waypointManager != null) current_speed = 0.f; // stop the tank if it was moving
             destructionAnimation.update(deltaTime);
             if (destructionAnimation.hasFinished()) {
-                level_delete_listener.notifyForDeletion(this);
+                level_delete_listener.notifyForWarAttenderDeletion(this);
             }
         }
 

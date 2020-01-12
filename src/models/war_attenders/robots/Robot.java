@@ -51,7 +51,7 @@ public abstract class Robot extends MovableWarAttender {
         super.update(gameContainer, deltaTime);
         walking_animation.update(deltaTime);
         if(isDestroyed) {
-            level_delete_listener.notifyForDeletion(this);
+            level_delete_listener.notifyForWarAttenderDeletion(this);
         }
     }
 

@@ -47,7 +47,7 @@ public abstract class Soldier extends MovableWarAttender {
         animation.update(deltaTime);
 
         if (isDestroyed) {
-            level_delete_listener.notifyForDeletion(this);
+            level_delete_listener.notifyForWarAttenderDeletion(this);
         }
     }
 

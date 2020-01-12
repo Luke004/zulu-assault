@@ -7,6 +7,7 @@ import models.interaction_circles.InteractionCircle;
 import models.items.*;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.planes.GreenEnemyPlane;
+import models.war_attenders.planes.Plane;
 import models.war_attenders.robots.PlasmaRobot;
 import models.war_attenders.soldiers.EnemySoldier;
 import models.war_attenders.tanks.*;
@@ -132,15 +133,15 @@ public class Level_1 extends AbstractLevel implements GameState {
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
         Vector2f playerStartPos = new Vector2f(1000, 1000);
         //Tank tank = new NapalmTank(playerStartPos, false, true);
-        Tank tank = new MachineGunTank(playerStartPos, false, true);
-        //Plane plane = new GreenEnemyPlane(playerStartPos, false, true);
+        //Tank tank = new MachineGunTank(playerStartPos, false, true);
+        Plane plane = new GreenEnemyPlane(playerStartPos, false, true);
         //Robot robot = new ShellRobot(playerStartPos, false, true);
         //MovableWarAttender soldier = new PlayerSoldier(playerStartPos, false);
 
         // DEFINE THE MAP
         map = new TiledMap("assets/maps/level_1.tmx");
 
-        player.init(tank);
+        player.init(plane);
 
         super.init(gameContainer, stateBasedGame);
     }

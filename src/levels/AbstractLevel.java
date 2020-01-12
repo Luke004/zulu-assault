@@ -1,6 +1,8 @@
 package levels;
 
 import logic.*;
+import logic.level_listeners.GroundTileDamageListener;
+import logic.level_listeners.WarAttenderDeleteListener;
 import models.StaticWarAttender;
 import models.animations.explosion.BigExplosionAnimation;
 import models.hud.HUD;
@@ -18,7 +20,6 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.tiled.TileSet;
 import org.newdawn.slick.tiled.TiledMap;
 import player.Player;
 import screen_drawer.ScreenDrawer;
@@ -28,7 +29,7 @@ import java.util.List;
 
 import static logic.TileMapInfo.*;
 
-public abstract class AbstractLevel extends BasicGameState implements WarAttenderDeleteListener {
+public abstract class AbstractLevel extends BasicGameState implements WarAttenderDeleteListener, GroundTileDamageListener {
 
     private static boolean firstCall;
 
@@ -88,12 +89,12 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
 
         // add listeners for destruction of warAttenders
         for (MovableWarAttender warAttender : friendly_war_attenders) {
-            warAttender.addListener(this);
+            warAttender.addListeners(this);
         }
         for (MovableWarAttender warAttender : hostile_war_attenders) {
-            warAttender.addListener(this);
+            warAttender.addListeners(this);
         }
-        player.getWarAttender().addListener(this);
+        player.getWarAttender().addListeners(this);
         //collisionHandler.addListener(this);
         screenDrawer = new ScreenDrawer();
     }
@@ -274,7 +275,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     }
 
     @Override
-    public void notifyForDeletion(WarAttender warAttender) {
+    public void notifyForWarAttenderDeletion(WarAttender warAttender) {
         // TODO: add points according to the class of the enemy/warAttender
 
         if (warAttender.isHostile) {
@@ -299,9 +300,19 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
 
 
     @Override
-    public void notifyForDeletion(float xPos, float yPos) {
+    public void notifyForDestructibleTileDeletion(float xPos, float yPos) {
         // a destructible tile was deleted
         bigExplosionAnimation.playTenTimes(xPos, yPos, 0);
+    }
+
+    @Override
+    public void notifyForGroundTileDamage(float xPos, float yPos) {
+        // a ground tile was damaged by an iGroundTileDamageWeapon
+        int mapX = (int) (xPos / TILE_WIDTH);
+        int mapY = (int) (yPos / TILE_HEIGHT);
+        int tileID = map.getTileId(mapX, mapY, LANDSCAPE_TILES_LAYER_IDX);
+        int replacement_tile_id = TileMapInfo.getReplacementTileID(tileID);
+        map.setTileId(mapX, mapY, DESTRUCTION_TILES_LAYER_IDX, replacement_tile_id);
     }
 
     @Override

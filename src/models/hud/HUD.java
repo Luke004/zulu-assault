@@ -1,6 +1,6 @@
 package models.hud;
 
-import logic.ItemChangeListener;
+import logic.level_listeners.ItemChangeListener;
 import org.newdawn.slick.*;
 import player.Player;
 

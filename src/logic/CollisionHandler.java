@@ -1,6 +1,7 @@
 package logic;
 
 import levels.AbstractLevel;
+import logic.level_listeners.WarAttenderDeleteListener;
 import models.CollisionModel;
 import models.StaticWarAttender;
 import models.animations.damage.PlasmaDamageAnimation;
@@ -42,7 +43,7 @@ public class CollisionHandler {
     private static final float DESTRUCTIBLE_TILE_NORMAL_ARMOR = 5.f;
     private static final float DESTRUCTIBLE_TILE_LOW_ARMOR = 1.f;
 
-    protected WarAttenderDeleteListener level_delete_listener;
+    private WarAttenderDeleteListener level_delete_listener;
     private static SmokeAnimation smokeAnimation;
     private static UziHitExplosionAnimation uziHitExplosionAnimation;
     private static UziDamageAnimation uziDamageAnimation;
@@ -313,7 +314,7 @@ public class CollisionHandler {
                     bigExplosionAnimation.play(projectile.pos.x, projectile.pos.y, 90);
 
                     // destroyed by bullet, show destruction animation using level listener
-                    level_delete_listener.notifyForDeletion(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20);
+                    level_delete_listener.notifyForDestructibleTileDeletion(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20);
 
                     // destroy the hit tile directly
                     map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
@@ -325,7 +326,7 @@ public class CollisionHandler {
                         if (weapon instanceof MegaPulse) {
                             // it's a one shot, destroy tile directly
                             map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
-                            level_delete_listener.notifyForDeletion(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20);
+                            level_delete_listener.notifyForDestructibleTileDeletion(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20);
                         } else if (!((PiercingWeapon) weapon).hasAlreadyHit(generateKey(x, y))) {
                             damageTile(x, y, weapon, destructible_tile_replace_indices[idx], null);
                         }
@@ -385,7 +386,7 @@ public class CollisionHandler {
                     if (weapon instanceof DoubleRocketLauncher) {
                         // it's a one shot, destroy tile directly
                         // destroyed by bullet, show destruction animation using level listener
-                        level_delete_listener.notifyForDeletion(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20);
+                        level_delete_listener.notifyForDestructibleTileDeletion(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20);
                         // destroy the hit tile directly
                         map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
                         // maybe also destroy other tiles around
@@ -447,7 +448,7 @@ public class CollisionHandler {
 
     private void replaceStaticWarAttenderTile(int idx) {
         StaticWarAttender staticWarAttender = static_enemies.get(idx);
-        level_delete_listener.notifyForDeletion(staticWarAttender);
+        level_delete_listener.notifyForWarAttenderDeletion(staticWarAttender);
         static_enemies.remove(idx);
 
         Vector2f[] collision_tiles = staticWarAttender.getCollisionTiles();
@@ -486,7 +487,7 @@ public class CollisionHandler {
                     if (weapon instanceof Plasma)
                         bigExplosionAnimation.play(xPos * TILE_WIDTH + 20, yPos * TILE_HEIGHT + 20, 0);
                     else if (!(weapon instanceof Napalm))
-                        level_delete_listener.notifyForDeletion(xPos * TILE_WIDTH + 20, yPos * TILE_HEIGHT + 20);
+                        level_delete_listener.notifyForDestructibleTileDeletion(xPos * TILE_WIDTH + 20, yPos * TILE_HEIGHT + 20);
                 }
                 map.setTileId(xPos, yPos, LANDSCAPE_TILES_LAYER_IDX, replaceTileIndex);
                 destructible_tiles_health_info.remove(key);
