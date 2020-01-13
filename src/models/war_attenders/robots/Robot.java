@@ -9,7 +9,6 @@ import org.newdawn.slick.geom.Vector2f;
 
 public abstract class Robot extends MovableWarAttender {
     Animation walking_animation;
-    float turret_rotate_speed;
     private float BASE_WIDTH_HALF, BASE_HEIGHT_HALF;
 
     public Robot(Vector2f startPos, boolean isHostile) {

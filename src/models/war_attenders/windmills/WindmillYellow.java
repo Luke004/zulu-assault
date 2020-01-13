@@ -11,7 +11,7 @@ public class WindmillYellow extends Windmill {
         super(startPos, isHostile, tile_positions);
 
         // individual WindmillYellow attributes
-        turret_rotate_speed = 0.45f;
+        //turret_rotate_speed = 0.45f;
         weapons.add(new RocketLauncher(false));   // WEAPON_1
 
         turret_position = new Vector2f(position.x - 5.5f, position.y - 16.f);

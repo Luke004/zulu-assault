@@ -23,7 +23,6 @@ public class CannonTank extends Tank {
             acceleration_factor = 0.0005f;
             deceleration_factor = 0.0005f;
             rotate_speed = 0.15f;
-            turret_rotate_speed = 0.15f;
         } else {
             // individual MachineGunTank attributes for bots
             max_speed = 0.3f;
@@ -31,7 +30,6 @@ public class CannonTank extends Tank {
             acceleration_factor = 0.0005f;
             deceleration_factor = 0.0005f;
             rotate_speed = 0.15f;
-            turret_rotate_speed = 0.5f;
         }
         weapons.add(new Cannon(isDrivable));  // WEAPON_1
 

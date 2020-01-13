@@ -12,7 +12,7 @@ public class WindmillGreen extends Windmill {
         super(startPos, isHostile, tile_position);
 
         // individual WindmillGreen attributes
-        turret_rotate_speed = 0.5f;
+        //turret_rotate_speed = 0.5f;
         weapons.add(new Uzi(false));  // WEAPON_1
 
         turret_position = new Vector2f(position.x - 3.f, position.y - 17.f);

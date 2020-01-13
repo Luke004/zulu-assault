@@ -30,13 +30,13 @@ public class ZuluAssault extends StateBasedGame {
 
     public static void main(String[] args) {
         String gameName = "Zulu Assault";
-        boolean fullscreen = false;
+        boolean fullscreen = true;
 
         System.setProperty("org.lwjgl.librarypath", new File(
                 new File(System.getProperty("user.dir"), "native"), LWJGLUtil.getPlatformName()).getAbsolutePath());
         try {
             AppGameContainer app = new AppGameContainer(new ZuluAssault(gameName));
-            app.setDisplayMode(800, 600, fullscreen);
+            app.setDisplayMode(1920, 1080, fullscreen);
             app.setTargetFrameRate(120);
             app.start();
         } catch (SlickException e) {

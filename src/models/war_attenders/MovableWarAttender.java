@@ -42,8 +42,8 @@ public abstract class MovableWarAttender extends WarAttender {
     // invincibility item related
     public boolean isInvincible, invincibility_animation_switch;
     private int invincibility_lifetime;
-    private final int INVINCIBILITY_TIME = 10000;   // 10 sec
-    public int invincible_animation_time_switch = 1000;    // once every sec switch to white color while invincible
+    private final static int INVINCIBILITY_TIME = 10000;   // 10 sec
+    public static final int INVINCIBLE_ANIMATION_TIME_SWITCH = 1000;    // once every sec switch to white color while invincible
     public int invincible_animation_current_time;
 
 
@@ -55,6 +55,12 @@ public abstract class MovableWarAttender extends WarAttender {
     public MovableWarAttender(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         this(startPos, isHostile);
         this.isDrivable = isDrivable;
+
+        if (isDrivable) {
+            turret_rotate_speed = 0.15f;
+        } else {
+            turret_rotate_speed = 0.5f;
+        }
     }
 
     @Override
@@ -95,7 +101,7 @@ public abstract class MovableWarAttender extends WarAttender {
 
             // invincibility animation related
             invincible_animation_current_time += deltaTime;
-            if (invincible_animation_current_time >= invincible_animation_time_switch) {
+            if (invincible_animation_current_time >= INVINCIBLE_ANIMATION_TIME_SWITCH) {
                 if (invincibility_animation_switch) invincibility_animation_switch = false;
                 else invincibility_animation_switch = true;
                 invincible_animation_current_time = 0;

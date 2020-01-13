@@ -13,11 +13,10 @@ import org.newdawn.slick.geom.Vector2f;
 import java.util.Random;
 
 public abstract class Windmill extends StaticWarAttender {
-    Image turret;
+    protected Image turret;
     protected Vector2f turret_position;
-    float turret_rotate_speed;
     private SmokeAnimation smokeAnimation;
-    private final int SMOKE_ANIMATION_FREQUENCY = 300;  // two per second
+    private final static int SMOKE_ANIMATION_FREQUENCY = 300;  // two per second
     private int smoke_animation_timer;
     private Random random;
 
@@ -28,7 +27,6 @@ public abstract class Windmill extends StaticWarAttender {
         max_health = 100.f;
         armor = 10.f;
         current_health = max_health;
-        turret_rotate_speed = 0.2f;
         scoreValue = 200;
 
         health_bar_position.x = position.x - 27.5f;
@@ -77,7 +75,7 @@ public abstract class Windmill extends StaticWarAttender {
                 break;
         }
         if (weapon == null) return;  // does not have a WEAPON_2, so return
-        weapon.fire(position.x + 20, position.y + 20, turret.getRotation());
+        weapon.fire(position.x, position.y, turret.getRotation());
     }
 
     @Override

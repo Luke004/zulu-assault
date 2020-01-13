@@ -23,7 +23,6 @@ public class RocketTank extends Tank {
             acceleration_factor = 0.0001f;
             deceleration_factor = 0.0009f;
             rotate_speed = 0.15f;
-            turret_rotate_speed = 0.35f;
         } else {
             // individual RocketTank attributes for bots
             max_speed = 0.07f;
@@ -31,7 +30,6 @@ public class RocketTank extends Tank {
             acceleration_factor = 0.0001f;
             deceleration_factor = 0.0009f;
             rotate_speed = 0.15f;
-            turret_rotate_speed = 0.35f;
         }
 
         weapons.add(new RocketLauncher(isDrivable));   // WEAPON_1

@@ -15,6 +15,7 @@ public abstract class WarAttender {
     protected Vector2f health_bar_position;
     // specs related
     public float current_health, max_health, armor;
+    protected float turret_rotate_speed;
     public boolean isHostile, isDestroyed;
     protected int scoreValue;
 
@@ -26,6 +27,7 @@ public abstract class WarAttender {
         weapons = new ArrayList<>();    // 3 weapons -> WEAPON_1, WEAPON_2 and MEGA_PULSE
         health_bar_position = new Vector2f();
         if (isHostile) {
+            turret_rotate_speed = 0.5f;
             try {
                 health_bar_image = new Image("assets/healthbars/healthbar_enemy.png");
             } catch (SlickException e) {
@@ -114,12 +116,16 @@ public abstract class WarAttender {
 
         // aim at the closest enemy
         float rotationDegree;
-        if (dist < 500) {
-            // aim at player and fire
+        if (dist < 700) {
+            // aim at player
             rotationDegree = WayPointManager.calculateAngle(position, new Vector2f(xPos, yPos));
 
             setRotation(rotationDegree);
 
+            //fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
+        }
+        if (dist < 600) {
+            // fire
             fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
         }
     }

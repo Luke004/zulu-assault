@@ -4,7 +4,8 @@ import models.war_attenders.WarAttender;
 import org.newdawn.slick.geom.Vector2f;
 
 /*
-StaticWarAttender are created from the tile map and each object has an individual key for identification
+StaticWarAttender are created from the tile map and each object has a list of collision tiles and tiles to replace
+when the StaticWarAttender is destroyed
  */
 public abstract class StaticWarAttender extends WarAttender {
 

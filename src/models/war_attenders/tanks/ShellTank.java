@@ -26,7 +26,6 @@ public class ShellTank extends Tank {
             acceleration_factor = 0.00005f;
             deceleration_factor = 0.0009f;
             rotate_speed = 0.2f;
-            turret_rotate_speed = 0.2f;
         } else {
             // individual ShellTank attributes for bots
             max_speed = 0.05f;
@@ -34,7 +33,6 @@ public class ShellTank extends Tank {
             acceleration_factor = 0.00005f;
             deceleration_factor = 0.0009f;
             rotate_speed = 0.05f;
-            turret_rotate_speed = 0.3f;
         }
 
         weapons.add(new Shell(isDrivable));   // WEAPON_1

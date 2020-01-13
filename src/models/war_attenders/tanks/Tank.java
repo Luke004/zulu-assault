@@ -14,7 +14,6 @@ import java.util.Random;
 
 public abstract class Tank extends MovableWarAttender {
     public Image turret;
-    float turret_rotate_speed;
     float backwards_speed;
     private boolean decelerate;
     private int TURRET_WIDTH_HALF, TURRET_HEIGHT_HALF;
@@ -48,7 +47,7 @@ public abstract class Tank extends MovableWarAttender {
         }
 
         if (isDestroyed) {
-            if(waypointManager != null) current_speed = 0.f; // stop the tank if it was moving
+            if (waypointManager != null) current_speed = 0.f; // stop the tank if it was moving
             destructionAnimation.update(deltaTime);
             if (destructionAnimation.hasFinished()) {
                 level_delete_listener.notifyForWarAttenderDeletion(this);
@@ -65,7 +64,7 @@ public abstract class Tank extends MovableWarAttender {
                 waypointManager.adjustAfterRotation(this.position, getRotation());
             }
 
-            if(waypointManager.distToNextVector(this.position) < HEIGHT_HALF * 2){
+            if (waypointManager.distToNextVector(this.position) < HEIGHT_HALF * 2) {
                 waypointManager.setupNextWayPoint(this.position, getRotation());
             }
         }
