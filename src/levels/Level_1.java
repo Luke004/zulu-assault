@@ -136,15 +136,15 @@ public class Level_1 extends AbstractLevel implements GameState {
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
         Vector2f playerStartPos = new Vector2f(1000, 1000);
         //Tank tank = new NapalmTank(playerStartPos, false, true);
-        Tank tank = new CannonTank(playerStartPos, false, true);
+        //Tank tank = new CannonTank(playerStartPos, false, true);
         //Plane plane = new GreenEnemyPlane(playerStartPos, false, true);
-        //Robot robot = new PlasmaRobot(playerStartPos, false, true);
+        Robot robot = new PlasmaRobot(playerStartPos, false, true);
         //MovableWarAttender soldier = new PlayerSoldier(playerStartPos, false);
 
         // DEFINE THE MAP
         map = new TiledMap("assets/maps/level_1.tmx");
 
-        player.init(tank);
+        player.init(robot);
 
         super.init(gameContainer, stateBasedGame);
     }

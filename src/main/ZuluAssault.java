@@ -36,7 +36,7 @@ public class ZuluAssault extends StateBasedGame {
                 new File(System.getProperty("user.dir"), "native"), LWJGLUtil.getPlatformName()).getAbsolutePath());
         try {
             AppGameContainer app = new AppGameContainer(new ZuluAssault(gameName));
-            app.setDisplayMode(1920, 1080, fullscreen);
+            app.setDisplayMode(800, 600, fullscreen);
             app.setTargetFrameRate(120);
             app.start();
         } catch (SlickException e) {

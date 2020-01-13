@@ -38,10 +38,10 @@ public abstract class Robot extends MovableWarAttender {
         }
         WIDTH_HALF = walking_animation.getImage(0).getWidth() / 2;
         HEIGHT_HALF = walking_animation.getImage(0).getHeight() / 2;
-        BASE_WIDTH_HALF = base_image.getWidth() / 2;
-        BASE_HEIGHT_HALF = base_image.getHeight() / 2;
+        BASE_WIDTH_HALF = base_image.getWidth() / 2.f;
+        BASE_HEIGHT_HALF = base_image.getHeight() / 2.f;
         // just use index 0, all indices are same width and height
-        collisionModel = new CollisionModel(position, walking_animation.getImage(0).getWidth(), walking_animation.getImage(0).getHeight());
+        collisionModel = new CollisionModel(position, WIDTH_HALF, HEIGHT_HALF);
         super.init();
     }
 
