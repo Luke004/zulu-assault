@@ -25,7 +25,6 @@ public class ZuluAssault extends StateBasedGame {
         this.addState(new MainMenu());
         this.addState(new Level_1());
         this.addState(new Level_2());
-
     }
 
     public static void main(String[] args) {

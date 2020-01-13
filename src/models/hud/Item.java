@@ -5,7 +5,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
 import player.Player;
 
-import java.awt.*;
+import java.awt.Font;
 
 import static models.hud.HUD.GAME_HEIGHT;
 

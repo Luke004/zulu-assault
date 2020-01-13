@@ -3,6 +3,7 @@ package levels;
 import logic.*;
 import logic.level_listeners.GroundTileDamageListener;
 import logic.level_listeners.WarAttenderDeleteListener;
+import main.ZuluAssault;
 import models.StaticWarAttender;
 import models.animations.explosion.BigExplosionAnimation;
 import models.hud.HUD;
@@ -201,10 +202,13 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     }
 
     @Override
-    public void enter(GameContainer var1, StateBasedGame var2) {
+    public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) {
         collisionHandler.setLevel(this);
         collisionHandler.addListener(this);
         keyInputHandler.setLevel(this);
+
+        // hide the mouse cursor
+        gameContainer.setMouseGrabbed(true);
     }
 
     @Override
@@ -239,6 +243,11 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         screenDrawer.update(deltaTime);
         bigExplosionAnimation.update(deltaTime);
         camera.centerOn(player.getWarAttender().position.x, player.getWarAttender().position.y);
+
+        if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
+            stateBasedGame.enterState(ZuluAssault.MAIN_MENU);
+        }
+
     }
 
     @Override
