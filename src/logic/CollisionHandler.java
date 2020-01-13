@@ -364,7 +364,7 @@ public class CollisionHandler {
         if (((iAirProjectile) projectile).hasChecked(iAirProjectile.Target.WarAttenders)) return;
         for (int idx = 0; idx < hostile_war_attenders.size(); ++idx) {
             if (projectile.getCollisionModel().intersects(hostile_war_attenders.get(idx).getCollisionModel())) {
-                if (weapon instanceof DoubleRocketLauncher) {
+                if (weapon instanceof AGM) {
                     //bigExplosionAnimation.play(projectile.pos.x, projectile.pos.y, 90);
                 }
                 hostile_war_attenders.get(idx).changeHealth(-weapon.getBulletDamage());
@@ -383,7 +383,7 @@ public class CollisionHandler {
 
             for (int idx = 0; idx < destructible_tile_indices.length; ++idx) {
                 if (tile_ID == destructible_tile_indices[idx]) {
-                    if (weapon instanceof DoubleRocketLauncher) {
+                    if (weapon instanceof AGM) {
                         // it's a one shot, destroy tile directly
                         // destroyed by bullet, show destruction animation using level listener
                         level_delete_listener.notifyForDestructibleTileDeletion(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20);

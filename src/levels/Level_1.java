@@ -9,8 +9,11 @@ import models.war_attenders.MovableWarAttender;
 import models.war_attenders.planes.GreenEnemyPlane;
 import models.war_attenders.planes.Plane;
 import models.war_attenders.robots.PlasmaRobot;
+import models.war_attenders.robots.Robot;
+import models.war_attenders.robots.ShellRobot;
 import models.war_attenders.soldiers.EnemySoldier;
 import models.war_attenders.tanks.*;
+import models.weapons.Shell;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.GameState;
@@ -133,15 +136,15 @@ public class Level_1 extends AbstractLevel implements GameState {
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
         Vector2f playerStartPos = new Vector2f(1000, 1000);
         //Tank tank = new NapalmTank(playerStartPos, false, true);
-        //Tank tank = new MachineGunTank(playerStartPos, false, true);
-        Plane plane = new GreenEnemyPlane(playerStartPos, false, true);
-        //Robot robot = new ShellRobot(playerStartPos, false, true);
+        Tank tank = new CannonTank(playerStartPos, false, true);
+        //Plane plane = new GreenEnemyPlane(playerStartPos, false, true);
+        //Robot robot = new PlasmaRobot(playerStartPos, false, true);
         //MovableWarAttender soldier = new PlayerSoldier(playerStartPos, false);
 
         // DEFINE THE MAP
         map = new TiledMap("assets/maps/level_1.tmx");
 
-        player.init(plane);
+        player.init(tank);
 
         super.init(gameContainer, stateBasedGame);
     }

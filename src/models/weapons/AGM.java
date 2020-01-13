@@ -7,15 +7,24 @@ import models.weapons.projectiles.Projectile;
 import models.weapons.projectiles.iGroundTileDamageWeapon;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
-public class DoubleRocketLauncher extends RocketLauncher implements iGroundTileDamageWeapon {
+public class AGM extends RocketLauncher implements iGroundTileDamageWeapon {
 
     private static BigExplosionAnimation bigExplosionAnimation;
     public GroundTileDamageListener groundTileDamageListener;
 
-    public DoubleRocketLauncher(boolean isDrivable) {
+    public AGM(boolean isDrivable) {
         super(isDrivable);
+
+        try {
+            weapon_hud_image = new Image("assets/hud/weapons/agm.png");
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
+
         BUFFER_SIZE *= 2;   // double the buffer size, since this is a double rocket launcher
         bigExplosionAnimation = new BigExplosionAnimation(100);
     }

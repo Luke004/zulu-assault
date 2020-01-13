@@ -17,6 +17,8 @@ public class Uzi extends Weapon {
         super();
         Image fire_animation_image;
         try {
+            weapon_hud_image = new Image("assets/hud/weapons/uzi.png");
+
             projectile_texture = new Image("assets/bullets/bullet_small.png").getTexture();
             fire_animation_image = new Image("assets/animations/bullet_fire.png");
             fire_animation = new Animation(false);

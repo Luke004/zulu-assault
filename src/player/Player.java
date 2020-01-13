@@ -1,6 +1,8 @@
 package player;
 
+import logic.level_listeners.ChangeWarAttenderListener;
 import logic.level_listeners.ItemChangeListener;
+import models.hud.HUD;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.planes.Plane;
 import models.war_attenders.robots.Robot;
@@ -20,6 +22,8 @@ public class Player {
     private ItemChangeListener GUI_listener;
     private int[] item_amounts;
     private int points;
+
+    private ChangeWarAttenderListener changeWarAttenderListener;
 
 
     public void init(MovableWarAttender current_warAttender) {
@@ -79,6 +83,7 @@ public class Player {
                 this.current_warAttender = base_soldier;
                 break;
         }
+        this.changeWarAttenderListener.onPlayerChangeWarAttender();
     }
 
     public MovableWarAttender getWarAttender() {
@@ -137,6 +142,10 @@ public class Player {
         item_amounts[idx]--;
         current_warAttender.activateItem(item);
         GUI_listener.itemActivated(idx);
+    }
+
+    public void addChangeWarAttenderListener(HUD hud) {
+        this.changeWarAttenderListener = hud;
     }
 
     public enum Item_e {

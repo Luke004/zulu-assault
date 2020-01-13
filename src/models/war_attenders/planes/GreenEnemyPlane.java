@@ -3,7 +3,7 @@ package models.war_attenders.planes;
 import logic.WayPointManager;
 import models.CollisionModel;
 import models.war_attenders.MovableWarAttender;
-import models.weapons.DoubleRocketLauncher;
+import models.weapons.AGM;
 import models.weapons.Uzi;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
@@ -37,7 +37,7 @@ public class GreenEnemyPlane extends Plane {
         current_speed = max_speed;  // speed is always the same for this plane
 
         weapons.add(new Uzi(isDrivable));  // WEAPON_1
-        weapons.add(new DoubleRocketLauncher(true));  // WEAPON_2
+        weapons.add(new AGM(true));  // WEAPON_2
 
         try {
             base_image = new Image("assets/war_attenders/planes/green_enemy_plane.png");

@@ -1,7 +1,7 @@
 package models.weapons.projectiles;
 
 import models.CollisionModel;
-import models.weapons.DoubleRocketLauncher;
+import models.weapons.AGM;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -32,7 +32,7 @@ public class AirRocket extends Rocket implements iAirProjectile {
             this.lifetime += deltaTime;
             if (!hasHitGround()) {
                 setHitGround();
-                DoubleRocketLauncher.playDestructionAnimation(pos.x, pos.y);
+                AGM.playDestructionAnimation(pos.x, pos.y);
                 // only update the collision model in the last 200 milliseconds
                 collision_model.update(deltaTime);
             }

@@ -1,16 +1,14 @@
 package models.war_attenders.tanks;
 
 import models.CollisionModel;
-import models.weapons.MachineGun;
-import models.weapons.RocketLauncher;
-import org.newdawn.slick.GameContainer;
+import models.weapons.Cannon;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
-public class MachineGunTank extends Tank {
+public class CannonTank extends Tank {
 
-    public MachineGunTank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
+    public CannonTank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
 
         // attributes equal for humans and bots
@@ -35,7 +33,7 @@ public class MachineGunTank extends Tank {
             rotate_speed = 0.15f;
             turret_rotate_speed = 0.5f;
         }
-        weapons.add(new MachineGun(isDrivable));  // WEAPON_1
+        weapons.add(new Cannon(isDrivable));  // WEAPON_1
 
         try {
             base_image = new Image("assets/war_attenders/tanks/agile_tank.png");

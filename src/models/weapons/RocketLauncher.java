@@ -24,6 +24,8 @@ public class RocketLauncher extends Weapon {
         if (!isDrivable) shot_reload_time *= 5;
 
         try {
+            weapon_hud_image = new Image("assets/hud/weapons/rockets.png");
+
             projectile_texture = new Image("assets/bullets/shell.png").getTexture();
             if (!isDrivable) {
                 BUFFER_SIZE = 3;

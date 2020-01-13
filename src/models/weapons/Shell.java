@@ -15,6 +15,8 @@ public class Shell extends Weapon {
         super();
         smokeAnimation = new SmokeAnimation(1);
         try {
+            weapon_hud_image = new Image("assets/hud/weapons/shell.png");
+
             projectile_texture = new Image("assets/bullets/shell.png").getTexture();
         } catch (SlickException e) {
             e.printStackTrace();

@@ -7,6 +7,8 @@ public class Plasma extends Weapon {
     public Plasma(boolean isDrivable) {
         super();
         try {
+            weapon_hud_image = new Image("assets/hud/weapons/plasma.png");
+
             projectile_texture = new Image("assets/bullets/plasma.png").getTexture();
         } catch (SlickException e) {
             e.printStackTrace();

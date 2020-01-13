@@ -4,9 +4,9 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
-public class MachineGunTank_v2 extends MachineGunTank {
+public class CannonTank_v2 extends CannonTank {
 
-    public MachineGunTank_v2(Vector2f startPos, boolean isHostile, boolean isDrivable) {
+    public CannonTank_v2(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
         try {
             base_image = new Image("assets/war_attenders/tanks/agile_tank_v2.png");

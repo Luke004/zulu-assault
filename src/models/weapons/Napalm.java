@@ -11,6 +11,8 @@ public class Napalm extends PiercingWeapon {
     public Napalm() {
         super();
         try {
+            weapon_hud_image = new Image("assets/hud/weapons/napalm.png");
+
             projectile_texture = new Image("assets/animations/big_explosion.png").getTexture();
         } catch (SlickException e) {
             e.printStackTrace();

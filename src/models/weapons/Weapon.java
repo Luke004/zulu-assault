@@ -4,6 +4,7 @@ import models.weapons.projectiles.Bullet;
 import models.weapons.projectiles.Projectile;
 import models.weapons.projectiles.iGroundTileDamageWeapon;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 
@@ -12,6 +13,8 @@ import java.util.Iterator;
 import java.util.List;
 
 public abstract class Weapon {
+    protected Image weapon_hud_image;   // the image for the weapon drawn on the HUD
+
     Texture projectile_texture;
     protected List<Projectile> projectile_list;
     // specs related
@@ -76,5 +79,9 @@ public abstract class Weapon {
 
     public float getBulletDamage() {
         return bullet_damage;
+    }
+
+    public Image getHUDImage() {
+        return weapon_hud_image;
     }
 }

@@ -1,6 +1,7 @@
 package models.hud;
 
 
+import logic.TileMapInfo;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import player.Player;
@@ -26,15 +27,15 @@ public class HUD_Drawer {
         int number = 0; // start with number '0' until number '9'
         while (number < NUM_AMOUNT) {
             try {
-                number_images.add(new Image("assets/point_system/font/numbers/" + number + ".png"));
+                number_images.add(new Image("assets/hud/text/font/numbers/" + number + ".png"));
             } catch (SlickException e) {
                 e.printStackTrace();
             }
             ++number;
 
             try {
-                dmg_image = new Image("assets/point_system/font/text/dmg.png");
-                pts_image = new Image("assets/point_system/font/text/pts.png");
+                dmg_image = new Image("assets/hud/text/font/text/dmg.png");
+                pts_image = new Image("assets/hud/text/font/text/pts.png");
             } catch (SlickException e) {
                 e.printStackTrace();
             }

@@ -2,13 +2,22 @@ package models.weapons;
 
 import models.weapons.projectiles.Bullet;
 import models.weapons.projectiles.Projectile;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
-public class MachineGun extends Uzi {
+public class Cannon extends Uzi {
     private boolean switch_bullet_spawn_side;
 
-    public MachineGun(boolean isDrivable) {
+    public Cannon(boolean isDrivable) {
         super(isDrivable);
+
+        try {
+            weapon_hud_image = new Image("assets/hud/weapons/cannon.png");
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

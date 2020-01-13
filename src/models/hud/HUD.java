@@ -1,17 +1,36 @@
 package models.hud;
 
+import logic.level_listeners.ChangeWarAttenderListener;
 import logic.level_listeners.ItemChangeListener;
+import models.weapons.Weapon;
 import org.newdawn.slick.*;
 import player.Player;
 
+import java.util.List;
 
-public class HUD implements ItemChangeListener {
+
+public class HUD implements ItemChangeListener, ChangeWarAttenderListener {
+    private Player player;
+
     private Item[] items;
+
+    private List<Weapon> weapons;
+    private Image weapon_board_image;
+
     private HUD_Drawer HUDDrawer;
 
     public static int GAME_HEIGHT, GAME_WIDTH;
 
     public HUD(Player player, GameContainer gc) {
+        this.player = player;
+        this.player.addChangeWarAttenderListener(this);
+        weapons = player.getWarAttender().getWeapons();
+        try {
+            weapon_board_image = new Image("assets/hud/weapons/weapon_board.png");
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
+
         GAME_HEIGHT = gc.getHeight();
         GAME_WIDTH = gc.getWidth();
 
@@ -26,16 +45,34 @@ public class HUD implements ItemChangeListener {
     }
 
     public void draw() {
-        for (int idx = 0; idx < items.length; ++idx) {
-            items[idx].draw();
+        weapon_board_image.draw(0, 0);
+
+        for (int i = 0; i < weapons.size(); ++i) {
+            Image image = weapons.get(i).getHUDImage();
+            switch (i) {
+                case 0: // weapon slot 1
+                    if (image != null)
+                        image.draw(14, 13);
+                    break;
+                case 1: // weapon slot 2
+                    if (image != null)
+                        image.draw(89, 13);
+                    break;
+            }
+
+            //weapon.getHUDImage().draw(14, 13);
+        }
+
+        for (Item item : items) {
+            item.draw();
         }
 
         HUDDrawer.draw();
     }
 
     public void update(int deltaTime) {
-        for (int idx = 0; idx < items.length; ++idx) {
-            items[idx].update(deltaTime);
+        for (Item item : items) {
+            item.update(deltaTime);
         }
     }
 
@@ -51,5 +88,10 @@ public class HUD implements ItemChangeListener {
         if (--items[idx].amount == 0) {
             items[idx].isFadingOut = true;
         }
+    }
+
+    @Override
+    public void onPlayerChangeWarAttender() {
+        weapons = player.getWarAttender().getWeapons();
     }
 }
