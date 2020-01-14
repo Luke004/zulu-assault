@@ -1,9 +1,11 @@
 package menus;
 
+import levels.AbstractLevel;
 import main.ZuluAssault;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
+import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import java.awt.Font;
@@ -133,7 +135,7 @@ public class MainMenu extends BasicGameState {
                         case 0: // NEW
                             // START NEW GAME
                             try {
-                                // TODO: FIX BUG THAT MAKES INIT ADD A LEVEL ON TOP INSTEAD OF OVERRIDING
+                                // init a new game starting with level 1
                                 stateBasedGame.getState(ZuluAssault.LEVEL_1).init(gameContainer, stateBasedGame);
                                 stateBasedGame.enterState(ZuluAssault.LEVEL_1);
                             } catch (SlickException e) {

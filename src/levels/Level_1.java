@@ -35,6 +35,8 @@ public class Level_1 extends AbstractLevel implements GameState {
         ++init_counter;
         if (init_counter < 2) return;
 
+        reset();    // reset the level before init
+
         // SETUP ENEMY WAR ATTENDERS
         List<Vector2f> wayPoints;
         MovableWarAttender enemy_tank_1_shell = new ShellTank(new Vector2f(2100.f, 2000.f), true, false);

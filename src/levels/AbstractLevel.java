@@ -20,6 +20,7 @@ import models.war_attenders.windmills.WindmillYellow;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
+import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 import player.Player;
@@ -328,6 +329,17 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     @Override
     public void keyReleased(int key, char c) {
         keyInputHandler.onKeyRelease(key);
+    }
+
+    public void reset() {
+        if (player.getWarAttender() == null) return;
+        hostile_war_attenders.clear();
+        friendly_war_attenders.clear();
+        drivable_war_attenders.clear();
+        static_enemies.clear();
+        interaction_circles.clear();
+        items.clear();
+        player.reset();
     }
 
 }

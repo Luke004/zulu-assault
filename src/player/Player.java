@@ -13,6 +13,8 @@ import models.weapons.MegaPulse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
+import java.util.Arrays;
+
 import static logic.TileMapInfo.LEVEL_HEIGHT_PIXELS;
 import static logic.TileMapInfo.LEVEL_WIDTH_PIXELS;
 
@@ -166,5 +168,10 @@ public class Player {
 
     public void addPoints(int amount) {
         this.points += amount;
+    }
+
+    public void reset() {
+        Arrays.fill(item_amounts, 0);   // reset item amounts
+        points = 0; // reset points
     }
 }
