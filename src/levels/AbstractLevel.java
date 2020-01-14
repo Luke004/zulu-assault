@@ -32,7 +32,8 @@ import static logic.TileMapInfo.*;
 
 public abstract class AbstractLevel extends BasicGameState implements WarAttenderDeleteListener, GroundTileDamageListener {
 
-    private static boolean firstCall;
+    private static boolean has_initialized_once;
+    int init_counter;
 
     public Player player;
     public TiledMap map;
@@ -63,22 +64,21 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     }
 
     static {
-        firstCall = true;
+        has_initialized_once = false;
     }
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         // reset the level info
-        if (firstCall) {
+        if (!has_initialized_once) {
             // this gets only executed once
-            firstCall = false;
+            has_initialized_once = true;
             TileMapInfo.init(map);
 
             collisionHandler = new CollisionHandler();
             keyInputHandler = new KeyInputHandler();
             bigExplosionAnimation = new BigExplosionAnimation(100);
         }
-
         createWarAttendersFromTiles();
         hud = new HUD(player, gameContainer);
         player.addListener(hud);
@@ -246,6 +246,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
 
         if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
             stateBasedGame.enterState(ZuluAssault.MAIN_MENU);
+            ZuluAssault.prevState = this;
         }
 
     }

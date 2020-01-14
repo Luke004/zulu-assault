@@ -31,6 +31,10 @@ public class Level_1 extends AbstractLevel implements GameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+        // this makes sure we don't init on the first two calls, since this would be a waste of cpu power
+        ++init_counter;
+        if (init_counter < 2) return;
+
         // SETUP ENEMY WAR ATTENDERS
         List<Vector2f> wayPoints;
         MovableWarAttender enemy_tank_1_shell = new ShellTank(new Vector2f(2100.f, 2000.f), true, false);

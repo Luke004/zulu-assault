@@ -20,6 +20,8 @@ public class Level_2 extends AbstractLevel implements GameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+        ++init_counter;
+        if (init_counter < 2) return;
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
         Vector2f playerStartPos = new Vector2f(1000, 1000);
 
