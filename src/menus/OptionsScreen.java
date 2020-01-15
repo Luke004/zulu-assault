@@ -9,6 +9,11 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.state.StateBasedGame;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 
 public class OptionsScreen implements iMenuScreen {
 
@@ -63,6 +68,23 @@ public class OptionsScreen implements iMenuScreen {
         switch (arrow.currIdx) {
             case 0: // BACK
                 MainMenu.returnToPreviousMenu();
+                // store the settings from user in the file 'user_settings'
+                try {
+                    File directory = new File("saves/settings/");
+                    File user_settings_file = new File(directory + File.separator + "user_settings");
+                    //noinspection ResultOfMethodCallIgnored
+                    user_settings_file.createNewFile(); // this creates a file only if it not already exists
+                    // store audio properties in 'user_settings' file
+                    Properties userProps = new Properties();
+                    userProps.setProperty("sound_volume", Float.toString(MainMenu.getSoundVolume()));
+                    userProps.setProperty("music_volume", Float.toString(MainMenu.getMusicVolume()));
+                    FileOutputStream out = new FileOutputStream(directory + File.separator + "user_settings");
+                    userProps.store(out, "audio volume");
+                    out.close();
+                } catch (IOException e) {
+                    System.out.println("could not create or store data in file 'src/main/saves/user_settings'");
+                    e.printStackTrace();
+                }
                 break;
             case 1: // SOUND VOLUME
 
@@ -77,11 +99,11 @@ public class OptionsScreen implements iMenuScreen {
     public void onLeftKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
         switch (arrow.currIdx) {
             case 1: // SOUND VOLUME
-                MainMenu.setSoundVolume(-0.1f);
+                MainMenu.incrementSoundVolume(-0.1f);
                 sound_volume_slider.decreaseValue();
                 break;
             case 2: // MUSIC VOLUME
-                MainMenu.setMusicVolume(-0.1f);
+                MainMenu.incrementMusicVolume(-0.1f);
                 music_volume_slider.decreaseValue();
                 break;
         }
@@ -91,11 +113,11 @@ public class OptionsScreen implements iMenuScreen {
     public void onRightKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
         switch (arrow.currIdx) {
             case 1: // SOUND VOLUME
-                MainMenu.setSoundVolume(0.1f);
+                MainMenu.incrementSoundVolume(0.1f);
                 sound_volume_slider.increaseValue();
                 break;
             case 2: // MUSIC VOLUME
-                MainMenu.setMusicVolume(0.1f);
+                MainMenu.incrementMusicVolume(0.1f);
                 music_volume_slider.increaseValue();
                 break;
         }

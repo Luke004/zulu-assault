@@ -26,7 +26,7 @@ public class MainMenu extends BasicGameState {
     private static Sound sound_before_main, click_sound, error_sound;
     private static Music main_menu_music;
 
-    private static float sound_volume = 1.f, music_volume = 1.f;
+    public static float sound_volume, music_volume;
 
     private TrueTypeFont ttf_info_string;
 
@@ -87,6 +87,7 @@ public class MainMenu extends BasicGameState {
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) {
+        System.out.println("music volume: " + music_volume);
         if (gameContainer.getInput().isKeyPressed(Input.KEY_UP)) {
             click_sound.play(1.f, sound_volume);
             menus[current_menu_idx].onUpKeyPress(gameContainer, stateBasedGame);
@@ -110,7 +111,7 @@ public class MainMenu extends BasicGameState {
 
         if (!sound_before_main.playing()) {
             if (!main_menu_music.playing()) {
-                main_menu_music.play();
+                main_menu_music.play(1.f, music_volume);
                 main_menu_music.loop();
             }
         }
@@ -128,7 +129,7 @@ public class MainMenu extends BasicGameState {
         current_menu_idx = temp;
     }
 
-    public static void setSoundVolume(float volume) {
+    public static void incrementSoundVolume(float volume) {
         sound_volume += volume;
         if (sound_volume < 0.0f) {
             sound_volume = 0.0f;
@@ -137,7 +138,7 @@ public class MainMenu extends BasicGameState {
         }
     }
 
-    public static void setMusicVolume(float volume) {
+    public static void incrementMusicVolume(float volume) {
         music_volume += volume;
         if (music_volume < 0.0f) {
             music_volume = 0.0f;
@@ -145,6 +146,14 @@ public class MainMenu extends BasicGameState {
             music_volume = 1.0f;
         }
         main_menu_music.setVolume(music_volume);
+    }
+
+    public static float getMusicVolume() {
+        return music_volume;
+    }
+
+    public static float getSoundVolume() {
+        return sound_volume;
     }
 
     public static void playErrorSound() {

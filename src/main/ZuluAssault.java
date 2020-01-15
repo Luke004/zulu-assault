@@ -8,12 +8,13 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
-import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.tiled.TileSet;
-import org.newdawn.slick.tiled.TiledMap;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 public class ZuluAssault extends StateBasedGame {
 
@@ -28,6 +29,30 @@ public class ZuluAssault extends StateBasedGame {
         this.addState(new MainMenu());
         this.addState(new Level_1());
         this.addState(new Level_2());
+
+        File directory = new File("saves/settings/");
+        // try to load user properties
+        try {
+            File user_settings_file = new File(directory + File.separator + "user_settings");
+            if (user_settings_file.exists()) {
+                Properties props = new Properties();
+                FileInputStream in = new FileInputStream(directory + File.separator + "user_settings");
+                props.load(in);
+                MainMenu.sound_volume = Float.parseFloat(props.getProperty("sound_volume"));
+                MainMenu.music_volume = Float.parseFloat(props.getProperty("music_volume"));
+                in.close();
+            } else {
+                // user settings don't exists -> use default settings
+                MainMenu.sound_volume = 1.f;
+                MainMenu.music_volume = 1.f;
+            }
+        } catch (IOException e) {
+            System.out.println("could not load 'user_settings'");
+            // use default settings
+            MainMenu.sound_volume = 1.f;
+            MainMenu.music_volume = 1.f;
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
