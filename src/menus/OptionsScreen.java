@@ -5,12 +5,10 @@ import menus.menu_elements.Slider;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.state.StateBasedGame;
 
-import java.awt.*;
 
 public class OptionsScreen implements iMenuScreen {
 
@@ -27,14 +25,15 @@ public class OptionsScreen implements iMenuScreen {
                     gameContainer.getWidth() / 2.f - back_image.getWidth() / 2.f,
                     gameContainer.getHeight() / 2.f);
             Texture slider_texture = new Image("assets/menus/slider.png").getTexture();
-            sound_volume_slider = new Slider(slider_texture, new Vector2f(
+            Texture slider_value_texture = new Image("assets/menus/slider_value.png").getTexture();
+            sound_volume_slider = new Slider(slider_texture, slider_value_texture, new Vector2f(
                     back_image_position.x - 9,
                     back_image_position.y + back_image.getHeight()
-            ), "Sound Volume");
-            music_volume_slider = new Slider(slider_texture, new Vector2f(
+            ), "Sound Volume", 10);
+            music_volume_slider = new Slider(slider_texture, slider_value_texture, new Vector2f(
                     back_image_position.x - 9,
                     back_image_position.y + back_image.getHeight() * 2
-            ), "Music Volume");
+            ), "Music Volume", 10);
         } catch (SlickException e) {
             e.printStackTrace();
         }
@@ -50,8 +49,13 @@ public class OptionsScreen implements iMenuScreen {
     }
 
     @Override
-    public Arrow getArrow() {
-        return arrow;
+    public void onUpKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+        arrow.moveUp();
+    }
+
+    @Override
+    public void onDownKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+        arrow.moveDown();
     }
 
     @Override
@@ -74,9 +78,11 @@ public class OptionsScreen implements iMenuScreen {
         switch (arrow.currIdx) {
             case 1: // SOUND VOLUME
                 MainMenu.setSoundVolume(-0.1f);
+                sound_volume_slider.decreaseValue();
                 break;
             case 2: // MUSIC VOLUME
                 MainMenu.setMusicVolume(-0.1f);
+                music_volume_slider.decreaseValue();
                 break;
         }
     }
@@ -86,9 +92,11 @@ public class OptionsScreen implements iMenuScreen {
         switch (arrow.currIdx) {
             case 1: // SOUND VOLUME
                 MainMenu.setSoundVolume(0.1f);
+                sound_volume_slider.increaseValue();
                 break;
             case 2: // MUSIC VOLUME
                 MainMenu.setMusicVolume(0.1f);
+                music_volume_slider.increaseValue();
                 break;
         }
     }

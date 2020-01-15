@@ -57,8 +57,13 @@ public class InGameScreen implements iMenuScreen {
     }
 
     @Override
-    public Arrow getArrow() {
-        return arrow;
+    public void onUpKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+        arrow.moveUp();
+    }
+
+    @Override
+    public void onDownKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+        arrow.moveDown();
     }
 
     @Override
@@ -78,10 +83,8 @@ public class InGameScreen implements iMenuScreen {
                 }
                 break;
             case 2: // LOAD
-
-                break;
             case 3: // SAVE
-
+                MainMenu.playErrorSound();
                 break;
             case 4: // OPTIONS
                 MainMenu.goToMenu(MainMenu.STATE_OPTIONS_MENU);

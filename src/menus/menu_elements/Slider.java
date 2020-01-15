@@ -9,15 +9,29 @@ import java.awt.*;
 
 public class Slider {
 
-    private Image slider_image;
-    private Vector2f slider_position;
+    private int value;
+    private final int MAX_VALUE;
+    private final float SLIDER_WIDTH;
+    private Image slider_image, slider_value;
+    private Vector2f slider_position, slider_value_position;
     private String description;
     private static TrueTypeFont ttf_string;
 
-    public Slider(Texture slider_texture, Vector2f slider_position, String description) {
+    public Slider(Texture slider_texture, Texture slider_value_texture,
+                  Vector2f slider_position, String description, int max_value) {
         this.slider_position = slider_position;
-        slider_image = new Image(slider_texture);
+        this.slider_image = new Image(slider_texture);
+        this.slider_value = new Image(slider_value_texture);
         this.description = description;
+        this.value = max_value;
+        this.MAX_VALUE = max_value;
+        final float x_OFFSET = 10;
+        this.SLIDER_WIDTH = slider_image.getWidth() - x_OFFSET * 2;
+
+        this.slider_value_position = new Vector2f(
+                slider_position.x + slider_image.getWidth() - x_OFFSET,
+                slider_position.y
+        );
     }
 
     static {
@@ -27,10 +41,27 @@ public class Slider {
 
     public void draw() {
         slider_image.draw(slider_position.x, slider_position.y);
+        slider_value.draw(slider_value_position.x, slider_value_position.y);
         ttf_string.drawString(
                 slider_position.x + slider_image.getWidth() + 10,
-                slider_position.y + ttf_string.getHeight() - 7.f,
+                slider_position.y + ttf_string.getHeight() - 6.f,
                 description);
+    }
+
+    public void increaseValue() {
+        if (value + 1 > MAX_VALUE) return;
+        value += 1;
+        this.slider_value_position.x += SLIDER_WIDTH / MAX_VALUE;
+    }
+
+    public void decreaseValue() {
+        if (value - 1 < 0) return;
+        value -= 1;
+        this.slider_value_position.x -= SLIDER_WIDTH / MAX_VALUE;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

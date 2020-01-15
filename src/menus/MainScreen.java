@@ -1,6 +1,5 @@
 package menus;
 
-import com.sun.tools.javac.Main;
 import main.ZuluAssault;
 import menus.menu_elements.Arrow;
 import org.newdawn.slick.*;
@@ -10,7 +9,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import java.awt.Font;
 
-public class MainScreen extends AbstractMenuScreen {
+public class MainScreen implements iMenuScreen {
 
     private Arrow arrow;
     private Image main_menu_image;
@@ -45,8 +44,13 @@ public class MainScreen extends AbstractMenuScreen {
     }
 
     @Override
-    public Arrow getArrow() {
-        return arrow;
+    public void onUpKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+        arrow.moveUp();
+    }
+
+    @Override
+    public void onDownKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+        arrow.moveDown();
     }
 
     @Override
@@ -63,10 +67,8 @@ public class MainScreen extends AbstractMenuScreen {
                 }
                 break;
             case 1: // LOAD
-
-                break;
             case 2: // SAVE
-
+                MainMenu.playErrorSound();
                 break;
             case 3: // OPTIONS
                 MainMenu.goToMenu(MainMenu.STATE_OPTIONS_MENU);

@@ -23,7 +23,7 @@ public class MainMenu extends BasicGameState {
     private String info_string;
     private static boolean firstCall_leave = true, firstCall_enter = true;
 
-    private static Sound sound_before_main, click_sound;
+    private static Sound sound_before_main, click_sound, error_sound;
     private static Music main_menu_music;
 
     private static float sound_volume = 1.f, music_volume = 1.f;
@@ -33,6 +33,7 @@ public class MainMenu extends BasicGameState {
     public MainMenu() {
         try {
             click_sound = new Sound("audio/sounds/click.ogg");
+            error_sound = new Sound("audio/sounds/error.ogg");
             sound_before_main = new Sound("audio/sounds/before_main.ogg");
             main_menu_music = new Music("audio/music/main_menu.ogg");
         } catch (SlickException e) {
@@ -86,24 +87,22 @@ public class MainMenu extends BasicGameState {
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) {
-        if (gameContainer.getInput().isKeyPressed(Input.KEY_DOWN)) {
-            click_sound.play(1.f, sound_volume);
-            menus[current_menu_idx].getArrow().moveDown();
-        }
         if (gameContainer.getInput().isKeyPressed(Input.KEY_UP)) {
             click_sound.play(1.f, sound_volume);
-            menus[current_menu_idx].getArrow().moveUp();
+            menus[current_menu_idx].onUpKeyPress(gameContainer, stateBasedGame);
+        }
+        if (gameContainer.getInput().isKeyPressed(Input.KEY_DOWN)) {
+            click_sound.play(1.f, sound_volume);
+            menus[current_menu_idx].onDownKeyPress(gameContainer, stateBasedGame);
         }
         if (gameContainer.getInput().isKeyPressed(Input.KEY_ENTER)) {
             click_sound.play(1.f, sound_volume);
             menus[current_menu_idx].onEnterKeyPress(gameContainer, stateBasedGame);
         }
-
         if (gameContainer.getInput().isKeyPressed(Input.KEY_LEFT)) {
             click_sound.play(1.f, sound_volume);
             menus[current_menu_idx].onLeftKeyPress(gameContainer, stateBasedGame);
         }
-
         if (gameContainer.getInput().isKeyPressed(Input.KEY_RIGHT)) {
             click_sound.play(1.f, sound_volume);
             menus[current_menu_idx].onRightKeyPress(gameContainer, stateBasedGame);
@@ -146,6 +145,10 @@ public class MainMenu extends BasicGameState {
             music_volume = 1.0f;
         }
         main_menu_music.setVolume(music_volume);
+    }
+
+    public static void playErrorSound() {
+        error_sound.play(1.f, sound_volume);
     }
 
 

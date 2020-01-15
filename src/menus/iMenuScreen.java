@@ -8,7 +8,9 @@ public interface iMenuScreen {
 
     void render(GameContainer gameContainer);
 
-    Arrow getArrow();
+    void onUpKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame);
+
+    void onDownKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame);
 
     void onEnterKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame);
 

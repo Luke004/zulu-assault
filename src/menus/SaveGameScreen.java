@@ -21,8 +21,13 @@ public class SaveGameScreen implements iMenuScreen {
     }
 
     @Override
-    public Arrow getArrow() {
-        return null;
+    public void onUpKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+        //arrow.moveUp();
+    }
+
+    @Override
+    public void onDownKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+        //arrow.moveDown();
     }
 
     @Override
