@@ -3,6 +3,7 @@ package models.war_attenders;
 import levels.AbstractLevel;
 import logic.level_listeners.WarAttenderDeleteListener;
 import logic.WayPointManager;
+import menus.UserSettings;
 import models.CollisionModel;
 import models.war_attenders.robots.Robot;
 import models.war_attenders.tanks.Tank;
@@ -48,6 +49,18 @@ public abstract class MovableWarAttender extends WarAttender {
     public static final int INVINCIBLE_ANIMATION_TIME_SWITCH = 1000;    // once every sec switch to white color while invincible
     public int invincible_animation_current_time;
 
+    // item sounds (ONLY PLAYER CAN USE THEM -> static)
+    private static Sound expand_use_sound, emp_use_sound, mega_pulse_use_sound;
+
+    static {
+        try {
+            expand_use_sound = new Sound("audio/sounds/expand_use.ogg");
+            mega_pulse_use_sound = new Sound("audio/sounds/mega_pulse_use.ogg");
+            emp_use_sound = new Sound("audio/sounds/emp_use.ogg");
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
+    }
 
     public MovableWarAttender(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
@@ -220,12 +233,15 @@ public abstract class MovableWarAttender extends WarAttender {
                 isInvincible = true;
                 break;
             case EMP:
+                emp_use_sound.play(1.f, UserSettings.SOUND_VOLUME);
                 // TODO: destroy all planes here
                 break;
             case MEGA_PULSE:
+                mega_pulse_use_sound.play(1.f, UserSettings.SOUND_VOLUME);
                 fireWeapon(WeaponType.MEGA_PULSE);
                 break;
             case EXPAND:
+                expand_use_sound.play(1.f, UserSettings.SOUND_VOLUME);
                 // TODO: reflect enemy bullets here
                 break;
         }

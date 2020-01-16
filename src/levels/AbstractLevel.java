@@ -4,6 +4,7 @@ import logic.*;
 import logic.level_listeners.GroundTileDamageListener;
 import logic.level_listeners.WarAttenderDeleteListener;
 import main.ZuluAssault;
+import menus.UserSettings;
 import models.StaticWarAttender;
 import models.animations.explosion.BigExplosionAnimation;
 import models.hud.HUD;
@@ -36,6 +37,9 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     private static boolean has_initialized_once;
     int init_counter;
 
+    protected static Sound level_intro_sound;
+    protected static Music level_music;
+
     public Player player;
     public TiledMap map;
     public List<StaticWarAttender> static_enemies;
@@ -51,8 +55,17 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
 
     // for destruction of tanks or robots
     private static BigExplosionAnimation bigExplosionAnimation;
+    protected static Sound explosion_sound;  // fire sound of the weapon;
 
     ScreenDrawer screenDrawer;
+
+    static {
+        try {
+            explosion_sound = new Sound("audio/sounds/explosion.ogg");
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
+    }
 
     public AbstractLevel() {
         hostile_war_attenders = new ArrayList<>();
@@ -210,11 +223,15 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
 
         // hide the mouse cursor
         gameContainer.setMouseGrabbed(true);
+
+        level_intro_sound.play(1.f, UserSettings.MUSIC_VOLUME);
     }
 
     @Override
     public void leave(GameContainer var1, StateBasedGame var2) {
         TileMapInfo.reset();
+        level_intro_sound.stop();
+        level_music.stop();
     }
 
     @Override
@@ -250,6 +267,13 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             ZuluAssault.prevState = this;
         }
 
+        if (!level_intro_sound.playing()) {
+            if (!level_music.playing()) {
+                level_music.play();
+                level_music.loop();
+                level_music.setVolume(UserSettings.MUSIC_VOLUME);
+            }
+        }
     }
 
     @Override
@@ -295,15 +319,23 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
 
             //hostile_war_attenders.removeIf(enemy -> enemy.isDestroyed);
             if (warAttender instanceof Windmill) {
-                bigExplosionAnimation.playTenTimes(warAttender.position.x + 20, warAttender.position.y + 20, 0);
+                bigExplosionAnimation.playTenTimes(warAttender.position.x + 20,
+                        warAttender.position.y + 20, 0);
+                explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
             } else {
                 hostile_war_attenders.remove(warAttender);
                 if (warAttender instanceof Soldier) screenDrawer.drawDeadSoldierBody(3, warAttender);
-                else bigExplosionAnimation.playTenTimes(warAttender.position.x, warAttender.position.y, 0);
+                else {
+                    bigExplosionAnimation.playTenTimes(warAttender.position.x, warAttender.position.y, 0);
+                    explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
+                }
             }
         } else {
             if (warAttender instanceof Soldier) screenDrawer.drawDeadSoldierBody(3, warAttender);
-            else bigExplosionAnimation.playTenTimes(warAttender.position.x, warAttender.position.y, 0);
+            else {
+                bigExplosionAnimation.playTenTimes(warAttender.position.x, warAttender.position.y, 0);
+                explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
+            }
             friendly_war_attenders.remove(warAttender);
             //friendly_war_attenders.removeIf(friend -> friend.isDestroyed);
         }

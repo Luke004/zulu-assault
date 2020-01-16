@@ -27,7 +27,6 @@ public class Player {
 
     private ChangeWarAttenderListener changeWarAttenderListener;
 
-
     public void init(MovableWarAttender current_warAttender) {
         current_warAttender.showAccessibleAnimation(false);
         this.current_warAttender = current_warAttender;

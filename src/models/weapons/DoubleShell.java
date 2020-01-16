@@ -1,5 +1,6 @@
 package models.weapons;
 
+import menus.UserSettings;
 import models.weapons.projectiles.Bullet;
 import models.weapons.projectiles.Projectile;
 import org.newdawn.slick.SlickException;
@@ -45,6 +46,8 @@ public class DoubleShell extends Shell {
             Projectile bullet2 = new Bullet(bullet_spawn2, bullet_dir, rotation_angle, projectile_texture);
             projectile_list.add(bullet2);
             smokeAnimation.play(bullet_spawn2.x, bullet_spawn2.y, rotation_angle);
+
+            fire_sound.play(1.f, UserSettings.SOUND_VOLUME);
         }
     }
 }

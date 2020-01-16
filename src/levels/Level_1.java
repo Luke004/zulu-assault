@@ -2,6 +2,7 @@ package levels;
 
 import logic.WayPointManager;
 import main.ZuluAssault;
+import menus.UserSettings;
 import models.interaction_circles.HealthCircle;
 import models.interaction_circles.InteractionCircle;
 import models.items.*;
@@ -25,10 +26,6 @@ import java.util.List;
 
 public class Level_1 extends AbstractLevel implements GameState {
 
-    public Level_1() {
-        super();
-    }
-
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         // this makes sure we don't init on the first two calls, since this would be a waste of cpu power
@@ -36,6 +33,13 @@ public class Level_1 extends AbstractLevel implements GameState {
         if (init_counter < 2) return;
 
         reset();    // reset the level before init
+
+        try {
+            level_intro_sound = new Sound("audio/music/level_1_intro.ogg");
+            level_music = new Music("audio/music/level_1.ogg");
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
 
         // SETUP ENEMY WAR ATTENDERS
         List<Vector2f> wayPoints;
@@ -142,15 +146,16 @@ public class Level_1 extends AbstractLevel implements GameState {
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
         Vector2f playerStartPos = new Vector2f(1000, 1000);
         //Tank tank = new NapalmTank(playerStartPos, false, true);
-        //Tank tank = new CannonTank(playerStartPos, false, true);
+        //Tank tank = new ShellTank(playerStartPos, false, true);
+        Tank tank = new CannonTank(playerStartPos, false, true);
         //Plane plane = new GreenEnemyPlane(playerStartPos, false, true);
-        Robot robot = new PlasmaRobot(playerStartPos, false, true);
+        //Robot robot = new PlasmaRobot(playerStartPos, false, true);
         //MovableWarAttender soldier = new PlayerSoldier(playerStartPos, false);
 
         // DEFINE THE MAP
         map = new TiledMap("assets/maps/level_1.tmx");
 
-        player.init(robot);
+        player.init(tank);
 
         super.init(gameContainer, stateBasedGame);
     }
@@ -158,18 +163,6 @@ public class Level_1 extends AbstractLevel implements GameState {
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) {
         super.render(gameContainer, stateBasedGame, graphics);
-    }
-
-    @Override
-    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) {
-        super.update(gameContainer, stateBasedGame, i);
-
-        /*
-        if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
-            stateBasedGame.enterState(ZuluAssault.LEVEL_2);
-        }
-
-         */
     }
 
     @Override

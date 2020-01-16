@@ -1,5 +1,6 @@
 package models.weapons;
 
+import menus.UserSettings;
 import models.weapons.projectiles.Bullet;
 import models.weapons.projectiles.Projectile;
 import org.newdawn.slick.geom.Vector2f;
@@ -45,6 +46,7 @@ public class DoublePlasma extends Plasma {
 
             }
             projectile_list.add(bullet);
+            fire_sound.play(1.f, UserSettings.SOUND_VOLUME);
         }
     }
 }

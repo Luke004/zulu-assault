@@ -1,11 +1,13 @@
 package models.weapons;
 
+import menus.UserSettings;
 import models.animations.smoke.SmokeAnimation;
 import models.weapons.projectiles.Bullet;
 import models.weapons.projectiles.Projectile;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Shell extends Weapon {
@@ -16,8 +18,8 @@ public class Shell extends Weapon {
         smokeAnimation = new SmokeAnimation(1);
         try {
             weapon_hud_image = new Image("assets/hud/weapons/shell.png");
-
             projectile_texture = new Image("assets/bullets/shell.png").getTexture();
+            fire_sound = new Sound("audio/sounds/shell_shot.ogg");
         } catch (SlickException e) {
             e.printStackTrace();
         }
@@ -55,6 +57,7 @@ public class Shell extends Weapon {
             projectile_list.add(bullet);
 
             smokeAnimation.play(bullet_spawn.x, bullet_spawn.y, rotation_angle);
+            fire_sound.play(1.f, UserSettings.SOUND_VOLUME);
         }
     }
 }

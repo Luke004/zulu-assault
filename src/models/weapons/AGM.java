@@ -1,6 +1,7 @@
 package models.weapons;
 
 import logic.level_listeners.GroundTileDamageListener;
+import menus.UserSettings;
 import models.animations.explosion.BigExplosionAnimation;
 import models.weapons.projectiles.AirRocket;
 import models.weapons.projectiles.Projectile;
@@ -77,6 +78,8 @@ public class AGM extends RocketLauncher implements iGroundTileDamageWeapon {
 
             Projectile airRocket2 = new AirRocket(bullet_spawn2, bullet_dir, rotation_angle, projectile_texture, fresh_rocket2);
             projectile_list.add(airRocket2);
+
+            fire_sound.play(1.f, UserSettings.SOUND_VOLUME);
         }
     }
 

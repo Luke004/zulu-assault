@@ -1,11 +1,9 @@
 package models.weapons;
 
+import menus.UserSettings;
 import models.weapons.projectiles.Bullet;
 import models.weapons.projectiles.Projectile;
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Uzi extends Weapon {
@@ -17,8 +15,8 @@ public class Uzi extends Weapon {
         super();
         Image fire_animation_image;
         try {
+            fire_sound = new Sound("audio/sounds/uzi_shot.ogg");
             weapon_hud_image = new Image("assets/hud/weapons/uzi.png");
-
             projectile_texture = new Image("assets/bullets/bullet_small.png").getTexture();
             fire_animation_image = new Image("assets/animations/bullet_fire.png");
             fire_animation = new Animation(false);
@@ -75,6 +73,8 @@ public class Uzi extends Weapon {
             yPos = bullet_spawn.y;
             fire_animation.setCurrentFrame(0);
             fire_animation.start();
+
+            fire_sound.play(1.f, UserSettings.SOUND_VOLUME);
         }
     }
 

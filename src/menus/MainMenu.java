@@ -1,7 +1,6 @@
 package menus;
 
 import main.ZuluAssault;
-import org.lwjgl.Sys;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -28,7 +27,7 @@ public class MainMenu extends BasicGameState {
     private String info_string;
     private static boolean firstCall_leave = true, firstCall_enter = true;
 
-    private static Sound sound_before_main, click_sound, error_sound;
+    private static Sound main_menu_intro_sound, click_sound, error_sound;
     private static Music main_menu_music;
 
     private TrueTypeFont ttf_info_string;
@@ -37,7 +36,7 @@ public class MainMenu extends BasicGameState {
         try {
             click_sound = new Sound("audio/sounds/click.ogg");
             error_sound = new Sound("audio/sounds/error.ogg");
-            sound_before_main = new Sound("audio/sounds/before_main.ogg");
+            main_menu_intro_sound = new Sound("audio/music/main_menu_intro.ogg");
             main_menu_music = new Music("audio/music/main_menu.ogg");
         } catch (SlickException e) {
             e.printStackTrace();
@@ -135,7 +134,7 @@ public class MainMenu extends BasicGameState {
             menus[current_menu_idx].onRightKeyPress(gameContainer, stateBasedGame);
         }
 
-        if (!sound_before_main.playing()) {
+        if (!main_menu_intro_sound.playing()) {
             if (!main_menu_music.playing()) {
                 main_menu_music.play();
                 main_menu_music.loop();
@@ -172,7 +171,7 @@ public class MainMenu extends BasicGameState {
         }
         // show the mouse cursor
         gameContainer.setMouseGrabbed(false);
-        sound_before_main.play(1.f, UserSettings.MUSIC_VOLUME);
+        main_menu_intro_sound.play(1.f, UserSettings.MUSIC_VOLUME);
 
         if (ZuluAssault.prevState != null) {
             // a previous state exists -> user is in game -> switch states
@@ -186,7 +185,7 @@ public class MainMenu extends BasicGameState {
             firstCall_leave = false;
             return;
         }
-        sound_before_main.stop();
+        main_menu_intro_sound.stop();
         main_menu_music.stop();
     }
 

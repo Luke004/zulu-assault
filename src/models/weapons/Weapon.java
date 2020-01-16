@@ -1,10 +1,12 @@
 package models.weapons;
 
+import menus.UserSettings;
 import models.weapons.projectiles.Bullet;
 import models.weapons.projectiles.Projectile;
 import models.weapons.projectiles.iGroundTileDamageWeapon;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 
@@ -14,6 +16,8 @@ import java.util.List;
 
 public abstract class Weapon {
     protected Image weapon_hud_image;   // the image for the weapon drawn on the HUD
+
+    protected Sound fire_sound;  // fire sound of the weapon
 
     Texture projectile_texture;
     protected List<Projectile> projectile_list;
@@ -66,6 +70,8 @@ public abstract class Weapon {
 
             Projectile bullet = new Bullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
             projectile_list.add(bullet);
+            if (fire_sound != null)
+                fire_sound.play(1.f, UserSettings.SOUND_VOLUME);
         }
     }
 

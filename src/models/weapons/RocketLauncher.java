@@ -1,10 +1,12 @@
 package models.weapons;
 
+import menus.UserSettings;
 import models.weapons.projectiles.GroundRocket;
 import models.weapons.projectiles.Projectile;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
@@ -25,8 +27,8 @@ public class RocketLauncher extends Weapon {
 
         try {
             weapon_hud_image = new Image("assets/hud/weapons/rockets.png");
-
             projectile_texture = new Image("assets/bullets/shell.png").getTexture();
+            fire_sound = new Sound("audio/sounds/rocket_shot.ogg");
             if (!isDrivable) {
                 BUFFER_SIZE = 3;
             } else {
@@ -83,6 +85,8 @@ public class RocketLauncher extends Weapon {
 
             Projectile projectile = new GroundRocket(bullet_spawn, bullet_dir, rotation_angle, projectile_texture, fresh_rocket);
             projectile_list.add(projectile);
+
+            fire_sound.play(1.f, UserSettings.SOUND_VOLUME);
         }
     }
 
