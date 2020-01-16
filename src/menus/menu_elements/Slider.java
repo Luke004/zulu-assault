@@ -16,6 +16,7 @@ public class Slider {
     private Vector2f slider_position, slider_value_position;
     private String description;
     private static TrueTypeFont ttf_string;
+    private static final float x_OFFSET = 10;
 
     public Slider(Texture slider_texture, Texture slider_value_texture,
                   Vector2f slider_position, String description, int max_value) {
@@ -25,7 +26,6 @@ public class Slider {
         this.description = description;
         this.value = max_value;
         this.MAX_VALUE = max_value;
-        final float x_OFFSET = 10;
         this.SLIDER_WIDTH = slider_image.getWidth() - x_OFFSET * 2;
 
         this.slider_value_position = new Vector2f(
@@ -64,4 +64,8 @@ public class Slider {
         return value;
     }
 
+    public void setValue(int value) {
+        this.value = value;
+        this.slider_value_position.x = (slider_position.x + x_OFFSET) + value * (SLIDER_WIDTH / MAX_VALUE);
+    }
 }

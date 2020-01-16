@@ -14,6 +14,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import static menus.UserSettings.VOLUME_MAX_LEVEL;
+
 
 public class OptionsScreen implements iMenuScreen {
 
@@ -34,15 +36,19 @@ public class OptionsScreen implements iMenuScreen {
             sound_volume_slider = new Slider(slider_texture, slider_value_texture, new Vector2f(
                     back_image_position.x - 9,
                     back_image_position.y + back_image.getHeight()
-            ), "Sound Volume", 10);
+            ), "Sound Volume", VOLUME_MAX_LEVEL);
+            sound_volume_slider.setValue(UserSettings.SOUND_VOLUME_LEVEL);
+
             music_volume_slider = new Slider(slider_texture, slider_value_texture, new Vector2f(
                     back_image_position.x - 9,
                     back_image_position.y + back_image.getHeight() * 2
-            ), "Music Volume", 10);
+            ), "Music Volume", VOLUME_MAX_LEVEL);
+            music_volume_slider.setValue(UserSettings.MUSIC_VOLUME_LEVEL);
         } catch (SlickException e) {
             e.printStackTrace();
         }
         arrow = new Arrow(3, 305);
+
     }
 
     @Override
@@ -76,8 +82,8 @@ public class OptionsScreen implements iMenuScreen {
                     user_settings_file.createNewFile(); // this creates a file only if it not already exists
                     // store audio properties in 'user_settings' file
                     Properties userProps = new Properties();
-                    userProps.setProperty("sound_volume", Float.toString(MainMenu.getSoundVolume()));
-                    userProps.setProperty("music_volume", Float.toString(MainMenu.getMusicVolume()));
+                    userProps.setProperty("sound_volume_level", Integer.toString(sound_volume_slider.getValue()));
+                    userProps.setProperty("music_volume_level", Integer.toString(music_volume_slider.getValue()));
                     FileOutputStream out = new FileOutputStream(directory + File.separator + "user_settings");
                     userProps.store(out, "audio volume");
                     out.close();
@@ -99,12 +105,13 @@ public class OptionsScreen implements iMenuScreen {
     public void onLeftKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
         switch (arrow.currIdx) {
             case 1: // SOUND VOLUME
-                MainMenu.incrementSoundVolume(-0.1f);
                 sound_volume_slider.decreaseValue();
+                UserSettings.setSoundVolume(sound_volume_slider.getValue());
                 break;
             case 2: // MUSIC VOLUME
-                MainMenu.incrementMusicVolume(-0.1f);
                 music_volume_slider.decreaseValue();
+                UserSettings.setMusicVolume(music_volume_slider.getValue());
+                MainMenu.updateMainMenuMusicVolume();
                 break;
         }
     }
@@ -113,13 +120,15 @@ public class OptionsScreen implements iMenuScreen {
     public void onRightKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
         switch (arrow.currIdx) {
             case 1: // SOUND VOLUME
-                MainMenu.incrementSoundVolume(0.1f);
                 sound_volume_slider.increaseValue();
+                UserSettings.setSoundVolume(sound_volume_slider.getValue());
                 break;
             case 2: // MUSIC VOLUME
-                MainMenu.incrementMusicVolume(0.1f);
                 music_volume_slider.increaseValue();
+                UserSettings.setMusicVolume(music_volume_slider.getValue());
+                MainMenu.updateMainMenuMusicVolume();
                 break;
         }
+
     }
 }

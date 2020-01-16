@@ -1,11 +1,16 @@
 package menus;
 
 import main.ZuluAssault;
+import org.lwjgl.Sys;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import java.awt.Font;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 public class MainMenu extends BasicGameState {
 
@@ -26,8 +31,6 @@ public class MainMenu extends BasicGameState {
     private static Sound sound_before_main, click_sound, error_sound;
     private static Music main_menu_music;
 
-    public static float sound_volume, music_volume;
-
     private TrueTypeFont ttf_info_string;
 
     public MainMenu() {
@@ -37,6 +40,30 @@ public class MainMenu extends BasicGameState {
             sound_before_main = new Sound("audio/sounds/before_main.ogg");
             main_menu_music = new Music("audio/music/main_menu.ogg");
         } catch (SlickException e) {
+            e.printStackTrace();
+        }
+
+        File directory = new File("saves/settings/");
+        // try to load user settings
+        try {
+            File user_settings_file = new File(directory + File.separator + "user_settings");
+            if (user_settings_file.exists()) {
+                Properties props = new Properties();
+                FileInputStream in = new FileInputStream(directory + File.separator + "user_settings");
+                props.load(in);
+                UserSettings.setSoundVolume(Integer.parseInt(props.getProperty("sound_volume_level")));
+                UserSettings.setMusicVolume(Integer.parseInt(props.getProperty("music_volume_level")));
+                in.close();
+            } else {
+                // user settings don't exist -> use default settings
+                UserSettings.setSoundVolume(UserSettings.VOLUME_MAX_LEVEL);
+                UserSettings.setMusicVolume(UserSettings.VOLUME_MAX_LEVEL);
+            }
+        } catch (IOException e) {
+            System.out.println("could not load 'user_settings'");
+            // use default settings
+            UserSettings.setSoundVolume(UserSettings.VOLUME_MAX_LEVEL);
+            UserSettings.setMusicVolume(UserSettings.VOLUME_MAX_LEVEL);
             e.printStackTrace();
         }
     }
@@ -87,32 +114,32 @@ public class MainMenu extends BasicGameState {
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) {
-        System.out.println("music volume: " + music_volume);
         if (gameContainer.getInput().isKeyPressed(Input.KEY_UP)) {
-            click_sound.play(1.f, sound_volume);
+            click_sound.play(1.f, UserSettings.SOUND_VOLUME);
             menus[current_menu_idx].onUpKeyPress(gameContainer, stateBasedGame);
         }
         if (gameContainer.getInput().isKeyPressed(Input.KEY_DOWN)) {
-            click_sound.play(1.f, sound_volume);
+            click_sound.play(1.f, UserSettings.SOUND_VOLUME);
             menus[current_menu_idx].onDownKeyPress(gameContainer, stateBasedGame);
         }
         if (gameContainer.getInput().isKeyPressed(Input.KEY_ENTER)) {
-            click_sound.play(1.f, sound_volume);
+            click_sound.play(1.f, UserSettings.SOUND_VOLUME);
             menus[current_menu_idx].onEnterKeyPress(gameContainer, stateBasedGame);
         }
         if (gameContainer.getInput().isKeyPressed(Input.KEY_LEFT)) {
-            click_sound.play(1.f, sound_volume);
+            click_sound.play(1.f, UserSettings.SOUND_VOLUME);
             menus[current_menu_idx].onLeftKeyPress(gameContainer, stateBasedGame);
         }
         if (gameContainer.getInput().isKeyPressed(Input.KEY_RIGHT)) {
-            click_sound.play(1.f, sound_volume);
+            click_sound.play(1.f, UserSettings.SOUND_VOLUME);
             menus[current_menu_idx].onRightKeyPress(gameContainer, stateBasedGame);
         }
 
         if (!sound_before_main.playing()) {
             if (!main_menu_music.playing()) {
-                main_menu_music.play(1.f, music_volume);
+                main_menu_music.play();
                 main_menu_music.loop();
+                main_menu_music.setVolume(UserSettings.MUSIC_VOLUME);
             }
         }
 
@@ -129,37 +156,13 @@ public class MainMenu extends BasicGameState {
         current_menu_idx = temp;
     }
 
-    public static void incrementSoundVolume(float volume) {
-        sound_volume += volume;
-        if (sound_volume < 0.0f) {
-            sound_volume = 0.0f;
-        } else if (sound_volume > 1.0f) {
-            sound_volume = 1.0f;
-        }
-    }
-
-    public static void incrementMusicVolume(float volume) {
-        music_volume += volume;
-        if (music_volume < 0.0f) {
-            music_volume = 0.0f;
-        } else if (music_volume > 1.0f) {
-            music_volume = 1.0f;
-        }
-        main_menu_music.setVolume(music_volume);
-    }
-
-    public static float getMusicVolume() {
-        return music_volume;
-    }
-
-    public static float getSoundVolume() {
-        return sound_volume;
+    public static void updateMainMenuMusicVolume() {
+        main_menu_music.setVolume(UserSettings.MUSIC_VOLUME);
     }
 
     public static void playErrorSound() {
-        error_sound.play(1.f, sound_volume);
+        error_sound.play(1.f, UserSettings.SOUND_VOLUME);
     }
-
 
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) {
@@ -169,7 +172,7 @@ public class MainMenu extends BasicGameState {
         }
         // show the mouse cursor
         gameContainer.setMouseGrabbed(false);
-        sound_before_main.play(1.f, music_volume);
+        sound_before_main.play(1.f, UserSettings.MUSIC_VOLUME);
 
         if (ZuluAssault.prevState != null) {
             // a previous state exists -> user is in game -> switch states

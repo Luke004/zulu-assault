@@ -3,6 +3,7 @@ package main;
 import levels.Level_1;
 import levels.Level_2;
 import menus.MainMenu;
+import menus.OptionsScreen;
 import org.lwjgl.LWJGLUtil;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
@@ -29,30 +30,6 @@ public class ZuluAssault extends StateBasedGame {
         this.addState(new MainMenu());
         this.addState(new Level_1());
         this.addState(new Level_2());
-
-        File directory = new File("saves/settings/");
-        // try to load user properties
-        try {
-            File user_settings_file = new File(directory + File.separator + "user_settings");
-            if (user_settings_file.exists()) {
-                Properties props = new Properties();
-                FileInputStream in = new FileInputStream(directory + File.separator + "user_settings");
-                props.load(in);
-                MainMenu.sound_volume = Float.parseFloat(props.getProperty("sound_volume"));
-                MainMenu.music_volume = Float.parseFloat(props.getProperty("music_volume"));
-                in.close();
-            } else {
-                // user settings don't exists -> use default settings
-                MainMenu.sound_volume = 1.f;
-                MainMenu.music_volume = 1.f;
-            }
-        } catch (IOException e) {
-            System.out.println("could not load 'user_settings'");
-            // use default settings
-            MainMenu.sound_volume = 1.f;
-            MainMenu.music_volume = 1.f;
-            e.printStackTrace();
-        }
     }
 
     public static void main(String[] args) {
