@@ -4,6 +4,8 @@ import levels.AbstractLevel;
 import logic.level_listeners.WarAttenderDeleteListener;
 import logic.WayPointManager;
 import models.CollisionModel;
+import models.war_attenders.robots.Robot;
+import models.war_attenders.tanks.Tank;
 import models.weapons.MegaPulse;
 import models.weapons.Weapon;
 import models.weapons.projectiles.iGroundTileDamageWeapon;
@@ -211,7 +213,6 @@ public abstract class MovableWarAttender extends WarAttender {
     public abstract float getRotation();
 
     public abstract void rotate(RotateDirection r, int deltaTime);
-
 
     public void activateItem(Player.Item_e item) {
         switch (item) {

@@ -8,8 +8,9 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
 public abstract class Robot extends MovableWarAttender {
-    Animation walking_animation;
+    private Animation walking_animation;
     private float BASE_WIDTH_HALF, BASE_HEIGHT_HALF;
+    private boolean centerTurret;
 
     public Robot(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
@@ -49,8 +50,12 @@ public abstract class Robot extends MovableWarAttender {
     public void update(GameContainer gameContainer, int deltaTime) {
         super.update(gameContainer, deltaTime);
         walking_animation.update(deltaTime);
-        if(isDestroyed) {
+        if (isDestroyed) {
             level_delete_listener.notifyForWarAttenderDeletion(this);
+        }
+
+        if (centerTurret) {
+            centerTurret(deltaTime);
         }
     }
 
@@ -74,7 +79,7 @@ public abstract class Robot extends MovableWarAttender {
     }
 
     @Override
-    public void showDrivableAnimation(){
+    public void showDrivableAnimation() {
         if (show_drivable_animation) {
             drivable_animation.draw(position.x - 8, position.y - (BASE_HEIGHT_HALF * 2));
         }
@@ -150,10 +155,47 @@ public abstract class Robot extends MovableWarAttender {
         }
     }
 
+    protected void centerTurret(int deltaTime) {
+        float relative_turretRotation = this.getRotation() - base_image.getRotation();
+        if (relative_turretRotation > 0) {
+            if (relative_turretRotation < 180) {
+                rotateTurret(RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
+                if (relative_turretRotation <= 3) {
+                    base_image.setRotation(this.getRotation());
+                    centerTurret = false;
+                }
+            } else {
+                rotateTurret(RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
+                if (relative_turretRotation >= 357) {
+                    base_image.setRotation(this.getRotation());
+                    centerTurret = false;
+                }
+            }
+        } else {
+            if (relative_turretRotation > -180) {
+                rotateTurret(RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
+                if (relative_turretRotation >= -3) {
+                    base_image.setRotation(this.getRotation());
+                    centerTurret = false;
+                }
+            } else {
+                rotateTurret(RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
+                if (relative_turretRotation <= -357) {
+                    base_image.setRotation(this.getRotation());
+                    centerTurret = false;
+                }
+            }
+        }
+    }
+
+    public void autoCenterTurret() {
+        centerTurret = true;
+    }
+
     @Override
     public void setRotation(float angle) {
         float rotation = WayPointManager.getShortestAngle(base_image.getRotation(), angle);
-        if(rotation == 0) return;
+        if (rotation == 0) return;
 
         if (rotation < 0) {
             base_image.rotate(-turret_rotate_speed);

@@ -14,13 +14,13 @@ import java.util.Random;
 
 public abstract class Tank extends MovableWarAttender {
     public Image turret;
-    float backwards_speed;
-    private boolean decelerate;
+    protected float backwards_speed;
+    private boolean decelerate, centerTurret;
     private int TURRET_WIDTH_HALF, TURRET_HEIGHT_HALF;
 
     // each tank has an acceleration and a deceleration
-    public float acceleration_factor;   // number between [0 and 1] -> the smaller the faster the acceleration
-    public float deceleration_factor;   // number between [0 and 1] -> the smaller the faster the deceleration
+    protected float acceleration_factor;   // number between [0 and 1] -> the smaller the faster the acceleration
+    protected float deceleration_factor;   // number between [0 and 1] -> the smaller the faster the deceleration
 
     private DestructionAnimation destructionAnimation;
 
@@ -52,6 +52,10 @@ public abstract class Tank extends MovableWarAttender {
             if (destructionAnimation.hasFinished()) {
                 level_delete_listener.notifyForWarAttenderDeletion(this);
             }
+        }
+
+        if (centerTurret) {
+            centerTurret(deltaTime);
         }
 
         //WAYPOINTS
@@ -137,6 +141,43 @@ public abstract class Tank extends MovableWarAttender {
             case ROTATE_DIRECTION_RIGHT:
                 turret.rotate(turret_rotate_speed * deltaTime);
                 break;
+        }
+    }
+
+    public void autoCenterTurret() {
+        centerTurret = true;
+    }
+
+    protected void centerTurret(int deltaTime) {
+        float relative_turretRotation = this.getRotation() - turret.getRotation();
+        if (relative_turretRotation > 0) {
+            if (relative_turretRotation < 180) {
+                rotateTurret(RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
+                if (relative_turretRotation <= 3) {
+                    turret.setRotation(this.getRotation());
+                    centerTurret = false;
+                }
+            } else {
+                rotateTurret(RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
+                if (relative_turretRotation >= 357) {
+                    turret.setRotation(this.getRotation());
+                    centerTurret = false;
+                }
+            }
+        } else {
+            if (relative_turretRotation > -180) {
+                rotateTurret(RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
+                if (relative_turretRotation >= -3) {
+                    turret.setRotation(this.getRotation());
+                    centerTurret = false;
+                }
+            } else {
+                rotateTurret(RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
+                if (relative_turretRotation <= -357) {
+                    turret.setRotation(this.getRotation());
+                    centerTurret = false;
+                }
+            }
         }
     }
 

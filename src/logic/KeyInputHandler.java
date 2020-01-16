@@ -123,8 +123,12 @@ public class KeyInputHandler {
                         player.setWarAttender(tank, Player.EnterAction.LEAVING);
                     }
                 }
-                break;
 
+                // auto center turret
+                if (input.isKeyPressed(Input.KEY_A)) {
+                    tank.autoCenterTurret();
+                }
+                break;
             case ROBOT:   // player is in a robot
                 Robot robot = (Robot) playerWarAttender;
 
@@ -169,6 +173,11 @@ public class KeyInputHandler {
                         drivable_war_attenders.add(robot);
                         player.setWarAttender(robot, Player.EnterAction.LEAVING);
                     }
+                }
+
+                // auto center turret
+                if (input.isKeyPressed(Input.KEY_A)) {
+                    robot.autoCenterTurret();
                 }
 
                 break;
