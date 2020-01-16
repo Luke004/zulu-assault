@@ -77,6 +77,8 @@ public class OptionsScreen implements iMenuScreen {
                 // store the settings from user in the file 'user_settings'
                 try {
                     File directory = new File("saves/settings/");
+                    //noinspection ResultOfMethodCallIgnored
+                    directory.mkdirs();
                     File user_settings_file = new File(directory + File.separator + "user_settings");
                     //noinspection ResultOfMethodCallIgnored
                     user_settings_file.createNewFile(); // this creates a file only if it not already exists
