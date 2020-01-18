@@ -6,6 +6,7 @@ import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
 import models.war_attenders.robots.Robot;
 import models.war_attenders.tanks.Tank;
+import models.weapons.projectiles.Rocket;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -15,6 +16,10 @@ import java.util.List;
 
 public abstract class Soldier extends MovableWarAttender {
     Animation animation;
+
+    private boolean isFleeing;
+    private static final int FLEE_TIMER = 1500;
+    private int time_fleeing;
 
     public Soldier(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
@@ -48,6 +53,16 @@ public abstract class Soldier extends MovableWarAttender {
 
         if (isDestroyed) {
             level_delete_listener.notifyForWarAttenderDeletion(this);
+        } else if (isFleeing) {
+            time_fleeing += deltaTime;
+            if (time_fleeing > FLEE_TIMER) {
+                isFleeing = false;
+                setMoving(false);
+                time_fleeing = 0;
+            } else {
+                setMoving(true);
+                moveForward(deltaTime);
+            }
         }
     }
 
@@ -90,11 +105,9 @@ public abstract class Soldier extends MovableWarAttender {
 
     @Override
     public void onCollision(MovableWarAttender enemy) {
-        if (enemy instanceof Tank) {  // enemy is a tank
+        if (enemy instanceof Tank || enemy instanceof Robot || enemy instanceof Soldier) {
             blockMovement();
         }
-        // soldier is not needed, nothing happens
-        // plane instanceof is not needed, nothing happens
     }
 
     @Override
@@ -127,17 +140,8 @@ public abstract class Soldier extends MovableWarAttender {
 
     @Override
     public void setRotation(float angle) {
-        float rotation = WayPointManager.getShortestAngle(animation.getImage(0).getRotation(), angle);
-        if (rotation == 0) return;
-
-        if (rotation < 0) {
-            for (int idx = 0; idx < animation.getFrameCount(); ++idx) {
-                animation.getImage(idx).rotate(-rotate_speed * 5);
-            }
-        } else {
-            for (int idx = 0; idx < animation.getFrameCount(); ++idx) {
-                animation.getImage(idx).rotate(rotate_speed * 5);
-            }
+        for (int idx = 0; idx < animation.getFrameCount(); ++idx) {
+            animation.getImage(idx).setRotation(angle);
         }
     }
 
@@ -168,7 +172,8 @@ public abstract class Soldier extends MovableWarAttender {
     }
 
     @Override
-    public void shootAtEnemies(MovableWarAttender player, List<? extends WarAttender> friendly_war_attenders, int deltaTime) {
+    public void shootAtEnemies(MovableWarAttender player, List<? extends WarAttender> enemyWarAttenders, int deltaTime) {
+        if (isFleeing) return;
         MovableWarAttender closest_warAttender = player;
         // calculate dist between the player and the enemy
         float xPos = player.position.x;
@@ -177,23 +182,23 @@ public abstract class Soldier extends MovableWarAttender {
                 + (yPos - position.y) * (yPos - position.y));
 
         // calculate dist between each friend and the enemy
-        for (WarAttender friendly_war_attender : friendly_war_attenders) {
-            float next_xPos = friendly_war_attender.position.x;
-            float next_yPos = friendly_war_attender.position.y;
+        for (WarAttender enemyWarAttender : enemyWarAttenders) {
+            float next_xPos = enemyWarAttender.position.x;
+            float next_yPos = enemyWarAttender.position.y;
             float next_dist = (float) Math.sqrt((next_xPos - position.x) * (next_xPos - position.x)
                     + (next_yPos - position.y) * (next_yPos - position.y));
             if (next_dist < dist) {
                 dist = next_dist;
                 xPos = next_xPos;
                 yPos = next_yPos;
-                closest_warAttender = (MovableWarAttender) friendly_war_attender;
+                closest_warAttender = (MovableWarAttender) enemyWarAttender;
             }
         }
 
         // flee when the closest warAttender gets too close and is a tank or a robot
         if (dist < 100 && (closest_warAttender instanceof Tank || closest_warAttender instanceof Robot)) {
-            setRotation(closest_warAttender.getRotation() + 105.f);
-            moveForward(deltaTime);
+            setRotation(closest_warAttender.getRotation());
+            isFleeing = true;
         } else if (dist < 500) {
             // aim at the closest enemy and fire
             float rotationDegree = WayPointManager.calculateAngle(position, new Vector2f(xPos, yPos));

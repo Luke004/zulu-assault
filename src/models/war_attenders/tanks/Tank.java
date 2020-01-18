@@ -2,6 +2,7 @@ package models.war_attenders.tanks;
 
 import logic.WayPointManager;
 import models.war_attenders.MovableWarAttender;
+import models.war_attenders.robots.Robot;
 import models.war_attenders.soldiers.Soldier;
 import models.weapons.Weapon;
 import org.newdawn.slick.Color;
@@ -213,13 +214,13 @@ public abstract class Tank extends MovableWarAttender {
 
     @Override
     public void onCollision(MovableWarAttender enemy) {
-        if (enemy instanceof Tank) {  // enemy is a tank
-            // block movement as long as there's collision
+        if (enemy instanceof Tank || enemy instanceof Robot) {
             blockMovement();
         } else if (enemy instanceof Soldier) {   // enemy is a soldier (bad for him)
-            // kill soldier
+            if (enemy.isDestroyed) return;
+            enemy.changeHealth(-5.f);
+            blockMovement();
         }
-        // plane instanceof is not needed, nothing happens there
     }
 
     @Override
