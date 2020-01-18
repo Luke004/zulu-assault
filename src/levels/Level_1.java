@@ -126,10 +126,120 @@ public class Level_1 extends AbstractLevel implements GameState {
 
 
         // SETUP INTERACTION CIRCLES
-        InteractionCircle health_circle_1 = new HealthCircle(new Vector2f(2420.f, 340.f));
+        InteractionCircle health_circle_1 = new HealthCircle(new Vector2f(2380.f, 340.f));
         interaction_circles.add(health_circle_1);
 
         // SETUP ITEMS
+        // silver wrenches
+        Item silver_wrench_1 = new SilverWrenchItem(new Vector2f(160.f, 100.f));
+        items.add(silver_wrench_1);
+
+        Item silver_wrench_2 = new SilverWrenchItem(new Vector2f(220.f, 100.f));
+        items.add(silver_wrench_2);
+
+        Item silver_wrench_3 = new SilverWrenchItem(new Vector2f(227.f, 45.f));
+        items.add(silver_wrench_3);
+
+        Item silver_wrench_4 = new SilverWrenchItem(new Vector2f(158.f, 45.f));
+        items.add(silver_wrench_4);
+
+        Item silver_wrench_5 = new SilverWrenchItem(new Vector2f(1215, 2315));
+        items.add(silver_wrench_5);
+
+        Item silver_wrench_6 = new SilverWrenchItem(new Vector2f(1220, 2410));
+        items.add(silver_wrench_6);
+
+        Item silver_wrench_7 = new SilverWrenchItem(new Vector2f(1222, 2610));
+        items.add(silver_wrench_7);
+
+        Item silver_wrench_8 = new SilverWrenchItem(new Vector2f(1220, 2680));
+        items.add(silver_wrench_8);
+
+        Item silver_wrench_9 = new SilverWrenchItem(new Vector2f(25, 3720));
+        items.add(silver_wrench_9);
+
+        Item silver_wrench_10 = new SilverWrenchItem(new Vector2f(100, 3780));
+        items.add(silver_wrench_10);
+
+        Item silver_wrench_11 = new SilverWrenchItem(new Vector2f(185, 3840));
+        items.add(silver_wrench_11);
+
+        Item silver_wrench_12 = new SilverWrenchItem(new Vector2f(190, 3940));
+        items.add(silver_wrench_12);
+
+        Item silver_wrench_13 = new SilverWrenchItem(new Vector2f(3278, 3760));
+        items.add(silver_wrench_13);
+
+        Item silver_wrench_14 = new SilverWrenchItem(new Vector2f(3280, 3905));
+        items.add(silver_wrench_14);
+
+        Item silver_wrench_15 = new SilverWrenchItem(new Vector2f(1250, 14));
+        items.add(silver_wrench_15);
+
+        Item silver_wrench_16 = new SilverWrenchItem(new Vector2f(1610, 16));
+        items.add(silver_wrench_16);
+
+        Item silver_wrench_17 = new SilverWrenchItem(new Vector2f(1625, 110));
+        items.add(silver_wrench_17);
+
+        Item silver_wrench_18 = new SilverWrenchItem(new Vector2f(1845, 595));
+        items.add(silver_wrench_18);
+
+        Item silver_wrench_19 = new SilverWrenchItem(new Vector2f(2278, 735));
+        items.add(silver_wrench_19);
+
+        Item silver_wrench_20 = new SilverWrenchItem(new Vector2f(2172, 185));
+        items.add(silver_wrench_20);
+
+        Item silver_wrench_21 = new SilverWrenchItem(new Vector2f(2145, 85));
+        items.add(silver_wrench_21);
+
+        Item silver_wrench_22 = new SilverWrenchItem(new Vector2f(2090, 25));
+        items.add(silver_wrench_22);
+
+        Item silver_wrench_23 = new SilverWrenchItem(new Vector2f(3725, 400));
+        items.add(silver_wrench_23);
+
+        Item silver_wrench_24 = new SilverWrenchItem(new Vector2f(3775, 475));
+        items.add(silver_wrench_24);
+
+        Item silver_wrench_25 = new SilverWrenchItem(new Vector2f(3625, 900));
+        items.add(silver_wrench_25);
+
+        Item silver_wrench_26 = new SilverWrenchItem(new Vector2f(3577, 1225));
+        items.add(silver_wrench_26);
+
+        Item silver_wrench_27 = new SilverWrenchItem(new Vector2f(3645, 1320));
+        items.add(silver_wrench_27);
+
+        Item silver_wrench_28 = new SilverWrenchItem(new Vector2f(3340, 2040));
+        items.add(silver_wrench_28);
+
+        Item silver_wrench_29 = new SilverWrenchItem(new Vector2f(3475, 2040));
+        items.add(silver_wrench_29);
+
+        Item silver_wrench_30 = new SilverWrenchItem(new Vector2f(3650, 2040));
+        items.add(silver_wrench_30);
+
+        Item silver_wrench_31 = new SilverWrenchItem(new Vector2f(3800, 3650));
+        items.add(silver_wrench_31);
+
+        Item silver_wrench_32 = new SilverWrenchItem(new Vector2f(3800, 3740));
+        items.add(silver_wrench_32);
+
+        // invincibility items
+        Item invincibility_1 = new InvincibilityItem(new Vector2f(1780, 2240));
+        items.add(invincibility_1);
+
+        // golden wrenches
+        Item golden_wrench_1 = new GoldenWrenchItem(new Vector2f(55, 3890));
+        items.add(golden_wrench_1);
+
+        Item golden_wrench_2 = new GoldenWrenchItem(new Vector2f(3520, 2715));
+        items.add(golden_wrench_2);
+
+
+        // tests
         Item item_1 = new InvincibilityItem(new Vector2f(1000.f, 800.f));
         items.add(item_1);
 
