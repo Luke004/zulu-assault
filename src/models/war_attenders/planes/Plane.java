@@ -55,27 +55,20 @@ public abstract class Plane extends MovableWarAttender {
         if (landing) {
             if (hasLanded) return;
             // calc landing shadow positions
-            Vector2f plane_pos = new Vector2f(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
-            movePlaneShadow(deltaTime, plane_pos);  // move the plane's shadow towards the plane
-
-            if (WayPointManager.dist(planeShadow.current_shadow_pos, plane_pos)
-                    <= 2.f) {
-                hasLanded = true;
-                setMoving(false);
-            }
+            landPlane(deltaTime);
         } else if (starting) {
             setMoving(true);
-            // move the plane's shadow away from the plane towards the origin position of the shadow
-            movePlaneShadow(deltaTime, planeShadow.origin_pos);
-
-            if (WayPointManager.dist(planeShadow.current_shadow_pos, planeShadow.origin_pos)
-                    <= PlaneShadow.STARTING_LANDING_SPEED * 4) {
-                hasStarted = true;
-                starting = false;
-            }
+            startPlane(deltaTime);
         } else {
-            // normal shadow position
-            planeShadow.update();
+            if (isDestroyed) {
+                // crash the plane and remove it after it has reached the ground
+                landPlane(deltaTime);   // land plane -> to simulate a plane crash -> it looks like landing
+                if (hasLanded) level_delete_listener.notifyForWarAttenderDeletion(this);
+            } else {
+                // normal shadow position
+                planeShadow.update();
+            }
+
         }
     }
 
@@ -90,6 +83,27 @@ public abstract class Plane extends MovableWarAttender {
         planeShadow.current_shadow_pos.add(dir);    // add the dir of the plane aswell
         planeShadow.origin_pos.x = position.x - WIDTH_HALF * 2;
         planeShadow.origin_pos.y = position.y;
+    }
+
+    private void startPlane(int deltaTime) {
+        // move the plane's shadow away from the plane towards the origin position of the shadow
+        movePlaneShadow(deltaTime, planeShadow.origin_pos);
+
+        if (WayPointManager.dist(planeShadow.current_shadow_pos, planeShadow.origin_pos)
+                <= PlaneShadow.STARTING_LANDING_SPEED * 4) {
+            hasStarted = true;
+            starting = false;
+        }
+    }
+
+    private void landPlane(int deltaTime) {
+        Vector2f plane_pos = new Vector2f(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
+        movePlaneShadow(deltaTime, plane_pos);  // move the plane's shadow towards the plane
+        if (WayPointManager.dist(planeShadow.current_shadow_pos, plane_pos)
+                <= 2.f) {
+            hasLanded = true;
+            setMoving(false);
+        }
     }
 
     @Override
