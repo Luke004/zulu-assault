@@ -16,6 +16,7 @@ import models.interaction_circles.TeleportCircle;
 import models.items.Item;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
+import models.war_attenders.planes.Plane;
 import models.war_attenders.soldiers.Soldier;
 import models.weapons.*;
 import models.weapons.projectiles.Projectile;
@@ -148,6 +149,7 @@ public class CollisionHandler {
 
     private void handleMovableWarAttenderCollisions(MovableWarAttender current_warAttender) {
         if (!current_warAttender.isMoving()) return;
+        if (current_warAttender instanceof Plane) return;
 
         CollisionModel.Point[] playerCorners = current_warAttender.getCollisionModel().getPoints();
         int idx, landscape_layer_tile_ID, enemy_layer_tile_ID, x, y;
