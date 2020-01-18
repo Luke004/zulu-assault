@@ -103,15 +103,13 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         }
 
         // create a global movableWarAttender list for collisions between them
-        all_movable_war_attenders = new ArrayList<>(friendly_war_attenders);
+        all_movable_war_attenders.addAll(friendly_war_attenders);
         all_movable_war_attenders.addAll(hostile_war_attenders);
-        for (MovableWarAttender movableWarAttender : all_movable_war_attenders) {
-            renderList.add(movableWarAttender);
-        }
+        renderList.addAll(all_movable_war_attenders);
         all_movable_war_attenders.addAll(drivable_war_attenders);
 
         // put planes at the end of the list so they get rendered LAST
-        Collections.sort(renderList, (o1, o2) -> {
+        renderList.sort((o1, o2) -> {
             if (o1 instanceof Plane && o2 instanceof Plane) return 0;
             else if (o1 instanceof Plane) return 1;
             else if (o2 instanceof Plane) return -1;
@@ -407,6 +405,8 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         hostile_war_attenders.clear();
         friendly_war_attenders.clear();
         drivable_war_attenders.clear();
+        all_movable_war_attenders.clear();
+        renderList.clear();
         static_enemies.clear();
         interaction_circles.clear();
         items.clear();
