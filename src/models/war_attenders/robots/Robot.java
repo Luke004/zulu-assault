@@ -78,13 +78,6 @@ public abstract class Robot extends MovableWarAttender {
         //collisionModel.draw(graphics);
     }
 
-    @Override
-    public void showDrivableAnimation() {
-        if (show_drivable_animation) {
-            drivable_animation.draw(position.x - 8, position.y - (BASE_HEIGHT_HALF * 2));
-        }
-    }
-
     public void startAnimation() {
         walking_animation.start();
     }

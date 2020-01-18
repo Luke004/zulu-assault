@@ -224,6 +224,7 @@ public abstract class Tank extends MovableWarAttender {
 
     @Override
     public void blockMovement() {
+        System.out.println("BLOCKED");
         position.sub(dir);  // set the position on last position before the collision
         collisionModel.update(base_image.getRotation());    // update collision model
         current_speed = 0.f;    // set the speed to zero (stop moving on collision)

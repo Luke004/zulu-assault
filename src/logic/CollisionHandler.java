@@ -1,6 +1,5 @@
 package logic;
 
-import levels.AbstractLevel;
 import logic.level_listeners.WarAttenderDeleteListener;
 import menus.UserSettings;
 import models.CollisionModel;
@@ -13,7 +12,6 @@ import models.animations.smoke.SmokeAnimation;
 import models.interaction_circles.HealthCircle;
 import models.interaction_circles.InteractionCircle;
 import models.interaction_circles.TeleportCircle;
-import models.items.Item;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
 import models.war_attenders.planes.Plane;
@@ -25,9 +23,9 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.tiled.TiledMap;
 import player.Player;
 
+import static levels.AbstractLevel.*;
 import static logic.TileMapInfo.*;
 
 import java.util.*;
@@ -35,12 +33,6 @@ import java.util.*;
 
 public class CollisionHandler {
     private Player player;
-    private List<MovableWarAttender> friendly_war_attenders, hostile_war_attenders, drivable_war_attenders,
-            all_movable_war_attenders;
-    private List<StaticWarAttender> static_enemies;
-    private List<InteractionCircle> interaction_circles;
-    private List<Item> items;
-    private TiledMap map;
 
     // tile specs TODO: create own tile helper class
     private static final float TILE_HEALTH = 100.f;
@@ -56,17 +48,7 @@ public class CollisionHandler {
     private static PlasmaDamageAnimation plasmaDamageAnimation;
     private static Random random;
     // sounds
-    protected Sound bullet_hit_sound, explosion_sound, new_item_sound;  // fire sound of the weapon;
-
-    public CollisionHandler() {
-        try {
-            bullet_hit_sound = new Sound("audio/sounds/bullet_hit.ogg");
-            explosion_sound = new Sound("audio/sounds/explosion.ogg");
-            new_item_sound = new Sound("audio/sounds/new_item.ogg");
-        } catch (SlickException e) {
-            e.printStackTrace();
-        }
-    }
+    private static Sound bullet_hit_sound, explosion_sound, new_item_sound;  // fire sound of the weapon;
 
     static {
         smokeAnimation = new SmokeAnimation(5);
@@ -76,6 +58,13 @@ public class CollisionHandler {
         plasmaDamageAnimation = new PlasmaDamageAnimation(20);
         random = new Random();
 
+        try {
+            bullet_hit_sound = new Sound("audio/sounds/bullet_hit.ogg");
+            explosion_sound = new Sound("audio/sounds/explosion.ogg");
+            new_item_sound = new Sound("audio/sounds/new_item.ogg");
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addListener(WarAttenderDeleteListener delete_listener) {
@@ -206,7 +195,6 @@ public class CollisionHandler {
 
         // COLLISION BETWEEN WAR ATTENDER ITSELF AND OTHER WAR ATTENDERS
         for (MovableWarAttender movableWarAttender : all_movable_war_attenders) {
-            if (movableWarAttender.position == current_warAttender.position) continue;    // its himself
             if (current_warAttender.getCollisionModel().intersects(movableWarAttender.getCollisionModel())) {
                 current_warAttender.onCollision(movableWarAttender);
                 return;
@@ -593,7 +581,7 @@ public class CollisionHandler {
                     for (MovableWarAttender hostile_warAttender : hostile_war_attenders) {
                         if (projectile.getCollisionModel().intersects(hostile_warAttender.getCollisionModel())) {
                             showBulletHitAnimation(weapon, projectile);
-                            projectile_iterator.remove();
+                            projectile_iterator.remove();   // TODO: fix bug where there's nothing to remove
                             hostile_warAttender.changeHealth(-weapon.getBulletDamage());  //drain health of enemy
                             canContinue = true;
                         }
@@ -716,20 +704,7 @@ public class CollisionHandler {
         }
     }
 
-    public void setLevel(AbstractLevel level) {
-        this.friendly_war_attenders = level.friendly_war_attenders;
-        this.hostile_war_attenders = level.hostile_war_attenders;
-        this.drivable_war_attenders = level.drivable_war_attenders;
-        this.static_enemies = level.static_enemies;
-        this.interaction_circles = level.interaction_circles;
-        this.items = level.items;
-        this.player = level.player;
-        this.map = level.map;
-
-        // create a global movableWarAttender list for collisions between them
-        all_movable_war_attenders = new ArrayList<>(friendly_war_attenders);
-        all_movable_war_attenders.addAll(hostile_war_attenders);
-        all_movable_war_attenders.add(player.getWarAttender());
-        all_movable_war_attenders.addAll(drivable_war_attenders);
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 }

@@ -94,4 +94,11 @@ public class HUD implements ItemChangeListener, ChangeWarAttenderListener {
     public void onPlayerChangeWarAttender() {
         weapons = player.getWarAttender().getWeapons();
     }
+
+    public void reset() {
+        for (Item item : items) {
+            item.isActive = false;
+            item.amount = 0;
+        }
+    }
 }

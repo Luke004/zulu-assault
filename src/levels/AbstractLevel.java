@@ -12,8 +12,11 @@ import models.interaction_circles.InteractionCircle;
 import models.items.Item;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
+import models.war_attenders.planes.Plane;
 import models.war_attenders.planes.StaticEnemyPlane;
+import models.war_attenders.robots.Robot;
 import models.war_attenders.soldiers.Soldier;
+import models.war_attenders.tanks.Tank;
 import models.war_attenders.windmills.Windmill;
 import models.war_attenders.windmills.WindmillGreen;
 import models.war_attenders.windmills.WindmillGrey;
@@ -21,13 +24,14 @@ import models.war_attenders.windmills.WindmillYellow;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
-import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 import player.Player;
 import screen_drawer.ScreenDrawer;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static logic.TileMapInfo.*;
@@ -35,29 +39,35 @@ import static logic.TileMapInfo.*;
 public abstract class AbstractLevel extends BasicGameState implements WarAttenderDeleteListener, GroundTileDamageListener {
 
     private static boolean has_initialized_once;
-    int init_counter;
+    protected int init_counter;
 
     protected static Sound level_intro_sound;
     protected static Music level_music;
 
-    public Player player;
+    public static Player player;
     public TiledMap map;
-    public List<StaticWarAttender> static_enemies;
-    public List<InteractionCircle> interaction_circles;
-    public List<Item> items;
-    public List<MovableWarAttender> friendly_war_attenders, hostile_war_attenders, drivable_war_attenders;
+    public static List<StaticWarAttender> static_enemies;
+    public static List<InteractionCircle> interaction_circles;
+    public static List<Item> items;
+
+    // for the collision handler
+    public static List<MovableWarAttender> friendly_war_attenders, hostile_war_attenders, drivable_war_attenders,
+            all_movable_war_attenders;
+
+    // for the rendering hierarchy
+    private static List<MovableWarAttender> renderList;
 
     private static KeyInputHandler keyInputHandler;
     private static CollisionHandler collisionHandler;
     private Camera camera;
 
-    private HUD hud;
+    private static HUD hud;
 
     // for destruction of tanks or robots
     private static BigExplosionAnimation bigExplosionAnimation;
     protected static Sound explosion_sound;  // fire sound of the weapon;
 
-    ScreenDrawer screenDrawer;
+    private static ScreenDrawer screenDrawer;
 
     static {
         try {
@@ -65,19 +75,14 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         } catch (SlickException e) {
             e.printStackTrace();
         }
-    }
-
-    public AbstractLevel() {
+        player = new Player();
         hostile_war_attenders = new ArrayList<>();
         friendly_war_attenders = new ArrayList<>();
         drivable_war_attenders = new ArrayList<>();
         static_enemies = new ArrayList<>();
         interaction_circles = new ArrayList<>();
         items = new ArrayList<>();
-        player = new Player();
-    }
-
-    static {
+        renderList = new ArrayList<>();
         has_initialized_once = false;
     }
 
@@ -94,15 +99,31 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             collisionHandler = new CollisionHandler();
             keyInputHandler = new KeyInputHandler();
             bigExplosionAnimation = new BigExplosionAnimation(100);
+            screenDrawer = new ScreenDrawer();
+            hud = new HUD(player, gameContainer);
+            player.addListener(hud);
         }
+
+        // create a global movableWarAttender list for collisions between them
+        all_movable_war_attenders = new ArrayList<>(friendly_war_attenders);
+        all_movable_war_attenders.addAll(hostile_war_attenders);
+
+        for (MovableWarAttender movableWarAttender : all_movable_war_attenders) {
+            renderList.add(movableWarAttender);
+        }
+        all_movable_war_attenders.addAll(drivable_war_attenders);
+
+        // put planes at the end of the list so they get rendered LAST
+        Collections.sort(renderList, (Comparator<MovableWarAttender>) (o1, o2) -> {
+            if (o1 instanceof Plane && o2 instanceof Plane) return 0;
+            else if (o1 instanceof Plane) return 1;
+            else if (o2 instanceof Plane) return -1;
+            else return 0;
+        });
+
         createWarAttendersFromTiles();
-        hud = new HUD(player, gameContainer);
-        player.addListener(hud);
 
         camera = new Camera(gameContainer, map);
-
-        // handle collisions
-        //collisionHandler = new CollisionHandler();
 
         // add listeners for destruction of warAttenders
         for (MovableWarAttender warAttender : friendly_war_attenders) {
@@ -112,8 +133,6 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             warAttender.addListeners(this);
         }
         player.getWarAttender().addListeners(this);
-        //collisionHandler.addListener(this);
-        screenDrawer = new ScreenDrawer();
     }
 
     /*
@@ -219,9 +238,9 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
 
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-        collisionHandler.setLevel(this);
+        collisionHandler.setPlayer(player);
         collisionHandler.addListener(this);
-        keyInputHandler.setLevel(this);
+        keyInputHandler.setLevel(player);
 
         // hide the mouse cursor
         gameContainer.setMouseGrabbed(true);
@@ -239,18 +258,26 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int deltaTime) {
         player.update(gameContainer, deltaTime);
+
+        for (int idx = 0; idx < all_movable_war_attenders.size(); ++idx) {
+            all_movable_war_attenders.get(idx).update(gameContainer, deltaTime);
+        }
+        /*
         for (int idx = 0; idx < friendly_war_attenders.size(); ++idx) {
             friendly_war_attenders.get(idx).update(gameContainer, deltaTime);
         }
         for (int idx = 0; idx < hostile_war_attenders.size(); ++idx) {
             hostile_war_attenders.get(idx).update(gameContainer, deltaTime);
         }
-        for (int idx = 0; idx < static_enemies.size(); ++idx) {
-            static_enemies.get(idx).update(gameContainer, deltaTime);
-        }
         for (int idx = 0; idx < drivable_war_attenders.size(); ++idx) {
             drivable_war_attenders.get(idx).update(gameContainer, deltaTime);
         }
+         */
+
+        for (int idx = 0; idx < static_enemies.size(); ++idx) {
+            static_enemies.get(idx).update(gameContainer, deltaTime);
+        }
+
         for (InteractionCircle interaction_circle : interaction_circles) {
             interaction_circle.update(deltaTime);
         }
@@ -288,19 +315,34 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         for (Item item : items) {
             item.draw();
         }
-        player.draw(graphics);
+
+        for (MovableWarAttender drivable_war_attender : drivable_war_attenders) {
+            drivable_war_attender.draw(graphics);
+        }
+
+        for (StaticWarAttender static_enemy : static_enemies) {
+            static_enemy.draw(graphics);
+        }
+
+        if (!(player.getWarAttender() instanceof Plane))
+            player.getWarAttender().draw(graphics);
+
+        // draw the render list, with planes at the end
+        for (MovableWarAttender renderInstance : renderList) {
+            renderInstance.draw(graphics);
+        }
+
+        if (player.getWarAttender() instanceof Plane)
+            player.getWarAttender().draw(graphics);
+
+        /*
         for (int idx = 0; idx < friendly_war_attenders.size(); ++idx) {
             friendly_war_attenders.get(idx).draw(graphics);
         }
         for (int idx = 0; idx < hostile_war_attenders.size(); ++idx) {
             hostile_war_attenders.get(idx).draw(graphics);
         }
-        for (int idx = 0; idx < static_enemies.size(); ++idx) {
-            static_enemies.get(idx).draw(graphics);
-        }
-        for (int idx = 0; idx < drivable_war_attenders.size(); ++idx) {
-            drivable_war_attenders.get(idx).draw(graphics);
-        }
+         */
         collisionHandler.draw();
         screenDrawer.draw();
         bigExplosionAnimation.draw();
@@ -315,7 +357,14 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     public void notifyForWarAttenderDeletion(WarAttender warAttender) {
         // TODO: add points according to the class of the enemy/warAttender
 
+        System.out.println("CALLED");
+
         if (warAttender.isHostile) {
+            if (warAttender instanceof MovableWarAttender) {
+                hostile_war_attenders.remove(warAttender);
+                all_movable_war_attenders.remove(warAttender);
+                renderList.remove(warAttender);
+            }
             player.addPoints(warAttender.getScoreValue());  // add points
             screenDrawer.drawScoreValue(5, warAttender);    // draw the score on the screen
 
@@ -325,21 +374,24 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
                         warAttender.position.y + 20, 0);
                 explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
             } else {
-                hostile_war_attenders.remove(warAttender);
+
                 if (warAttender instanceof Soldier) screenDrawer.drawDeadSoldierBody(3, warAttender);
                 else {
                     bigExplosionAnimation.playTenTimes(warAttender.position.x, warAttender.position.y, 0);
                     explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
                 }
             }
-        } else {
+        } else {    // it's a friendly warAttender
+            if (warAttender instanceof MovableWarAttender) {
+                friendly_war_attenders.remove(warAttender);
+                all_movable_war_attenders.remove(warAttender);
+                renderList.remove(warAttender);
+            }
             if (warAttender instanceof Soldier) screenDrawer.drawDeadSoldierBody(3, warAttender);
             else {
                 bigExplosionAnimation.playTenTimes(warAttender.position.x, warAttender.position.y, 0);
                 explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
             }
-            friendly_war_attenders.remove(warAttender);
-            //friendly_war_attenders.removeIf(friend -> friend.isDestroyed);
         }
     }
 
@@ -374,6 +426,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         interaction_circles.clear();
         items.clear();
         player.reset();
+        hud.reset();
     }
 
 }

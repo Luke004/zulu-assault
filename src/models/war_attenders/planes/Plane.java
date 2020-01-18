@@ -113,7 +113,6 @@ public abstract class Plane extends MovableWarAttender {
 
     @Override
     public void draw(Graphics graphics) {
-        super.draw(graphics);
         // draw the plane's shadow
         if (!hasLanded) {
             base_image.drawFlash(planeShadow.current_shadow_pos.x, planeShadow.current_shadow_pos.y,
@@ -129,6 +128,7 @@ public abstract class Plane extends MovableWarAttender {
         } else {
             base_image.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
         }
+        super.draw(graphics);
 
         // TODO: add destruction animation to plane crash
         /*
