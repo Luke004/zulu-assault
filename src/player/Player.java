@@ -33,10 +33,6 @@ public class Player {
         item_amounts = new int[4];
     }
 
-    public void draw(Graphics graphics) {
-        current_warAttender.draw(graphics);
-    }
-
     public void update(GameContainer gameContainer, int deltaTime) {
         current_warAttender.update(gameContainer, deltaTime);
 

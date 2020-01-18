@@ -12,11 +12,11 @@ import models.war_attenders.soldiers.Soldier;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
-import java.util.List;
+import static levels.AbstractLevel.all_movable_war_attenders;
+import static levels.AbstractLevel.drivable_war_attenders;
 
 public class KeyInputHandler {
     private Player player;
-    private List<MovableWarAttender> drivable_war_attenders;
     private boolean KEY_UP_RELEASED, KEY_DOWN_RELEASED;
 
     public void update(GameContainer gameContainer, int deltaTime) {
@@ -75,6 +75,7 @@ public class KeyInputHandler {
                             warAttender.showAccessibleAnimation(false);
                             player.setWarAttender(warAttender, Player.EnterAction.ENTERING);
                             drivable_war_attenders.remove(warAttender);
+                            all_movable_war_attenders.remove(warAttender);
                             break;
                         }
                     }
@@ -122,6 +123,7 @@ public class KeyInputHandler {
                     if (!tank.isMoving()) {
                         tank.showAccessibleAnimation(true);
                         drivable_war_attenders.add(tank);
+                        all_movable_war_attenders.add(tank);
                         player.setWarAttender(tank, Player.EnterAction.LEAVING);
                     } else {
                         // tank is moving, can't get out of it
@@ -176,6 +178,7 @@ public class KeyInputHandler {
                     if (!robot.isMoving()) {
                         robot.showAccessibleAnimation(true);
                         drivable_war_attenders.add(robot);
+                        all_movable_war_attenders.add(robot);
                         player.setWarAttender(robot, Player.EnterAction.LEAVING);
                     }
                 }
@@ -197,6 +200,7 @@ public class KeyInputHandler {
                 if (plane.hasLanded()) {
                     plane.showAccessibleAnimation(true);
                     drivable_war_attenders.add(plane);
+                    all_movable_war_attenders.add(plane);
                     player.setWarAttender(plane, Player.EnterAction.LEAVING);
                 }
 

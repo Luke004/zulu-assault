@@ -82,8 +82,8 @@ public class MainMenu extends BasicGameState {
             // set custom animated mouse cursor
             gameContainer.setAnimatedMouseCursor(
                     "assets/menus/animated_cursor.tga",
-                    0,
-                    0,
+                    16,
+                    16,
                     32,
                     32,
                     new int[]{20, 20, 20, 20}
