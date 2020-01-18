@@ -2,15 +2,19 @@ package models.war_attenders.planes;
 
 import logic.WayPointManager;
 import models.CollisionModel;
+import models.animations.other.AnimatedCrosshair;
 import models.war_attenders.MovableWarAttender;
 import models.weapons.AGM;
 import models.weapons.Uzi;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
 public class GreenEnemyPlane extends Plane {
+
+    private AnimatedCrosshair animatedCrosshair;
 
     public GreenEnemyPlane(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
@@ -25,6 +29,7 @@ public class GreenEnemyPlane extends Plane {
         setMoving(true);    // green plane is always flying
 
         if (isDrivable) {
+            animatedCrosshair = new AnimatedCrosshair();
             // individual GreenEnemyPlane attributes for human players
             max_speed = 0.15f;
             rotate_speed = 0.15f;
@@ -54,6 +59,15 @@ public class GreenEnemyPlane extends Plane {
         if (isMoving) {
             fly(deltaTime); // the plane is always flying forward
         }
+        if (isDrivable)
+            animatedCrosshair.update(deltaTime, position, getRotation());
+    }
+
+    @Override
+    public void draw(Graphics graphics) {
+        super.draw(graphics);
+        // draw the plane's crosshair
+        if (isDrivable) animatedCrosshair.draw();
     }
 
     public void fly(int deltaTime) {
