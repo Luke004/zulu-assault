@@ -84,7 +84,7 @@ public abstract class MovableWarAttender extends WarAttender {
             initAccessibleAnimation();
             weapons.add(new MegaPulse());  // add the MEGA_PULSE (special item)
         }
-        health_bar_offset = new Vector2f(30.f, base_image.getHeight() / 2.f + 14.f);
+        health_bar_offset = new Vector2f(30.f, base_image.getHeight() / 2.f + 20.f);
         super.init();
     }
 
@@ -123,7 +123,7 @@ public abstract class MovableWarAttender extends WarAttender {
             }
         }
 
-        if(isDestroyed){
+        if (isDestroyed) {
             blockMovement();
         }
     }
@@ -141,7 +141,7 @@ public abstract class MovableWarAttender extends WarAttender {
 
     public void showDrivableAnimation() {
         if (show_drivable_animation) {
-            drivable_animation.draw(position.x - (WIDTH_HALF * 2) / 4.f, position.y - (HEIGHT_HALF * 2) + 17);
+            drivable_animation.draw(health_bar_position.x + 21.f, health_bar_position.y - 3.f);
         }
     }
 

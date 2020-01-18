@@ -255,12 +255,12 @@ public class Level_1 extends AbstractLevel implements GameState {
 
 
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
-        Vector2f playerStartPos = new Vector2f(1000, 1000);
+        Vector2f playerStartPos = new Vector2f(1500, 1000);
         //Tank tank = new NapalmTank(playerStartPos, false, true);
         //Tank tank = new ShellTank(playerStartPos, false, true);
         Tank tank = new CannonTank(playerStartPos, false, true);
-        //Plane plane = new GreenEnemyPlane(playerStartPos, false, true);
-        //Robot robot = new PlasmaRobot(playerStartPos, false, true);
+        Plane plane = new GreenEnemyPlane(playerStartPos, false, true);
+        Robot robot = new ShellRobot(playerStartPos, false, true);
         //MovableWarAttender soldier = new PlayerSoldier(playerStartPos, false);
 
         // DEFINE THE MAP

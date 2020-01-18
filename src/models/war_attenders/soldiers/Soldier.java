@@ -104,8 +104,9 @@ public abstract class Soldier extends MovableWarAttender {
     }
 
     @Override
-    public void onCollision(MovableWarAttender enemy) {
-        if (enemy instanceof Tank || enemy instanceof Robot || enemy instanceof Soldier) {
+    public void onCollision(MovableWarAttender warAttender) {
+        if (warAttender.isDrivable) blockMovement();
+        else if (warAttender instanceof Tank || warAttender instanceof Robot || warAttender instanceof Soldier) {
             blockMovement();
         }
     }

@@ -3,6 +3,7 @@ package models.war_attenders.robots;
 import logic.WayPointManager;
 import models.CollisionModel;
 import models.war_attenders.MovableWarAttender;
+import models.war_attenders.soldiers.Soldier;
 import models.war_attenders.tanks.Tank;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
@@ -78,13 +79,6 @@ public abstract class Robot extends MovableWarAttender {
         //collisionModel.draw(graphics);
     }
 
-    @Override
-    public void showDrivableAnimation() {
-        if (show_drivable_animation) {
-            drivable_animation.draw(position.x - 8, position.y - (BASE_HEIGHT_HALF * 2));
-        }
-    }
-
     public void startAnimation() {
         walking_animation.start();
     }
@@ -107,12 +101,15 @@ public abstract class Robot extends MovableWarAttender {
     }
 
     @Override
-    public void onCollision(MovableWarAttender enemy) {
-        if (enemy instanceof Tank) {  // enemy is a tank
+    public void onCollision(MovableWarAttender warAttender) {
+        if (warAttender instanceof Tank || warAttender instanceof Robot) {
+            blockMovement();
+            if (!isHostile && warAttender.isHostile) warAttender.changeHealth(-10.f);
+        } else if (warAttender instanceof Soldier) {   // enemy is a soldier (bad for him)
+            if (warAttender.isDestroyed) return;
+            if (!isHostile && warAttender.isHostile) warAttender.changeHealth(-150.f);
             blockMovement();
         }
-        // soldier is not needed, nothing happens
-        // plane instanceof is not needed, nothing happens
     }
 
     @Override

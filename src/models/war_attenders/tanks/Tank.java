@@ -212,12 +212,13 @@ public abstract class Tank extends MovableWarAttender {
     }
 
     @Override
-    public void onCollision(MovableWarAttender enemy) {
-        if (enemy instanceof Tank || enemy instanceof Robot) {
+    public void onCollision(MovableWarAttender warAttender) {
+        if (warAttender instanceof Tank || warAttender instanceof Robot) {
             blockMovement();
-        } else if (enemy instanceof Soldier) {   // enemy is a soldier (bad for him)
-            if (enemy.isDestroyed) return;
-            enemy.changeHealth(-5.f);
+            if (!isHostile && warAttender.isHostile) warAttender.changeHealth(-10.f);
+        } else if (warAttender instanceof Soldier) {   // enemy is a soldier (bad for him)
+            if (warAttender.isDestroyed) return;
+            if (!isHostile && warAttender.isHostile) warAttender.changeHealth(-150.f);
             blockMovement();
         }
     }
