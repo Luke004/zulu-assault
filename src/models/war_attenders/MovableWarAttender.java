@@ -122,6 +122,10 @@ public abstract class MovableWarAttender extends WarAttender {
                 invincible_animation_current_time = 0;
             }
         }
+
+        if(isDestroyed){
+            blockMovement();
+        }
     }
 
     @Override

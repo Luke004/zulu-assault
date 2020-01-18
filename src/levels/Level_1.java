@@ -64,14 +64,15 @@ public class Level_1 extends AbstractLevel implements GameState {
         enemy_tank_2_shell.addWayPoints(new WayPointManager(wayPoints, enemy_tank_2_shell.position, enemy_tank_2_shell.getRotation()));
         hostile_war_attenders.add(enemy_tank_2_shell);
 
-        /*
+/*
         MovableWarAttender enemy_plane_1 = new GreenEnemyPlane(new Vector2f(1000.f, 1000.f), true, false);
+        enemy_plane_1.current_health = 1;
         wayPoints = new ArrayList<>();
         wayPoints.add(new Vector2f(1200.f, 1000.f));
         enemy_tank_2_shell.addWayPoints(new WayPointManager(wayPoints, enemy_plane_1.position, enemy_plane_1.getRotation()));
         hostile_war_attenders.add(enemy_plane_1);
+ */
 
-         */
 
         MovableWarAttender enemy_soldier_1 = new EnemySoldier(new Vector2f(1370.f, 3150.f), true);
         hostile_war_attenders.add(enemy_soldier_1);

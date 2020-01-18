@@ -48,8 +48,7 @@ public abstract class Tank extends MovableWarAttender {
         }
 
         if (isDestroyed) {
-            if (waypointManager != null) current_speed = 0.f; // stop the tank if it was moving
-            destructionAnimation.update(deltaTime);
+            destructionAnimation.play(deltaTime);
             if (destructionAnimation.hasFinished()) {
                 level_delete_listener.notifyForWarAttenderDeletion(this);
             }
@@ -276,11 +275,13 @@ public abstract class Tank extends MovableWarAttender {
         private MyLine my_first_line;
         private MyLine my_second_line;
         private int finish_destruction_counter;
+        private boolean firstCall;
 
         DestructionAnimation() {
             random = new Random();
             my_first_line = new MyLine();
             my_second_line = new MyLine();
+            firstCall = true;
         }
 
         public void draw(Graphics graphics) {
@@ -290,7 +291,13 @@ public abstract class Tank extends MovableWarAttender {
             my_second_line.draw(graphics);
         }
 
-        public void update(int deltaTime) {
+        public void play(int deltaTime) {
+            if (firstCall) {
+                firstCall = false;
+                my_first_line.defineNewLine();
+                my_second_line.defineNewLine();
+            }
+
             oscillation_timer += deltaTime;
             line_change_timer += deltaTime;
             if (oscillation_timer > OSCILLATION_CHANGE) {
@@ -322,7 +329,7 @@ public abstract class Tank extends MovableWarAttender {
                 mid_point_2_oscillation = new Vector2f();
                 line_end = new Vector2f();
                 collisionModel.update(getRotation());
-                defineNewLine();
+                //defineNewLine();
             }
 
             void draw(Graphics graphics) {

@@ -125,7 +125,6 @@ public class KeyInputHandler {
                         player.setWarAttender(tank, Player.EnterAction.LEAVING);
                     } else {
                         // tank is moving, can't get out of it
-                        System.out.println("ERROR SOUND PLAY");
                         SoundManager.ERROR_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
                     }
                 }
