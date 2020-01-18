@@ -1,11 +1,16 @@
 package models.war_attenders.planes;
 
+import logic.TileMapInfo;
 import logic.WayPointManager;
+import main.SoundManager;
+import menus.UserSettings;
 import models.war_attenders.MovableWarAttender;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
+
+import static logic.TileMapInfo.*;
 
 public abstract class Plane extends MovableWarAttender {
 
@@ -125,10 +130,12 @@ public abstract class Plane extends MovableWarAttender {
             base_image.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
         }
 
-
+        // TODO: add destruction animation to plane crash
+        /*
         if (isDestroyed) {
             //destructionAnimation.draw(graphics);
         }
+         */
     }
 
     @Override
@@ -136,17 +143,45 @@ public abstract class Plane extends MovableWarAttender {
         super.showAccessibleAnimation(activate);
         // stop the plane when player leaves it, start it again when player enters it back
         if (!activate && hasLanded) {
-            start();    // start the plane
+            initStart();    // start the plane
         }
     }
 
-    public void land() {
+    public void initLanding() {
+        if (!canLand()) {
+            SoundManager.ERROR_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            return;
+        }
         landing = true;
         starting = false;
         hasStarted = false;
     }
 
-    private void start() {
+    private boolean canLand() {
+        // check the next six tiles before the plane, if they are collision tiles, the plane can't land
+
+        // the direction the plane is heading towards
+        float m_dir_x = (float) Math.sin(getRotation() * Math.PI / 180);
+        float m_dir_y = (float) -Math.cos(getRotation() * Math.PI / 180);
+
+        final int NEXT_TILE_OFFSET = 40;
+        int tile_idx = 1;
+        do {
+            Vector2f tile_before_plane = new Vector2f(
+                    position.x + m_dir_x * (NEXT_TILE_OFFSET * tile_idx),
+                    position.y + m_dir_y * (NEXT_TILE_OFFSET * tile_idx));
+            int mapX = (int) (tile_before_plane.x / TILE_WIDTH);
+            if (mapX < 0 || mapX >= LEVEL_WIDTH_TILES) return false;  // player wants to land out of map
+            int mapY = (int) (tile_before_plane.y / TILE_HEIGHT);
+            if (mapY < 0 || mapY >= LEVEL_HEIGHT_TILES) return false;  // player wants to land out of map
+            int tileID = map.getTileId(mapX, mapY, LANDSCAPE_TILES_LAYER_IDX);
+            if (TileMapInfo.isCollisionTile(tileID)) return false;
+        } while (tile_idx++ < 6);    // do it six times (6 tiles before the plane)
+
+        return true;
+    }
+
+    private void initStart() {
         landing = false;
         hasLanded = false;
         starting = true;

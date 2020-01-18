@@ -193,7 +193,7 @@ public class KeyInputHandler {
 
                 // get out of plane
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
-                    plane.land();
+                    plane.initLanding();
                 }
                 if (plane.hasLanded()) {
                     plane.showAccessibleAnimation(true);

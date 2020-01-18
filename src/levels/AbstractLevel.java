@@ -83,11 +83,13 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+        // set the current tilemap based on the level
+        TileMapInfo.setMap(map);
         // reset the level info
         if (!has_initialized_once) {
             // this gets only executed once
             has_initialized_once = true;
-            TileMapInfo.init(map);
+            TileMapInfo.init();
 
             collisionHandler = new CollisionHandler();
             keyInputHandler = new KeyInputHandler();

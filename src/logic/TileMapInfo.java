@@ -8,6 +8,9 @@ import java.util.Map;
 
 public class TileMapInfo {
 
+    // the map itself
+    public static TiledMap map;
+
     // tile size info
     public static int TILE_WIDTH, TILE_HEIGHT, LEVEL_WIDTH_TILES, LEVEL_HEIGHT_TILES, LEVEL_WIDTH_PIXELS,
             LEVEL_HEIGHT_PIXELS;
@@ -61,7 +64,7 @@ public class TileMapInfo {
                 68, 72, 73, 74, 75, 76, 77};
     }
 
-    public static void init(TiledMap map) {
+    public static void init() {
         TILE_WIDTH = map.getTileWidth();
         TILE_HEIGHT = map.getTileHeight();
         LEVEL_WIDTH_TILES = map.getWidth();
@@ -151,6 +154,10 @@ public class TileMapInfo {
         else destructible_tiles_health_info.clear();
     }
 
+    public static void setMap(TiledMap myMap) {
+        map = myMap;
+    }
+
     public static int getReplacementTileID(int tileID) {
         for (int value : CLASS_DIRT) {
             if (tileID == value) return collision_replace_indices[0];
@@ -162,6 +169,16 @@ public class TileMapInfo {
             if (tileID == value) return collision_replace_indices[2];
         }
         return collision_replace_indices[2];    // return grass by default
+    }
+
+    public static boolean isCollisionTile(int tileID) {
+        for (int value : indestructible_tile_indices) {
+            if (tileID == value) return true;
+        }
+        for (int value : destructible_tile_indices) {
+            if (tileID == value) return true;
+        }
+        return false;
     }
 
 }
