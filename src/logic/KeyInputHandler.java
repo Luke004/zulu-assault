@@ -254,8 +254,7 @@ public class KeyInputHandler {
         }
     }
 
-    public void setLevel(AbstractLevel level) {
-        this.player = level.player;
-        this.drivable_war_attenders = level.drivable_war_attenders;
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 }

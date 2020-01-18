@@ -28,6 +28,7 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TiledMap;
 import player.Player;
 
+import static levels.AbstractLevel.*;
 import static logic.TileMapInfo.*;
 
 import java.util.*;
@@ -35,12 +36,6 @@ import java.util.*;
 
 public class CollisionHandler {
     private Player player;
-    private List<MovableWarAttender> friendly_war_attenders, hostile_war_attenders, drivable_war_attenders,
-            all_movable_war_attenders;
-    private List<StaticWarAttender> static_enemies;
-    private List<InteractionCircle> interaction_circles;
-    private List<Item> items;
-    private TiledMap map;
 
     // tile specs TODO: create own tile helper class
     private static final float TILE_HEALTH = 100.f;
@@ -716,20 +711,7 @@ public class CollisionHandler {
         }
     }
 
-    public void setLevel(AbstractLevel level) {
-        this.friendly_war_attenders = level.friendly_war_attenders;
-        this.hostile_war_attenders = level.hostile_war_attenders;
-        this.drivable_war_attenders = level.drivable_war_attenders;
-        this.static_enemies = level.static_enemies;
-        this.interaction_circles = level.interaction_circles;
-        this.items = level.items;
-        this.player = level.player;
-        this.map = level.map;
-
-        // create a global movableWarAttender list for collisions between them
-        all_movable_war_attenders = new ArrayList<>(friendly_war_attenders);
-        all_movable_war_attenders.addAll(hostile_war_attenders);
-        all_movable_war_attenders.add(player.getWarAttender());
-        all_movable_war_attenders.addAll(drivable_war_attenders);
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 }
