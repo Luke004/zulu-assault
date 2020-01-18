@@ -1,5 +1,6 @@
 package menus;
 
+import main.SoundManager;
 import main.ZuluAssault;
 import menus.menu_elements.Arrow;
 import org.newdawn.slick.GameContainer;
@@ -84,7 +85,7 @@ public class InGameScreen implements iMenuScreen {
                 break;
             case 2: // LOAD
             case 3: // SAVE
-                MainMenu.playErrorSound();
+                SoundManager.ERROR_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
                 break;
             case 4: // OPTIONS
                 MainMenu.goToMenu(MainMenu.STATE_OPTIONS_MENU);

@@ -1,6 +1,8 @@
 package logic;
 
 import levels.AbstractLevel;
+import main.SoundManager;
+import menus.UserSettings;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.planes.Plane;
 import models.war_attenders.robots.Robot;
@@ -121,6 +123,10 @@ public class KeyInputHandler {
                         tank.showAccessibleAnimation(true);
                         drivable_war_attenders.add(tank);
                         player.setWarAttender(tank, Player.EnterAction.LEAVING);
+                    } else {
+                        // tank is moving, can't get out of it
+                        System.out.println("ERROR SOUND PLAY");
+                        SoundManager.ERROR_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
                     }
                 }
 
