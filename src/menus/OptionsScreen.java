@@ -5,9 +5,11 @@ import menus.menu_elements.Arrow;
 import menus.menu_elements.Slider;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import java.io.File;
@@ -19,15 +21,17 @@ import static menus.MainMenu.*;
 import static menus.UserSettings.VOLUME_MAX_LEVEL;
 
 
-public class OptionsScreen implements iMenuScreen {
+public class OptionsScreen extends AbstractMenuScreen {
 
     private Arrow arrow;
     private Slider sound_volume_slider, music_volume_slider;
     private Image back_image;
     private Vector2f back_image_position;
+    protected static boolean isFirstTimeKeyLeftCall = false, isFirstTimeKeyRightCall = false;  // for a bug fix
 
 
-    public OptionsScreen(GameContainer gameContainer) {
+    public OptionsScreen(BasicGameState gameState, GameContainer gameContainer) {
+        super(gameState);
         try {
             back_image = new Image("assets/menus/back.png");
             back_image_position = new Vector2f(
@@ -63,7 +67,25 @@ public class OptionsScreen implements iMenuScreen {
     }
 
     @Override
-    public void update(GameContainer gameContainer) {
+    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+        super.update(gameContainer, stateBasedGame);
+
+        if (gameContainer.getInput().isKeyPressed(Input.KEY_LEFT)) {
+            if (isFirstTimeKeyLeftCall) {
+                isFirstTimeKeyLeftCall = false;
+                return;
+            }
+            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            onLeftKeyPress();
+        } else if (gameContainer.getInput().isKeyPressed(Input.KEY_RIGHT)) {
+            if (isFirstTimeKeyRightCall) {
+                isFirstTimeKeyRightCall = false;
+                return;
+            }
+            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            onRightKeyPress();
+        }
+
         if (!main_menu_intro_sound.playing()) {
             if (!main_menu_music.playing()) {
                 main_menu_music.play();
@@ -122,9 +144,7 @@ public class OptionsScreen implements iMenuScreen {
 
     }
 
-    @Override
-    public void onLeftKeyPress(GameContainer gameContainer) {
-        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+    private void onLeftKeyPress() {
         switch (arrow.currIdx) {
             case 1: // SOUND VOLUME
                 sound_volume_slider.decreaseValue();
@@ -138,9 +158,7 @@ public class OptionsScreen implements iMenuScreen {
         }
     }
 
-    @Override
-    public void onRightKeyPress(GameContainer gameContainer) {
-        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+    private void onRightKeyPress() {
         switch (arrow.currIdx) {
             case 1: // SOUND VOLUME
                 sound_volume_slider.increaseValue();

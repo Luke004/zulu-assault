@@ -1,65 +1,101 @@
 package menus;
 
+import main.SoundManager;
+import main.ZuluAssault;
+import menus.menu_elements.Buttons;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
+import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 
-public class DeathScreen implements iMenuScreen {
+public class DeathScreen extends AbstractMenuScreen {
+
+    private BasicGameState gameState;
 
     private Image you_are_dead_background_image;
     private Sound you_are_dead_sound;
 
-    public DeathScreen() {
+    private Buttons buttons;
+
+    public DeathScreen(BasicGameState gameState) {
+        super(gameState);
+        this.gameState = gameState;
         try {
             you_are_dead_background_image = new Image("assets/menus/you_are_dead.png");
             you_are_dead_sound = new Sound("audio/sounds/you_are_dead.ogg");
         } catch (SlickException e) {
             e.printStackTrace();
         }
+        Texture button_texture_inactive;
+        try {
+            button_texture_inactive = new Image("assets/menus/green_button_inactive.png").getTexture();
+            Texture button_texture_active = new Image("assets/menus/green_button_active.png").getTexture();
+            buttons = new Buttons(3, false, button_texture_active, button_texture_inactive,
+                    new Vector2f(100, 100), new String[]{
+                    "Replay Mission", "Load Game", "Main Menu"
+            });
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
+
     }
+
 
     @Override
     public void render(GameContainer gameContainer) {
         you_are_dead_background_image.draw();
+        buttons.draw();
     }
 
     @Override
-    public void update(GameContainer gameContainer) {
-
+    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+        super.update(gameContainer, stateBasedGame);
     }
 
     @Override
     public void onUpKeyPress(GameContainer gameContainer) {
-
+        buttons.onUpKeyPress();
     }
 
     @Override
     public void onDownKeyPress(GameContainer gameContainer) {
-
+        buttons.onDownKeyPress();
     }
 
     @Override
     public void onEnterKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-
+        switch (buttons.getCurrentButtonIdx()) {
+            case 0: // REPLAY MISSION
+                try {
+                    stateBasedGame.getState(ZuluAssault.LEVEL_1).init(gameContainer, stateBasedGame);
+                    stateBasedGame.enterState(ZuluAssault.LEVEL_1,
+                            new FadeOutTransition(), new FadeInTransition());
+                    ZuluAssault.prevState = gameState;
+                } catch (SlickException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 1: // LOAD A GAME
+                // TODO: LOAD
+                SoundManager.ERROR_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+                break;
+            case 2: // MAIN MENU
+                you_are_dead_sound.stop();
+                MainMenu.goToMenu(MainMenu.STATE_MAIN_MENU);
+                break;
+        }
     }
 
     @Override
     public void onExitKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
 
     }
-
-    @Override
-    public void onLeftKeyPress(GameContainer gameContainer) {
-
-    }
-
-    @Override
-    public void onRightKeyPress(GameContainer gameContainer) {
-
-    }
-
 
     @Override
     public void onEnterState(GameContainer gc) {

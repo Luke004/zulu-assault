@@ -6,32 +6,25 @@ import menus.menu_elements.Arrow;
 import org.newdawn.slick.*;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
-import java.awt.Font;
-
 import static menus.MainMenu.*;
 
 
-public class InGameScreen implements iMenuScreen {
+public class InGameScreen extends AbstractMenuScreen {
+
+    private BasicGameState gameState;
 
     private Arrow arrow;
     private Image main_menu_image, resume_image;
-    private Vector2f main_menu_image_position, title_string_position, resume_image_position;
-    private String title_string;
-    private TrueTypeFont ttf_title_string;
+    private Vector2f main_menu_image_position, resume_image_position;
 
-    public InGameScreen(GameContainer gameContainer) {
-        Font awtFont = new Font("Courier", Font.BOLD, 50);
-        ttf_title_string = new TrueTypeFont(awtFont, false);
-        title_string = "ZULU ASSAULT";
-        title_string_position = new Vector2f(
-                gameContainer.getWidth() / 2.f - ttf_title_string.getWidth(title_string) / 2.f,
-                gameContainer.getHeight() / 4.f - ttf_title_string.getHeight(title_string) / 2.f
-        );
-
+    public InGameScreen(BasicGameState gameState, GameContainer gameContainer) {
+        super(gameState);
+        this.gameState = gameState;
         try {
             main_menu_image = new Image("assets/menus/main_menu.png");
             main_menu_image_position = new Vector2f(
@@ -51,18 +44,15 @@ public class InGameScreen implements iMenuScreen {
     @Override
     public void render(GameContainer gameContainer) {
         resume_image.draw(resume_image_position.x, resume_image_position.y);
-        ttf_title_string.drawString(
-                title_string_position.x,
-                title_string_position.y,
-                title_string,
-                org.newdawn.slick.Color.lightGray);
+        MainMenu.drawGameTitle();
         main_menu_image.draw(main_menu_image_position.x, main_menu_image_position.y);
         arrow.draw();
         MainMenu.drawInfoStrings(gameContainer);
     }
 
     @Override
-    public void update(GameContainer gameContainer) {
+    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+        super.update(gameContainer, stateBasedGame);
         if (!main_menu_intro_sound.playing()) {
             if (!main_menu_music.playing()) {
                 main_menu_music.play();
@@ -96,6 +86,7 @@ public class InGameScreen implements iMenuScreen {
                     stateBasedGame.getState(ZuluAssault.LEVEL_1).init(gameContainer, stateBasedGame);
                     stateBasedGame.enterState(ZuluAssault.LEVEL_1,
                             new FadeOutTransition(), new FadeInTransition());
+                    ZuluAssault.prevState = gameState;
                 } catch (SlickException e) {
                     e.printStackTrace();
                 }
@@ -106,6 +97,9 @@ public class InGameScreen implements iMenuScreen {
                 break;
             case 4: // OPTIONS
                 MainMenu.goToMenu(MainMenu.STATE_OPTIONS_MENU);
+                // TO FIX A BUG REGARDING KEY PRESSES AFTER STATE CHANGES:
+                OptionsScreen.isFirstTimeKeyLeftCall = true;
+                OptionsScreen.isFirstTimeKeyRightCall = true;
                 break;
             case 5: // EXIT
                 System.exit(0);
@@ -115,16 +109,6 @@ public class InGameScreen implements iMenuScreen {
 
     @Override
     public void onExitKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-
-    }
-
-    @Override
-    public void onLeftKeyPress(GameContainer gameContainer) {
-
-    }
-
-    @Override
-    public void onRightKeyPress(GameContainer gameContainer) {
 
     }
 

@@ -259,6 +259,7 @@ public class Level_1 extends AbstractLevel implements GameState {
         //Tank tank = new NapalmTank(playerStartPos, false, true);
         //Tank tank = new ShellTank(playerStartPos, false, true);
         Tank tank = new CannonTank(playerStartPos, false, true);
+        tank.current_health = 1;
         Plane plane = new GreenEnemyPlane(playerStartPos, false, true);
         Robot robot = new ShellRobot(playerStartPos, false, true);
         //MovableWarAttender soldier = new PlayerSoldier(playerStartPos, false);

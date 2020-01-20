@@ -6,27 +6,21 @@ import menus.menu_elements.Arrow;
 import org.newdawn.slick.*;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
-import java.awt.Font;
-
 import static menus.MainMenu.*;
 
-public class MainScreen implements iMenuScreen {
+public class MainScreen extends AbstractMenuScreen {
 
     private Arrow arrow;
     private Image main_menu_image;
     private Vector2f main_menu_image_position;
-    private String title_string;
-    private TrueTypeFont ttf_title_string;
 
-    public MainScreen(GameContainer gameContainer) {
-        Font awtFont = new Font("Courier", Font.BOLD, 50);
-        ttf_title_string = new TrueTypeFont(awtFont, false);
-        title_string = "ZULU ASSAULT";
-
+    public MainScreen(BasicGameState gameState, GameContainer gameContainer) {
+        super(gameState);
         try {
             main_menu_image = new Image("assets/menus/main_menu.png");
             main_menu_image_position = new Vector2f(
@@ -42,12 +36,14 @@ public class MainScreen implements iMenuScreen {
     @Override
     public void render(GameContainer gameContainer) {
         main_menu_image.draw(main_menu_image_position.x, main_menu_image_position.y);
+        MainMenu.drawGameTitle();
         arrow.draw();
         MainMenu.drawInfoStrings(gameContainer);
     }
 
     @Override
-    public void update(GameContainer gameContainer) {
+    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+        super.update(gameContainer, stateBasedGame);
         if (!main_menu_intro_sound.playing()) {
             if (!main_menu_music.playing()) {
                 main_menu_music.play();
@@ -77,6 +73,7 @@ public class MainScreen implements iMenuScreen {
                     stateBasedGame.getState(ZuluAssault.LEVEL_1).init(gameContainer, stateBasedGame);
                     stateBasedGame.enterState(ZuluAssault.LEVEL_1,
                             new FadeOutTransition(), new FadeInTransition());
+                    ZuluAssault.prevState = gameState;
                 } catch (SlickException e) {
                     e.printStackTrace();
                 }
@@ -96,16 +93,6 @@ public class MainScreen implements iMenuScreen {
 
     @Override
     public void onExitKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-
-    }
-
-    @Override
-    public void onLeftKeyPress(GameContainer gameContainer) {
-
-    }
-
-    @Override
-    public void onRightKeyPress(GameContainer gameContainer) {
 
     }
 

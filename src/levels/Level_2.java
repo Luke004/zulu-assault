@@ -44,18 +44,6 @@ public class Level_2 extends AbstractLevel implements GameState {
     }
 
     @Override
-    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) {
-        super.update(gameContainer, stateBasedGame, i);
-
-        /*
-        if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
-            stateBasedGame.enterState(ZuluAssault.LEVEL_1);
-        }
-
-         */
-    }
-
-    @Override
     public int getID() {
         return ZuluAssault.LEVEL_2;
     }

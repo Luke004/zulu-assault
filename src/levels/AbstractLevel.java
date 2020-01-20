@@ -378,6 +378,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
                     stateBasedGame.enterState(ZuluAssault.MAIN_MENU,
                             new FadeOutTransition(), new FadeInTransition()
                     );
+                    ZuluAssault.prevState = this;
                 } else {
                     friendly_war_attenders.remove(warAttender);
                 }

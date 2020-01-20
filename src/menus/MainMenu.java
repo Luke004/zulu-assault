@@ -3,6 +3,7 @@ package menus;
 import main.SoundManager;
 import main.ZuluAssault;
 import org.newdawn.slick.*;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -24,12 +25,16 @@ public class MainMenu extends BasicGameState {
 
     private static int current_menu_idx, prev_menu_idx;
 
-    private iMenuScreen[] menus;
+    private AbstractMenuScreen[] menus;
 
     private static boolean firstCall_leave = true, firstCall_enter = true;
 
     protected static Sound main_menu_intro_sound;
     protected static Music main_menu_music;
+
+    protected static String title_string;
+    protected static Vector2f title_string_position;
+    private static TrueTypeFont ttf_title_string;
 
     private static String[] info_strings;
     private static TrueTypeFont ttf_info_string;
@@ -75,7 +80,15 @@ public class MainMenu extends BasicGameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-        Font awtFont = new Font("DialogInput", Font.PLAIN, 11);
+        Font awtFont = new Font("Courier", Font.BOLD, 50);
+        ttf_title_string = new TrueTypeFont(awtFont, false);
+        title_string = "ZULU ASSAULT";
+        title_string_position = new Vector2f(
+                gameContainer.getWidth() / 2.f - ttf_title_string.getWidth(title_string) / 2.f,
+                gameContainer.getHeight() / 4.f - ttf_title_string.getHeight(title_string) / 2.f
+        );
+
+        awtFont = new Font("DialogInput", Font.PLAIN, 11);
         ttf_info_string = new TrueTypeFont(awtFont, false);
         info_strings = new String[3];
         info_strings[0] = "(C) 1998 Dallas Nutsch";
@@ -96,13 +109,13 @@ public class MainMenu extends BasicGameState {
         } catch (SlickException e) {
             e.printStackTrace();
         }
-        menus = new iMenuScreen[6];
-        menus[STATE_MAIN_MENU] = new MainScreen(gameContainer);
-        menus[STATE_IN_GAME_MENU] = new InGameScreen(gameContainer);
-        menus[STATE_LOAD_GAME_MENU] = new LoadGameScreen(gameContainer);
-        menus[STATE_SAVE_GAME_MENU] = new SaveGameScreen(gameContainer);
-        menus[STATE_OPTIONS_MENU] = new OptionsScreen(gameContainer);
-        menus[STATE_DEATH_MENU] = new DeathScreen();
+        menus = new AbstractMenuScreen[6];
+        menus[STATE_MAIN_MENU] = new MainScreen(this, gameContainer);
+        menus[STATE_IN_GAME_MENU] = new InGameScreen(this, gameContainer);
+        menus[STATE_LOAD_GAME_MENU] = new LoadGameScreen(this, gameContainer);
+        menus[STATE_SAVE_GAME_MENU] = new SaveGameScreen(this, gameContainer);
+        menus[STATE_OPTIONS_MENU] = new OptionsScreen(this, gameContainer);
+        menus[STATE_DEATH_MENU] = new DeathScreen(this);
 
         goToMenu(STATE_MAIN_MENU);
     }
@@ -114,6 +127,7 @@ public class MainMenu extends BasicGameState {
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) {
+        /*
         if (gameContainer.getInput().isKeyPressed(Input.KEY_UP)) {
             SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             menus[current_menu_idx].onUpKeyPress(gameContainer);
@@ -132,8 +146,8 @@ public class MainMenu extends BasicGameState {
         if (gameContainer.getInput().isKeyPressed(Input.KEY_RIGHT)) {
             menus[current_menu_idx].onRightKeyPress(gameContainer);
         }
-
-        menus[current_menu_idx].update(gameContainer);
+         */
+        menus[current_menu_idx].update(gameContainer, stateBasedGame);
     }
 
     public static void goToMenu(int menu_idx) {
@@ -183,6 +197,14 @@ public class MainMenu extends BasicGameState {
                 gameContainer.getWidth() - ttf_info_string.getWidth(info_strings[2]) - TEXT_MARGIN,
                 TEXT_MARGIN,
                 info_strings[2]);
+    }
+
+    protected static void drawGameTitle() {
+        ttf_title_string.drawString(
+                title_string_position.x,
+                title_string_position.y,
+                title_string,
+                org.newdawn.slick.Color.lightGray);
     }
 
 

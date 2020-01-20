@@ -1,12 +1,14 @@
 package menus;
 
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class LoadGameScreen implements iMenuScreen {
+public class LoadGameScreen extends AbstractMenuScreen {
 
-    public LoadGameScreen(GameContainer gameContainer) {
 
+    public LoadGameScreen(BasicGameState gameState, GameContainer gameContainer) {
+        super(gameState);
     }
 
     @Override
@@ -15,7 +17,7 @@ public class LoadGameScreen implements iMenuScreen {
     }
 
     @Override
-    public void update(GameContainer gameContainer) {
+    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame) {
 
     }
 
@@ -36,16 +38,6 @@ public class LoadGameScreen implements iMenuScreen {
 
     @Override
     public void onExitKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-
-    }
-
-    @Override
-    public void onLeftKeyPress(GameContainer gameContainer) {
-
-    }
-
-    @Override
-    public void onRightKeyPress(GameContainer gameContainer) {
 
     }
 

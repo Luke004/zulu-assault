@@ -7,7 +7,7 @@ public interface iMenuScreen {
 
     void render(GameContainer gameContainer);
 
-    void update(GameContainer gameContainer);
+    void update(GameContainer gameContainer, StateBasedGame stateBasedGame);
 
     void onUpKeyPress(GameContainer gameContainer);
 
@@ -16,10 +16,6 @@ public interface iMenuScreen {
     void onEnterKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame);
 
     void onExitKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame);
-
-    void onLeftKeyPress(GameContainer gameContainer);
-
-    void onRightKeyPress(GameContainer gameContainer);
 
     void onEnterState(GameContainer gameContainer);
 
