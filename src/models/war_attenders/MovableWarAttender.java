@@ -125,6 +125,7 @@ public abstract class MovableWarAttender extends WarAttender {
 
         if (isDestroyed) {
             blockMovement();
+            rotate_speed = 0.f;
         }
     }
 
