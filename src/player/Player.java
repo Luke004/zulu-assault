@@ -19,7 +19,7 @@ import static logic.TileMapInfo.LEVEL_HEIGHT_PIXELS;
 import static logic.TileMapInfo.LEVEL_WIDTH_PIXELS;
 
 public class Player {
-    private MovableWarAttender base_soldier;
+    private PlayerSoldier base_soldier;
     private MovableWarAttender current_warAttender;
     private ItemChangeListener GUI_listener;
     private int[] item_amounts;
@@ -31,6 +31,7 @@ public class Player {
         current_warAttender.showAccessibleAnimation(false);
         this.current_warAttender = current_warAttender;
         item_amounts = new int[4];
+        base_soldier = new PlayerSoldier(new Vector2f(0, 0), false);
     }
 
     public void update(GameContainer gameContainer, int deltaTime) {
@@ -62,19 +63,11 @@ public class Player {
     public void setWarAttender(MovableWarAttender warAttender, EnterAction action) {
         switch (action) {
             case ENTERING:
-                if (base_soldier == null) {
-                    base_soldier = current_warAttender;
-                }
                 this.current_warAttender = warAttender;
                 break;
             case LEAVING:
                 Vector2f spawn_position = warAttender.calculateSoldierSpawnPosition();
-                if (base_soldier == null) {
-                    base_soldier = new PlayerSoldier(new Vector2f(spawn_position.x, spawn_position.y), false);
-                } else {
-                    // soldier already exists, set its position to tank current pos
-                    ((Soldier) base_soldier).setPosition(spawn_position);
-                }
+                base_soldier.setPosition(spawn_position);
                 // set soldiers rotation so he's facing towards the tank at its back
                 base_soldier.setRotation(warAttender.getRotation());
                 this.current_warAttender = base_soldier;
@@ -85,6 +78,10 @@ public class Player {
 
     public MovableWarAttender getWarAttender() {
         return current_warAttender;
+    }
+
+    public PlayerSoldier getBaseSoldier() {
+        return base_soldier;
     }
 
     public void addListener(ItemChangeListener gui) {

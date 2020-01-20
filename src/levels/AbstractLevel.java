@@ -137,6 +137,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             warAttender.addListeners(this);
         }
         player.getWarAttender().addListeners(this);
+        player.getBaseSoldier().addListeners(this);
     }
 
     /*
