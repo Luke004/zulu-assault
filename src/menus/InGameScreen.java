@@ -3,14 +3,14 @@ package menus;
 import main.SoundManager;
 import main.ZuluAssault;
 import menus.menu_elements.Arrow;
-import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.*;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
-import java.awt.*;
+import java.awt.Font;
+
+import static menus.MainMenu.*;
 
 
 public class InGameScreen implements iMenuScreen {
@@ -39,10 +39,11 @@ public class InGameScreen implements iMenuScreen {
             resume_image_position = new Vector2f(
                     main_menu_image_position.x,
                     main_menu_image_position.y - resume_image.getHeight());
+
+            arrow = new Arrow(gameContainer, 6, (int) resume_image_position.y);
         } catch (SlickException e) {
             e.printStackTrace();
         }
-        arrow = new Arrow(6, 265);
     }
 
     @Override
@@ -55,15 +56,30 @@ public class InGameScreen implements iMenuScreen {
                 org.newdawn.slick.Color.lightGray);
         main_menu_image.draw(main_menu_image_position.x, main_menu_image_position.y);
         arrow.draw();
+        ttf_info_string.drawString(
+                5,
+                gameContainer.getHeight() - ttf_info_string.getHeight() - 5,
+                info_string);
     }
 
     @Override
-    public void onUpKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+    public void update(GameContainer gameContainer) {
+        if (!main_menu_intro_sound.playing()) {
+            if (!main_menu_music.playing()) {
+                main_menu_music.play();
+                main_menu_music.loop();
+                main_menu_music.setVolume(UserSettings.MUSIC_VOLUME);
+            }
+        }
+    }
+
+    @Override
+    public void onUpKeyPress(GameContainer gameContainer) {
         arrow.moveUp();
     }
 
     @Override
-    public void onDownKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+    public void onDownKeyPress(GameContainer gameContainer) {
         arrow.moveDown();
     }
 
@@ -97,12 +113,28 @@ public class InGameScreen implements iMenuScreen {
     }
 
     @Override
-    public void onLeftKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+    public void onExitKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
 
     }
 
     @Override
-    public void onRightKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+    public void onLeftKeyPress(GameContainer gameContainer) {
 
+    }
+
+    @Override
+    public void onRightKeyPress(GameContainer gameContainer) {
+
+    }
+
+    @Override
+    public void onEnterState(GameContainer gc) {
+        main_menu_intro_sound.play(1.f, UserSettings.MUSIC_VOLUME);
+    }
+
+    @Override
+    public void onLeaveState(GameContainer gameContainer) {
+        main_menu_intro_sound.stop();
+        main_menu_music.stop();
     }
 }

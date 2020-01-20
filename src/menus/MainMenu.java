@@ -19,19 +19,20 @@ public class MainMenu extends BasicGameState {
             STATE_IN_GAME_MENU = 1,
             STATE_LOAD_GAME_MENU = 2,
             STATE_SAVE_GAME_MENU = 3,
-            STATE_OPTIONS_MENU = 4;
+            STATE_OPTIONS_MENU = 4,
+            STATE_DEATH_MENU = 5;
 
     private static int current_menu_idx, prev_menu_idx;
 
     private iMenuScreen[] menus;
 
-    private String info_string;
+    protected static String info_string;
     private static boolean firstCall_leave = true, firstCall_enter = true;
 
-    private static Sound main_menu_intro_sound;
-    private static Music main_menu_music;
+    protected static Sound main_menu_intro_sound;
+    protected static Music main_menu_music;
 
-    private TrueTypeFont ttf_info_string;
+    protected static TrueTypeFont ttf_info_string;
 
     public MainMenu() {
         try {
@@ -91,12 +92,13 @@ public class MainMenu extends BasicGameState {
         } catch (SlickException e) {
             e.printStackTrace();
         }
-        menus = new iMenuScreen[5];
+        menus = new iMenuScreen[6];
         menus[STATE_MAIN_MENU] = new MainScreen(gameContainer);
         menus[STATE_IN_GAME_MENU] = new InGameScreen(gameContainer);
         menus[STATE_LOAD_GAME_MENU] = new LoadGameScreen(gameContainer);
         menus[STATE_SAVE_GAME_MENU] = new SaveGameScreen(gameContainer);
         menus[STATE_OPTIONS_MENU] = new OptionsScreen(gameContainer);
+        menus[STATE_DEATH_MENU] = new DeathScreen();
 
         goToMenu(STATE_MAIN_MENU);
     }
@@ -104,21 +106,17 @@ public class MainMenu extends BasicGameState {
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) {
         menus[current_menu_idx].render(gameContainer);
-        ttf_info_string.drawString(
-                5,
-                gameContainer.getHeight() - ttf_info_string.getHeight() - 5,
-                info_string);
     }
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) {
         if (gameContainer.getInput().isKeyPressed(Input.KEY_UP)) {
             SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
-            menus[current_menu_idx].onUpKeyPress(gameContainer, stateBasedGame);
+            menus[current_menu_idx].onUpKeyPress(gameContainer);
         }
         if (gameContainer.getInput().isKeyPressed(Input.KEY_DOWN)) {
             SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
-            menus[current_menu_idx].onDownKeyPress(gameContainer, stateBasedGame);
+            menus[current_menu_idx].onDownKeyPress(gameContainer);
         }
         if (gameContainer.getInput().isKeyPressed(Input.KEY_ENTER)) {
             SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
@@ -126,21 +124,14 @@ public class MainMenu extends BasicGameState {
         }
         if (gameContainer.getInput().isKeyPressed(Input.KEY_LEFT)) {
             SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
-            menus[current_menu_idx].onLeftKeyPress(gameContainer, stateBasedGame);
+            menus[current_menu_idx].onLeftKeyPress(gameContainer);
         }
         if (gameContainer.getInput().isKeyPressed(Input.KEY_RIGHT)) {
             SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
-            menus[current_menu_idx].onRightKeyPress(gameContainer, stateBasedGame);
+            menus[current_menu_idx].onRightKeyPress(gameContainer);
         }
 
-        if (!main_menu_intro_sound.playing()) {
-            if (!main_menu_music.playing()) {
-                main_menu_music.play();
-                main_menu_music.loop();
-                main_menu_music.setVolume(UserSettings.MUSIC_VOLUME);
-            }
-        }
-
+        menus[current_menu_idx].update(gameContainer);
     }
 
     public static void goToMenu(int menu_idx) {
@@ -164,14 +155,8 @@ public class MainMenu extends BasicGameState {
             firstCall_enter = false;
             return;
         }
-        // show the mouse cursor
-        gameContainer.setMouseGrabbed(false);
-        main_menu_intro_sound.play(1.f, UserSettings.MUSIC_VOLUME);
-
-        if (ZuluAssault.prevState != null) {
-            // a previous state exists -> user is in game -> switch states
-            goToMenu(STATE_IN_GAME_MENU);
-        }
+        gameContainer.setMouseGrabbed(false);   // show the mouse cursor
+        menus[current_menu_idx].onEnterState(gameContainer);
     }
 
     @Override
@@ -180,8 +165,7 @@ public class MainMenu extends BasicGameState {
             firstCall_leave = false;
             return;
         }
-        main_menu_intro_sound.stop();
-        main_menu_music.stop();
+        menus[current_menu_idx].onLeaveState(gameContainer);
     }
 
 

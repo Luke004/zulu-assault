@@ -14,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import static menus.MainMenu.*;
 import static menus.UserSettings.VOLUME_MAX_LEVEL;
 
 
@@ -44,11 +45,11 @@ public class OptionsScreen implements iMenuScreen {
                     back_image_position.y + back_image.getHeight() * 2
             ), "Music Volume", VOLUME_MAX_LEVEL);
             music_volume_slider.setValue(UserSettings.MUSIC_VOLUME_LEVEL);
+
+            arrow = new Arrow(gameContainer, 3, (int) back_image_position.y);
         } catch (SlickException e) {
             e.printStackTrace();
         }
-        arrow = new Arrow(3, 305);
-
     }
 
     @Override
@@ -57,15 +58,30 @@ public class OptionsScreen implements iMenuScreen {
         sound_volume_slider.draw();
         music_volume_slider.draw();
         arrow.draw();
+        ttf_info_string.drawString(
+                5,
+                gameContainer.getHeight() - ttf_info_string.getHeight() - 5,
+                info_string);
     }
 
     @Override
-    public void onUpKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+    public void update(GameContainer gameContainer) {
+        if (!main_menu_intro_sound.playing()) {
+            if (!main_menu_music.playing()) {
+                main_menu_music.play();
+                main_menu_music.loop();
+                main_menu_music.setVolume(UserSettings.MUSIC_VOLUME);
+            }
+        }
+    }
+
+    @Override
+    public void onUpKeyPress(GameContainer gameContainer) {
         arrow.moveUp();
     }
 
     @Override
-    public void onDownKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+    public void onDownKeyPress(GameContainer gameContainer) {
         arrow.moveDown();
     }
 
@@ -104,7 +120,12 @@ public class OptionsScreen implements iMenuScreen {
     }
 
     @Override
-    public void onLeftKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+    public void onExitKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+
+    }
+
+    @Override
+    public void onLeftKeyPress(GameContainer gameContainer) {
         switch (arrow.currIdx) {
             case 1: // SOUND VOLUME
                 sound_volume_slider.decreaseValue();
@@ -119,7 +140,7 @@ public class OptionsScreen implements iMenuScreen {
     }
 
     @Override
-    public void onRightKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+    public void onRightKeyPress(GameContainer gameContainer) {
         switch (arrow.currIdx) {
             case 1: // SOUND VOLUME
                 sound_volume_slider.increaseValue();
@@ -132,5 +153,16 @@ public class OptionsScreen implements iMenuScreen {
                 break;
         }
 
+    }
+
+    @Override
+    public void onEnterState(GameContainer gc) {
+
+    }
+
+    @Override
+    public void onLeaveState(GameContainer gameContainer) {
+        main_menu_intro_sound.stop();
+        main_menu_music.stop();
     }
 }

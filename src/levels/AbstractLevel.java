@@ -4,6 +4,7 @@ import logic.*;
 import logic.level_listeners.GroundTileDamageListener;
 import logic.level_listeners.WarAttenderDeleteListener;
 import main.ZuluAssault;
+import menus.MainMenu;
 import menus.UserSettings;
 import models.StaticWarAttender;
 import models.animations.explosion.BigExplosionAnimation;
@@ -35,6 +36,8 @@ import java.util.List;
 import static logic.TileMapInfo.*;
 
 public abstract class AbstractLevel extends BasicGameState implements WarAttenderDeleteListener, GroundTileDamageListener {
+
+    private StateBasedGame stateBasedGame;
 
     private static boolean has_initialized_once;
     protected int init_counter;
@@ -92,6 +95,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         if (!has_initialized_once) {
             // this gets only executed once
             has_initialized_once = true;
+            this.stateBasedGame = stateBasedGame;
             TileMapInfo.init();
 
             collisionHandler = new CollisionHandler();
@@ -291,6 +295,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         camera.centerOn(player.getWarAttender().position.x, player.getWarAttender().position.y);
 
         if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
+            MainMenu.goToMenu(MainMenu.STATE_IN_GAME_MENU);
             stateBasedGame.enterState(ZuluAssault.MAIN_MENU);
             ZuluAssault.prevState = this;
         }
@@ -364,7 +369,14 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             }
         } else {
             if (warAttender instanceof MovableWarAttender) {
-                friendly_war_attenders.remove(warAttender);
+                if (warAttender == player.getWarAttender()) {
+                    // THE PLAYER DIED
+                    System.out.println("PLAYER DIED");
+                    MainMenu.goToMenu(MainMenu.STATE_DEATH_MENU);
+                    stateBasedGame.enterState(ZuluAssault.MAIN_MENU);
+                } else {
+                    friendly_war_attenders.remove(warAttender);
+                }
             }
             if (warAttender instanceof Soldier) screenDrawer.drawDeadSoldierBody(3, warAttender);
             else {

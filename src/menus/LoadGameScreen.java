@@ -1,6 +1,5 @@
 package menus;
 
-import menus.menu_elements.Arrow;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -16,13 +15,18 @@ public class LoadGameScreen implements iMenuScreen {
     }
 
     @Override
-    public void onUpKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-        //arrow.moveUp();
+    public void update(GameContainer gameContainer) {
+
     }
 
     @Override
-    public void onDownKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-        //arrow.moveDown();
+    public void onUpKeyPress(GameContainer gameContainer) {
+
+    }
+
+    @Override
+    public void onDownKeyPress(GameContainer gameContainer) {
+
     }
 
     @Override
@@ -31,12 +35,27 @@ public class LoadGameScreen implements iMenuScreen {
     }
 
     @Override
-    public void onLeftKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+    public void onExitKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
 
     }
 
     @Override
-    public void onRightKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+    public void onLeftKeyPress(GameContainer gameContainer) {
+
+    }
+
+    @Override
+    public void onRightKeyPress(GameContainer gameContainer) {
+
+    }
+
+    @Override
+    public void onEnterState(GameContainer gameContainer) {
+
+    }
+
+    @Override
+    public void onLeaveState(GameContainer gameContainer) {
 
     }
 }

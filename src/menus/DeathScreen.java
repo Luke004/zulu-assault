@@ -1,17 +1,28 @@
 package menus;
 
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class SaveGameScreen implements iMenuScreen {
+public class DeathScreen implements iMenuScreen {
 
-    public SaveGameScreen(GameContainer gameContainer) {
+    private Image you_are_dead_background_image;
+    private Sound you_are_dead_sound;
 
+    public DeathScreen() {
+        try {
+            you_are_dead_background_image = new Image("assets/menus/you_are_dead.png");
+            you_are_dead_sound = new Sound("audio/sounds/you_are_dead.ogg");
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void render(GameContainer gameContainer) {
-
+        you_are_dead_background_image.draw();
     }
 
     @Override
@@ -21,12 +32,12 @@ public class SaveGameScreen implements iMenuScreen {
 
     @Override
     public void onUpKeyPress(GameContainer gameContainer) {
-        //arrow.moveUp();
+
     }
 
     @Override
     public void onDownKeyPress(GameContainer gameContainer) {
-        //arrow.moveDown();
+
     }
 
     @Override
@@ -49,13 +60,14 @@ public class SaveGameScreen implements iMenuScreen {
 
     }
 
+
     @Override
     public void onEnterState(GameContainer gc) {
-
+        you_are_dead_sound.play(1.f, UserSettings.MUSIC_VOLUME);
     }
 
     @Override
     public void onLeaveState(GameContainer gameContainer) {
-
+        you_are_dead_sound.stop();
     }
 }

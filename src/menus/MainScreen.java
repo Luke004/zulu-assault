@@ -10,6 +10,8 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import java.awt.Font;
 
+import static menus.MainMenu.*;
+
 public class MainScreen implements iMenuScreen {
 
     private Arrow arrow;
@@ -28,10 +30,11 @@ public class MainScreen implements iMenuScreen {
             main_menu_image_position = new Vector2f(
                     gameContainer.getWidth() / 2.f - main_menu_image.getWidth() / 2.f,
                     gameContainer.getHeight() / 2.f);
+
+            arrow = new Arrow(gameContainer, 5, (int) main_menu_image_position.y);
         } catch (SlickException e) {
             e.printStackTrace();
         }
-        arrow = new Arrow(5, 305);
     }
 
     @Override
@@ -42,15 +45,30 @@ public class MainScreen implements iMenuScreen {
                 Color.lightGray);
         main_menu_image.draw(main_menu_image_position.x, main_menu_image_position.y);
         arrow.draw();
+        ttf_info_string.drawString(
+                5,
+                gameContainer.getHeight() - ttf_info_string.getHeight() - 5,
+                info_string);
     }
 
     @Override
-    public void onUpKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+    public void update(GameContainer gameContainer) {
+        if (!main_menu_intro_sound.playing()) {
+            if (!main_menu_music.playing()) {
+                main_menu_music.play();
+                main_menu_music.loop();
+                main_menu_music.setVolume(UserSettings.MUSIC_VOLUME);
+            }
+        }
+    }
+
+    @Override
+    public void onUpKeyPress(GameContainer gameContainer) {
         arrow.moveUp();
     }
 
     @Override
-    public void onDownKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+    public void onDownKeyPress(GameContainer gameContainer) {
         arrow.moveDown();
     }
 
@@ -81,12 +99,28 @@ public class MainScreen implements iMenuScreen {
     }
 
     @Override
-    public void onLeftKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+    public void onExitKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
 
     }
 
     @Override
-    public void onRightKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+    public void onLeftKeyPress(GameContainer gameContainer) {
 
+    }
+
+    @Override
+    public void onRightKeyPress(GameContainer gameContainer) {
+
+    }
+
+    @Override
+    public void onEnterState(GameContainer gc) {
+        main_menu_intro_sound.play(1.f, UserSettings.MUSIC_VOLUME);
+    }
+
+    @Override
+    public void onLeaveState(GameContainer gameContainer) {
+        main_menu_intro_sound.stop();
+        main_menu_music.stop();
     }
 }
