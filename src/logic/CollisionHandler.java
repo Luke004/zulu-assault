@@ -207,6 +207,12 @@ public class CollisionHandler {
                 return;
             }
         }
+
+        // COLLISION BETWEEN WAR ATTENDER ITSELF AND THE PLAYER
+        if (current_warAttender.getCollisionModel().intersects(player.getWarAttender().getCollisionModel())) {
+            if (player.getWarAttender().position == current_warAttender.position) return;    // its himself
+            current_warAttender.onCollision(player.getWarAttender());
+        }
     }
 
     private void handleBulletCollisions(MovableWarAttender player_warAttender) {
