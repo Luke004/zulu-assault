@@ -24,6 +24,8 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 import org.newdawn.slick.tiled.TiledMap;
 import player.Player;
 import screen_drawer.ScreenDrawer;
@@ -296,7 +298,8 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
 
         if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
             MainMenu.goToMenu(MainMenu.STATE_IN_GAME_MENU);
-            stateBasedGame.enterState(ZuluAssault.MAIN_MENU);
+            stateBasedGame.enterState(ZuluAssault.MAIN_MENU,
+                    new FadeOutTransition(), new FadeInTransition());
             ZuluAssault.prevState = this;
         }
 
@@ -371,9 +374,10 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             if (warAttender instanceof MovableWarAttender) {
                 if (warAttender == player.getWarAttender()) {
                     // THE PLAYER DIED
-                    System.out.println("PLAYER DIED");
                     MainMenu.goToMenu(MainMenu.STATE_DEATH_MENU);
-                    stateBasedGame.enterState(ZuluAssault.MAIN_MENU);
+                    stateBasedGame.enterState(ZuluAssault.MAIN_MENU,
+                            new FadeOutTransition(), new FadeInTransition()
+                    );
                 } else {
                     friendly_war_attenders.remove(warAttender);
                 }

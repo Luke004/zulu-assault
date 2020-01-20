@@ -26,13 +26,14 @@ public class MainMenu extends BasicGameState {
 
     private iMenuScreen[] menus;
 
-    protected static String info_string;
     private static boolean firstCall_leave = true, firstCall_enter = true;
 
     protected static Sound main_menu_intro_sound;
     protected static Music main_menu_music;
 
-    protected static TrueTypeFont ttf_info_string;
+    private static String[] info_strings;
+    private static TrueTypeFont ttf_info_string;
+    private final static int TEXT_MARGIN = 5;
 
     public MainMenu() {
         try {
@@ -74,10 +75,13 @@ public class MainMenu extends BasicGameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-        Font awtFont = new Font("DialogInput", Font.PLAIN, 12);
+        Font awtFont = new Font("DialogInput", Font.PLAIN, 11);
         ttf_info_string = new TrueTypeFont(awtFont, false);
+        info_strings = new String[3];
+        info_strings[0] = "(C) 1998 Dallas Nutsch";
+        info_strings[1] = "Rebuild by Lukas Hilfrich";
+        info_strings[2] = "Alpha Test Version 1.0";
 
-        info_string = "(C) 1998 Dallas Nutsch - Alpha Test Version Rebuild by Lukas Hilfrich";
 
         try {
             // set custom animated mouse cursor
@@ -123,11 +127,9 @@ public class MainMenu extends BasicGameState {
             menus[current_menu_idx].onEnterKeyPress(gameContainer, stateBasedGame);
         }
         if (gameContainer.getInput().isKeyPressed(Input.KEY_LEFT)) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             menus[current_menu_idx].onLeftKeyPress(gameContainer);
         }
         if (gameContainer.getInput().isKeyPressed(Input.KEY_RIGHT)) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             menus[current_menu_idx].onRightKeyPress(gameContainer);
         }
 
@@ -166,6 +168,21 @@ public class MainMenu extends BasicGameState {
             return;
         }
         menus[current_menu_idx].onLeaveState(gameContainer);
+    }
+
+    protected static void drawInfoStrings(GameContainer gameContainer) {
+        ttf_info_string.drawString(
+                TEXT_MARGIN,
+                gameContainer.getHeight() - ttf_info_string.getHeight() - TEXT_MARGIN,
+                info_strings[0]);
+        ttf_info_string.drawString(
+                gameContainer.getWidth() - ttf_info_string.getWidth(info_strings[1]) - TEXT_MARGIN,
+                gameContainer.getHeight() - ttf_info_string.getHeight() - TEXT_MARGIN,
+                info_strings[1]);
+        ttf_info_string.drawString(
+                gameContainer.getWidth() - ttf_info_string.getWidth(info_strings[2]) - TEXT_MARGIN,
+                TEXT_MARGIN,
+                info_strings[2]);
     }
 
 

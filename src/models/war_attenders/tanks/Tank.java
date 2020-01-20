@@ -213,7 +213,6 @@ public abstract class Tank extends MovableWarAttender {
 
     @Override
     public void onCollision(MovableWarAttender warAttender) {
-        System.out.println("TANK COLLISION");
         if (warAttender instanceof Tank || warAttender instanceof Robot) {
             blockMovement();
             if (!isHostile && warAttender.isHostile) warAttender.changeHealth(-10.f);

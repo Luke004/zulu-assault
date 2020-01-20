@@ -1,5 +1,6 @@
 package menus;
 
+import main.SoundManager;
 import menus.menu_elements.Arrow;
 import menus.menu_elements.Slider;
 import org.newdawn.slick.GameContainer;
@@ -58,10 +59,7 @@ public class OptionsScreen implements iMenuScreen {
         sound_volume_slider.draw();
         music_volume_slider.draw();
         arrow.draw();
-        ttf_info_string.drawString(
-                5,
-                gameContainer.getHeight() - ttf_info_string.getHeight() - 5,
-                info_string);
+        MainMenu.drawInfoStrings(gameContainer);
     }
 
     @Override
@@ -126,6 +124,7 @@ public class OptionsScreen implements iMenuScreen {
 
     @Override
     public void onLeftKeyPress(GameContainer gameContainer) {
+        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
         switch (arrow.currIdx) {
             case 1: // SOUND VOLUME
                 sound_volume_slider.decreaseValue();
@@ -141,6 +140,7 @@ public class OptionsScreen implements iMenuScreen {
 
     @Override
     public void onRightKeyPress(GameContainer gameContainer) {
+        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
         switch (arrow.currIdx) {
             case 1: // SOUND VOLUME
                 sound_volume_slider.increaseValue();

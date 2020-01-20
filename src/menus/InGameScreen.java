@@ -7,6 +7,8 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import java.awt.Font;
 
@@ -56,10 +58,7 @@ public class InGameScreen implements iMenuScreen {
                 org.newdawn.slick.Color.lightGray);
         main_menu_image.draw(main_menu_image_position.x, main_menu_image_position.y);
         arrow.draw();
-        ttf_info_string.drawString(
-                5,
-                gameContainer.getHeight() - ttf_info_string.getHeight() - 5,
-                info_string);
+        MainMenu.drawInfoStrings(gameContainer);
     }
 
     @Override
@@ -87,14 +86,16 @@ public class InGameScreen implements iMenuScreen {
     public void onEnterKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
         switch (arrow.currIdx) {
             case 0: // RESUME
-                stateBasedGame.enterState(ZuluAssault.prevState.getID());
+                stateBasedGame.enterState(ZuluAssault.prevState.getID(),
+                        new FadeOutTransition(), new FadeInTransition());
                 break;
             case 1: // NEW
                 // START NEW GAME
                 try {
                     // init a new game starting with level 1
                     stateBasedGame.getState(ZuluAssault.LEVEL_1).init(gameContainer, stateBasedGame);
-                    stateBasedGame.enterState(ZuluAssault.LEVEL_1);
+                    stateBasedGame.enterState(ZuluAssault.LEVEL_1,
+                            new FadeOutTransition(), new FadeInTransition());
                 } catch (SlickException e) {
                     e.printStackTrace();
                 }
