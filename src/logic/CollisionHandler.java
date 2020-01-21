@@ -1,6 +1,5 @@
 package logic;
 
-import levels.AbstractLevel;
 import logic.level_listeners.WarAttenderDeleteListener;
 import menus.UserSettings;
 import models.CollisionModel;
@@ -13,7 +12,6 @@ import models.animations.smoke.SmokeAnimation;
 import models.interaction_circles.HealthCircle;
 import models.interaction_circles.InteractionCircle;
 import models.interaction_circles.TeleportCircle;
-import models.items.Item;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
 import models.war_attenders.planes.Plane;
@@ -22,11 +20,9 @@ import models.weapons.*;
 import models.weapons.projectiles.Projectile;
 import models.weapons.projectiles.iAirProjectile;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.tiled.TiledMap;
 import player.Player;
 
 import static levels.AbstractLevel.*;
@@ -271,20 +267,20 @@ public class CollisionHandler {
                 } else if (weapon instanceof Uzi) {
                     bullet_hit_sound.play(1.f, UserSettings.SOUND_VOLUME);
                     if (!(hostileWarAttender instanceof Soldier)) {
-                        uziHitExplosionAnimation.play(projectile.pos.x, projectile.pos.y,
+                        uziHitExplosionAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y,
                                 random.nextInt(360));
 
-                        uziDamageAnimation.play(projectile.pos.x, projectile.pos.y,
-                                projectile.image.getRotation() - 90
+                        uziDamageAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y,
+                                projectile.projectile_image.getRotation() - 90
                                         + random.nextInt(30 + 1 + 30) - 30);
                         // add random extra rotation [-30 , +30]
                     }
                 } else if (weapon instanceof Shell || weapon instanceof RocketLauncher) {
                     explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
-                    bigExplosionAnimation.play(projectile.pos.x, projectile.pos.y, 90);
+                    bigExplosionAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y, 90);
                 } else if (weapon instanceof Plasma) {
                     bullet_hit_sound.play(1.f, UserSettings.SOUND_VOLUME);
-                    plasmaDamageAnimation.play(projectile.pos.x, projectile.pos.y, 0);
+                    plasmaDamageAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y, 0);
                 }
                 hostileWarAttender.changeHealth(-weapon.getBulletDamage());
                 projectile_iterator.remove();   // remove bullet
@@ -327,8 +323,8 @@ public class CollisionHandler {
     }
 
     private boolean handleGroundProjectileTileCollision(Projectile projectile, Weapon weapon, Iterator<Projectile> bullet_iterator) {
-        int x = (int) projectile.pos.x / TILE_WIDTH;
-        int y = (int) projectile.pos.y / TILE_HEIGHT;
+        int x = (int) projectile.projectile_pos.x / TILE_WIDTH;
+        int y = (int) projectile.projectile_pos.y / TILE_HEIGHT;
         int tile_ID = map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
 
 
@@ -336,7 +332,7 @@ public class CollisionHandler {
             if (tile_ID == destructible_tile_indices[idx]) {
                 if (weapon instanceof RocketLauncher || weapon instanceof Shell) {
                     // it's a one shot, destroy tile directly
-                    bigExplosionAnimation.play(projectile.pos.x, projectile.pos.y, 90);
+                    bigExplosionAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y, 90);
 
                     // destroyed by bullet, show destruction animation using level listener
                     level_delete_listener.notifyForDestructibleTileDeletion(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20);
@@ -359,10 +355,10 @@ public class CollisionHandler {
                         continue;
                     } else if (weapon instanceof Uzi) {
                         bullet_hit_sound.play(1.f, UserSettings.SOUND_VOLUME);
-                        uziHitExplosionAnimation.play(projectile.pos.x, projectile.pos.y, random.nextInt(360));
+                        uziHitExplosionAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y, random.nextInt(360));
                     } else if (weapon instanceof Plasma) {
                         bullet_hit_sound.play(1.f, UserSettings.SOUND_VOLUME);
-                        plasmaDamageAnimation.play(projectile.pos.x, projectile.pos.y, 0);
+                        plasmaDamageAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y, 0);
                     }
                     damageTile(x, y, weapon, destructible_tile_replace_indices[idx], null);
                 }
@@ -374,8 +370,8 @@ public class CollisionHandler {
     }
 
     private void handleGroundProjectileStaticWarAttenderCollision(Projectile projectile, Weapon weapon, Iterator<Projectile> bullet_iterator) {
-        int x = (int) projectile.pos.x / TILE_WIDTH;
-        int y = (int) projectile.pos.y / TILE_HEIGHT;
+        int x = (int) projectile.projectile_pos.x / TILE_WIDTH;
+        int y = (int) projectile.projectile_pos.y / TILE_HEIGHT;
         int tile_ID = map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
 
         for (int idx = 0; idx < staticWarAttender_indices.length; ++idx) {
@@ -619,13 +615,13 @@ public class CollisionHandler {
 
     private void showBulletHitAnimation(Weapon weapon, Projectile projectile) {
         if (weapon instanceof Uzi) {
-            uziHitExplosionAnimation.play(projectile.pos.x, projectile.pos.y, random.nextInt(360));
-            uziDamageAnimation.play(projectile.pos.x, projectile.pos.y, projectile.image.getRotation() - 90
+            uziHitExplosionAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y, random.nextInt(360));
+            uziDamageAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y, projectile.projectile_image.getRotation() - 90
                     + random.nextInt(30 + 1 + 30) - 30);  // add random extra rotation [-30 , +30]
         } else if (weapon instanceof Shell || weapon instanceof RocketLauncher) {
-            bigExplosionAnimation.play(projectile.pos.x, projectile.pos.y, 90);
+            bigExplosionAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y, 90);
         } else if (weapon instanceof Plasma) {
-            plasmaDamageAnimation.play(projectile.pos.x, projectile.pos.y, 0);
+            plasmaDamageAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y, 0);
         }
     }
 
@@ -687,16 +683,16 @@ public class CollisionHandler {
 
     private boolean removeProjectileAtMapEdge(Projectile projectile, Iterator<Projectile> bullet_iterator) {
         // remove bullet if edge of map was reached
-        if (projectile.pos.x < 0) {
+        if (projectile.projectile_pos.x < 0) {
             bullet_iterator.remove();
             return true;
-        } else if (projectile.pos.y < 0) {
+        } else if (projectile.projectile_pos.y < 0) {
             bullet_iterator.remove();
             return true;
-        } else if (projectile.pos.x > LEVEL_WIDTH_PIXELS - 1) {
+        } else if (projectile.projectile_pos.x > LEVEL_WIDTH_PIXELS - 1) {
             bullet_iterator.remove();
             return true;
-        } else if (projectile.pos.y > LEVEL_HEIGHT_PIXELS - 1) {
+        } else if (projectile.projectile_pos.y > LEVEL_HEIGHT_PIXELS - 1) {
             bullet_iterator.remove();
             return true;
         }

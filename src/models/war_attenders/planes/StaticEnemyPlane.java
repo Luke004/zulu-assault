@@ -25,7 +25,7 @@ public class StaticEnemyPlane extends StaticWarAttender {
     }
 
     @Override
-    public void setRotation(float degree) {
+    public void changeAimingDirection(float degree, int deltaTime) {
 
     }
 }

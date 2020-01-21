@@ -6,9 +6,6 @@ import logic.WayPointManager;
 import menus.UserSettings;
 import models.CollisionModel;
 import models.war_attenders.planes.Plane;
-import models.war_attenders.robots.Robot;
-import models.war_attenders.tanks.Tank;
-import models.weapons.AGM;
 import models.weapons.MegaPulse;
 import models.weapons.Weapon;
 import models.weapons.projectiles.Projectile;
@@ -80,9 +77,9 @@ public abstract class MovableWarAttender extends WarAttender {
         this.isDrivable = isDrivable;
 
         if (isDrivable) {
-            turret_rotate_speed = 0.15f;
+            turret_rotate_speed = 0.2f;
         } else {
-            turret_rotate_speed = 0.5f;
+            turret_rotate_speed = 0.07f;
         }
     }
 
@@ -240,6 +237,8 @@ public abstract class MovableWarAttender extends WarAttender {
 
     public abstract void rotate(RotateDirection r, int deltaTime);
 
+    public abstract void setRotation(float degree);
+
     public void activateItem(Player.Item_e item) {
         switch (item) {
             case INVINCIBILITY:
@@ -269,8 +268,8 @@ public abstract class MovableWarAttender extends WarAttender {
                             Iterator<Projectile> projectile_iterator = weapon.getProjectiles();
                             while (projectile_iterator.hasNext()) {
                                 Projectile projectile = projectile_iterator.next();
-                                projectile.dir.x *= -1;
-                                projectile.dir.y *= -1;
+                                projectile.projectile_dir.x *= -1;
+                                projectile.projectile_dir.y *= -1;
                             }
                         }
                     }

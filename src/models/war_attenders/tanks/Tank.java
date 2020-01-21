@@ -43,6 +43,10 @@ public abstract class Tank extends MovableWarAttender {
     public void update(GameContainer gc, int deltaTime) {
         super.update(gc, deltaTime);
 
+        if (this instanceof CannonTank) {
+            System.out.println(position);
+        }
+
         if (decelerate) {
             decelerate(deltaTime);
         }
@@ -133,17 +137,6 @@ public abstract class Tank extends MovableWarAttender {
         position.add(dir);
     }
 
-    public void rotateTurret(RotateDirection r, int deltaTime) {
-        switch (r) {
-            case ROTATE_DIRECTION_LEFT:
-                turret.rotate(-turret_rotate_speed * deltaTime);
-                break;
-            case ROTATE_DIRECTION_RIGHT:
-                turret.rotate(turret_rotate_speed * deltaTime);
-                break;
-        }
-    }
-
     public void autoCenterTurret() {
         centerTurret = true;
     }
@@ -212,6 +205,12 @@ public abstract class Tank extends MovableWarAttender {
     }
 
     @Override
+    public void setRotation(float angle) {
+        this.base_image.setRotation(angle);
+        this.turret.setRotation(angle);
+    }
+
+    @Override
     public void onCollision(MovableWarAttender warAttender) {
         if (warAttender instanceof Tank || warAttender instanceof Robot) {
             blockMovement();
@@ -238,14 +237,25 @@ public abstract class Tank extends MovableWarAttender {
     }
 
     @Override
-    public void setRotation(float angle) {
+    public void changeAimingDirection(float angle, int deltaTime) {
         float rotation = WayPointManager.getShortestAngle(turret.getRotation(), angle);
         if (rotation == 0) return;
 
         if (rotation < 0) {
-            turret.rotate(-turret_rotate_speed);
+            rotateTurret(RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
         } else {
-            turret.rotate(turret_rotate_speed);
+            rotateTurret(RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
+        }
+    }
+
+    public void rotateTurret(RotateDirection r, int deltaTime) {
+        switch (r) {
+            case ROTATE_DIRECTION_LEFT:
+                turret.rotate(-turret_rotate_speed * deltaTime);
+                break;
+            case ROTATE_DIRECTION_RIGHT:
+                turret.rotate(turret_rotate_speed * deltaTime);
+                break;
         }
     }
 

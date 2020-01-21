@@ -1,7 +1,6 @@
 package models.war_attenders;
 
 import logic.WayPointManager;
-import models.weapons.MegaPulse;
 import models.weapons.Weapon;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
@@ -27,7 +26,7 @@ public abstract class WarAttender {
         weapons = new ArrayList<>();    // 3 weapons -> WEAPON_1, WEAPON_2 and MEGA_PULSE
         health_bar_position = new Vector2f();
         if (isHostile) {
-            turret_rotate_speed = 0.5f;
+            turret_rotate_speed = 0.07f;
             try {
                 health_bar_image = new Image("assets/healthbars/healthbar_enemy.png");
             } catch (SlickException e) {
@@ -102,11 +101,7 @@ public abstract class WarAttender {
             float next_xPos = enemy_war_attender.position.x;
             float next_yPos = enemy_war_attender.position.y;
             float next_dist = WayPointManager.dist(position, new Vector2f(next_xPos, next_yPos));
-                    /*
-                    (float) Math.sqrt((next_xPos - position.x) * (next_xPos - position.x)
-                    + (next_yPos - position.y) * (next_yPos - position.y));
 
-                     */
             if (next_dist < dist) {
                 dist = next_dist;
                 xPos = next_xPos;
@@ -120,9 +115,7 @@ public abstract class WarAttender {
             // aim at player
             rotationDegree = WayPointManager.calculateAngle(position, new Vector2f(xPos, yPos));
 
-            setRotation(rotationDegree);
-
-            //fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
+            changeAimingDirection(rotationDegree, deltaTime);
         }
         if (dist < 600) {
             // fire
@@ -132,7 +125,7 @@ public abstract class WarAttender {
 
     public abstract void fireWeapon(MovableWarAttender.WeaponType weapon);
 
-    public abstract void setRotation(float degree);
+    public abstract void changeAimingDirection(float degree, int deltaTime);
 
     public Weapon getWeapon(MovableWarAttender.WeaponType weaponType) {
         switch (weaponType) {

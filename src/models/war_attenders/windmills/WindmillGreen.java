@@ -1,14 +1,13 @@
 package models.war_attenders.windmills;
 
 import models.weapons.Uzi;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
 public class WindmillGreen extends Windmill {
 
-    public WindmillGreen(Vector2f startPos, boolean isHostile, Vector2f [] tile_position) {
+    public WindmillGreen(Vector2f startPos, boolean isHostile, Vector2f[] tile_position) {
         super(startPos, isHostile, tile_position);
 
         // individual WindmillGreen attributes
@@ -25,8 +24,8 @@ public class WindmillGreen extends Windmill {
     }
 
     @Override
-    public void setRotation(float angle) {
+    public void changeAimingDirection(float angle, int deltaTime) {
         turret.setCenterOfRotation(4, 18);
-        super.setRotation(angle);
+        super.changeAimingDirection(angle, deltaTime);
     }
 }

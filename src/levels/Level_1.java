@@ -73,8 +73,8 @@ public class Level_1 extends AbstractLevel implements GameState {
         hostile_war_attenders.add(enemy_plane_1);
  */
 
-        MovableWarAttender enemy_robot = new PlasmaRobot(new Vector2f(1000.f, 1000.f), true, false);
-        hostile_war_attenders.add(enemy_robot);
+        MovableWarAttender enemy_cannon_tank = new CannonTank_v2(new Vector2f(3055, 3110), true, false);
+        hostile_war_attenders.add(enemy_cannon_tank);
 
 
         MovableWarAttender enemy_soldier_1 = new EnemySoldier(new Vector2f(1370.f, 3150.f), true);
@@ -87,15 +87,15 @@ public class Level_1 extends AbstractLevel implements GameState {
         hostile_war_attenders.add(enemy_soldier_3);
 
         MovableWarAttender enemy_tank_3_rocket = new RocketTank(new Vector2f(2970.f, 130.f), true, false);
-        enemy_tank_3_rocket.base_image.setRotation(100);
+        enemy_tank_3_rocket.setRotation(100);
         hostile_war_attenders.add(enemy_tank_3_rocket);
 
         MovableWarAttender enemy_tank_4_rocket = new RocketTank(new Vector2f(3250.f, 140.f), true, false);
-        enemy_tank_4_rocket.base_image.setRotation(160);
+        enemy_tank_4_rocket.setRotation(160);
         hostile_war_attenders.add(enemy_tank_4_rocket);
 
         MovableWarAttender enemy_tank_5_rocket = new RocketTank(new Vector2f(3460.f, 70.f), true, false);
-        enemy_tank_5_rocket.base_image.setRotation(225);
+        enemy_tank_5_rocket.setRotation(225);
         hostile_war_attenders.add(enemy_tank_5_rocket);
 
         MovableWarAttender enemy_soldier_4 = new EnemySoldier(new Vector2f(2565.f, 160.f), true);
@@ -258,12 +258,13 @@ public class Level_1 extends AbstractLevel implements GameState {
 
 
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
-        Vector2f playerStartPos = new Vector2f(1200, 1000);
+        Vector2f playerStartPos = new Vector2f(1000, 1000);
         //Tank tank = new NapalmTank(playerStartPos, false, true);
         //Tank tank = new ShellTank(playerStartPos, false, true);
         Tank tank = new CannonTank(playerStartPos, false, true);
+        tank.setRotation(190);
         Plane plane = new GreenEnemyPlane(playerStartPos, false, true);
-        Robot robot = new ShellRobot(playerStartPos, false, true);
+        Robot robot = new PlasmaRobot(playerStartPos, false, true);
         //MovableWarAttender soldier = new PlayerSoldier(playerStartPos, false);
 
         // DEFINE THE MAP

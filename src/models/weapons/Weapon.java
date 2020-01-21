@@ -38,12 +38,12 @@ public abstract class Weapon {
             projectile.update(deltaTime);
 
             // remove bullet if if max lifetime was reached
-            if (projectile.lifetime > projectile.max_lifetime) {
+            if (projectile.projectile_lifetime > projectile.projectile_max_lifetime) {
 
                 // check if a ground tile is damaged
                 if (this instanceof iGroundTileDamageWeapon) {
-                    ((iGroundTileDamageWeapon) this).getListener().notifyForGroundTileDamage(projectile.pos.x,
-                            projectile.pos.y);
+                    ((iGroundTileDamageWeapon) this).getListener().notifyForGroundTileDamage(projectile.projectile_pos.x,
+                            projectile.projectile_pos.y);
                 }
 
                 iter.remove();

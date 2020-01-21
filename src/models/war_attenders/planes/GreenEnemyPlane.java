@@ -92,6 +92,11 @@ public class GreenEnemyPlane extends Plane {
     }
 
     @Override
+    public void setRotation(float degree) {
+        base_image.setRotation(degree);
+    }
+
+    @Override
     public void fireWeapon(WeaponType weapon) {
         switch (weapon) {
             case WEAPON_1:
@@ -112,15 +117,15 @@ public class GreenEnemyPlane extends Plane {
     }
 
     @Override
-    public void setRotation(float angle) {
+    public void changeAimingDirection(float angle, int deltaTime) {
         float rotation = WayPointManager.getShortestAngle(base_image.getRotation(), angle);
         //System.out.println("shortest angle: " + rotation);
         if (rotation == 0) return;
 
         if (rotation < 0) {
-            base_image.rotate(-rotate_speed * 5);
+            base_image.rotate(-rotate_speed * deltaTime);
         } else {
-            base_image.rotate(rotate_speed * 5);
+            base_image.rotate(rotate_speed * deltaTime);
         }
     }
 }

@@ -120,6 +120,14 @@ public abstract class Robot extends MovableWarAttender {
     }
 
     @Override
+    public void setRotation(float angle) {
+        base_image.setRotation(angle);
+        for (int idx = 0; idx < walking_animation.getFrameCount(); ++idx) {
+            walking_animation.getImage(idx).setRotation(angle);
+        }
+    }
+
+    @Override
     public void rotate(RotateDirection rotateDirection, int deltaTime) {
         switch (rotateDirection) {
             case ROTATE_DIRECTION_LEFT:
@@ -140,10 +148,10 @@ public abstract class Robot extends MovableWarAttender {
     public void rotateTurret(RotateDirection r, int deltaTime) {
         switch (r) {
             case ROTATE_DIRECTION_LEFT:
-                base_image.rotate(-rotate_speed * deltaTime);
+                base_image.rotate(-turret_rotate_speed * deltaTime);
                 break;
             case ROTATE_DIRECTION_RIGHT:
-                base_image.rotate(rotate_speed * deltaTime);
+                base_image.rotate(turret_rotate_speed * deltaTime);
                 break;
         }
     }
@@ -186,14 +194,14 @@ public abstract class Robot extends MovableWarAttender {
     }
 
     @Override
-    public void setRotation(float angle) {
+    public void changeAimingDirection(float angle, int deltaTime) {
         float rotation = WayPointManager.getShortestAngle(base_image.getRotation(), angle);
         if (rotation == 0) return;
 
         if (rotation < 0) {
-            base_image.rotate(-turret_rotate_speed);
+            base_image.rotate(-turret_rotate_speed * deltaTime);
         } else {
-            base_image.rotate(turret_rotate_speed);
+            base_image.rotate(turret_rotate_speed * deltaTime);
         }
     }
 

@@ -6,7 +6,6 @@ import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
 import models.war_attenders.robots.Robot;
 import models.war_attenders.tanks.Tank;
-import models.weapons.projectiles.Rocket;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -140,10 +139,15 @@ public abstract class Soldier extends MovableWarAttender {
     }
 
     @Override
-    public void setRotation(float angle) {
+    public void changeAimingDirection(float angle, int deltaTime) {
         for (int idx = 0; idx < animation.getFrameCount(); ++idx) {
             animation.getImage(idx).setRotation(angle);
         }
+    }
+
+    @Override
+    public void setRotation(float angle) {
+        changeAimingDirection(angle, 0);
     }
 
     @Override
@@ -198,13 +202,13 @@ public abstract class Soldier extends MovableWarAttender {
 
         // flee when the closest warAttender gets too close and is a tank or a robot
         if (dist < 100 && (closest_warAttender instanceof Tank || closest_warAttender instanceof Robot)) {
-            setRotation(closest_warAttender.getRotation());
+            changeAimingDirection(closest_warAttender.getRotation(), deltaTime);
             isFleeing = true;
         } else if (dist < 500) {
             // aim at the closest enemy and fire
             float rotationDegree = WayPointManager.calculateAngle(position, new Vector2f(xPos, yPos));
 
-            setRotation(rotationDegree);
+            changeAimingDirection(rotationDegree, deltaTime);
 
             fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
         }

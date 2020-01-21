@@ -8,7 +8,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -19,7 +18,7 @@ public class Flame extends Projectile {
     Animation starting_flame;
     List<FlameInstance> explosion_animations;
     private final float ANIMATION_WIDTH_HALF, ANIMATION_HEIGHT_HALF;
-    private final int CREATE_NEW_FLAME_TIMER = max_lifetime / 5;
+    private final int CREATE_NEW_FLAME_TIMER = projectile_max_lifetime / 5;
     private int time = 0;
     private Random random;
 
@@ -29,7 +28,7 @@ public class Flame extends Projectile {
         buffered_explosions = new ArrayList<>();
         active_explosions = new ArrayList<>();
         random = new Random();
-        final int FLAMES_TO_CREATE = max_lifetime / CREATE_NEW_FLAME_TIMER;
+        final int FLAMES_TO_CREATE = projectile_max_lifetime / CREATE_NEW_FLAME_TIMER;
         int counter = 0;
         do {
             buffered_explosions.add(createNewExplosionInstance());
@@ -37,10 +36,10 @@ public class Flame extends Projectile {
         } while (counter < FLAMES_TO_CREATE);
 
         // individual napalm specs
-        speed = 0.17f;
-        max_lifetime = 1000;
+        projectile_speed = 0.17f;
+        projectile_max_lifetime = 1000;
 
-        this.collision_model = new CollisionModel(pos, WIDTH_HALF * 2, HEIGHT_HALF * 2);
+        this.projectile_collision_model = new CollisionModel(projectile_pos, WIDTH_HALF * 2, HEIGHT_HALF * 2);
 
         starting_flame = createNewExplosionInstance();
         ANIMATION_HEIGHT_HALF = starting_flame.getCurrentFrame().getHeight() / 2.f;
@@ -93,7 +92,7 @@ public class Flame extends Projectile {
 
         if (time > CREATE_NEW_FLAME_TIMER) {
             time = 0;
-            FlameInstance flameInstance = new FlameInstance(getNextFreshExplosionInstance(), pos.x, pos.y);
+            FlameInstance flameInstance = new FlameInstance(getNextFreshExplosionInstance(), projectile_pos.x, projectile_pos.y);
             flameInstance.setup();
             explosion_animations.add(flameInstance);
         }
@@ -107,7 +106,7 @@ public class Flame extends Projectile {
         for (FlameInstance explosion_animation : explosion_animations)
             explosion_animation.draw();
 
-        starting_flame.draw(pos.x - ANIMATION_WIDTH_HALF, pos.y - ANIMATION_HEIGHT_HALF);
+        starting_flame.draw(projectile_pos.x - ANIMATION_WIDTH_HALF, projectile_pos.y - ANIMATION_HEIGHT_HALF);
     }
 
     private class FlameInstance {

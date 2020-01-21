@@ -20,13 +20,13 @@ public class PlasmaRobot extends Robot {
             max_speed = 0.15f;
             current_speed = max_speed;
             rotate_speed = 0.25f;
-            turret_rotate_speed = 0.5f;
+            //turret_rotate_speed = 0.5f;
         } else {
             // individual PlasmaRobot attributes for bots
             max_speed = 0.05f;
             current_speed = max_speed;
             rotate_speed = 0.25f;
-            turret_rotate_speed = 0.5f;
+            //turret_rotate_speed = 0.5f;
         }
 
         weapons.add(new DoublePlasma(isDrivable));

@@ -8,7 +8,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class MegaPulse extends PiercingWeapon {
 
-    private final static float MEGA_PULSE_SPEED = 0.5f;
+    private final static float MEGA_PULSE_SPEED = 0.3f;
 
     public MegaPulse() {
         super();

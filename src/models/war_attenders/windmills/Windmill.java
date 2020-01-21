@@ -82,14 +82,14 @@ public abstract class Windmill extends StaticWarAttender {
     }
 
     @Override
-    public void setRotation(float angle) {
+    public void changeAimingDirection(float angle, int deltaTime) {
         float rotation = WayPointManager.getShortestAngle(turret.getRotation(), angle);
         if (rotation == 0) return;
 
         if (rotation < 0) {
-            turret.rotate(-turret_rotate_speed);
+            turret.rotate(-turret_rotate_speed * deltaTime);
         } else {
-            turret.rotate(turret_rotate_speed);
+            turret.rotate(turret_rotate_speed * deltaTime);
         }
     }
 }

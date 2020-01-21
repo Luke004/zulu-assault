@@ -18,23 +18,23 @@ public class AirRocket extends Rocket implements iAirProjectile {
     public AirRocket(Vector2f startPos, Vector2f dir, float rotation, Texture bullet_texture, Animation rocket_animation) {
         super(startPos, dir, rotation, bullet_texture, rocket_animation);
         this.isGroundProjectile = false;
-        this.max_lifetime = 650;   // maximum lifetime is 0.65 sec
+        this.projectile_max_lifetime = 650;   // maximum lifetime is 0.65 sec
         // special air rocket collision model (collision model is an impact rectangle 30x30px)
-        this.collision_model = new CollisionModel(pos, 30, 30);
+        this.projectile_collision_model = new CollisionModel(projectile_pos, 30, 30);
         checkedTargets = new HashMap<>();
     }
 
     @Override
     public void update(int deltaTime) {
-        if (lifetime <= max_lifetime - 200) {
+        if (projectile_lifetime <= projectile_max_lifetime - 200) {
             super.update(deltaTime);
         } else {
-            this.lifetime += deltaTime;
+            this.projectile_lifetime += deltaTime;
             if (!hasHitGround()) {
                 setHitGround();
-                AGM.playDestructionAnimation(pos.x, pos.y);
+                AGM.playDestructionAnimation(projectile_pos.x, projectile_pos.y);
                 // only update the collision model in the last 200 milliseconds
-                collision_model.update(deltaTime);
+                projectile_collision_model.update(deltaTime);
             }
         }
         rocket_animation.update(deltaTime);

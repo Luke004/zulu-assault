@@ -7,41 +7,41 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 
 public abstract class Projectile {
-    public int lifetime, max_lifetime;
-    public Image image;
-    public CollisionModel collision_model;
-    public Vector2f pos, dir;
-    protected float speed;
+    public int projectile_lifetime, projectile_max_lifetime;
+    public Image projectile_image;
+    public CollisionModel projectile_collision_model;
+    public Vector2f projectile_pos, projectile_dir;
+    protected float projectile_speed;
     protected final int WIDTH_HALF, HEIGHT_HALF;
     public boolean isGroundProjectile;
 
     public Projectile(Vector2f startPos, Vector2f dir, float rotation, Texture projectile_texture) {
-        this.image = new Image(projectile_texture);
-        image.setRotation(rotation);
-        this.pos = startPos;
-        this.dir = dir;
-        this.speed = 0.8f;   // default speed
+        this.projectile_image = new Image(projectile_texture);
+        projectile_image.setRotation(rotation);
+        this.projectile_pos = startPos;
+        this.projectile_dir = dir;
+        this.projectile_speed = 0.6f;   // default projectile speed
         this.isGroundProjectile = true;    // default is a ground projectile
-        this.max_lifetime = 4000;   // default maximum lifetime (4 sec)
-        WIDTH_HALF = image.getWidth() / 2;
-        HEIGHT_HALF = image.getHeight() / 2;
+        this.projectile_max_lifetime = 4000;   // default maximum lifetime (4 sec)
+        WIDTH_HALF = projectile_image.getWidth() / 2;
+        HEIGHT_HALF = projectile_image.getHeight() / 2;
     }
 
     public void update(int deltaTime) {
-        this.pos.x += this.dir.x * speed * deltaTime;
-        this.pos.y += this.dir.y * speed * deltaTime;
-        this.lifetime += deltaTime;
+        this.projectile_pos.x += this.projectile_dir.x * projectile_speed * deltaTime;
+        this.projectile_pos.y += this.projectile_dir.y * projectile_speed * deltaTime;
+        this.projectile_lifetime += deltaTime;
     }
 
     public void draw(Graphics graphics) {
-        this.image.draw(this.pos.x - WIDTH_HALF, this.pos.y - HEIGHT_HALF);
+        this.projectile_image.draw(this.projectile_pos.x - WIDTH_HALF, this.projectile_pos.y - HEIGHT_HALF);
     }
 
     public CollisionModel getCollisionModel() {
-        return collision_model;
+        return projectile_collision_model;
     }
 
     public void setProjectileSpeed(float speed) {
-        this.speed = speed;
+        this.projectile_speed = speed;
     }
 }

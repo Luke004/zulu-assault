@@ -16,7 +16,7 @@ public abstract class Rocket extends Projectile {
         this.rocket_animation = rocket_animation;
         ANIMATION_WIDTH_HALF = rocket_animation.getCurrentFrame().getWidth() / 2;
         ANIMATION_HEIGHT_HALF = rocket_animation.getCurrentFrame().getHeight() / 2;
-        speed = 0.5f;   // set individual rocket speed (slower than from a normal projectile)
+        projectile_speed = 0.5f;   // set individual rocket speed (slower than from a normal projectile)
         // calculate x and y to set rocket behind the bullet
         final float DISTANCE = -70;
         final float SPAWN_X = -3;
@@ -29,6 +29,6 @@ public abstract class Rocket extends Projectile {
     @Override
     public void draw(Graphics graphics) {
         super.draw(graphics);
-        rocket_animation.draw(pos.x - ANIMATION_WIDTH_HALF - xVal, pos.y - ANIMATION_HEIGHT_HALF - yVal);
+        rocket_animation.draw(projectile_pos.x - ANIMATION_WIDTH_HALF - xVal, projectile_pos.y - ANIMATION_HEIGHT_HALF - yVal);
     }
 }
