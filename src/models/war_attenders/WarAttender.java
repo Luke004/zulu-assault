@@ -19,7 +19,7 @@ public abstract class WarAttender {
     public boolean isHostile, isDestroyed;
     protected int scoreValue;
 
-    public Vector2f position;
+    protected Vector2f position;
 
     public WarAttender(Vector2f startPos, boolean isHostile) {
         this.isHostile = isHostile;
@@ -150,6 +150,10 @@ public abstract class WarAttender {
 
     public List<Weapon> getWeapons() {
         return weapons;
+    }
+
+    public Vector2f getPosition() {
+        return position;
     }
 
     public void changeHealth(float amount) {

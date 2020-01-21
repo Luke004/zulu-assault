@@ -201,7 +201,7 @@ public class CollisionHandler {
 
         // COLLISION BETWEEN WAR ATTENDER ITSELF AND OTHER WAR ATTENDERS
         for (MovableWarAttender movableWarAttender : all_movable_war_attenders) {
-            if (movableWarAttender.position == current_warAttender.position) continue;    // its himself
+            if (movableWarAttender.getPosition() == current_warAttender.getPosition()) continue;    // its himself
             if (current_warAttender.getCollisionModel().intersects(movableWarAttender.getCollisionModel())) {
                 current_warAttender.onCollision(movableWarAttender);
                 return;
@@ -210,7 +210,7 @@ public class CollisionHandler {
 
         // COLLISION BETWEEN WAR ATTENDER ITSELF AND THE PLAYER
         if (current_warAttender.getCollisionModel().intersects(player.getWarAttender().getCollisionModel())) {
-            if (player.getWarAttender().position == current_warAttender.position) return;    // its himself
+            if (player.getWarAttender().getPosition() == current_warAttender.getPosition()) return;    // its himself
             current_warAttender.onCollision(player.getWarAttender());
         }
     }
@@ -513,7 +513,7 @@ public class CollisionHandler {
                 // TILE DESTROYED
                 if (weapon == null) {
                     // show smoke animation only when drove over tile, not bullet destruction
-                    smokeAnimation.play(warAttender.position.x, warAttender.position.y, warAttender.getRotation());
+                    smokeAnimation.play(warAttender.getPosition().x, warAttender.getPosition().y, warAttender.getRotation());
                 } else {
                     // destroyed by bullet, show destruction animation using level listener
                     if (weapon instanceof Plasma)

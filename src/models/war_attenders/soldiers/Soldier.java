@@ -177,15 +177,15 @@ public abstract class Soldier extends MovableWarAttender {
         if (isFleeing) return;
         MovableWarAttender closest_warAttender = player;
         // calculate dist between the player and the enemy
-        float xPos = player.position.x;
-        float yPos = player.position.y;
+        float xPos = player.getPosition().x;
+        float yPos = player.getPosition().y;
         float dist = (float) Math.sqrt((xPos - position.x) * (xPos - position.x)
                 + (yPos - position.y) * (yPos - position.y));
 
         // calculate dist between each friend and the enemy
         for (WarAttender enemyWarAttender : enemyWarAttenders) {
-            float next_xPos = enemyWarAttender.position.x;
-            float next_yPos = enemyWarAttender.position.y;
+            float next_xPos = enemyWarAttender.getPosition().x;
+            float next_yPos = enemyWarAttender.getPosition().y;
             float next_dist = (float) Math.sqrt((next_xPos - position.x) * (next_xPos - position.x)
                     + (next_yPos - position.y) * (next_yPos - position.y));
             if (next_dist < dist) {

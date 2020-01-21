@@ -51,7 +51,7 @@ public class Level_1 extends AbstractLevel implements GameState {
         wayPoints.add(new Vector2f(2100.f, 2500.f));
         wayPoints.add(new Vector2f(1600.f, 2500.f));
         wayPoints.add(new Vector2f(1600.f, 2100.f));
-        enemy_tank_1_shell.addWayPoints(new WayPointManager(wayPoints, enemy_tank_1_shell.position, enemy_tank_1_shell.getRotation()));
+        enemy_tank_1_shell.addWayPoints(new WayPointManager(wayPoints, enemy_tank_1_shell.getPosition(), enemy_tank_1_shell.getRotation()));
         hostile_war_attenders.add(enemy_tank_1_shell);
 
         MovableWarAttender enemy_tank_2_shell = new ShellTank(new Vector2f(1600.f, 2600.f), true, false);
@@ -61,7 +61,7 @@ public class Level_1 extends AbstractLevel implements GameState {
         wayPoints.add(new Vector2f(1600.f, 2100.f));
         wayPoints.add(new Vector2f(2100.f, 2100.f));
         wayPoints.add(new Vector2f(2100.f, 2500.f));
-        enemy_tank_2_shell.addWayPoints(new WayPointManager(wayPoints, enemy_tank_2_shell.position, enemy_tank_2_shell.getRotation()));
+        enemy_tank_2_shell.addWayPoints(new WayPointManager(wayPoints, enemy_tank_2_shell.getPosition(), enemy_tank_2_shell.getRotation()));
         hostile_war_attenders.add(enemy_tank_2_shell);
 
 /*
@@ -72,6 +72,9 @@ public class Level_1 extends AbstractLevel implements GameState {
         enemy_tank_2_shell.addWayPoints(new WayPointManager(wayPoints, enemy_plane_1.position, enemy_plane_1.getRotation()));
         hostile_war_attenders.add(enemy_plane_1);
  */
+
+        MovableWarAttender enemy_robot = new PlasmaRobot(new Vector2f(1000.f, 1000.f), true, false);
+        hostile_war_attenders.add(enemy_robot);
 
 
         MovableWarAttender enemy_soldier_1 = new EnemySoldier(new Vector2f(1370.f, 3150.f), true);
@@ -122,7 +125,7 @@ public class Level_1 extends AbstractLevel implements GameState {
         wayPoints = new ArrayList<>();
         wayPoints.add(new Vector2f(1001.f, 3000.f));
         wayPoints.add(new Vector2f(1000.f, 300.f));
-        player_ally_1.addWayPoints(new WayPointManager(wayPoints, player_ally_1.position, player_ally_1.getRotation()));
+        player_ally_1.addWayPoints(new WayPointManager(wayPoints, player_ally_1.getPosition(), player_ally_1.getRotation()));
         friendly_war_attenders.add(player_ally_1);
 
 
@@ -255,11 +258,10 @@ public class Level_1 extends AbstractLevel implements GameState {
 
 
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
-        Vector2f playerStartPos = new Vector2f(1500, 1000);
+        Vector2f playerStartPos = new Vector2f(1200, 1000);
         //Tank tank = new NapalmTank(playerStartPos, false, true);
         //Tank tank = new ShellTank(playerStartPos, false, true);
         Tank tank = new CannonTank(playerStartPos, false, true);
-        tank.current_health = 1;
         Plane plane = new GreenEnemyPlane(playerStartPos, false, true);
         Robot robot = new ShellRobot(playerStartPos, false, true);
         //MovableWarAttender soldier = new PlayerSoldier(playerStartPos, false);

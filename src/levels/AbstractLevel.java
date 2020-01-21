@@ -10,6 +10,7 @@ import models.StaticWarAttender;
 import models.animations.explosion.BigExplosionAnimation;
 import models.hud.HUD;
 import models.interaction_circles.InteractionCircle;
+import models.items.InvincibilityItem;
 import models.items.Item;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
@@ -40,6 +41,8 @@ import static logic.TileMapInfo.*;
 public abstract class AbstractLevel extends BasicGameState implements WarAttenderDeleteListener, GroundTileDamageListener {
 
     private StateBasedGame stateBasedGame;
+
+    private RandomItemDropper randomItemDropper;
 
     private static boolean has_initialized_once;
     protected int init_counter;
@@ -100,6 +103,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             this.stateBasedGame = stateBasedGame;
             TileMapInfo.init();
 
+            randomItemDropper = new RandomItemDropper();
             collisionHandler = new CollisionHandler();
             keyInputHandler = new KeyInputHandler();
             bigExplosionAnimation = new BigExplosionAnimation(100);
@@ -295,7 +299,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         hud.update(deltaTime);
         screenDrawer.update(deltaTime);
         bigExplosionAnimation.update(deltaTime);
-        camera.centerOn(player.getWarAttender().position.x, player.getWarAttender().position.y);
+        camera.centerOn(player.getWarAttender().getPosition().x, player.getWarAttender().getPosition().y);
 
         if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
             MainMenu.goToMenu(MainMenu.STATE_IN_GAME_MENU);
@@ -350,8 +354,6 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
 
     @Override
     public void notifyForWarAttenderDeletion(WarAttender warAttender) {
-        // TODO: add points according to the class of the enemy/warAttender
-
         if (warAttender.isHostile) {
             if (warAttender instanceof MovableWarAttender) {
                 hostile_war_attenders.remove(warAttender);
@@ -359,15 +361,14 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             player.addPoints(warAttender.getScoreValue());  // add points
             screenDrawer.drawScoreValue(5, warAttender);    // draw the score on the screen
 
-            //hostile_war_attenders.removeIf(enemy -> enemy.isDestroyed);
             if (warAttender instanceof Windmill) {
-                bigExplosionAnimation.playTenTimes(warAttender.position.x + 20,
-                        warAttender.position.y + 20, 0);
+                bigExplosionAnimation.playTenTimes(warAttender.getPosition().x + 20,
+                        warAttender.getPosition().y + 20, 0);
                 explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
             } else {
                 if (warAttender instanceof Soldier) screenDrawer.drawDeadSoldierBody(3, warAttender);
                 else {
-                    bigExplosionAnimation.playTenTimes(warAttender.position.x, warAttender.position.y, 0);
+                    bigExplosionAnimation.playTenTimes(warAttender.getPosition().x, warAttender.getPosition().y, 0);
                     explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
                 }
             }
@@ -386,10 +387,16 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             }
             if (warAttender instanceof Soldier) screenDrawer.drawDeadSoldierBody(3, warAttender);
             else {
-                bigExplosionAnimation.playTenTimes(warAttender.position.x, warAttender.position.y, 0);
+                bigExplosionAnimation.playTenTimes(warAttender.getPosition().x, warAttender.getPosition().y, 0);
                 explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
             }
         }
+        // maybe drop an item
+        Item drop_item = randomItemDropper.dropItem(warAttender.getPosition());
+        if (drop_item != null) {
+            items.add(drop_item);
+        }
+        // remove warAttender from relevant lists
         if (warAttender instanceof MovableWarAttender) {
             renderList.remove(warAttender);
             all_movable_war_attenders.remove(warAttender);

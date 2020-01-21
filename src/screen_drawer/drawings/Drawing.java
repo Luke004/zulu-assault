@@ -16,8 +16,8 @@ public abstract class Drawing {
         this.DRAW_TIME = seconds * 1000;
         current_time = 0;
         isStopped = false;
-        this.xPos = warAttender.position.x;
-        this.yPos = warAttender.position.y;
+        this.xPos = warAttender.getPosition().x;
+        this.yPos = warAttender.getPosition().y;
     }
 
     public void update(int deltaTime) {

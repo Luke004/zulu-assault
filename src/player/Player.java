@@ -38,14 +38,14 @@ public class Player {
         current_warAttender.update(gameContainer, deltaTime);
 
         // check for map boundaries, don't let the player cross them
-        if (current_warAttender.position.x <= 0) {
-            current_warAttender.position.x = 0;
-        } else if (current_warAttender.position.x >= LEVEL_WIDTH_PIXELS) {
-            current_warAttender.position.x = LEVEL_WIDTH_PIXELS;
-        } else if (current_warAttender.position.y <= 0) {
-            current_warAttender.position.y = 0;
-        } else if (current_warAttender.position.y >= LEVEL_HEIGHT_PIXELS) {
-            current_warAttender.position.y = LEVEL_HEIGHT_PIXELS;
+        if (current_warAttender.getPosition().x <= 0) {
+            current_warAttender.getPosition().x = 0;
+        } else if (current_warAttender.getPosition().x >= LEVEL_WIDTH_PIXELS) {
+            current_warAttender.getPosition().x = LEVEL_WIDTH_PIXELS;
+        } else if (current_warAttender.getPosition().y <= 0) {
+            current_warAttender.getPosition().y = 0;
+        } else if (current_warAttender.getPosition().y >= LEVEL_HEIGHT_PIXELS) {
+            current_warAttender.getPosition().y = LEVEL_HEIGHT_PIXELS;
         }
     }
 

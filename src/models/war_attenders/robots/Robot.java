@@ -13,13 +13,9 @@ public abstract class Robot extends MovableWarAttender {
     private float BASE_WIDTH_HALF, BASE_HEIGHT_HALF;
     private boolean centerTurret;
 
-    public Robot(Vector2f startPos, boolean isHostile) {
-        super(startPos, isHostile);
-        scoreValue = 3000;
-    }
-
     public Robot(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
+        scoreValue = 3000;
     }
 
     public void init() {
