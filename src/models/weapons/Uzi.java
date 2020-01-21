@@ -1,32 +1,23 @@
 package models.weapons;
 
 import menus.UserSettings;
+import models.animations.explosion.UziFireShotAnimation;
+import models.animations.smoke.SmokeAnimation;
 import models.weapons.projectiles.Bullet;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Uzi extends Weapon {
 
-    protected Animation fire_animation;
-    protected float xPos, yPos;
+    protected UziFireShotAnimation uziFireShotAnimation;
 
     public Uzi(boolean isDrivable) {
         super();
-        Image fire_animation_image;
+        uziFireShotAnimation = new UziFireShotAnimation(1);
         try {
             fire_sound = new Sound("audio/sounds/uzi_shot.ogg");
             weapon_hud_image = new Image("assets/hud/weapons/uzi.png");
             projectile_texture = new Image("assets/bullets/bullet_small.png").getTexture();
-            fire_animation_image = new Image("assets/animations/bullet_fire.png");
-            fire_animation = new Animation(false);
-            int IMAGE_COUNT = 5;
-            int x = 0;
-            int idx;
-            for (idx = 0; idx < IMAGE_COUNT; ++idx) {
-                fire_animation.addFrame(fire_animation_image.getSubImage(x, 0, 10, 11), 50);
-                x += 10;
-            }
-            fire_animation.setLooping(false);
         } catch (SlickException e) {
             e.printStackTrace();
         }
@@ -39,15 +30,13 @@ public class Uzi extends Weapon {
     @Override
     public void update(int deltaTime) {
         super.update(deltaTime);
-        fire_animation.update(deltaTime);
+        uziFireShotAnimation.update(deltaTime);
     }
 
     @Override
     public void draw(Graphics graphics) {
         super.draw(graphics);
-
-        if (!fire_animation.isStopped())
-            fire_animation.draw(xPos, yPos);
+        uziFireShotAnimation.draw();
     }
 
     @Override
@@ -57,9 +46,6 @@ public class Uzi extends Weapon {
             Bullet bullet = addBullet(spawnX, spawnY, rotation_angle, 0.f);
             projectile_list.add(bullet);
 
-            for (int idx = 0; idx < fire_animation.getFrameCount(); ++idx) {
-                fire_animation.getImage(idx).setRotation(rotation_angle - 180);
-            }
             fire_sound.play(1.f, UserSettings.SOUND_VOLUME);
         }
     }
@@ -76,11 +62,7 @@ public class Uzi extends Weapon {
         float dirY = (float) -Math.cos(rotation_angle * Math.PI / 180);
         Vector2f bullet_dir = new Vector2f(dirX, dirY);
 
-        xPos = bullet_spawn.x;
-        yPos = bullet_spawn.y;
-
-        fire_animation.setCurrentFrame(0);
-        fire_animation.start();
+        uziFireShotAnimation.play(bullet_spawn.x, bullet_spawn.y, rotation_angle);
 
         return new Bullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
     }

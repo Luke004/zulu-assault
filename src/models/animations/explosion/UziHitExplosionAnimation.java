@@ -4,6 +4,7 @@ import models.animations.AbstractVolatileAnimation;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.opengl.Texture;
 
 public class UziHitExplosionAnimation extends AbstractVolatileAnimation {
 
@@ -12,8 +13,13 @@ public class UziHitExplosionAnimation extends AbstractVolatileAnimation {
     }
 
     @Override
-    public void addNewInstance() throws SlickException {
-        Image smoke_animation_image = new Image("assets/animations/bullet_explosion2.png");
+    public void initTexture() throws SlickException {
+        animation_texture = new Image("assets/animations/bullet_explosion.png").getTexture();
+    }
+
+    @Override
+    public void addNewInstance() {
+        Image smoke_animation_image = new Image(animation_texture);
         Animation explosion_animation = new Animation(false);
         int IMAGE_COUNT = 9;
         int x = 0;

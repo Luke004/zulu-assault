@@ -10,6 +10,7 @@ public class Cannon extends Uzi {
 
     public Cannon(boolean isDrivable) {
         super(isDrivable);
+        uziFireShotAnimation.addNewInstance();   // add another instance
         this.isDrivable = isDrivable;
 
         try {
@@ -40,10 +41,6 @@ public class Cannon extends Uzi {
                 // right turret
                 bullet = addBullet(spawnX, spawnY, rotation_angle, 4.f);
                 projectile_list.add(bullet);
-            }
-
-            for (int idx = 0; idx < fire_animation.getFrameCount(); ++idx) {
-                fire_animation.getImage(idx).setRotation(rotation_angle - 180);
             }
 
             fire_sound.play(1.f, UserSettings.SOUND_VOLUME);

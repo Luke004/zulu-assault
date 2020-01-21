@@ -4,6 +4,7 @@ import models.animations.AbstractVolatileAnimation;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.opengl.Texture;
 
 public class SmokeAnimation extends AbstractVolatileAnimation {
     public SmokeAnimation(final int BUFFER_SIZE) {
@@ -11,8 +12,13 @@ public class SmokeAnimation extends AbstractVolatileAnimation {
     }
 
     @Override
-    public void addNewInstance() throws SlickException {
-        Image smoke_animation_image = new Image("assets/animations/smoke.png");
+    public void initTexture() throws SlickException {
+        animation_texture = new Image("assets/animations/smoke.png").getTexture();
+    }
+
+    @Override
+    public void addNewInstance() {
+        Image smoke_animation_image = new Image(animation_texture);
         Animation smoke_animation = new Animation(false);
         int IMAGE_COUNT = 8;
         int x = 0;

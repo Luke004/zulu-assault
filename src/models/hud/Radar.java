@@ -16,7 +16,7 @@ import static levels.AbstractLevel.*;
 
 public class Radar {
 
-    private static boolean hideRadar;
+    private static boolean hideRadar = true;
 
     private Image radar_image;
     private Vector2f radar_image_position;

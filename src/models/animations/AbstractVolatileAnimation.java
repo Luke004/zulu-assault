@@ -2,6 +2,9 @@ package models.animations;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.tests.TexturePaintTest;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,22 +16,26 @@ A class for animations that only last for a few seconds
 public abstract class AbstractVolatileAnimation {
     private List<AnimationInstance> active_instances;
     protected List<AnimationInstance> buffered_instances;
+    protected Texture animation_texture;
 
     public AbstractVolatileAnimation(final int BUFFER_SIZE) {
         buffered_instances = new ArrayList<>();
         active_instances = new ArrayList<>();
         try {
-            int times = 0;
-            do {
-                addNewInstance();
-                times++;
-            } while (times < BUFFER_SIZE);
+            initTexture();
         } catch (SlickException e) {
             e.printStackTrace();
         }
+        int times = 0;
+        do {
+            addNewInstance();
+            times++;
+        } while (times < BUFFER_SIZE);
     }
 
-    public abstract void addNewInstance() throws SlickException;
+    public abstract void initTexture() throws SlickException;
+
+    public abstract void addNewInstance();
 
 
     public void play(float xPos, float yPos, float rotation) {
@@ -75,8 +82,8 @@ public abstract class AbstractVolatileAnimation {
             for (int idx = 0; idx < this.animation.getFrameCount(); ++idx) {
                 this.animation.getImage(idx).setRotation(rotation - 90);
             }
-            this.xPos = xPos - animation.getImage(0).getWidth() / 2;
-            this.yPos = yPos - animation.getImage(0).getHeight() / 2;
+            this.xPos = xPos - animation.getImage(0).getWidth() / 2.f;
+            this.yPos = yPos - animation.getImage(0).getHeight() / 2.f;
             this.animation.setCurrentFrame(0);
             this.animation.start();
         }

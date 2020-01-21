@@ -10,9 +10,15 @@ public class UziDamageAnimation extends AbstractVolatileAnimation {
     public UziDamageAnimation(final int BUFFER_SIZE) {
         super(BUFFER_SIZE);
     }
+
     @Override
-    public void addNewInstance() throws SlickException {
-        Image smoke_animation_image = new Image("assets/animations/bullet_damage.png");
+    public void initTexture() throws SlickException {
+        animation_texture = new Image("assets/animations/bullet_damage.png").getTexture();
+    }
+
+    @Override
+    public void addNewInstance() {
+        Image smoke_animation_image = new Image(animation_texture);
         Animation damage_animation = new Animation(false);
         int IMAGE_COUNT = 17;
         int x = 0;

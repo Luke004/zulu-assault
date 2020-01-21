@@ -11,7 +11,7 @@ import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Shell extends Weapon {
-    SmokeAnimation smokeAnimation;
+    protected SmokeAnimation smokeAnimation;
 
     public Shell(boolean isDrivable) {
         super();

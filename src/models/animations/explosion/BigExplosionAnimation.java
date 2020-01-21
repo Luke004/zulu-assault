@@ -4,6 +4,7 @@ import models.animations.AbstractVolatileAnimation;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.opengl.Texture;
 
 public class BigExplosionAnimation extends AbstractVolatileAnimation {
     public BigExplosionAnimation(final int BUFFER_SIZE) {
@@ -11,8 +12,13 @@ public class BigExplosionAnimation extends AbstractVolatileAnimation {
     }
 
     @Override
-    public void addNewInstance() throws SlickException {
-        Image smoke_animation_image = new Image("assets/animations/big_explosion.png");
+    public void initTexture() throws SlickException {
+        animation_texture = new Image("assets/animations/big_explosion.png").getTexture();
+    }
+
+    @Override
+    public void addNewInstance() {
+        Image smoke_animation_image = new Image(animation_texture);
         Animation explosion_animation = new Animation(false);
         int IMAGE_COUNT = 4;
         int x = 0;
@@ -30,7 +36,7 @@ public class BigExplosionAnimation extends AbstractVolatileAnimation {
         int counter = 0;
         do {
             super.play(xPos, yPos, rotation);
-            counter ++;
+            counter++;
         } while (counter < PLAY_TIMES);
     }
 }

@@ -8,6 +8,7 @@ import models.weapons.Weapon;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.Random;
@@ -23,7 +24,9 @@ public abstract class Windmill extends StaticWarAttender {
     public Windmill(Vector2f startPos, boolean isHostile, Vector2f[] tile_positions) {
         super(startPos, isHostile, tile_positions);
         random = new Random();
+
         smokeAnimation = new SmokeAnimation(3);
+
         max_health = 100.f;
         armor = 10.f;
         current_health = max_health;

@@ -11,8 +11,13 @@ public class PlasmaDamageAnimation extends AbstractVolatileAnimation {
     }
 
     @Override
-    public void addNewInstance() throws SlickException {
-        Image plasma_hit_animation_image = new Image("assets/animations/plasma_hit.png");
+    public void initTexture() throws SlickException {
+        animation_texture = new Image("assets/animations/plasma_hit.png").getTexture();
+    }
+
+    @Override
+    public void addNewInstance() {
+        Image plasma_hit_animation_image = new Image(animation_texture);
         Animation plasma_hit_animation = new Animation(false);
         int IMAGE_COUNT = 5;
         int x = 0;
