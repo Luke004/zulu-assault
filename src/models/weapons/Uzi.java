@@ -2,14 +2,13 @@ package models.weapons;
 
 import menus.UserSettings;
 import models.weapons.projectiles.Bullet;
-import models.weapons.projectiles.Projectile;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Uzi extends Weapon {
 
-    Animation fire_animation;
-    float xPos, yPos;
+    protected Animation fire_animation;
+    protected float xPos, yPos;
 
     public Uzi(boolean isDrivable) {
         super();
@@ -55,27 +54,34 @@ public class Uzi extends Weapon {
     public void fire(float spawnX, float spawnY, float rotation_angle) {
         if (canFire()) {
             current_reload_time = 0;    // reset the reload time when a shot is fired
-            spawnX += -Math.sin(((rotation_angle) * Math.PI) / 180) * -20.f;
-            spawnY += Math.cos(((rotation_angle) * Math.PI) / 180) * -20.f;
-            Vector2f bullet_spawn = new Vector2f(spawnX, spawnY);
-
-            float xVal = (float) Math.sin(rotation_angle * Math.PI / 180);
-            float yVal = (float) -Math.cos(rotation_angle * Math.PI / 180);
-            Vector2f bullet_dir = new Vector2f(xVal, yVal);
-
-            Projectile bullet = new Bullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
+            Bullet bullet = addBullet(spawnX, spawnY, rotation_angle, 0.f);
             projectile_list.add(bullet);
 
             for (int idx = 0; idx < fire_animation.getFrameCount(); ++idx) {
                 fire_animation.getImage(idx).setRotation(rotation_angle - 180);
             }
-            xPos = bullet_spawn.x;
-            yPos = bullet_spawn.y;
-            fire_animation.setCurrentFrame(0);
-            fire_animation.start();
-
             fire_sound.play(1.f, UserSettings.SOUND_VOLUME);
         }
     }
 
+    protected Bullet addBullet(float spawnX, float spawnY, float rotation_angle, float x_offset) {
+        float m_spawn_x = spawnX + (float) (Math.cos(((rotation_angle) * Math.PI) / 180) * x_offset
+                + -Math.sin(((rotation_angle) * Math.PI) / 180) * -30.f);
+        float m_spawn_y = spawnY + (float) (Math.sin(((rotation_angle) * Math.PI) / 180) * x_offset
+                + Math.cos(((rotation_angle) * Math.PI) / 180) * -30.f);
+
+        Vector2f bullet_spawn = new Vector2f(m_spawn_x, m_spawn_y);
+
+        float dirX = (float) Math.sin(rotation_angle * Math.PI / 180);
+        float dirY = (float) -Math.cos(rotation_angle * Math.PI / 180);
+        Vector2f bullet_dir = new Vector2f(dirX, dirY);
+
+        xPos = bullet_spawn.x;
+        yPos = bullet_spawn.y;
+
+        fire_animation.setCurrentFrame(0);
+        fire_animation.start();
+
+        return new Bullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
+    }
 }

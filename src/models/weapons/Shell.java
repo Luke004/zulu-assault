@@ -45,19 +45,28 @@ public class Shell extends Weapon {
     public void fire(float spawnX, float spawnY, float rotation_angle) {
         if (canFire()) {
             current_reload_time = 0;    // reset the reload time when a shot is fired
-            spawnX += -Math.sin(((rotation_angle) * Math.PI) / 180) * -30.f;
-            spawnY += Math.cos(((rotation_angle) * Math.PI) / 180) * -30.f;
-            Vector2f bullet_spawn = new Vector2f(spawnX, spawnY);
 
-            float xVal = (float) Math.sin(rotation_angle * Math.PI / 180);
-            float yVal = (float) -Math.cos(rotation_angle * Math.PI / 180);
-            Vector2f bullet_dir = new Vector2f(xVal, yVal);
-
-            Projectile bullet = new Bullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
+            Projectile bullet = addBullet(spawnX, spawnY, rotation_angle, 0.f);
             projectile_list.add(bullet);
 
-            smokeAnimation.play(bullet_spawn.x, bullet_spawn.y, rotation_angle);
             fire_sound.play(1.f, UserSettings.SOUND_VOLUME);
         }
+    }
+
+    protected Bullet addBullet(float spawnX, float spawnY, float rotation_angle, float x_offset) {
+        float m_spawn_x = spawnX + (float) (Math.cos(((rotation_angle) * Math.PI) / 180) * x_offset
+                + -Math.sin(((rotation_angle) * Math.PI) / 180) * -30.f);
+        float m_spawn_y = spawnY + (float) (Math.sin(((rotation_angle) * Math.PI) / 180) * x_offset
+                + Math.cos(((rotation_angle) * Math.PI) / 180) * -30.f);
+
+        Vector2f bullet_spawn = new Vector2f(m_spawn_x, m_spawn_y);
+
+        float dirX = (float) Math.sin(rotation_angle * Math.PI / 180);
+        float dirY = (float) -Math.cos(rotation_angle * Math.PI / 180);
+        Vector2f bullet_dir = new Vector2f(dirX, dirY);
+
+        smokeAnimation.play(bullet_spawn.x, bullet_spawn.y, rotation_angle);
+
+        return new Bullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
     }
 }

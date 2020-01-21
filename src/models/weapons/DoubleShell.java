@@ -27,25 +27,12 @@ public class DoubleShell extends Shell {
             Vector2f bullet_dir = new Vector2f(xVal, yVal);
 
             // first bullet (right turret)
-            float spawnX_1 = (float) (spawnX + Math.cos(((rotation_angle) * Math.PI) / 180) * 19.5f
-                    + -Math.sin(((rotation_angle) * Math.PI) / 180) * -30.f);
-            float spawnY_1 = (float) (spawnY + Math.sin(((rotation_angle) * Math.PI) / 180) * 19.5f
-                    + Math.cos(((rotation_angle) * Math.PI) / 180) * -30.f);
-            Vector2f bullet_spawn = new Vector2f(spawnX_1, spawnY_1);
-            Projectile bullet = new Bullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
+            Projectile bullet = addBullet(spawnX, spawnY, rotation_angle, 19.5f);
             projectile_list.add(bullet);
-            smokeAnimation.play(bullet_spawn.x, bullet_spawn.y, rotation_angle);
 
             // second bullet (left turret)
-            spawnX_1 = (float) (spawnX + Math.cos(((rotation_angle) * Math.PI) / 180) * -19.5f
-                    + -Math.sin(((rotation_angle) * Math.PI) / 180) * -30.f);
-            spawnY_1 = (float) (spawnY + Math.sin(((rotation_angle) * Math.PI) / 180) * -19.5f
-                    + Math.cos(((rotation_angle) * Math.PI) / 180) * -30.f);
-
-            Vector2f bullet_spawn2 = new Vector2f(spawnX_1, spawnY_1);
-            Projectile bullet2 = new Bullet(bullet_spawn2, bullet_dir, rotation_angle, projectile_texture);
-            projectile_list.add(bullet2);
-            smokeAnimation.play(bullet_spawn2.x, bullet_spawn2.y, rotation_angle);
+            bullet = addBullet(spawnX, spawnY, rotation_angle, -19.5f);
+            projectile_list.add(bullet);
 
             fire_sound.play(1.f, UserSettings.SOUND_VOLUME);
         }
