@@ -5,14 +5,22 @@ import logic.level_listeners.WarAttenderDeleteListener;
 import logic.WayPointManager;
 import menus.UserSettings;
 import models.CollisionModel;
+import models.war_attenders.planes.Plane;
 import models.war_attenders.robots.Robot;
 import models.war_attenders.tanks.Tank;
+import models.weapons.AGM;
 import models.weapons.MegaPulse;
 import models.weapons.Weapon;
+import models.weapons.projectiles.Projectile;
 import models.weapons.projectiles.iGroundTileDamageWeapon;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import player.Player;
+
+import java.util.Iterator;
+
+import static levels.AbstractLevel.all_movable_war_attenders;
+import static levels.AbstractLevel.hostile_war_attenders;
 
 public abstract class MovableWarAttender extends WarAttender {
     // listener
@@ -237,9 +245,16 @@ public abstract class MovableWarAttender extends WarAttender {
             case INVINCIBILITY:
                 isInvincible = true;
                 break;
-            case EMP:
+            case EMP:   // destroy all nearby planes
                 emp_use_sound.play(1.f, UserSettings.SOUND_VOLUME);
-                // TODO: destroy all planes here
+                for (int idx = 0; idx < hostile_war_attenders.size(); ++idx) {
+                    MovableWarAttender hostileWarAttender = hostile_war_attenders.get(idx);
+                    if (hostileWarAttender instanceof Plane) {
+                        if (WayPointManager.dist(hostileWarAttender.getPosition(), this.getPosition()) < 300) {
+                            hostileWarAttender.isDestroyed = true;
+                        }
+                    }
+                }
                 break;
             case MEGA_PULSE:
                 mega_pulse_use_sound.play(1.f, UserSettings.SOUND_VOLUME);
@@ -247,7 +262,22 @@ public abstract class MovableWarAttender extends WarAttender {
                 break;
             case EXPAND:
                 expand_use_sound.play(1.f, UserSettings.SOUND_VOLUME);
-                // TODO: reflect enemy bullets here
+                for (int idx = 0; idx < all_movable_war_attenders.size(); ++idx) {
+                    MovableWarAttender movableWarAttender = all_movable_war_attenders.get(idx);
+                    if (WayPointManager.dist(movableWarAttender.getPosition(), this.getPosition()) < 500) {
+                        for (Weapon weapon : movableWarAttender.getWeapons()) {
+                            Iterator<Projectile> projectile_iterator = weapon.getProjectiles();
+                            while (projectile_iterator.hasNext()) {
+                                Projectile projectile = projectile_iterator.next();
+                                projectile.dir.x *= -1;
+                                projectile.dir.y *= -1;
+                            }
+                        }
+                    }
+
+                }
+
+
                 break;
         }
     }
