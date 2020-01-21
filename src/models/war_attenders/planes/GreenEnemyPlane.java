@@ -67,7 +67,7 @@ public class GreenEnemyPlane extends Plane {
     public void draw(Graphics graphics) {
         super.draw(graphics);
         // draw the plane's crosshair
-        if (isDrivable) animatedCrosshair.draw();
+        if (isDrivable && isMoving) animatedCrosshair.draw();
     }
 
     public void fly(int deltaTime) {
