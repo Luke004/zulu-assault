@@ -9,6 +9,7 @@ import menus.UserSettings;
 import models.StaticWarAttender;
 import models.animations.explosion.BigExplosionAnimation;
 import models.hud.HUD;
+import models.hud.Radar;
 import models.interaction_circles.InteractionCircle;
 import models.items.InvincibilityItem;
 import models.items.Item;
@@ -66,6 +67,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     private Camera camera;
 
     private static HUD hud;
+    private static Radar radar;
 
     // for destruction of tanks or robots
     private static BigExplosionAnimation bigExplosionAnimation;
@@ -110,6 +112,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             screenDrawer = new ScreenDrawer();
             hud = new HUD(player, gameContainer);
             player.addListener(hud);
+            radar = new Radar(gameContainer, player);
         }
 
         // create a global movableWarAttender list for collisions between them
@@ -350,6 +353,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         // un-translate graphics to draw the HUD- items
         camera.untranslateGraphics();
         hud.draw();
+        radar.draw(graphics);
     }
 
     @Override

@@ -274,10 +274,7 @@ public abstract class MovableWarAttender extends WarAttender {
                             }
                         }
                     }
-
                 }
-
-
                 break;
         }
     }

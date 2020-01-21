@@ -1,8 +1,8 @@
 package logic;
 
-import levels.AbstractLevel;
 import main.SoundManager;
 import menus.UserSettings;
+import models.hud.Radar;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.planes.Plane;
 import models.war_attenders.robots.Robot;
@@ -243,6 +243,11 @@ public class KeyInputHandler {
 
         if (input.isKeyPressed(Input.KEY_4)) {
             player.activateItem(Player.Item_e.EXPAND);
+        }
+
+        // show / hide radar
+        if (input.isKeyPressed(Input.KEY_R)) {
+            Radar.toggleRadar();
         }
 
     }
