@@ -24,7 +24,6 @@ public abstract class Plane extends MovableWarAttender {
     public void init() {
         WIDTH_HALF = base_image.getWidth() / 2;
         HEIGHT_HALF = base_image.getHeight() / 2;
-        //destructionAnimation = new Tank.DestructionAnimation();
 
         planeShadow = new PlaneShadow(new Vector2f(position));
 

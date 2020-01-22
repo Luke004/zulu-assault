@@ -1,6 +1,7 @@
 package models.war_attenders;
 
 import logic.WayPointManager;
+import models.war_attenders.planes.GreenEnemyPlane;
 import models.weapons.Weapon;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
@@ -120,6 +121,7 @@ public abstract class WarAttender {
         if (dist < 600) {
             // fire
             fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
+            if (this instanceof GreenEnemyPlane) fireWeapon(WeaponType.WEAPON_2);   // green plane can also shoot wpn2
         }
     }
 

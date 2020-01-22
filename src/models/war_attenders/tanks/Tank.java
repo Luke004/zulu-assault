@@ -43,9 +43,11 @@ public abstract class Tank extends MovableWarAttender {
     public void update(GameContainer gc, int deltaTime) {
         super.update(gc, deltaTime);
 
+        /*
         if (this instanceof CannonTank) {
             System.out.println(position);
         }
+         */
 
         if (decelerate) {
             decelerate(deltaTime);
@@ -62,7 +64,7 @@ public abstract class Tank extends MovableWarAttender {
             centerTurret(deltaTime);
         }
 
-        //WAYPOINTS
+        // WAY POINTS
         if (waypointManager != null) {
             // move to next vector
             accelerate(deltaTime);

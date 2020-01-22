@@ -64,14 +64,33 @@ public class Level_1 extends AbstractLevel implements GameState {
         enemy_tank_2_shell.addWayPoints(new WayPointManager(wayPoints, enemy_tank_2_shell.getPosition(), enemy_tank_2_shell.getRotation()));
         hostile_war_attenders.add(enemy_tank_2_shell);
 
-/*
-        MovableWarAttender enemy_plane_1 = new GreenEnemyPlane(new Vector2f(1000.f, 1000.f), true, false);
-        enemy_plane_1.current_health = 1;
+
+        MovableWarAttender enemy_plane_1 = new GreenEnemyPlane(new Vector2f(2700, 3500), true, false);
         wayPoints = new ArrayList<>();
-        wayPoints.add(new Vector2f(1200.f, 1000.f));
-        enemy_tank_2_shell.addWayPoints(new WayPointManager(wayPoints, enemy_plane_1.position, enemy_plane_1.getRotation()));
+        wayPoints.add(new Vector2f(2700, 3367));
+        wayPoints.add(new Vector2f(2700, 3034));
+        wayPoints.add(new Vector2f(3033, 2700));
+        wayPoints.add(new Vector2f(3366, 2700));
+        wayPoints.add(new Vector2f(3700, 3033));
+        wayPoints.add(new Vector2f(3700, 3366));
+        wayPoints.add(new Vector2f(3367, 3700));
+        wayPoints.add(new Vector2f(3034, 3700));
+        enemy_plane_1.addWayPoints(new WayPointManager(wayPoints, enemy_plane_1.getPosition(), enemy_plane_1.getRotation()));
         hostile_war_attenders.add(enemy_plane_1);
- */
+
+        MovableWarAttender enemy_plane_2 = new GreenEnemyPlane(new Vector2f(2700, 1900), true, false);
+        wayPoints = new ArrayList<>();
+        wayPoints.add(new Vector2f(2700, 1767));
+        wayPoints.add(new Vector2f(2700, 1434));
+        wayPoints.add(new Vector2f(3033, 1100));
+        wayPoints.add(new Vector2f(3366, 1100));
+        wayPoints.add(new Vector2f(3700, 1433));
+        wayPoints.add(new Vector2f(3700, 1766));
+        wayPoints.add(new Vector2f(3367, 2100));
+        wayPoints.add(new Vector2f(3034, 2100));
+        enemy_plane_2.addWayPoints(new WayPointManager(wayPoints, enemy_plane_2.getPosition(), enemy_plane_2.getRotation()));
+        hostile_war_attenders.add(enemy_plane_2);
+
 
         MovableWarAttender enemy_cannon_tank = new CannonTank_v2(new Vector2f(3055, 3110), true, false);
         hostile_war_attenders.add(enemy_cannon_tank);

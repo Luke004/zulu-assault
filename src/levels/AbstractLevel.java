@@ -273,19 +273,6 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         for (int idx = 0; idx < all_movable_war_attenders.size(); ++idx) {
             all_movable_war_attenders.get(idx).update(gameContainer, deltaTime);
         }
-        /*
-        for (int idx = 0; idx < friendly_war_attenders.size(); ++idx) {
-            friendly_war_attenders.get(idx).update(gameContainer, deltaTime);
-        }
-        for (int idx = 0; idx < hostile_war_attenders.size(); ++idx) {
-            hostile_war_attenders.get(idx).update(gameContainer, deltaTime);
-        }
-         */
-        /*
-        for (int idx = 0; idx < drivable_war_attenders.size(); ++idx) {
-            drivable_war_attenders.get(idx).update(gameContainer, deltaTime);
-        }
-         */
 
         for (int idx = 0; idx < static_enemies.size(); ++idx) {
             static_enemies.get(idx).update(gameContainer, deltaTime);
@@ -409,7 +396,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
 
 
     @Override
-    public void notifyForDestructibleTileDeletion(float xPos, float yPos) {
+    public void notifyForDestructibleTileShotDeletion(float xPos, float yPos) {
         // a destructible tile was deleted
         bigExplosionAnimation.playTenTimes(xPos, yPos, 0);
     }

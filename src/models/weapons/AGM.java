@@ -28,6 +28,8 @@ public class AGM extends RocketLauncher implements iGroundTileDamageWeapon {
 
         BUFFER_SIZE *= 2;   // double the buffer size, since this is a double rocket launcher
         bigExplosionAnimation = new BigExplosionAnimation(100);
+
+        //if (!isDrivable) shot_reload_time *= 2;
     }
 
     @Override

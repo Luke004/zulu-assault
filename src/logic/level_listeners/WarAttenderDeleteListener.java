@@ -4,5 +4,5 @@ import models.war_attenders.WarAttender;
 
 public interface WarAttenderDeleteListener {
     void notifyForWarAttenderDeletion(WarAttender warAttender);
-    void notifyForDestructibleTileDeletion(float xPos, float yPos);
+    void notifyForDestructibleTileShotDeletion(float xPos, float yPos);
 }

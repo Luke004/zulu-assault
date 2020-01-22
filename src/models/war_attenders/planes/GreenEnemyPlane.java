@@ -1,7 +1,9 @@
 package models.war_attenders.planes;
 
+import levels.AbstractLevel;
 import logic.WayPointManager;
 import models.CollisionModel;
+import models.StaticWarAttender;
 import models.animations.other.AnimatedCrosshair;
 import models.war_attenders.MovableWarAttender;
 import models.weapons.AGM;
@@ -11,6 +13,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
+
+import static levels.AbstractLevel.*;
 
 public class GreenEnemyPlane extends Plane {
 
@@ -36,13 +40,13 @@ public class GreenEnemyPlane extends Plane {
         } else {
             // individual GreenEnemyPlane attributes for bots
             max_speed = 0.15f;
-            rotate_speed = 0.3f;
+            rotate_speed = 0.15f;
         }
 
         current_speed = max_speed;  // speed is always the same for this plane
 
         weapons.add(new Uzi(isDrivable));  // WEAPON_1
-        weapons.add(new AGM(true));  // WEAPON_2
+        weapons.add(new AGM(isDrivable));  // WEAPON_2
 
         try {
             base_image = new Image("assets/war_attenders/planes/green_enemy_plane.png");
@@ -61,6 +65,48 @@ public class GreenEnemyPlane extends Plane {
         }
         if (isDrivable)
             animatedCrosshair.update(deltaTime, position, getRotation());
+
+        // WAY POINTS
+        if (waypointManager != null) {
+            boolean stopWayPointFollow = false;
+            if (isHostile) {
+                if (WayPointManager.dist(AbstractLevel.player.getWarAttender().getPosition(), getPosition()) < 750) {
+                    stopWayPointFollow = true;
+                }
+                if (!stopWayPointFollow) {
+                    for (MovableWarAttender friendly_war_attender : friendly_war_attenders) {
+                        if (WayPointManager.dist(friendly_war_attender.getPosition(), getPosition()) < 750) {
+                            stopWayPointFollow = true;
+                            break;
+                        }
+                    }
+                }
+            } else {    // is not hostile
+                for (MovableWarAttender hostile_war_attender : hostile_war_attenders) {
+                    if (WayPointManager.dist(hostile_war_attender.getPosition(), getPosition()) < 750) {
+                        stopWayPointFollow = true;
+                        break;
+                    }
+                }
+                for (StaticWarAttender staticWarAttender : static_enemies) {
+                    if (WayPointManager.dist(staticWarAttender.getPosition(), getPosition()) < 750) {
+                        stopWayPointFollow = true;
+                        break;
+                    }
+                }
+            }
+            if (!stopWayPointFollow) {
+                // rotate the plane towards the next vector until it's pointing towards it
+                if (waypointManager.wish_angle != (int) getRotation()) {
+                    rotate(waypointManager.rotate_direction, deltaTime);
+                    waypointManager.adjustAfterRotation(this.position, getRotation());
+                }
+
+                if (waypointManager.distToNextVector(this.position) < HEIGHT_HALF * 2) {
+                    waypointManager.setupNextWayPoint(this.position, getRotation());
+                }
+            }
+        }
     }
 
     @Override
@@ -103,7 +149,7 @@ public class GreenEnemyPlane extends Plane {
                 weapons.get(0).fire(position.x, position.y, base_image.getRotation());
                 break;
             case WEAPON_2:
-                if (weapons.size() == 2) return;    // does not have a WEAPON_2, so return
+                if (weapons.size() < 2) return;    // does not have a WEAPON_2, so return
                 weapons.get(1).fire(position.x, position.y, base_image.getRotation());
                 break;
             case MEGA_PULSE:
