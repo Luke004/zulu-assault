@@ -43,6 +43,7 @@ public class Level_1 extends AbstractLevel implements GameState {
 
         // SETUP ENEMY WAR ATTENDERS
         List<Vector2f> wayPoints;
+
         MovableWarAttender enemy_tank_1_shell = new ShellTank(new Vector2f(2100.f, 2000.f), true, false);
         enemy_tank_1_shell.setMoving(true);
         enemy_tank_1_shell.base_image.setRotation(180);
@@ -92,6 +93,8 @@ public class Level_1 extends AbstractLevel implements GameState {
         hostile_war_attenders.add(enemy_plane_2);
 
 
+
+
         MovableWarAttender enemy_cannon_tank = new CannonTank_v2(new Vector2f(3055, 3110), true, false);
         hostile_war_attenders.add(enemy_cannon_tank);
 
@@ -139,14 +142,42 @@ public class Level_1 extends AbstractLevel implements GameState {
 
 
         // SETUP PLAYER'S FRIENDLY WAR ATTENDER ALLIES
-        MovableWarAttender player_ally_1 = new NapalmTank(new Vector2f(1000.f, 300.f), false, false);
+        MovableWarAttender player_ally_1 = new NapalmTank(new Vector2f(900, 750), false, false);
+        /*
         player_ally_1.setMoving(true);
         wayPoints = new ArrayList<>();
         wayPoints.add(new Vector2f(1001.f, 3000.f));
         wayPoints.add(new Vector2f(1000.f, 300.f));
         player_ally_1.addWayPoints(new WayPointManager(wayPoints, player_ally_1.getPosition(), player_ally_1.getRotation()));
-        friendly_war_attenders.add(player_ally_1);
+         */
+        //friendly_war_attenders.add(player_ally_1);
 
+
+        MovableWarAttender player_ally_2 = new NapalmTank(new Vector2f(940, 820), false, false);
+        player_ally_2.setRotation(170);
+        player_ally_2.setMoving(true);
+        wayPoints = new ArrayList<>();
+        wayPoints.add(new Vector2f(1005, 1000));
+        wayPoints.add(new Vector2f(806, 1277));
+        wayPoints.add(new Vector2f(600, 1726));
+        wayPoints.add(new Vector2f(770, 1883));
+        wayPoints.add(new Vector2f(789, 2769));
+        wayPoints.add(new Vector2f(835, 3380));
+        wayPoints.add(new Vector2f(1290, 3483));
+        wayPoints.add(new Vector2f(1580, 3363));
+        wayPoints.add(new Vector2f(1582, 3153));
+        wayPoints.add(new Vector2f(1893, 2840));
+        wayPoints.add(new Vector2f(2335, 2840));
+        wayPoints.add(new Vector2f(2693, 2530));
+        wayPoints.add(new Vector2f(2863, 2169));
+        wayPoints.add(new Vector2f(2645, 1661));
+        wayPoints.add(new Vector2f(1656, 1361));
+        wayPoints.add(new Vector2f(1651, 1079));
+        wayPoints.add(new Vector2f(1494, 872));
+        player_ally_2.addWayPoints(new WayPointManager(wayPoints, player_ally_2.getPosition(), player_ally_2.getRotation()));
+
+
+        friendly_war_attenders.add(player_ally_2);
 
         // SETUP INTERACTION CIRCLES
         InteractionCircle health_circle_1 = new HealthCircle(new Vector2f(2380.f, 340.f));
@@ -262,22 +293,9 @@ public class Level_1 extends AbstractLevel implements GameState {
         items.add(golden_wrench_2);
 
 
-        // tests
-        Item item_1 = new InvincibilityItem(new Vector2f(1000.f, 800.f));
-        items.add(item_1);
-
-        Item item_2 = new MegaPulseItem(new Vector2f(1100.f, 1000.f));
-        items.add(item_2);
-
-        Item item_3 = new EMPItem(new Vector2f(1200.f, 1000.f));
-        items.add(item_3);
-
-        Item item_4 = new GoldenWrenchItem(new Vector2f(1400.f, 1000.f));
-        items.add(item_4);
-
-
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
-        Vector2f playerStartPos = new Vector2f(1000, 1000);
+        Vector2f playerStartPos = new Vector2f(750, 800);
+        //Vector2f playerStartPos = new Vector2f(789, 2769);
         //Tank tank = new NapalmTank(playerStartPos, false, true);
         //Tank tank = new ShellTank(playerStartPos, false, true);
         Tank tank = new CannonTank(playerStartPos, false, true);

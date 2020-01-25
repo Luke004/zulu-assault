@@ -118,7 +118,7 @@ public abstract class WarAttender {
 
             changeAimingDirection(rotationDegree, deltaTime);
         }
-        if (dist < 600) {
+        if (dist < 500) {
             // fire
             fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
             if (this instanceof GreenEnemyPlane) fireWeapon(WeaponType.WEAPON_2);   // green plane can also shoot wpn2
