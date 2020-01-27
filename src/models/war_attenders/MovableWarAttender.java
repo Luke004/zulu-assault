@@ -122,8 +122,7 @@ public abstract class MovableWarAttender extends WarAttender {
             // invincibility animation related
             invincible_animation_current_time += deltaTime;
             if (invincible_animation_current_time >= INVINCIBLE_ANIMATION_TIME_SWITCH) {
-                if (invincibility_animation_switch) invincibility_animation_switch = false;
-                else invincibility_animation_switch = true;
+                invincibility_animation_switch = !invincibility_animation_switch;
                 invincible_animation_current_time = 0;
             }
         }

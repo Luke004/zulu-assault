@@ -233,13 +233,6 @@ public abstract class Tank extends MovableWarAttender {
         current_speed = 0.f;    // set the speed to zero (stop moving on collision)
     }
 
-    /*
-    let the tank bounce a few meters back from its current position
-     */
-    private void bounceBack() {
-        // TODO
-    }
-
     @Override
     public void changeAimingDirection(float angle, int deltaTime) {
         float rotation = WayPointManager.getShortestSignedAngle(turret.getRotation(), angle);
@@ -360,7 +353,7 @@ public abstract class Tank extends MovableWarAttender {
                 float xDir = (float) Math.sin(angle * Math.PI / 180);
                 float yDir = (float) -Math.cos(angle * Math.PI / 180);
                 xDir *= WIDTH_HALF;
-                yDir *= WIDTH_HALF;
+                yDir *= HEIGHT_HALF;
                 line_start.x = position.x + xDir;
                 line_start.y = position.y + yDir;
                 angle -= getRotation();

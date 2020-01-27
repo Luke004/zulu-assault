@@ -285,7 +285,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             item.update(deltaTime);
         }
         keyInputHandler.update(gameContainer, deltaTime);
-        collisionHandler.update(gameContainer, deltaTime);
+        collisionHandler.update(deltaTime);
         hud.update(deltaTime);
         screenDrawer.update(deltaTime);
         bigExplosionAnimation.update(deltaTime);

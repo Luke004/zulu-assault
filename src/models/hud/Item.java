@@ -14,8 +14,8 @@ class Item {
     private TrueTypeFont amount_number_text;
     private int ITEM_WIDTH, ITEM_HEIGHT;
     private float xPos, yPos, test_x_pos, text_y_pos;
-    boolean isActive, isFadingIn, isFadingOut;
-    int amount;
+    protected boolean isActive, isFadingIn, isFadingOut;
+    protected int amount;
 
     private final int ITEM_START_Y = GAME_HEIGHT / (60 / 13);
     private final float FADE_SPEED = 0.05f; // how fast the item banner moves in and back out of the screen

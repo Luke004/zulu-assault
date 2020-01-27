@@ -56,16 +56,21 @@ public class WayPointManager {
         float m = (p1.y - p2.y) / (p1.x - p2.x);
         float x = p2.x - p1.x;
 
-        if ((x > 0) && m > 0) {
-            rotationDegree = (float) (Math.abs(Math.atan(m / 1) * 180.0 / Math.PI) + 90.f);
+        if ((x > 0) && (m > 0)) {
+            rotationDegree = getAbs(true, m) + 90.f;
         } else if (x > 0 && m <= 0) {
-            rotationDegree = (float) Math.abs((Math.atan(1 / m) * 180.0 / Math.PI));
+            rotationDegree = getAbs(false, m);
         } else if ((x < 0) && (m <= 0)) {
-            rotationDegree = (float) (Math.abs((Math.atan(1 / m) * 180.0 / Math.PI)) + 180.f);
+            rotationDegree = getAbs(false, m) + 180.f;
         } else {
-            rotationDegree = (float) (Math.abs((Math.atan(m / 1) * 180.0 / Math.PI)) + 270.f);
+            rotationDegree = getAbs(true, m) + 270.f;
         }
         return rotationDegree;
+    }
+
+    // just a private helper function for 'calculateAngleToRotateTo'
+    private static float getAbs(boolean mDividedByOne, float m) {
+        return (float) Math.abs(Math.atan((mDividedByOne ? m / 1 : 1 / m)) * 180.0 / Math.PI);
     }
 
     /*

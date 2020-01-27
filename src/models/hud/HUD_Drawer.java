@@ -1,7 +1,5 @@
 package models.hud;
 
-
-import logic.TileMapInfo;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import player.Player;
@@ -16,7 +14,7 @@ public class HUD_Drawer {
     private List<Image> number_images;
     private Image dmg_image, pts_image;
     private static final int OFFSET = 19;
-    private final int MARGIN = 10;
+    private static final int MARGIN = 10;
     private Player player;
 
     HUD_Drawer(Player player) {

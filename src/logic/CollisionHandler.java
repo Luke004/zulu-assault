@@ -82,7 +82,7 @@ public class CollisionHandler {
         plasmaDamageAnimation.draw();
     }
 
-    public void update(GameContainer gameContainer, int deltaTime) {
+    public void update(int deltaTime) {
         smokeAnimation.update(deltaTime);
         uziHitExplosionAnimation.update(deltaTime);
         uziDamageAnimation.update(deltaTime);
@@ -341,7 +341,7 @@ public class CollisionHandler {
                     map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
 
                     // maybe also destroy other tiles around
-                    doCollateralTileDamage(x, y, idx);
+                    doCollateralTileDamage(x, y);
                     explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
                 } else {
                     if (weapon instanceof PiercingWeapon) {
@@ -418,7 +418,7 @@ public class CollisionHandler {
                         // destroy the hit tile directly
                         map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
                         // maybe also destroy other tiles around
-                        doCollateralTileDamage(x, y, idx);
+                        doCollateralTileDamage(x, y);
                     }
                 }
             }
@@ -626,7 +626,7 @@ public class CollisionHandler {
     }
 
 
-    private void doCollateralTileDamage(int x, int y, int idx) {
+    private void doCollateralTileDamage(int x, int y) {
         // maybe destroy nearby tiles
         List<Tile> tiles = new ArrayList<>();
         if (y > 0) {
@@ -672,9 +672,7 @@ public class CollisionHandler {
                     if (d < 0.3) {
                         // 30% chance of tile getting destroyed
                         map.setTileId(tile.xVal, tile.yVal, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx2]);
-                        if (destructible_tiles_health_info.containsKey(tile.key)) {
-                            destructible_tiles_health_info.remove(tile.key);
-                        }
+                        destructible_tiles_health_info.remove(tile.key);
                     }
                 }
             }

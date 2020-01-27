@@ -1,11 +1,9 @@
 package menus.menu_elements;
 
 import org.newdawn.slick.Image;
-import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 
-import java.awt.*;
 
 public class Slider extends AbstractMenuElement {
 
