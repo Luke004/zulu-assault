@@ -26,7 +26,7 @@ public class GreenEnemyPlane extends Plane {
         // attributes equal for humans and bots
         max_health = 100;
         current_health = max_health;
-        armor = 60; // unknown
+        armor = 45; // unknown
 
         scoreValue = 500;
 
@@ -39,7 +39,7 @@ public class GreenEnemyPlane extends Plane {
             rotate_speed = 0.15f;
         } else {
             // individual GreenEnemyPlane attributes for bots
-            max_speed = 0.15f;
+            max_speed = 0.2f;
             rotate_speed = 0.15f;
         }
 

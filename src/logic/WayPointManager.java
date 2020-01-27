@@ -3,29 +3,53 @@ package logic;
 import models.war_attenders.MovableWarAttender;
 import org.newdawn.slick.geom.Vector2f;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class WayPointManager {
-    private List<Vector2f> wayPoints;
+    private static Random random;
+    private List<List<Vector2f>> wayPointLists;
+    private int current_way_point_list_idx;
     private int current_point_idx;
     public int wish_angle;
     public MovableWarAttender.RotateDirection rotate_direction;
 
-    public WayPointManager(List<Vector2f> wayPoints, Vector2f pos, float angle) {
-        this.wayPoints = wayPoints;
+    public WayPointManager(List<List<Vector2f>> wayPointLists, Vector2f pos, float angle) {
+        this.wayPointLists = wayPointLists;
+        wish_angle = -123456;
+        current_point_idx = -1;
+        setupNextWayPoint(pos, angle);
+        current_way_point_list_idx = random.nextInt(wayPointLists.size());
+        System.out.println("driving list " + current_way_point_list_idx);
+    }
+
+    public WayPointManager(Vector2f pos, float angle, List<Vector2f> wayPoints) {
+        this.wayPointLists = new ArrayList<>();
+        this.wayPointLists.add(wayPoints);
         wish_angle = -123456;
         current_point_idx = -1;
         setupNextWayPoint(pos, angle);
     }
 
+    static {
+        random = new Random();
+    }
+
     public void setupNextWayPoint(Vector2f pos, float angle) {
-        if (current_point_idx + 1 == wayPoints.size()) current_point_idx = -1;
+        if (current_point_idx + 1 == wayPointLists.get(current_way_point_list_idx).size()) {
+            // end of current way point list has been reached
+            // select next way point list randomly
+            current_way_point_list_idx = random.nextInt(wayPointLists.size());
+            current_point_idx = -1;
+        }
         current_point_idx++;
         adjustAfterRotation(pos, angle);
     }
 
     public void adjustAfterRotation(Vector2f pos, float angle) {
-        float angle2 = calculateAngleToRotateTo(pos, wayPoints.get(current_point_idx));
+        if(angle < 0) angle += 360; // only use the positive angles from 'getRotation()'
+        float angle2 = calculateAngleToRotateTo(pos, wayPointLists.get(current_way_point_list_idx).get(current_point_idx));
         float shortest_angle = getShortestSignedAngle(angle2, angle);
 
         if (shortest_angle > 0) {
@@ -39,7 +63,7 @@ public class WayPointManager {
     }
 
     public float distToNextVector(Vector2f position) {
-        return dist(wayPoints.get(current_point_idx), position);
+        return dist(wayPointLists.get(current_way_point_list_idx).get(current_point_idx), position);
     }
 
     public static float dist(Vector2f pos1, Vector2f pos2) {

@@ -18,7 +18,7 @@ public class CannonTank extends Tank {
 
         if (isDrivable) {
             // individual MachineGunTank attributes for human players
-            max_speed = 0.3f;
+            max_speed = 0.27f;
             backwards_speed = 0.15f;
             acceleration_factor = 0.0005f;
             deceleration_factor = 0.0005f;

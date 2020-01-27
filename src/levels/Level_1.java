@@ -23,8 +23,11 @@ import org.newdawn.slick.tiled.TiledMap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Level_1 extends AbstractLevel implements GameState {
+
+    private List<Vector2f> shortRoundWayPoints, longRoundWayPoints;
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
@@ -44,6 +47,7 @@ public class Level_1 extends AbstractLevel implements GameState {
         // SETUP ENEMY WAR ATTENDERS
         List<Vector2f> wayPoints;
 
+
         MovableWarAttender enemy_tank_1_shell = new ShellTank(new Vector2f(2100.f, 2000.f), true, false);
         enemy_tank_1_shell.setMoving(true);
         enemy_tank_1_shell.base_image.setRotation(180);
@@ -52,7 +56,8 @@ public class Level_1 extends AbstractLevel implements GameState {
         wayPoints.add(new Vector2f(2100.f, 2500.f));
         wayPoints.add(new Vector2f(1600.f, 2500.f));
         wayPoints.add(new Vector2f(1600.f, 2100.f));
-        enemy_tank_1_shell.addWayPoints(new WayPointManager(wayPoints, enemy_tank_1_shell.getPosition(), enemy_tank_1_shell.getRotation()));
+        enemy_tank_1_shell.addWayPoints(new WayPointManager(enemy_tank_1_shell.getPosition(), enemy_tank_1_shell.getRotation(),
+                wayPoints));
         hostile_war_attenders.add(enemy_tank_1_shell);
 
         MovableWarAttender enemy_tank_2_shell = new ShellTank(new Vector2f(1600.f, 2600.f), true, false);
@@ -62,9 +67,10 @@ public class Level_1 extends AbstractLevel implements GameState {
         wayPoints.add(new Vector2f(1600.f, 2100.f));
         wayPoints.add(new Vector2f(2100.f, 2100.f));
         wayPoints.add(new Vector2f(2100.f, 2500.f));
-        enemy_tank_2_shell.addWayPoints(new WayPointManager(wayPoints, enemy_tank_2_shell.getPosition(), enemy_tank_2_shell.getRotation()));
+        enemy_tank_2_shell.addWayPoints(new WayPointManager(enemy_tank_2_shell.getPosition(),
+                enemy_tank_2_shell.getRotation(),
+                wayPoints));
         hostile_war_attenders.add(enemy_tank_2_shell);
-
 
         MovableWarAttender enemy_plane_1 = new GreenEnemyPlane(new Vector2f(2700, 3500), true, false);
         wayPoints = new ArrayList<>();
@@ -76,7 +82,9 @@ public class Level_1 extends AbstractLevel implements GameState {
         wayPoints.add(new Vector2f(3700, 3366));
         wayPoints.add(new Vector2f(3367, 3700));
         wayPoints.add(new Vector2f(3034, 3700));
-        enemy_plane_1.addWayPoints(new WayPointManager(wayPoints, enemy_plane_1.getPosition(), enemy_plane_1.getRotation()));
+        enemy_plane_1.addWayPoints(new WayPointManager(enemy_plane_1.getPosition(),
+                enemy_plane_1.getRotation(),
+                wayPoints));
         hostile_war_attenders.add(enemy_plane_1);
 
         MovableWarAttender enemy_plane_2 = new GreenEnemyPlane(new Vector2f(2700, 1900), true, false);
@@ -87,12 +95,28 @@ public class Level_1 extends AbstractLevel implements GameState {
         wayPoints.add(new Vector2f(3366, 1100));
         wayPoints.add(new Vector2f(3700, 1433));
         wayPoints.add(new Vector2f(3700, 1766));
-        wayPoints.add(new Vector2f(3367, 2100));
-        wayPoints.add(new Vector2f(3034, 2100));
-        enemy_plane_2.addWayPoints(new WayPointManager(wayPoints, enemy_plane_2.getPosition(), enemy_plane_2.getRotation()));
+        wayPoints.add(new Vector2f(3366, 2100));
+        wayPoints.add(new Vector2f(3033, 2100));
+        enemy_plane_2.addWayPoints(new WayPointManager(enemy_plane_2.getPosition(),
+                enemy_plane_2.getRotation(),
+                wayPoints));
         hostile_war_attenders.add(enemy_plane_2);
 
-
+        MovableWarAttender enemy_plane_3 = new GreenEnemyPlane(new Vector2f(3260, 200), true, false);
+        enemy_plane_3.setRotation(180);
+        wayPoints = new ArrayList<>();
+        wayPoints.add(new Vector2f(3260, 613));
+        wayPoints.add(new Vector2f(3260, 946));
+        wayPoints.add(new Vector2f(2926, 1280));
+        wayPoints.add(new Vector2f(2593, 1280));
+        wayPoints.add(new Vector2f(2260, 946));
+        wayPoints.add(new Vector2f(2260, 613));
+        wayPoints.add(new Vector2f(2593, 280));
+        wayPoints.add(new Vector2f(2926, 280));
+        enemy_plane_3.addWayPoints(new WayPointManager(enemy_plane_3.getPosition(),
+                enemy_plane_3.getRotation(),
+                wayPoints));
+        hostile_war_attenders.add(enemy_plane_3);
 
 
         MovableWarAttender enemy_cannon_tank = new CannonTank_v2(new Vector2f(3055, 3110), true, false);
@@ -142,42 +166,32 @@ public class Level_1 extends AbstractLevel implements GameState {
 
 
         // SETUP PLAYER'S FRIENDLY WAR ATTENDER ALLIES
-        MovableWarAttender player_ally_1 = new NapalmTank(new Vector2f(900, 750), false, false);
-        /*
+        List<List<Vector2f>> tankWayPointLists = createTankWayPointLists(); // CREATE THEIR WAY POINT LISTS
+
+        MovableWarAttender player_ally_1 = new NapalmTank(new Vector2f(925, 740), false, false);
+        player_ally_1.setRotation(180);
         player_ally_1.setMoving(true);
-        wayPoints = new ArrayList<>();
-        wayPoints.add(new Vector2f(1001.f, 3000.f));
-        wayPoints.add(new Vector2f(1000.f, 300.f));
-        player_ally_1.addWayPoints(new WayPointManager(wayPoints, player_ally_1.getPosition(), player_ally_1.getRotation()));
-         */
-        //friendly_war_attenders.add(player_ally_1);
+        player_ally_1.addWayPoints(new WayPointManager(tankWayPointLists,
+                player_ally_1.getPosition(),
+                player_ally_1.getRotation()));
+        friendly_war_attenders.add(player_ally_1);
 
-
-        MovableWarAttender player_ally_2 = new NapalmTank(new Vector2f(940, 820), false, false);
-        player_ally_2.setRotation(170);
+        MovableWarAttender player_ally_2 = new NapalmTank(new Vector2f(900, -2200), false, false);
+        player_ally_2.setRotation(180);
         player_ally_2.setMoving(true);
-        wayPoints = new ArrayList<>();
-        wayPoints.add(new Vector2f(1005, 1000));
-        wayPoints.add(new Vector2f(806, 1277));
-        wayPoints.add(new Vector2f(600, 1726));
-        wayPoints.add(new Vector2f(770, 1883));
-        wayPoints.add(new Vector2f(789, 2769));
-        wayPoints.add(new Vector2f(835, 3380));
-        wayPoints.add(new Vector2f(1290, 3483));
-        wayPoints.add(new Vector2f(1580, 3363));
-        wayPoints.add(new Vector2f(1582, 3153));
-        wayPoints.add(new Vector2f(1893, 2840));
-        wayPoints.add(new Vector2f(2335, 2840));
-        wayPoints.add(new Vector2f(2693, 2530));
-        wayPoints.add(new Vector2f(2863, 2169));
-        wayPoints.add(new Vector2f(2645, 1661));
-        wayPoints.add(new Vector2f(1656, 1361));
-        wayPoints.add(new Vector2f(1651, 1079));
-        wayPoints.add(new Vector2f(1494, 872));
-        player_ally_2.addWayPoints(new WayPointManager(wayPoints, player_ally_2.getPosition(), player_ally_2.getRotation()));
-
-
+        player_ally_2.addWayPoints(new WayPointManager(tankWayPointLists,
+                player_ally_2.getPosition(),
+                player_ally_2.getRotation()));
         friendly_war_attenders.add(player_ally_2);
+
+        MovableWarAttender player_ally_3 = new NapalmTank(new Vector2f(910, -600), false, false);
+        player_ally_3.setRotation(180);
+        player_ally_3.setMoving(true);
+        player_ally_3.addWayPoints(new WayPointManager(tankWayPointLists,
+                player_ally_3.getPosition(),
+                player_ally_3.getRotation()));
+        friendly_war_attenders.add(player_ally_3);
+
 
         // SETUP INTERACTION CIRCLES
         InteractionCircle health_circle_1 = new HealthCircle(new Vector2f(2380.f, 340.f));
@@ -311,6 +325,88 @@ public class Level_1 extends AbstractLevel implements GameState {
 
         super.init(gameContainer, stateBasedGame);
     }
+
+    private List<List<Vector2f>> createTankWayPointLists() {
+        List<List<Vector2f>> wayPointLists = new ArrayList<>();
+        List<Vector2f> wayPointList_1 = new ArrayList<>();
+        List<Vector2f> wayPointList_2 = new ArrayList<>();
+        List<Vector2f> wayPointList_3 = new ArrayList<>();
+        List<Vector2f> wayPointList_4 = new ArrayList<>();
+        wayPointLists.add(wayPointList_1);
+        wayPointLists.add(wayPointList_2);
+        wayPointLists.add(wayPointList_3);
+        wayPointLists.add(wayPointList_4);
+
+        // create a temp list to hold all way points that are the same between all lists
+        List<Vector2f> tempList = new ArrayList<>();
+
+        tempList.add(new Vector2f(1005, 1000));
+        tempList.add(new Vector2f(806, 1277));
+        tempList.add(new Vector2f(600, 1726));
+        tempList.add(new Vector2f(770, 1883));
+
+        for (List<Vector2f> wayPointList : wayPointLists) {
+            wayPointList.addAll(tempList);
+        }
+        tempList.clear();
+
+        // individual wayPointList_1 points
+        wayPointList_1.add(new Vector2f(1084, 1665));
+        wayPointList_1.add(new Vector2f(1596, 1342));
+
+        // points equal for list 2, 3 and 4
+        tempList.add(new Vector2f(789, 2769));
+        tempList.add(new Vector2f(845, 3380));
+        tempList.add(new Vector2f(1290, 3465));
+        tempList.add(new Vector2f(1580, 3363));
+        wayPointList_2.addAll(tempList);
+        wayPointList_3.addAll(tempList);
+        wayPointList_4.addAll(tempList);
+        tempList.clear();
+
+        // individual wayPointList_2 points
+        wayPointList_2.add(new Vector2f(1582, 3153));
+        wayPointList_2.add(new Vector2f(1893, 2840));
+
+        // individual wayPointList_3 points
+        wayPointList_3.add(new Vector2f(1939, 3271));
+        wayPointList_3.add(new Vector2f(1848, 2890));
+
+        // points equal for list 2 and 3
+        tempList.add(new Vector2f(2335, 2840));
+        tempList.add(new Vector2f(2693, 2530));
+        wayPointList_2.addAll(tempList);
+        wayPointList_3.addAll(tempList);
+        tempList.clear();
+
+        // individual wayPointList_4 points
+        wayPointList_4.add(new Vector2f(1930, 3260));
+        wayPointList_4.add(new Vector2f(2380, 3327));
+        wayPointList_4.add(new Vector2f(3120, 3350));
+        wayPointList_4.add(new Vector2f(3288, 3187));
+
+        // points equal for list 2 , 3 and 4
+        tempList.add(new Vector2f(2863, 2169));
+        tempList.add(new Vector2f(2645, 1661));
+        tempList.add(new Vector2f(1656, 1361));
+        wayPointList_2.addAll(tempList);
+        wayPointList_3.addAll(tempList);
+        wayPointList_4.addAll(tempList);
+        tempList.clear();
+
+
+        // last two points are the same
+        tempList.add(new Vector2f(1651, 1079));
+        tempList.add(new Vector2f(1494, 872));
+
+        for (List<Vector2f> wayPointList : wayPointLists) {
+            wayPointList.addAll(tempList);
+        }
+        tempList.clear();
+
+        return wayPointLists;
+    }
+
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) {

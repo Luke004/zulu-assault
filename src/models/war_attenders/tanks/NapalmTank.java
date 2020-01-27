@@ -26,8 +26,7 @@ public class NapalmTank extends Tank {
             rotate_speed = 0.15f;
         } else {
             // individual NapalmTank attributes for bots
-            //max_speed = 0.05f;
-            max_speed = 0.1f;
+            max_speed = 0.065f;
             backwards_speed = max_speed / 2;
             acceleration_factor = 0.00005f;
             deceleration_factor = 0.0009f;
