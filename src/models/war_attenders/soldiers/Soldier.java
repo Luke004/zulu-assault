@@ -206,7 +206,7 @@ public abstract class Soldier extends MovableWarAttender {
             isFleeing = true;
         } else if (dist < 500) {
             // aim at the closest enemy and fire
-            float rotationDegree = WayPointManager.calculateAngle(position, new Vector2f(xPos, yPos));
+            float rotationDegree = WayPointManager.calculateAngleToRotateTo(position, new Vector2f(xPos, yPos));
 
             changeAimingDirection(rotationDegree, deltaTime);
 

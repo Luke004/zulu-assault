@@ -242,7 +242,7 @@ public abstract class Tank extends MovableWarAttender {
 
     @Override
     public void changeAimingDirection(float angle, int deltaTime) {
-        float rotation = WayPointManager.getShortestAngle(turret.getRotation(), angle);
+        float rotation = WayPointManager.getShortestSignedAngle(turret.getRotation(), angle);
         if (rotation == 0) return;
 
         if (rotation < 0) {

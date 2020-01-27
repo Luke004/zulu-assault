@@ -77,7 +77,7 @@ public abstract class Plane extends MovableWarAttender {
     }
 
     private void movePlaneShadow(int deltaTime, Vector2f target_pos) {
-        float angle = WayPointManager.calculateAngle(planeShadow.current_shadow_pos, target_pos);
+        float angle = WayPointManager.calculateAngleToRotateTo(planeShadow.current_shadow_pos, target_pos);
         float moveX = (float) Math.sin(angle * Math.PI / 180);
         float moveY = (float) -Math.cos(angle * Math.PI / 180);
         moveX *= deltaTime * PlaneShadow.STARTING_LANDING_SPEED;

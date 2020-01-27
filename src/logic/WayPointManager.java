@@ -1,7 +1,6 @@
 package logic;
 
 import models.war_attenders.MovableWarAttender;
-import org.lwjgl.Sys;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.List;
@@ -26,26 +25,15 @@ public class WayPointManager {
     }
 
     public void adjustAfterRotation(Vector2f pos, float angle) {
-        float angle2 = calculateAngle(pos, wayPoints.get(current_point_idx));
-        float shortest_angle = getShortestAngle(angle2, angle);
+        float angle2 = calculateAngleToRotateTo(pos, wayPoints.get(current_point_idx));
+        float shortest_angle = getShortestSignedAngle(angle2, angle);
 
         if (shortest_angle > 0) {
-            if (shortest_angle < 180) {
-                rotate_direction = MovableWarAttender.RotateDirection.ROTATE_DIRECTION_LEFT;
-            } else {
-                rotate_direction = MovableWarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT;
-            }
+            rotate_direction = MovableWarAttender.RotateDirection.ROTATE_DIRECTION_LEFT;
         } else {
-            if (shortest_angle > -180) {
-                rotate_direction = MovableWarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT;
-            } else {
-                rotate_direction = MovableWarAttender.RotateDirection.ROTATE_DIRECTION_LEFT;
-            }
+            rotate_direction = MovableWarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT;
         }
 
-
-        //if (shortest_angle < 0) rotate_direction = MovableWarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT;
-        //else rotate_direction = MovableWarAttender.RotateDirection.ROTATE_DIRECTION_LEFT;
         wish_angle = (int) (angle - shortest_angle);
         if (wish_angle >= 360) wish_angle -= 360;
     }
@@ -60,9 +48,9 @@ public class WayPointManager {
     }
 
     /*
-    calculates the rotation angle between two points
+    calculates the angle where the target needs to rotate to
      */
-    public static float calculateAngle(Vector2f p1, Vector2f p2) {
+    public static float calculateAngleToRotateTo(Vector2f p1, Vector2f p2) {
         float rotationDegree;
 
         float m = (p1.y - p2.y) / (p1.x - p2.x);
@@ -80,11 +68,16 @@ public class WayPointManager {
         return rotationDegree;
     }
 
-
     /*
     calculates the shortest amount of degree to get from one angle to another
      */
-    public static float getShortestAngle(float angle1, float angle2) {
-        return (float) (180.0 - ((angle1 - angle2) % 360.f) - 180.0);
+    public static float getShortestSignedAngle(float angle1, float angle2) {
+        float d = Math.abs(angle1 - angle2) % 360;
+        float r = d > 180 ? 360 - d : d;
+        // calculate sign
+        float sign = (angle1 - angle2 >= 0 && angle1 - angle2 <= 180)
+                || (angle1 - angle2 <= -180 && angle1 - angle2 >= -360) ? -1 : 1;
+        r *= sign;
+        return r;
     }
 }

@@ -1,7 +1,6 @@
 package models.war_attenders;
 
 import logic.WayPointManager;
-import models.war_attenders.planes.GreenEnemyPlane;
 import models.weapons.Weapon;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
@@ -114,20 +113,20 @@ public abstract class WarAttender {
         float rotationDegree;
         if (dist < 700) {
             // aim at player
-            rotationDegree = WayPointManager.calculateAngle(position, new Vector2f(xPos, yPos));
+            rotationDegree = WayPointManager.calculateAngleToRotateTo(position, new Vector2f(xPos, yPos));
 
             changeAimingDirection(rotationDegree, deltaTime);
         }
         if (dist < 500) {
             // fire
             fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
-            if (this instanceof GreenEnemyPlane) fireWeapon(WeaponType.WEAPON_2);   // green plane can also shoot wpn2
         }
     }
 
     public abstract void fireWeapon(MovableWarAttender.WeaponType weapon);
 
     public abstract void changeAimingDirection(float degree, int deltaTime);
+
 
     public Weapon getWeapon(MovableWarAttender.WeaponType weaponType) {
         switch (weaponType) {

@@ -1,11 +1,10 @@
 package models.war_attenders.planes;
 
-import levels.AbstractLevel;
 import logic.WayPointManager;
 import models.CollisionModel;
-import models.StaticWarAttender;
 import models.animations.other.AnimatedCrosshair;
 import models.war_attenders.MovableWarAttender;
+import models.war_attenders.WarAttender;
 import models.weapons.AGM;
 import models.weapons.Uzi;
 import org.newdawn.slick.GameContainer;
@@ -14,11 +13,12 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
-import static levels.AbstractLevel.*;
+import java.util.List;
 
 public class GreenEnemyPlane extends Plane {
 
     private AnimatedCrosshair animatedCrosshair;
+    private boolean isEnemyNear;
 
     public GreenEnemyPlane(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
@@ -68,34 +68,7 @@ public class GreenEnemyPlane extends Plane {
 
         // WAY POINTS
         if (waypointManager != null) {
-            boolean stopWayPointFollow = false;
-            if (isHostile) {
-                if (WayPointManager.dist(AbstractLevel.player.getWarAttender().getPosition(), getPosition()) < 750) {
-                    stopWayPointFollow = true;
-                }
-                if (!stopWayPointFollow) {
-                    for (MovableWarAttender friendly_war_attender : friendly_war_attenders) {
-                        if (WayPointManager.dist(friendly_war_attender.getPosition(), getPosition()) < 750) {
-                            stopWayPointFollow = true;
-                            break;
-                        }
-                    }
-                }
-            } else {    // is not hostile
-                for (MovableWarAttender hostile_war_attender : hostile_war_attenders) {
-                    if (WayPointManager.dist(hostile_war_attender.getPosition(), getPosition()) < 750) {
-                        stopWayPointFollow = true;
-                        break;
-                    }
-                }
-                for (StaticWarAttender staticWarAttender : static_enemies) {
-                    if (WayPointManager.dist(staticWarAttender.getPosition(), getPosition()) < 750) {
-                        stopWayPointFollow = true;
-                        break;
-                    }
-                }
-            }
-            if (!stopWayPointFollow) {
+            if (!isEnemyNear) {
                 // rotate the plane towards the next vector until it's pointing towards it
                 if (waypointManager.wish_angle != (int) getRotation()) {
                     rotate(waypointManager.rotate_direction, deltaTime);
@@ -120,6 +93,53 @@ public class GreenEnemyPlane extends Plane {
         calculateMovementVector(deltaTime, Direction.FORWARD);
         position.add(dir);
         collisionModel.update(base_image.getRotation());
+    }
+
+    @Override
+    public void shootAtEnemies(MovableWarAttender player, List<? extends WarAttender> enemies_of_warAttender, int deltaTime) {
+        if (isDestroyed) return;
+        float xPos, yPos, dist;
+        if (player != null) {
+            // player not null means it's a hostile tank
+            // calculate dist between the player and the enemy
+            xPos = player.getPosition().x;
+            yPos = player.getPosition().y;
+            dist = (float) Math.sqrt((xPos - position.x) * (xPos - position.x)
+                    + (yPos - position.y) * (yPos - position.y));
+        } else {
+            // player null means it's a friendly tank
+            xPos = 0;
+            yPos = 0;
+            dist = Float.MAX_VALUE;
+        }
+        // calculate dist between each tank and all its enemies
+        for (WarAttender enemy_war_attender : enemies_of_warAttender) {
+            float next_xPos = enemy_war_attender.getPosition().x;
+            float next_yPos = enemy_war_attender.getPosition().y;
+            float next_dist = WayPointManager.dist(position, new Vector2f(next_xPos, next_yPos));
+
+            if (next_dist < dist) {
+                dist = next_dist;
+                xPos = next_xPos;
+                yPos = next_yPos;
+            }
+        }
+
+        // follow the closest enemy
+        isEnemyNear = false;
+        float rotationDegree;
+        if (dist < 750) {
+            isEnemyNear = true;
+
+            rotationDegree = WayPointManager.calculateAngleToRotateTo(position, new Vector2f(xPos, yPos));
+
+            changeAimingDirection(rotationDegree, deltaTime);
+        }
+        if (dist < 500) {
+            // fire
+            fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
+            fireWeapon(WeaponType.WEAPON_2);   // green plane can also shoot wpn2
+        }
     }
 
     @Override
@@ -164,14 +184,12 @@ public class GreenEnemyPlane extends Plane {
 
     @Override
     public void changeAimingDirection(float angle, int deltaTime) {
-        float rotation = WayPointManager.getShortestAngle(base_image.getRotation(), angle);
-        //System.out.println("shortest angle: " + rotation);
-        if (rotation == 0) return;
+        float rotation_to_make = WayPointManager.getShortestSignedAngle(base_image.getRotation(), angle);
 
-        if (rotation < 0) {
-            base_image.rotate(-rotate_speed * deltaTime);
-        } else {
+        if (rotation_to_make > 0) {
             base_image.rotate(rotate_speed * deltaTime);
+        } else {
+            base_image.rotate(-rotate_speed * deltaTime);
         }
     }
 }

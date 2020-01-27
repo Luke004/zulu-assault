@@ -195,7 +195,7 @@ public abstract class Robot extends MovableWarAttender {
 
     @Override
     public void changeAimingDirection(float angle, int deltaTime) {
-        float rotation = WayPointManager.getShortestAngle(base_image.getRotation(), angle);
+        float rotation = WayPointManager.getShortestSignedAngle(base_image.getRotation(), angle);
         if (rotation == 0) return;
 
         if (rotation < 0) {
