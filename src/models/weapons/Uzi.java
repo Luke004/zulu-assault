@@ -13,7 +13,7 @@ public class Uzi extends Weapon {
 
     public Uzi(boolean isDrivable) {
         super();
-        uziFireShotAnimation = new UziFireShotAnimation(1);
+        uziFireShotAnimation = new UziFireShotAnimation(10);
         try {
             fire_sound = new Sound("audio/sounds/uzi_shot.ogg");
             weapon_hud_image = new Image("assets/hud/weapons/uzi.png");

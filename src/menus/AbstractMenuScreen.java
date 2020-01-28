@@ -19,18 +19,19 @@ public abstract class AbstractMenuScreen implements iMenuScreen {
         if (gameContainer.getInput().isKeyPressed(Input.KEY_UP)) {
             SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             onUpKeyPress(gameContainer);
-        }
-        if (gameContainer.getInput().isKeyPressed(Input.KEY_DOWN)) {
+        } else if (gameContainer.getInput().isKeyPressed(Input.KEY_DOWN)) {
             SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             onDownKeyPress(gameContainer);
-        }
-        if (gameContainer.getInput().isKeyPressed(Input.KEY_ENTER)) {
+        } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ENTER)) {
             SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             onEnterKeyPress(gameContainer, stateBasedGame);
-        }
-        if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
+        } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
             SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             onExitKeyPress(gameContainer, stateBasedGame);
+        } else if (gameContainer.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+            onMouseClick(gameContainer, stateBasedGame,
+                    gameContainer.getInput().getMouseX(),
+                    gameContainer.getInput().getMouseY());
         }
     }
 }

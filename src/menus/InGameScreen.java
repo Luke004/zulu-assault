@@ -22,9 +22,12 @@ public class InGameScreen extends AbstractMenuScreen {
     private Image main_menu_image, resume_image;
     private Vector2f main_menu_image_position, resume_image_position;
 
+    private final int[] MENU_Y_MOUSE_CLICK_OFFSETS;
+
     public InGameScreen(BasicGameState gameState, GameContainer gameContainer) {
         super(gameState);
         this.gameState = gameState;
+        final int MENU_ITEM_SIZE = 6;
         try {
             main_menu_image = new Image("assets/menus/main_menu.png");
             main_menu_image_position = new Vector2f(
@@ -35,10 +38,17 @@ public class InGameScreen extends AbstractMenuScreen {
                     main_menu_image_position.x,
                     main_menu_image_position.y - resume_image.getHeight());
 
-            arrow = new Arrow(gameContainer, 6, (int) resume_image_position.y);
+            arrow = new Arrow(gameContainer, MENU_ITEM_SIZE, (int) resume_image_position.y);
         } catch (SlickException e) {
             e.printStackTrace();
         }
+        final int menu_y_offset = (main_menu_image.getHeight() + resume_image.getHeight()) / MENU_ITEM_SIZE;
+        MENU_Y_MOUSE_CLICK_OFFSETS = new int[MENU_ITEM_SIZE];
+        int idx = 0;
+        do {
+            MENU_Y_MOUSE_CLICK_OFFSETS[idx] = (int) resume_image_position.y + menu_y_offset * (idx + 1);
+            idx++;
+        } while (idx < MENU_ITEM_SIZE);
     }
 
     @Override
@@ -74,7 +84,31 @@ public class InGameScreen extends AbstractMenuScreen {
 
     @Override
     public void onEnterKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-        switch (arrow.currIdx) {
+        handleMenuItemChoice(gameContainer, stateBasedGame, arrow.currIdx);
+    }
+
+    @Override
+    public void onExitKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+
+    }
+
+    @Override
+    public void onMouseClick(GameContainer gameContainer, StateBasedGame stateBasedGame, int mouseX, int mouseY) {
+        if (mouseX > main_menu_image_position.x && mouseX < main_menu_image_position.x + main_menu_image.getWidth()) {
+            if (mouseY > resume_image_position.y && mouseY < main_menu_image_position.y + main_menu_image.getHeight()) {
+                SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+                for (int idx = 0; idx < MENU_Y_MOUSE_CLICK_OFFSETS.length; ++idx) {
+                    if (mouseY < MENU_Y_MOUSE_CLICK_OFFSETS[idx]) {
+                        handleMenuItemChoice(gameContainer, stateBasedGame, idx);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    private void handleMenuItemChoice(GameContainer gameContainer, StateBasedGame stateBasedGame, int idx) {
+        switch (idx) {
             case 0: // RESUME
                 stateBasedGame.enterState(ZuluAssault.prevState.getID(),
                         new FadeOutTransition(), new FadeInTransition());
@@ -105,11 +139,6 @@ public class InGameScreen extends AbstractMenuScreen {
                 System.exit(0);
                 break;
         }
-    }
-
-    @Override
-    public void onExitKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-
     }
 
     @Override

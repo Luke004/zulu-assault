@@ -42,6 +42,11 @@ public class LoadGameScreen extends AbstractMenuScreen {
     }
 
     @Override
+    public void onMouseClick(GameContainer gameContainer, StateBasedGame stateBasedGame, int mouseX, int mouseY) {
+
+    }
+
+    @Override
     public void onEnterState(GameContainer gameContainer) {
 
     }

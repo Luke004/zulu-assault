@@ -591,7 +591,7 @@ public class CollisionHandler {
                     for (MovableWarAttender hostile_warAttender : hostile_war_attenders) {
                         if (projectile.getCollisionModel().intersects(hostile_warAttender.getCollisionModel())) {
                             showBulletHitAnimation(weapon, projectile);
-                            projectile_iterator.remove();
+                            projectile_iterator.remove();   // TODO: FIX CRASH BUG ON REMOVE
                             hostile_warAttender.changeHealth(-weapon.getBulletDamage());  //drain health of enemy
                             canContinue = true;
                         }

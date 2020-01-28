@@ -70,7 +70,23 @@ public class DeathScreen extends AbstractMenuScreen {
 
     @Override
     public void onEnterKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-        switch (buttons.getCurrentButtonIdx()) {
+        handleMenuItemChoice(gameContainer, stateBasedGame, buttons.getCurrentButtonIdx());
+    }
+
+    @Override
+    public void onExitKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+
+    }
+
+    @Override
+    public void onMouseClick(GameContainer gameContainer, StateBasedGame stateBasedGame, int mouseX, int mouseY) {
+        int idx = buttons.isClicked(mouseX, mouseY);
+        if (idx != -1) SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+        handleMenuItemChoice(gameContainer, stateBasedGame, idx);
+    }
+
+    private void handleMenuItemChoice(GameContainer gameContainer, StateBasedGame stateBasedGame, int idx) {
+        switch (idx) {
             case 0: // REPLAY MISSION
                 try {
                     stateBasedGame.getState(ZuluAssault.LEVEL_1).init(gameContainer, stateBasedGame);
@@ -90,11 +106,6 @@ public class DeathScreen extends AbstractMenuScreen {
                 MainMenu.goToMenu(MainMenu.STATE_MAIN_MENU);
                 break;
         }
-    }
-
-    @Override
-    public void onExitKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-
     }
 
     @Override

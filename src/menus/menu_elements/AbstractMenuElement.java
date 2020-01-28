@@ -37,4 +37,8 @@ public abstract class AbstractMenuElement {
                 description);
     }
 
+    public Vector2f getPosition() {
+        return base_position;
+    }
+
 }
