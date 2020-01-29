@@ -402,6 +402,8 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
                     ZuluAssault.prevState = this;
                 } else {
                     friendly_war_attenders.remove(warAttender);
+                    if (((MovableWarAttender) warAttender).isDrivable)
+                        drivable_war_attenders.remove(warAttender);
                 }
             }
             if (warAttender instanceof Soldier) screenDrawer.drawDeadSoldierBody(3, warAttender);
