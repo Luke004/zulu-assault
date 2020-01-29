@@ -58,6 +58,13 @@ public abstract class WarAttender {
     }
 
     public void draw(Graphics graphics) {
+        // BULLETS
+        for (Weapon weapon : weapons) {
+            weapon.draw(graphics);
+        }
+    }
+
+    public void drawHealthBar(Graphics graphics) {
         health_bar_image.draw(health_bar_position.x, health_bar_position.y);
         // draw health bar damage using a black rectangle
         graphics.setColor(Color.black);
@@ -75,11 +82,6 @@ public abstract class WarAttender {
                     -29.f,
                     5.f
             );
-        }
-
-        // BULLETS
-        for (Weapon weapon : weapons) {
-            weapon.draw(graphics);
         }
     }
 

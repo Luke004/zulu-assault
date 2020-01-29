@@ -346,14 +346,18 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             item.draw();
         }
 
-        for (int idx = 0; idx < drivable_war_attenders.size(); ++idx) {
-            drivable_war_attenders.get(idx).draw(graphics);
+        screenDrawer.draw();    // dead bodies and score values
+
+        /* --------------------- draw all warAttenders --------------------- */
+
+        for (MovableWarAttender drivableWarAttender : drivable_war_attenders) {
+            drivableWarAttender.draw(graphics);
         }
 
         if (!(player.getWarAttender() instanceof Plane)) player.getWarAttender().draw(graphics);
 
-        for (int idx = 0; idx < static_enemies.size(); ++idx) {
-            static_enemies.get(idx).draw(graphics);
+        for (StaticWarAttender staticEnemy : static_enemies) {
+            staticEnemy.draw(graphics);
         }
 
         for (MovableWarAttender renderInstance : renderList) {
@@ -362,8 +366,21 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
 
         if (player.getWarAttender() instanceof Plane) player.getWarAttender().draw(graphics);
 
+
+        /* ------------ draw all health bars after the warAttenders, so they are drawn on top of them ------------ */
+
+        for (MovableWarAttender drivable_war_attender : drivable_war_attenders) {
+            drivable_war_attender.drawHealthBar(graphics);
+        }
+        for (StaticWarAttender static_enemy : static_enemies) {
+            static_enemy.drawHealthBar(graphics);
+        }
+        for (MovableWarAttender renderInstance : renderList) {
+            renderInstance.drawHealthBar(graphics);
+        }
+        player.getWarAttender().drawHealthBar(graphics);
+
         collisionHandler.draw();
-        screenDrawer.draw();
         bigExplosionAnimation.draw();
         // un-translate graphics to draw the HUD-items
         camera.untranslateGraphics();
@@ -385,7 +402,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
                         warAttender.getPosition().y + 20, 0);
                 explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
             } else {
-                if (warAttender instanceof Soldier) screenDrawer.drawDeadSoldierBody(3, warAttender);
+                if (warAttender instanceof Soldier) screenDrawer.drawDeadSoldierBody(10, warAttender);
                 else {
                     bigExplosionAnimation.playTenTimes(warAttender.getPosition().x, warAttender.getPosition().y, 0);
                     explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
@@ -406,7 +423,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
                         drivable_war_attenders.remove(warAttender);
                 }
             }
-            if (warAttender instanceof Soldier) screenDrawer.drawDeadSoldierBody(3, warAttender);
+            if (warAttender instanceof Soldier) screenDrawer.drawDeadSoldierBody(10, warAttender);
             else {
                 bigExplosionAnimation.playTenTimes(warAttender.getPosition().x, warAttender.getPosition().y, 0);
                 explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
