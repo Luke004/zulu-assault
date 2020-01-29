@@ -74,7 +74,7 @@ public class Radar {
 
         // draw the friendly warAttenders
         graphics.setColor(Color.green);
-        for (MovableWarAttender friendly_war_attender : friendly_war_attenders) {
+        for (MovableWarAttender friendly_war_attender : friendly_movable_war_attenders) {
             float friend_x = friendly_war_attender.getPosition().x * ((float) RADAR_WIDTH / TileMapInfo.LEVEL_WIDTH_PIXELS);
             float friend_y = friendly_war_attender.getPosition().y * ((float) RADAR_HEIGHT / TileMapInfo.LEVEL_HEIGHT_PIXELS);
             graphics.fillRect(radar_origin.x + friend_x, radar_origin.y + friend_y, 2, 2);
@@ -91,7 +91,7 @@ public class Radar {
         // draw the enemy warAttenders
         graphics.setColor(Color.red);
         // MovableWarAttenders
-        for (MovableWarAttender enemy_war_attender : hostile_war_attenders) {
+        for (MovableWarAttender enemy_war_attender : hostile_movable_war_attenders) {
             if (enemy_war_attender.isMandatory() && mandatoryBlinker) continue;
             float enemy_x = enemy_war_attender.getPosition().x * ((float) RADAR_WIDTH / TileMapInfo.LEVEL_WIDTH_PIXELS);
             float enemy_y = enemy_war_attender.getPosition().y * ((float) RADAR_HEIGHT / TileMapInfo.LEVEL_HEIGHT_PIXELS);

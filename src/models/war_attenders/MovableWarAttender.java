@@ -17,7 +17,7 @@ import player.Player;
 import java.util.Iterator;
 
 import static levels.AbstractLevel.all_movable_war_attenders;
-import static levels.AbstractLevel.hostile_war_attenders;
+import static levels.AbstractLevel.hostile_movable_war_attenders;
 
 public abstract class MovableWarAttender extends WarAttender {
     // listener
@@ -245,8 +245,8 @@ public abstract class MovableWarAttender extends WarAttender {
                 break;
             case EMP:   // destroy all nearby planes
                 emp_use_sound.play(1.f, UserSettings.SOUND_VOLUME);
-                for (int idx = 0; idx < hostile_war_attenders.size(); ++idx) {
-                    MovableWarAttender hostileWarAttender = hostile_war_attenders.get(idx);
+                for (int idx = 0; idx < hostile_movable_war_attenders.size(); ++idx) {
+                    MovableWarAttender hostileWarAttender = hostile_movable_war_attenders.get(idx);
                     if (hostileWarAttender instanceof Plane) {
                         if (WayPointManager.dist(hostileWarAttender.getPosition(), this.getPosition()) < 300) {
                             hostileWarAttender.isDestroyed = true;

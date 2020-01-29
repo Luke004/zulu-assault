@@ -54,8 +54,9 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     public static List<StaticWarAttender> static_enemies;
     public static List<InteractionCircle> interaction_circles;
     public static List<Item> items;
-    public static List<MovableWarAttender> friendly_war_attenders, hostile_war_attenders, drivable_war_attenders,
+    public static List<MovableWarAttender> friendly_movable_war_attenders, hostile_movable_war_attenders, drivable_war_attenders,
             all_movable_war_attenders;
+    public static List<WarAttender> all_hostile_war_attenders;
 
     // list for rendering -> respects the render hierarchy
     private static List<MovableWarAttender> renderList;
@@ -78,10 +79,11 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     static {
         has_initialized_once = false;
         player = new Player();
-        hostile_war_attenders = new ArrayList<>();
-        friendly_war_attenders = new ArrayList<>();
+        hostile_movable_war_attenders = new ArrayList<>();
+        friendly_movable_war_attenders = new ArrayList<>();
         drivable_war_attenders = new ArrayList<>();
         all_movable_war_attenders = new ArrayList<>();
+        all_hostile_war_attenders = new ArrayList<>();
         renderList = new ArrayList<>();
         static_enemies = new ArrayList<>();
         interaction_circles = new ArrayList<>();
@@ -117,8 +119,8 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         }
 
         // create a global movableWarAttender list for collisions between them
-        all_movable_war_attenders.addAll(friendly_war_attenders);
-        all_movable_war_attenders.addAll(hostile_war_attenders);
+        all_movable_war_attenders.addAll(friendly_movable_war_attenders);
+        all_movable_war_attenders.addAll(hostile_movable_war_attenders);
         renderList.addAll(all_movable_war_attenders);
         all_movable_war_attenders.addAll(drivable_war_attenders);
 
@@ -132,14 +134,17 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
 
         createStaticWarAttendersFromTiles();
 
+        all_hostile_war_attenders.addAll(hostile_movable_war_attenders);
+        all_hostile_war_attenders.addAll(static_enemies);
+
         camera = new Camera(gameContainer, map);
         camera.centerOn(player.getWarAttender().getPosition().x, player.getWarAttender().getPosition().y);
 
         // add listeners for destruction of warAttenders
-        for (MovableWarAttender warAttender : friendly_war_attenders) {
+        for (MovableWarAttender warAttender : friendly_movable_war_attenders) {
             warAttender.addListeners(this);
         }
-        for (MovableWarAttender warAttender : hostile_war_attenders) {
+        for (MovableWarAttender warAttender : hostile_movable_war_attenders) {
             warAttender.addListeners(this);
         }
         player.getWarAttender().addListeners(this);
@@ -395,7 +400,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     public void notifyForWarAttenderDeletion(WarAttender warAttender) {
         if (warAttender.isHostile) {
             if (warAttender instanceof MovableWarAttender) {
-                hostile_war_attenders.remove(warAttender);
+                hostile_movable_war_attenders.remove(warAttender);
             }
             player.addPoints(warAttender.getScoreValue());  // add points
             screenDrawer.drawScoreValue(5, warAttender);    // draw the score on the screen
@@ -421,7 +426,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
                     );
                     ZuluAssault.prevState = this;
                 } else {
-                    friendly_war_attenders.remove(warAttender);
+                    friendly_movable_war_attenders.remove(warAttender);
                     if (((MovableWarAttender) warAttender).isDrivable)
                         drivable_war_attenders.remove(warAttender);
                 }
@@ -468,8 +473,8 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
 
     public void reset() {
         if (player.getWarAttender() == null) return;
-        hostile_war_attenders.clear();
-        friendly_war_attenders.clear();
+        hostile_movable_war_attenders.clear();
+        friendly_movable_war_attenders.clear();
         drivable_war_attenders.clear();
         all_movable_war_attenders.clear();
         renderList.clear();

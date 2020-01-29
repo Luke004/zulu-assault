@@ -91,7 +91,7 @@ public class CollisionHandler {
         MovableWarAttender player_warAttender = player.getWarAttender();
         handleMovableWarAttenderCollisions(player_warAttender);
         handleBulletCollisions(player_warAttender);
-        handleHostileCollisions(player_warAttender, friendly_war_attenders, deltaTime);
+        handleHostileCollisions(player_warAttender, friendly_movable_war_attenders, deltaTime);
 
         for (InteractionCircle interaction_circle : interaction_circles) {
             if (player_warAttender.getCollisionModel().intersects(interaction_circle.getCollisionModel())) {
@@ -255,7 +255,7 @@ public class CollisionHandler {
     }
 
     private boolean handleGroundProjectileWarAttenderCollision(Projectile projectile, Weapon weapon, Iterator<Projectile> projectile_iterator) {
-        for (MovableWarAttender hostileWarAttender : hostile_war_attenders) {
+        for (MovableWarAttender hostileWarAttender : hostile_movable_war_attenders) {
             if (projectile.getCollisionModel().intersects(hostileWarAttender.getCollisionModel())) {
                 if (weapon instanceof PiercingWeapon) {
                     if (!((PiercingWeapon) weapon).hasAlreadyHit(hostileWarAttender)) {
@@ -389,12 +389,12 @@ public class CollisionHandler {
 
     private void handleAirProjectileWarAttenderCollision(Projectile projectile, Weapon weapon) {
         if (((iAirProjectile) projectile).hasChecked(iAirProjectile.Target.WarAttenders)) return;
-        for (int idx = 0; idx < hostile_war_attenders.size(); ++idx) {
-            if (projectile.getCollisionModel().intersects(hostile_war_attenders.get(idx).getCollisionModel())) {
+        for (int idx = 0; idx < hostile_movable_war_attenders.size(); ++idx) {
+            if (projectile.getCollisionModel().intersects(hostile_movable_war_attenders.get(idx).getCollisionModel())) {
                 if (weapon instanceof AGM) {
                     //bigExplosionAnimation.play(projectile.pos.x, projectile.pos.y, 90);
                 }
-                hostile_war_attenders.get(idx).changeHealth(-weapon.getBulletDamage());
+                hostile_movable_war_attenders.get(idx).changeHealth(-weapon.getBulletDamage());
             }
         }
         ((iAirProjectile) projectile).setChecked(iAirProjectile.Target.WarAttenders);
@@ -532,7 +532,7 @@ public class CollisionHandler {
     }
 
     private void handleHostileCollisions(MovableWarAttender player_warAttender, List<MovableWarAttender> friendly_war_attenders, int deltaTime) {
-        for (MovableWarAttender hostile_warAttender : hostile_war_attenders) {
+        for (MovableWarAttender hostile_warAttender : hostile_movable_war_attenders) {
             hostile_warAttender.shootAtEnemies(player_warAttender, friendly_war_attenders, deltaTime);
             handleShotCollisions(hostile_warAttender, player_warAttender);
             handleMovableWarAttenderCollisions(hostile_warAttender);
@@ -544,8 +544,7 @@ public class CollisionHandler {
         }
 
         for (MovableWarAttender friendly_war_attender : friendly_war_attenders) {
-            friendly_war_attender.shootAtEnemies(null, hostile_war_attenders, deltaTime);
-            friendly_war_attender.shootAtEnemies(null, static_enemies, deltaTime);
+            friendly_war_attender.shootAtEnemies(null, all_hostile_war_attenders, deltaTime);
             handleMovableWarAttenderCollisions(friendly_war_attender);
             handleShotCollisions(friendly_war_attender, null);
         }
@@ -587,7 +586,7 @@ public class CollisionHandler {
 
                 if (player == null) {
                     // FRIENDLY SHOT COLLISION WITH HOSTILE WAR ATTENDERS
-                    for (MovableWarAttender hostile_warAttender : hostile_war_attenders) {
+                    for (MovableWarAttender hostile_warAttender : hostile_movable_war_attenders) {
                         if (projectile.getCollisionModel().intersects(hostile_warAttender.getCollisionModel())) {
                             showBulletHitAnimation(weapon, projectile);
                             projectile_iterator.remove();   // TODO: FIX CRASH BUG ON REMOVE
@@ -600,7 +599,7 @@ public class CollisionHandler {
                     handleGroundProjectileStaticWarAttenderCollision(projectile, weapon, projectile_iterator);
                 } else {
                     // HOSTILE SHOT COLLISION WITH FRIENDLY WAR ATTENDERS
-                    for (MovableWarAttender friendly_warAttender : friendly_war_attenders) {
+                    for (MovableWarAttender friendly_warAttender : friendly_movable_war_attenders) {
                         if (projectile.getCollisionModel().intersects(friendly_warAttender.getCollisionModel())) {
                             showBulletHitAnimation(weapon, projectile);
                             projectile_iterator.remove();
