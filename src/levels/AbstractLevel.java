@@ -11,7 +11,6 @@ import models.animations.explosion.BigExplosionAnimation;
 import models.hud.HUD;
 import models.hud.Radar;
 import models.interaction_circles.InteractionCircle;
-import models.items.InvincibilityItem;
 import models.items.Item;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
@@ -33,8 +32,6 @@ import player.Player;
 import screen_drawer.ScreenDrawer;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import static logic.TileMapInfo.*;
@@ -74,6 +71,8 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     protected static Sound explosion_sound;  // fire sound of the weapon;
 
     private static ScreenDrawer screenDrawer;
+
+    boolean hasWonTheLevel;
 
     static {
         has_initialized_once = false;
@@ -129,12 +128,9 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             else return 0;
         });
 
-        createWarAttendersFromTiles();
+        createStaticWarAttendersFromTiles();
 
         camera = new Camera(gameContainer, map);
-
-        // handle collisions
-        //collisionHandler = new CollisionHandler();
 
         // add listeners for destruction of warAttenders
         for (MovableWarAttender warAttender : friendly_war_attenders) {
@@ -150,12 +146,11 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     /*
     this method creates additional java-objects from special tiles that act as warAttenders
      */
-    private void createWarAttendersFromTiles() {
+    private void createStaticWarAttendersFromTiles() {
         // SETUP WINDMILLS USING MAP DATA
         for (int x = 0; x < map.getWidth(); ++x) {
             for (int y = 0; y < map.getHeight(); ++y) {
                 for (int idx = 0; idx < windmill_indices.length; ++idx) {
-                    //int tileID = map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
                     if (map.getTileId(x, y, ENEMY_TILES_LAYER_IDX) == windmill_indices[idx]) {
                         Windmill windmill = null;
                         Vector2f[] collision_tiles = new Vector2f[1];
@@ -166,17 +161,28 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
                                 x * TILE_WIDTH + TILE_WIDTH / 2.f,
                                 y * TILE_HEIGHT + TILE_HEIGHT / 2.f
                         );
+                        boolean setAsMandatory = false;
                         switch (idx) {
+                            case 3: // mandatory green windmill
+                                setAsMandatory = true;
+                                // no break
                             case 0: // green windmill
                                 windmill = new WindmillGreen(pos_windmill, true, collision_tiles);
                                 break;
+                            case 4: // mandatory grey windmill
+                                setAsMandatory = true;
+                                // no break
                             case 1: // grey windmill
                                 windmill = new WindmillGrey(pos_windmill, true, collision_tiles);
                                 break;
+                            case 5: // mandatory yellow windmill
+                                setAsMandatory = true;
+                                // no break
                             case 2: // yellow windmill
                                 windmill = new WindmillYellow(pos_windmill, true, collision_tiles);
                                 break;
                         }
+                        if (setAsMandatory) windmill.setAsMandatory();
                         static_enemies.add(windmill);
                     }
                 }
@@ -187,7 +193,6 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         for (int x = 0; x < map.getWidth(); ++x) {
             for (int y = 0; y < map.getHeight(); ++y) {
                 for (int idx = 0; idx < static_plane_creation_indices.length; ++idx) {
-                    //int tileID = map.getTileId(x, y, PLANE_TILES_TILESET_IDX);
                     if (map.getTileId(x, y, ENEMY_TILES_LAYER_IDX) == static_plane_creation_indices[idx]) {
                         Vector2f[] collision_tiles = new Vector2f[5];
                         // add all collision tiles of this warAttender to its object
@@ -238,8 +243,10 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
                                 x * TILE_WIDTH + TILE_WIDTH / 2.f,
                                 y * TILE_HEIGHT + TILE_HEIGHT / 2.f
                         );
+                        // PLANES ARE ALWAYS MANDATORY (FOR NOW!)
                         StaticEnemyPlane staticEnemyPlane = new StaticEnemyPlane(pos_staticEnemyPlane, true,
                                 collision_tiles, replacement_tiles);
+                        staticEnemyPlane.setAsMandatory();
                         static_enemies.add(staticEnemyPlane);
                     }
                 }
@@ -269,6 +276,14 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int deltaTime) {
+        if (hasWonTheLevel) {
+            MainMenu.goToMenu(MainMenu.STATE_MAIN_MENU);
+            stateBasedGame.enterState(ZuluAssault.MAIN_MENU,
+                    new FadeOutTransition(), new FadeInTransition());
+            ZuluAssault.prevState = this;
+            return;
+        }
+
         player.update(gameContainer, deltaTime);
         for (int idx = 0; idx < all_movable_war_attenders.size(); ++idx) {
             all_movable_war_attenders.get(idx).update(gameContainer, deltaTime);
@@ -287,6 +302,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         keyInputHandler.update(gameContainer, deltaTime);
         collisionHandler.update(deltaTime);
         hud.update(deltaTime);
+        radar.update(deltaTime);
         screenDrawer.update(deltaTime);
         bigExplosionAnimation.update(deltaTime);
         camera.centerOn(player.getWarAttender().getPosition().x, player.getWarAttender().getPosition().y);
@@ -305,6 +321,18 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
                 level_music.setVolume(UserSettings.MUSIC_VOLUME);
             }
         }
+        checkWon();
+    }
+
+    private void checkWon() {
+        int mandatoryCounter = 0;
+        for (MovableWarAttender movable_war_attender : all_movable_war_attenders) {
+            if (movable_war_attender.isMandatory()) mandatoryCounter++;
+        }
+        for (StaticWarAttender static_enemy : static_enemies) {
+            if (static_enemy.isMandatory()) mandatoryCounter++;
+        }
+        if (mandatoryCounter == 0) hasWonTheLevel = true;
     }
 
     @Override
@@ -337,7 +365,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         collisionHandler.draw();
         screenDrawer.draw();
         bigExplosionAnimation.draw();
-        // un-translate graphics to draw the HUD- items
+        // un-translate graphics to draw the HUD-items
         camera.untranslateGraphics();
         hud.draw();
         radar.draw(graphics);

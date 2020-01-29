@@ -40,7 +40,7 @@ public class TileMapInfo {
     public static Map<Integer, Float> destructible_tiles_health_info;
 
     static {
-        windmill_indices = new int[]{0, 1, 2};
+        windmill_indices = new int[]{0, 1, 2, 4, 5, 6}; // 0, 1, 2 -> OPTIONAL  |   4, 5, 6 -> MANDATORY
         static_plane_creation_indices = new int[]{  // indices for creation of big static plane
                 22, // the plane that's facing right in the tileset
                 27, // the plane that's facing down in the tileset

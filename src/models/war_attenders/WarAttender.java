@@ -17,8 +17,8 @@ public abstract class WarAttender {
     protected float turret_rotate_speed;
     public boolean isHostile, isDestroyed;
     protected int scoreValue;
-
     protected Vector2f position;
+    private boolean isMandatory;
 
     public WarAttender(Vector2f startPos, boolean isHostile) {
         this.isHostile = isHostile;
@@ -180,5 +180,13 @@ public abstract class WarAttender {
 
     public enum WeaponType {
         WEAPON_1, WEAPON_2, MEGA_PULSE
+    }
+
+    public void setAsMandatory() {
+        this.isMandatory = true;
+    }
+
+    public boolean isMandatory() {
+        return this.isMandatory;
     }
 }

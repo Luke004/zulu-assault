@@ -141,7 +141,7 @@ public abstract class MovableWarAttender extends WarAttender {
         showDrivableAnimation();
 
         // COLLISION RELATED STUFF
-        collisionModel.draw(graphics);
+        //collisionModel.draw(graphics);
     }
 
     public void showDrivableAnimation() {

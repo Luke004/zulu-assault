@@ -19,7 +19,6 @@ import models.war_attenders.soldiers.Soldier;
 import models.weapons.*;
 import models.weapons.projectiles.Projectile;
 import models.weapons.projectiles.iAirProjectile;
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;

@@ -1,7 +1,6 @@
 package menus;
 
 import main.SoundManager;
-import main.ZuluAssault;
 import menus.menu_elements.Arrow;
 import menus.menu_elements.Slider;
 import org.newdawn.slick.GameContainer;
@@ -12,8 +11,6 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.state.transition.FadeInTransition;
-import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -110,10 +107,10 @@ public class OptionsScreen extends AbstractMenuScreen {
 
     @Override
     public void onEnterKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-        handleMenuItemChoice(gameContainer, stateBasedGame, arrow.currIdx);
+        handleMenuItemChoice(arrow.currIdx);
     }
 
-    private void handleMenuItemChoice(GameContainer gameContainer, StateBasedGame stateBasedGame, int idx) {
+    private void handleMenuItemChoice(int idx) {
         switch (idx) {
             case 0: // BACK
                 MainMenu.returnToPreviousMenu();
@@ -156,7 +153,8 @@ public class OptionsScreen extends AbstractMenuScreen {
         if (mouseX > back_image_position.x && mouseX < back_image_position.x + back_image.getWidth()) {
             if (mouseY > back_image_position.y && mouseY < back_image_position.y + back_image.getHeight()) {
                 SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
-                handleMenuItemChoice(gameContainer, stateBasedGame, 0);
+                arrow.currIdx = 0;
+                handleMenuItemChoice(0);
             }
         }
         if (sound_volume_slider.onClick(mouseX, mouseY)) {

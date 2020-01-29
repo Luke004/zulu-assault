@@ -49,6 +49,7 @@ public class Level_1 extends AbstractLevel implements GameState {
 
 
         MovableWarAttender enemy_tank_1_shell = new ShellTank(new Vector2f(2100.f, 2000.f), true, false);
+        enemy_tank_1_shell.setAsMandatory();
         enemy_tank_1_shell.setMoving(true);
         enemy_tank_1_shell.base_image.setRotation(180);
         wayPoints = new ArrayList<>();
@@ -61,6 +62,7 @@ public class Level_1 extends AbstractLevel implements GameState {
         hostile_war_attenders.add(enemy_tank_1_shell);
 
         MovableWarAttender enemy_tank_2_shell = new ShellTank(new Vector2f(1600.f, 2600.f), true, false);
+        enemy_tank_2_shell.setAsMandatory();
         enemy_tank_2_shell.setMoving(true);
         wayPoints = new ArrayList<>();
         wayPoints.add(new Vector2f(1600.f, 2500.f));

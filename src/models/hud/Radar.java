@@ -25,7 +25,12 @@ public class Radar {
 
     private static final int X_START = 24, X_END = 160, Y_START = 10, Y_END = 110,
             RADAR_WIDTH = X_END - X_START, RADAR_HEIGHT = Y_END - Y_START;
+
     private static Vector2f radar_origin;
+
+    private final int TIME_SECOND_MILLIS = 1000;
+    private int current_time_millis;
+    private boolean mandatoryBlinker;   // make the mandatory warAttenders blink in second ticks
 
     public Radar(GameContainer gameContainer, Player player) {
         this.player = player;
@@ -35,6 +40,14 @@ public class Radar {
             radar_origin = new Vector2f(radar_image_position.x + X_START, Y_START);
         } catch (SlickException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void update(int deltaTime) {
+        current_time_millis += deltaTime;
+        if (current_time_millis > TIME_SECOND_MILLIS) {
+            current_time_millis = 0;
+            mandatoryBlinker = !mandatoryBlinker;
         }
     }
 
@@ -60,7 +73,7 @@ public class Radar {
         graphics.drawRect(radar_origin.x + player_x - 10, radar_origin.y + player_y - 6, 20, 12);
 
         // draw the friendly warAttenders
-        graphics.setColor(Color.blue);
+        graphics.setColor(Color.green);
         for (MovableWarAttender friendly_war_attender : friendly_war_attenders) {
             float friend_x = friendly_war_attender.getPosition().x * ((float) RADAR_WIDTH / TileMapInfo.LEVEL_WIDTH_PIXELS);
             float friend_y = friendly_war_attender.getPosition().y * ((float) RADAR_HEIGHT / TileMapInfo.LEVEL_HEIGHT_PIXELS);
@@ -79,12 +92,14 @@ public class Radar {
         graphics.setColor(Color.red);
         // MovableWarAttenders
         for (MovableWarAttender enemy_war_attender : hostile_war_attenders) {
+            if (enemy_war_attender.isMandatory() && mandatoryBlinker) continue;
             float enemy_x = enemy_war_attender.getPosition().x * ((float) RADAR_WIDTH / TileMapInfo.LEVEL_WIDTH_PIXELS);
             float enemy_y = enemy_war_attender.getPosition().y * ((float) RADAR_HEIGHT / TileMapInfo.LEVEL_HEIGHT_PIXELS);
             graphics.fillRect(radar_origin.x + enemy_x, radar_origin.y + enemy_y, 2, 2);
         }
         // StaticEnemies
         for (StaticWarAttender staticWarAttender : static_enemies) {
+            if (staticWarAttender.isMandatory() && mandatoryBlinker) continue;
             float enemy_x = staticWarAttender.getPosition().x * ((float) RADAR_WIDTH / TileMapInfo.LEVEL_WIDTH_PIXELS);
             float enemy_y = staticWarAttender.getPosition().y * ((float) RADAR_HEIGHT / TileMapInfo.LEVEL_HEIGHT_PIXELS);
             if (staticWarAttender instanceof StaticEnemyPlane) {
