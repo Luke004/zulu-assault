@@ -20,6 +20,7 @@ public abstract class WarAttender {
     protected int scoreValue;
     protected Vector2f position;
     private boolean isMandatory;
+    protected boolean isEnemyNear;
 
     public WarAttender(Vector2f startPos, boolean isHostile) {
         this.isHostile = isHostile;
@@ -111,9 +112,11 @@ public abstract class WarAttender {
             }
         }
 
+        isEnemyNear = false;
         // aim at the closest enemy
         float rotationDegree;
         if (dist < 700) {
+            isEnemyNear = true;
             // aim at player
             rotationDegree = WayPointManager.calculateAngleToRotateTo(position, new Vector2f(xPos, yPos));
 

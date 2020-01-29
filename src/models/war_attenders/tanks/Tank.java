@@ -16,7 +16,7 @@ import java.util.Random;
 public abstract class Tank extends MovableWarAttender {
     public Image turret;
     protected float backwards_speed;
-    private boolean decelerate, centerTurret;
+    private boolean decelerate, centerTurret, isTurretCentered;
     private int TURRET_WIDTH_HALF, TURRET_HEIGHT_HALF;
 
     // each tank has an acceleration and a deceleration
@@ -28,6 +28,7 @@ public abstract class Tank extends MovableWarAttender {
     public Tank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
         scoreValue = 1000;
+        isTurretCentered = true;
     }
 
     public void init() {
@@ -70,6 +71,10 @@ public abstract class Tank extends MovableWarAttender {
 
             if (waypointManager.distToNextVector(this.position) < HEIGHT_HALF * 2) {
                 waypointManager.setupNextWayPoint(this.position, getRotation());
+            }
+
+            if (!isEnemyNear) {
+                autoCenterTurret();
             }
         }
     }
@@ -134,39 +139,24 @@ public abstract class Tank extends MovableWarAttender {
     }
 
     public void autoCenterTurret() {
-        centerTurret = true;
+        if (!isTurretCentered) centerTurret = true;
     }
 
     protected void centerTurret(int deltaTime) {
-        float relative_turretRotation = this.getRotation() - turret.getRotation();
-        if (relative_turretRotation > 0) {
-            if (relative_turretRotation < 180) {
-                rotateTurret(RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
-                if (relative_turretRotation <= 3) {
-                    turret.setRotation(this.getRotation());
-                    centerTurret = false;
-                }
-            } else {
-                rotateTurret(RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
-                if (relative_turretRotation >= 357) {
-                    turret.setRotation(this.getRotation());
-                    centerTurret = false;
-                }
-            }
+        if (isTurretCentered) return;
+        float angle = WayPointManager.getShortestSignedAngle(this.getRotation(), turret.getRotation());
+
+        if (angle > -3 && angle < 3) {
+            turret.setRotation(this.getRotation());
+            isTurretCentered = true;
+            centerTurret = false;
+            return;
+        }
+
+        if (angle > 0) {
+            rotateTurret(RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
         } else {
-            if (relative_turretRotation > -180) {
-                rotateTurret(RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
-                if (relative_turretRotation >= -3) {
-                    turret.setRotation(this.getRotation());
-                    centerTurret = false;
-                }
-            } else {
-                rotateTurret(RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
-                if (relative_turretRotation <= -357) {
-                    turret.setRotation(this.getRotation());
-                    centerTurret = false;
-                }
-            }
+            rotateTurret(RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
         }
     }
 
@@ -238,6 +228,7 @@ public abstract class Tank extends MovableWarAttender {
     }
 
     public void rotateTurret(RotateDirection r, int deltaTime) {
+        isTurretCentered = false;
         switch (r) {
             case ROTATE_DIRECTION_LEFT:
                 turret.rotate(-turret_rotate_speed * deltaTime);

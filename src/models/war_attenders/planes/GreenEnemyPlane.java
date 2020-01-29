@@ -18,7 +18,6 @@ import java.util.List;
 public class GreenEnemyPlane extends Plane {
 
     private AnimatedCrosshair animatedCrosshair;
-    private boolean isEnemyNear;
 
     public GreenEnemyPlane(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
