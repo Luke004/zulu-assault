@@ -12,8 +12,6 @@ public class RocketTank extends Tank {
         super(startPos, isHostile, isDrivable);
 
         // attributes equal for humans and bots
-        max_health = 100;
-        current_health = max_health;
         armor = 50;
 
         if (isDrivable) {

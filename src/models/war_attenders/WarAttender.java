@@ -9,11 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class WarAttender {
-    public List<Weapon> weapons;
-    public Image health_bar_image;
+    protected List<Weapon> weapons;
+    private Image health_bar_image;
     protected Vector2f health_bar_position;
     // specs related
-    public float current_health, max_health, armor;
+    protected static final float MAX_HEALTH = 100;
+    public float current_health, armor;
     protected float turret_rotate_speed;
     public boolean isHostile, isDestroyed;
     protected int scoreValue;
@@ -39,6 +40,7 @@ public abstract class WarAttender {
                 e.printStackTrace();
             }
         }
+        current_health = MAX_HEALTH;
 
         scoreValue = 100;   // default score value
     }
@@ -62,7 +64,7 @@ public abstract class WarAttender {
             graphics.fillRect(
                     health_bar_position.x + 44.f,
                     health_bar_position.y + 1.f,
-                    -(29 - ((current_health) / ((max_health) / 29))),
+                    -(29 - ((current_health) / ((MAX_HEALTH) / 29))),
                     5.f
             );
         } else {    // destroyed (rectangle is full black size)
@@ -160,14 +162,14 @@ public abstract class WarAttender {
         } else {
             // heal
             current_health += amount;
-            if (current_health > max_health) current_health = max_health;
+            if (current_health > MAX_HEALTH) current_health = MAX_HEALTH;
         }
     }
 
     //protected abstract void showDestructionAnimation(Graphics graphics);
 
     public boolean isMaxHealth() {
-        return current_health == max_health;
+        return current_health == MAX_HEALTH;
     }
 
     public int getHealth() {

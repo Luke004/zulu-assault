@@ -13,8 +13,6 @@ public class ShellTank extends Tank {
         super(startPos, isHostile, isDrivable);
 
         // attributes equal for humans and bots
-        max_health = 100;
-        current_health = max_health;
         armor = 60;
 
         scoreValue = 1000;
@@ -38,8 +36,8 @@ public class ShellTank extends Tank {
         weapons.add(new Shell(isDrivable));   // WEAPON_1
 
         try {
-            base_image = new Image("assets/war_attenders/tanks/medium_tank.png");
-            turret = new Image("assets/war_attenders/tanks/medium_tank_turret.png");
+            base_image = new Image("assets/war_attenders/tanks/shell_tank.png");
+            turret = new Image("assets/war_attenders/tanks/shell_tank_turret.png");
         } catch (SlickException e) {
             e.printStackTrace();
         }

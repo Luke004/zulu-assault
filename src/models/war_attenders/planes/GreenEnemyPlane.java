@@ -24,8 +24,6 @@ public class GreenEnemyPlane extends Plane {
         super(startPos, isHostile, isDrivable);
 
         // attributes equal for humans and bots
-        max_health = 100;
-        current_health = max_health;
         armor = 45; // unknown
 
         scoreValue = 500;

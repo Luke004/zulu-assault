@@ -11,8 +11,6 @@ public class ShellRobot extends Robot{
         super(startPos, isHostile, isDrivable);
 
         // individual ShellRobot attributes for human player
-        max_health = 100;
-        current_health = max_health;
         armor = 75;
         max_speed = 0.15f;
         current_speed = max_speed;

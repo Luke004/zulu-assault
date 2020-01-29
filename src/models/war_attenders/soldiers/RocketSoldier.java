@@ -12,8 +12,6 @@ public class RocketSoldier extends Soldier {
         super(startPos, isHostile);
 
         // individual RocketSoldier attributes
-        max_health = 100;
-        current_health = max_health;
         armor = 2.5f;
         max_speed = 0.05f;
         current_speed = max_speed;

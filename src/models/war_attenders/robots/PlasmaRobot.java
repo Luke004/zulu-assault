@@ -11,8 +11,6 @@ public class PlasmaRobot extends Robot {
         super(startPos, isHostile, isDrivable);
 
         // attributes equal for human and bots
-        max_health = 100;
-        current_health = max_health;
         armor = 75;
 
         if (isDrivable) {

@@ -11,8 +11,6 @@ public class PlayerSoldier extends Soldier {
         super(startPos, isHostile);
 
         // individual PlayerSoldier attributes
-        max_health = 100;
-        current_health = max_health;
         armor = 2.5f;
         max_speed = 0.1f;
         current_speed = max_speed;

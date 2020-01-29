@@ -14,6 +14,7 @@ import models.war_attenders.robots.Robot;
 import models.war_attenders.robots.ShellRobot;
 import models.war_attenders.soldiers.EnemySoldier;
 import models.war_attenders.tanks.*;
+import models.weapons.Cannon;
 import models.weapons.Shell;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
@@ -48,7 +49,7 @@ public class Level_1 extends AbstractLevel implements GameState {
         List<Vector2f> wayPoints;
 
 
-        MovableWarAttender enemy_tank_1_shell = new ShellTank(new Vector2f(2100.f, 2000.f), true, false);
+        MovableWarAttender enemy_tank_1_shell = new ShellTank(new Vector2f(2100.f, 2050.f), true, false);
         enemy_tank_1_shell.setAsMandatory();
         enemy_tank_1_shell.setMoving(true);
         enemy_tank_1_shell.base_image.setRotation(180);
@@ -121,8 +122,13 @@ public class Level_1 extends AbstractLevel implements GameState {
         hostile_war_attenders.add(enemy_plane_3);
 
 
-        MovableWarAttender enemy_cannon_tank = new CannonTank_v2(new Vector2f(3055, 3110), true, false);
+        MovableWarAttender enemy_cannon_tank = new CannonTank(new Vector2f(3055, 3110), true, false);
         hostile_war_attenders.add(enemy_cannon_tank);
+
+
+        MovableWarAttender enemy_meme_car = new MemeCar(new Vector2f(2110, 1960), true, false);
+        enemy_meme_car.setRotation(15);
+        hostile_war_attenders.add(enemy_meme_car);
 
 
         MovableWarAttender enemy_soldier_1 = new EnemySoldier(new Vector2f(1370.f, 3150.f), true);
@@ -316,8 +322,8 @@ public class Level_1 extends AbstractLevel implements GameState {
         //Tank tank = new ShellTank(playerStartPos, false, true);
         Tank tank = new CannonTank(playerStartPos, false, true);
         tank.setRotation(190);
-        Plane plane = new GreenEnemyPlane(playerStartPos, false, true);
-        Robot robot = new PlasmaRobot(playerStartPos, false, true);
+        //Plane plane = new GreenEnemyPlane(playerStartPos, false, true);
+        //Robot robot = new PlasmaRobot(playerStartPos, false, true);
         //MovableWarAttender soldier = new PlayerSoldier(playerStartPos, false);
 
         // DEFINE THE MAP

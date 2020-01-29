@@ -26,9 +26,8 @@ public abstract class Windmill extends StaticWarAttender {
 
         smokeAnimation = new SmokeAnimation(3);
 
-        max_health = 100.f;
         armor = 10.f;
-        current_health = max_health;
+
         scoreValue = 200;
 
         health_bar_position.x = position.x - 27.5f;
@@ -43,7 +42,7 @@ public abstract class Windmill extends StaticWarAttender {
     public void update(GameContainer gc, int deltaTime) {
         super.update(gc, deltaTime);
         smokeAnimation.update(deltaTime);
-        if (current_health < max_health / 2) {
+        if (current_health < MAX_HEALTH / 2) {
             smoke_animation_timer += deltaTime;
             if (smoke_animation_timer > SMOKE_ANIMATION_FREQUENCY) {
                 smoke_animation_timer = 0;

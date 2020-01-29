@@ -9,9 +9,7 @@ public class StaticEnemyPlane extends StaticWarAttender {
         super(startPos, isHostile, collision_tiles);
         this.replacement_tiles = replacement_tiles;
 
-        max_health = 100.f;
         armor = 50.f;
-        current_health = max_health;
 
         scoreValue = 2000;
 

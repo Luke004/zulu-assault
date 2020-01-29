@@ -13,8 +13,6 @@ public class NapalmTank extends Tank {
         super(startPos, isHostile, isDrivable);
 
         // attributes equal for humans and bots
-        max_health = 100;
-        current_health = max_health;
         armor = 75;
 
         if (isDrivable) {
@@ -37,8 +35,8 @@ public class NapalmTank extends Tank {
         weapons.add(new Napalm());  // WEAPON_2
 
         try {
-            base_image = new Image("assets/war_attenders/tanks/flamethrower_tank.png");
-            turret = new Image("assets/war_attenders/tanks/flamethrower_tank_turret.png");
+            base_image = new Image("assets/war_attenders/tanks/napalm_tank.png");
+            turret = new Image("assets/war_attenders/tanks/napalm_tank_turret.png");
         } catch (SlickException e) {
             e.printStackTrace();
         }
