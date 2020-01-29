@@ -80,6 +80,9 @@ public class OptionsScreen extends AbstractMenuScreen {
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_RIGHT)) {
             SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             onRightKeyPress();
+        } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
+            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            returnToPreviousMenu();
         }
 
         if (!main_menu_intro_sound.playing()) {

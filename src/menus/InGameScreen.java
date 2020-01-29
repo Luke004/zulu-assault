@@ -75,7 +75,8 @@ public class InGameScreen extends AbstractMenuScreen {
             SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             handleMenuItemChoice(gameContainer, stateBasedGame, arrow.currIdx);
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
-            goToMenu(STATE_CONFIRM_EXIT_MENU, gameContainer);
+            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            arrow.currIdx = 5;
         }
 
         if (!main_menu_intro_sound.playing()) {
