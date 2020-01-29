@@ -65,16 +65,19 @@ public class MainScreen extends AbstractMenuScreen {
 
     @Override
     public void onUpKeyPress(GameContainer gameContainer) {
+        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
         arrow.moveUp();
     }
 
     @Override
     public void onDownKeyPress(GameContainer gameContainer) {
+        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
         arrow.moveDown();
     }
 
     @Override
     public void onEnterKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
         handleMenuItemChoice(gameContainer, stateBasedGame, arrow.currIdx);
     }
 
@@ -120,7 +123,7 @@ public class MainScreen extends AbstractMenuScreen {
                 MainMenu.goToMenu(MainMenu.STATE_OPTIONS_MENU);
                 break;
             case 4: // EXIT
-                System.exit(0);
+                goToMenu(STATE_CONFIRM_EXIT_MENU);
                 break;
         }
     }

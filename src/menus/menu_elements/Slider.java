@@ -1,7 +1,5 @@
 package menus.menu_elements;
 
-import org.lwjgl.Sys;
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;

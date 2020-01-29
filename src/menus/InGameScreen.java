@@ -74,16 +74,19 @@ public class InGameScreen extends AbstractMenuScreen {
 
     @Override
     public void onUpKeyPress(GameContainer gameContainer) {
+        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
         arrow.moveUp();
     }
 
     @Override
     public void onDownKeyPress(GameContainer gameContainer) {
+        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
         arrow.moveDown();
     }
 
     @Override
     public void onEnterKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
         handleMenuItemChoice(gameContainer, stateBasedGame, arrow.currIdx);
     }
 
@@ -136,7 +139,7 @@ public class InGameScreen extends AbstractMenuScreen {
                 OptionsScreen.isFirstTimeKeyRightCall = true;
                 break;
             case 5: // EXIT
-                System.exit(0);
+                goToMenu(STATE_CONFIRM_EXIT_MENU);
                 break;
         }
     }

@@ -1,6 +1,7 @@
 package menus;
 
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -11,12 +12,12 @@ public class SaveGameScreen extends AbstractMenuScreen {
     }
 
     @Override
-    public void render(GameContainer gameContainer) {
+    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame) {
 
     }
 
     @Override
-    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+    public void render(GameContainer gameContainer) {
 
     }
 

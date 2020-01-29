@@ -3,8 +3,8 @@ package main;
 import levels.Level_1;
 import levels.Level_2;
 import menus.MainMenu;
-import menus.OptionsScreen;
 import org.lwjgl.LWJGLUtil;
+import org.lwjgl.Sys;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -12,10 +12,6 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Properties;
 
 public class ZuluAssault extends StateBasedGame {
 
@@ -36,12 +32,17 @@ public class ZuluAssault extends StateBasedGame {
         String gameName = "Zulu Assault";
         boolean fullscreen = false;
 
+        // this looks for the 'natives' folder and uses the right dll according to the operating system
         System.setProperty("org.lwjgl.librarypath", new File(
-                new File(System.getProperty("user.dir"), "native"), LWJGLUtil.getPlatformName()).getAbsolutePath());
+                new File(System.getProperty("user.dir"), "native"),
+                LWJGLUtil.getPlatformName())
+                .getAbsolutePath());
+
         try {
             AppGameContainer app = new AppGameContainer(new ZuluAssault(gameName));
             app.setDisplayMode(640, 480, fullscreen);
             app.setTargetFrameRate(120);
+            app.setShowFPS(false);
             app.start();
         } catch (SlickException e) {
             e.printStackTrace();
@@ -51,7 +52,7 @@ public class ZuluAssault extends StateBasedGame {
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
         //this.getState(MAIN_MENU).init(gameContainer, this);
-        //this.getState(LEVEL_1).init(gameContainer, this);
+        this.getState(LEVEL_1).init(gameContainer, this);   // pre-load the first level at the start
         this.enterState(MAIN_MENU);
     }
 }

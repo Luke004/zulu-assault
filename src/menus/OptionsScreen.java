@@ -3,10 +3,7 @@ package menus;
 import main.SoundManager;
 import menus.menu_elements.Arrow;
 import menus.menu_elements.Slider;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.state.BasicGameState;
@@ -97,16 +94,19 @@ public class OptionsScreen extends AbstractMenuScreen {
 
     @Override
     public void onUpKeyPress(GameContainer gameContainer) {
+        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
         arrow.moveUp();
     }
 
     @Override
     public void onDownKeyPress(GameContainer gameContainer) {
+        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
         arrow.moveDown();
     }
 
     @Override
     public void onEnterKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
         handleMenuItemChoice(arrow.currIdx);
     }
 

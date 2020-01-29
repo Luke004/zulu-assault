@@ -1,6 +1,5 @@
 package menus;
 
-import main.SoundManager;
 import main.ZuluAssault;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
@@ -21,7 +20,8 @@ public class MainMenu extends BasicGameState {
             STATE_LOAD_GAME_MENU = 2,
             STATE_SAVE_GAME_MENU = 3,
             STATE_OPTIONS_MENU = 4,
-            STATE_DEATH_MENU = 5;
+            STATE_DEATH_MENU = 5,
+            STATE_CONFIRM_EXIT_MENU = 6;
 
     private static int current_menu_idx, prev_menu_idx;
 
@@ -109,13 +109,14 @@ public class MainMenu extends BasicGameState {
         } catch (SlickException e) {
             e.printStackTrace();
         }
-        menus = new AbstractMenuScreen[6];
+        menus = new AbstractMenuScreen[7];
         menus[STATE_MAIN_MENU] = new MainScreen(this, gameContainer);
         menus[STATE_IN_GAME_MENU] = new InGameScreen(this, gameContainer);
         menus[STATE_LOAD_GAME_MENU] = new LoadGameScreen(this, gameContainer);
         menus[STATE_SAVE_GAME_MENU] = new SaveGameScreen(this, gameContainer);
         menus[STATE_OPTIONS_MENU] = new OptionsScreen(this, gameContainer);
         menus[STATE_DEATH_MENU] = new DeathScreen(this);
+        menus[STATE_CONFIRM_EXIT_MENU] = new ConfirmExitScreen(this, gameContainer);
 
         goToMenu(STATE_MAIN_MENU);
     }

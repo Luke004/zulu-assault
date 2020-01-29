@@ -24,7 +24,6 @@ import org.newdawn.slick.tiled.TiledMap;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Level_1 extends AbstractLevel implements GameState {
 

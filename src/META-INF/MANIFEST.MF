@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-main.ZuluAssault-Class: main.ZuluAssault
+Main-Class: main.ZuluAssault
 
