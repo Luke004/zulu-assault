@@ -21,7 +21,6 @@ public class WayPointManager {
         current_point_idx = -1;
         setupNextWayPoint(pos, angle);
         current_way_point_list_idx = random.nextInt(wayPointLists.size());
-        System.out.println("driving list " + current_way_point_list_idx);
     }
 
     public WayPointManager(Vector2f pos, float angle, List<Vector2f> wayPoints) {

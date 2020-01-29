@@ -228,6 +228,7 @@ public abstract class Tank extends MovableWarAttender {
     }
 
     public void rotateTurret(RotateDirection r, int deltaTime) {
+        if (isDestroyed) return;
         isTurretCentered = false;
         switch (r) {
             case ROTATE_DIRECTION_LEFT:

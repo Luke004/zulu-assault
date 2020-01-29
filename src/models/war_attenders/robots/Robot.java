@@ -157,35 +157,18 @@ public abstract class Robot extends MovableWarAttender {
     }
 
     protected void centerTurret(int deltaTime) {
-        float relative_turretRotation = this.getRotation() - base_image.getRotation();
-        if (relative_turretRotation > 0) {
-            if (relative_turretRotation < 180) {
-                rotateTurret(RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
-                if (relative_turretRotation <= 3) {
-                    base_image.setRotation(this.getRotation());
-                    centerTurret = false;
-                }
-            } else {
-                rotateTurret(RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
-                if (relative_turretRotation >= 357) {
-                    base_image.setRotation(this.getRotation());
-                    centerTurret = false;
-                }
-            }
+        float angle = WayPointManager.getShortestSignedAngle(this.getRotation(), base_image.getRotation());
+
+        if (angle > -3 && angle < 3) {
+            base_image.setRotation(this.getRotation());
+            centerTurret = false;
+            return;
+        }
+
+        if (angle > 0) {
+            rotateTurret(RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
         } else {
-            if (relative_turretRotation > -180) {
-                rotateTurret(RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
-                if (relative_turretRotation >= -3) {
-                    base_image.setRotation(this.getRotation());
-                    centerTurret = false;
-                }
-            } else {
-                rotateTurret(RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
-                if (relative_turretRotation <= -357) {
-                    base_image.setRotation(this.getRotation());
-                    centerTurret = false;
-                }
-            }
+            rotateTurret(RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
         }
     }
 

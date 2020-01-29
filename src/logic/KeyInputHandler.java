@@ -220,11 +220,13 @@ public class KeyInputHandler {
 
         // fire weapon1
         if (input.isKeyDown(Input.KEY_LCONTROL) || input.isKeyPressed(Input.KEY_RCONTROL)) {
+            if (playerWarAttender.isDestroyed) return;
             playerWarAttender.fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
         }
 
         // fire weapon2
         if (input.isKeyDown(Input.KEY_LALT) || input.isKeyPressed(Input.KEY_RALT)) {
+            if (playerWarAttender.isDestroyed) return;
             playerWarAttender.fireWeapon(MovableWarAttender.WeaponType.WEAPON_2);
         }
 
