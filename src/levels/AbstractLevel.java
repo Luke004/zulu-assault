@@ -39,6 +39,7 @@ import static logic.TileMapInfo.*;
 public abstract class AbstractLevel extends BasicGameState implements WarAttenderDeleteListener, GroundTileDamageListener {
 
     private StateBasedGame stateBasedGame;
+    private GameContainer gameContainer;
 
     private RandomItemDropper randomItemDropper;
 
@@ -102,6 +103,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             // this gets only executed once
             has_initialized_once = true;
             this.stateBasedGame = stateBasedGame;
+            this.gameContainer = gameContainer;
             TileMapInfo.init();
 
             randomItemDropper = new RandomItemDropper();
@@ -278,7 +280,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int deltaTime) {
         if (hasWonTheLevel) {
-            MainMenu.goToMenu(MainMenu.STATE_MAIN_MENU);
+            MainMenu.goToMenu(MainMenu.STATE_MAIN_MENU, gameContainer);
             stateBasedGame.enterState(ZuluAssault.MAIN_MENU,
                     new FadeOutTransition(), new FadeInTransition());
             ZuluAssault.prevState = this;
@@ -309,7 +311,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         camera.centerOn(player.getWarAttender().getPosition().x, player.getWarAttender().getPosition().y);
 
         if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
-            MainMenu.goToMenu(MainMenu.STATE_IN_GAME_MENU);
+            MainMenu.goToMenu(MainMenu.STATE_IN_GAME_MENU, gameContainer);
             stateBasedGame.enterState(ZuluAssault.MAIN_MENU,
                     new FadeOutTransition(), new FadeInTransition());
             ZuluAssault.prevState = this;
@@ -413,7 +415,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             if (warAttender instanceof MovableWarAttender) {
                 if (warAttender == player.getWarAttender()) {
                     // THE PLAYER DIED
-                    MainMenu.goToMenu(MainMenu.STATE_DEATH_MENU);
+                    MainMenu.goToMenu(MainMenu.STATE_DEATH_MENU, gameContainer);
                     stateBasedGame.enterState(ZuluAssault.MAIN_MENU,
                             new FadeOutTransition(), new FadeInTransition()
                     );

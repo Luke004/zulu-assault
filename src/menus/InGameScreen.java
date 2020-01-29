@@ -63,6 +63,22 @@ public class InGameScreen extends AbstractMenuScreen {
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame) {
         super.update(gameContainer, stateBasedGame);
+
+        // handle key inputs
+        if (gameContainer.getInput().isKeyPressed(Input.KEY_UP)) {
+            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            arrow.moveUp();
+        } else if (gameContainer.getInput().isKeyPressed(Input.KEY_DOWN)) {
+            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            arrow.moveDown();
+        } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ENTER)) {
+            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            handleMenuItemChoice(gameContainer, stateBasedGame, arrow.currIdx);
+        } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
+            stateBasedGame.enterState(ZuluAssault.prevState.getID(),
+                    new FadeOutTransition(), new FadeInTransition());
+        }
+
         if (!main_menu_intro_sound.playing()) {
             if (!main_menu_music.playing()) {
                 main_menu_music.play();
@@ -70,29 +86,6 @@ public class InGameScreen extends AbstractMenuScreen {
                 main_menu_music.setVolume(UserSettings.MUSIC_VOLUME);
             }
         }
-    }
-
-    @Override
-    public void onUpKeyPress(GameContainer gameContainer) {
-        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
-        arrow.moveUp();
-    }
-
-    @Override
-    public void onDownKeyPress(GameContainer gameContainer) {
-        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
-        arrow.moveDown();
-    }
-
-    @Override
-    public void onEnterKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
-        handleMenuItemChoice(gameContainer, stateBasedGame, arrow.currIdx);
-    }
-
-    @Override
-    public void onExitKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-
     }
 
     @Override
@@ -133,13 +126,10 @@ public class InGameScreen extends AbstractMenuScreen {
                 SoundManager.ERROR_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
                 break;
             case 4: // OPTIONS
-                MainMenu.goToMenu(MainMenu.STATE_OPTIONS_MENU);
-                // TO FIX A BUG REGARDING KEY PRESSES AFTER STATE CHANGES:
-                OptionsScreen.isFirstTimeKeyLeftCall = true;
-                OptionsScreen.isFirstTimeKeyRightCall = true;
+                MainMenu.goToMenu(MainMenu.STATE_OPTIONS_MENU, gameContainer);
                 break;
             case 5: // EXIT
-                goToMenu(STATE_CONFIRM_EXIT_MENU);
+                goToMenu(STATE_CONFIRM_EXIT_MENU, gameContainer);
                 break;
         }
     }

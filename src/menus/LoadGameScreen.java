@@ -22,26 +22,6 @@ public class LoadGameScreen extends AbstractMenuScreen {
     }
 
     @Override
-    public void onUpKeyPress(GameContainer gameContainer) {
-
-    }
-
-    @Override
-    public void onDownKeyPress(GameContainer gameContainer) {
-
-    }
-
-    @Override
-    public void onEnterKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-
-    }
-
-    @Override
-    public void onExitKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-
-    }
-
-    @Override
     public void onMouseClick(GameContainer gameContainer, StateBasedGame stateBasedGame, int mouseX, int mouseY) {
 
     }

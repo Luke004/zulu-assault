@@ -118,7 +118,7 @@ public class MainMenu extends BasicGameState {
         menus[STATE_DEATH_MENU] = new DeathScreen(this);
         menus[STATE_CONFIRM_EXIT_MENU] = new ConfirmExitScreen(this, gameContainer);
 
-        goToMenu(STATE_MAIN_MENU);
+        goToMenu(STATE_MAIN_MENU, gameContainer);
     }
 
     @Override
@@ -128,33 +128,15 @@ public class MainMenu extends BasicGameState {
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) {
-        /*
-        if (gameContainer.getInput().isKeyPressed(Input.KEY_UP)) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
-            menus[current_menu_idx].onUpKeyPress(gameContainer);
-        }
-        if (gameContainer.getInput().isKeyPressed(Input.KEY_DOWN)) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
-            menus[current_menu_idx].onDownKeyPress(gameContainer);
-        }
-        if (gameContainer.getInput().isKeyPressed(Input.KEY_ENTER)) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
-            menus[current_menu_idx].onEnterKeyPress(gameContainer, stateBasedGame);
-        }
-        if (gameContainer.getInput().isKeyPressed(Input.KEY_LEFT)) {
-            menus[current_menu_idx].onLeftKeyPress(gameContainer);
-        }
-        if (gameContainer.getInput().isKeyPressed(Input.KEY_RIGHT)) {
-            menus[current_menu_idx].onRightKeyPress(gameContainer);
-        }
-         */
         menus[current_menu_idx].update(gameContainer, stateBasedGame);
     }
 
-    public static void goToMenu(int menu_idx) {
+    public static void goToMenu(int menu_idx, GameContainer gameContainer) {
         prev_menu_idx = current_menu_idx;
         current_menu_idx = menu_idx;
+        clearKeyPresses(gameContainer);
     }
+
 
     public static void returnToPreviousMenu() {
         int temp = prev_menu_idx;
@@ -174,6 +156,7 @@ public class MainMenu extends BasicGameState {
         }
         gameContainer.setMouseGrabbed(false);   // show the mouse cursor
         menus[current_menu_idx].onEnterState(gameContainer);
+        clearKeyPresses(gameContainer);
     }
 
     @Override
@@ -183,6 +166,7 @@ public class MainMenu extends BasicGameState {
             return;
         }
         menus[current_menu_idx].onLeaveState(gameContainer);
+        clearKeyPresses(gameContainer);
     }
 
     protected static void drawInfoStrings(GameContainer gameContainer) {
@@ -206,6 +190,34 @@ public class MainMenu extends BasicGameState {
                 title_string_position.y,
                 title_string,
                 org.newdawn.slick.Color.lightGray);
+    }
+
+    /* this exists to fix a bug where key press functions simply are called as soon as they can be called */
+    private static void clearKeyPresses(GameContainer gameContainer) {
+        if (gameContainer.getInput().isKeyPressed(Input.KEY_LEFT)) {
+        }
+        if (gameContainer.getInput().isKeyPressed(Input.KEY_RIGHT)) {
+        }
+        if (gameContainer.getInput().isKeyPressed(Input.KEY_ENTER)) {
+        }
+        if (gameContainer.getInput().isKeyPressed(Input.KEY_LSHIFT)) {
+        }
+        if (gameContainer.getInput().isKeyPressed(Input.KEY_RSHIFT)) {
+        }
+        if (gameContainer.getInput().isKeyPressed(Input.KEY_X)) {
+        }
+        if (gameContainer.getInput().isKeyPressed(Input.KEY_Y)) {
+        }
+        if (gameContainer.getInput().isKeyPressed(Input.KEY_A)) {
+        }
+        if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
+        }
+        if (gameContainer.getInput().isKeyPressed(Input.KEY_Y)) {
+        }
+        if (gameContainer.getInput().isKeyPressed(Input.KEY_J)) {
+        }
+        if (gameContainer.getInput().isKeyPressed(Input.KEY_N)) {
+        }
     }
 
 

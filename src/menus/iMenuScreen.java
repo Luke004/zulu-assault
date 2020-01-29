@@ -9,14 +9,6 @@ public interface iMenuScreen {
 
     void update(GameContainer gameContainer, StateBasedGame stateBasedGame);
 
-    void onUpKeyPress(GameContainer gameContainer);
-
-    void onDownKeyPress(GameContainer gameContainer);
-
-    void onEnterKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame);
-
-    void onExitKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame);
-
     void onMouseClick(GameContainer gameContainer, StateBasedGame stateBasedGame, int mouseX, int mouseY);
 
     void onEnterState(GameContainer gameContainer);

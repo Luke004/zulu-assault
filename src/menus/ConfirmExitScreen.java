@@ -47,8 +47,14 @@ public class ConfirmExitScreen extends AbstractMenuScreen {
         super.update(gameContainer, stateBasedGame);
 
         // handle key inputs
-
-        if (gameContainer.getInput().isKeyPressed(Input.KEY_Y) || gameContainer.getInput().isKeyPressed(Input.KEY_J)) {
+        if (gameContainer.getInput().isKeyPressed(Input.KEY_ENTER)) {
+            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            System.exit(0);
+        } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
+            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MainMenu.returnToPreviousMenu();
+        } else if (gameContainer.getInput().isKeyPressed(Input.KEY_Y)
+                || gameContainer.getInput().isKeyPressed(Input.KEY_J)) {
             SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             System.exit(0);
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_N)) {
@@ -70,28 +76,6 @@ public class ConfirmExitScreen extends AbstractMenuScreen {
     public void render(GameContainer gameContainer) {
         confirm_exit_image.draw(confirm_exit_image_position.x, confirm_exit_image_position.y);
         MainMenu.drawInfoStrings(gameContainer);
-    }
-
-    @Override
-    public void onUpKeyPress(GameContainer gameContainer) {
-
-    }
-
-    @Override
-    public void onDownKeyPress(GameContainer gameContainer) {
-
-    }
-
-    @Override
-    public void onEnterKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
-        System.exit(0);
-    }
-
-    @Override
-    public void onExitKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
-        MainMenu.returnToPreviousMenu();
     }
 
     @Override

@@ -53,29 +53,18 @@ public class DeathScreen extends AbstractMenuScreen {
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame) {
         super.update(gameContainer, stateBasedGame);
-    }
 
-    @Override
-    public void onUpKeyPress(GameContainer gameContainer) {
-        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
-        buttons.onUpKeyPress();
-    }
-
-    @Override
-    public void onDownKeyPress(GameContainer gameContainer) {
-        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
-        buttons.onDownKeyPress();
-    }
-
-    @Override
-    public void onEnterKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
-        handleMenuItemChoice(gameContainer, stateBasedGame, buttons.getCurrentButtonIdx());
-    }
-
-    @Override
-    public void onExitKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-
+        // handle key inputs
+        if (gameContainer.getInput().isKeyPressed(Input.KEY_UP)) {
+            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            buttons.onUpKeyPress();
+        } else if (gameContainer.getInput().isKeyPressed(Input.KEY_DOWN)) {
+            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            buttons.onDownKeyPress();
+        } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ENTER)) {
+            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            handleMenuItemChoice(gameContainer, stateBasedGame, buttons.getCurrentButtonIdx());
+        }
     }
 
     @Override
@@ -103,7 +92,7 @@ public class DeathScreen extends AbstractMenuScreen {
                 break;
             case 2: // MAIN MENU
                 you_are_dead_sound.stop();
-                MainMenu.goToMenu(MainMenu.STATE_MAIN_MENU);
+                MainMenu.goToMenu(MainMenu.STATE_MAIN_MENU, gameContainer);
                 break;
         }
     }

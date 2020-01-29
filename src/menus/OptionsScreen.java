@@ -24,8 +24,6 @@ public class OptionsScreen extends AbstractMenuScreen {
     private Slider sound_volume_slider, music_volume_slider;
     private Image back_image;
     private Vector2f back_image_position;
-    protected static boolean isFirstTimeKeyLeftCall = false, isFirstTimeKeyRightCall = false;  // for a bug fix
-
 
     public OptionsScreen(BasicGameState gameState, GameContainer gameContainer) {
         super(gameState);
@@ -67,18 +65,19 @@ public class OptionsScreen extends AbstractMenuScreen {
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame) {
         super.update(gameContainer, stateBasedGame);
 
-        if (gameContainer.getInput().isKeyPressed(Input.KEY_LEFT)) {
-            if (isFirstTimeKeyLeftCall) {
-                isFirstTimeKeyLeftCall = false;
-                return;
-            }
+        if (gameContainer.getInput().isKeyPressed(Input.KEY_UP)) {
+            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            arrow.moveUp();
+        } else if (gameContainer.getInput().isKeyPressed(Input.KEY_DOWN)) {
+            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            arrow.moveDown();
+        } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ENTER)) {
+            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            handleMenuItemChoice(arrow.currIdx);
+        } else if (gameContainer.getInput().isKeyPressed(Input.KEY_LEFT)) {
             SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             onLeftKeyPress();
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_RIGHT)) {
-            if (isFirstTimeKeyRightCall) {
-                isFirstTimeKeyRightCall = false;
-                return;
-            }
             SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             onRightKeyPress();
         }
@@ -90,24 +89,6 @@ public class OptionsScreen extends AbstractMenuScreen {
                 main_menu_music.setVolume(UserSettings.MUSIC_VOLUME);
             }
         }
-    }
-
-    @Override
-    public void onUpKeyPress(GameContainer gameContainer) {
-        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
-        arrow.moveUp();
-    }
-
-    @Override
-    public void onDownKeyPress(GameContainer gameContainer) {
-        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
-        arrow.moveDown();
-    }
-
-    @Override
-    public void onEnterKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
-        handleMenuItemChoice(arrow.currIdx);
     }
 
     private void handleMenuItemChoice(int idx) {
@@ -141,11 +122,6 @@ public class OptionsScreen extends AbstractMenuScreen {
 
                 break;
         }
-    }
-
-    @Override
-    public void onExitKeyPress(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-
     }
 
     @Override
