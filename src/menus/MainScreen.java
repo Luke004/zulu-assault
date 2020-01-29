@@ -65,6 +65,8 @@ public class MainScreen extends AbstractMenuScreen {
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ENTER)) {
             SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             handleMenuItemChoice(gameContainer, stateBasedGame, arrow.currIdx);
+        } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
+            goToMenu(STATE_CONFIRM_EXIT_MENU, gameContainer);
         }
 
         if (!main_menu_intro_sound.playing()) {
@@ -93,6 +95,7 @@ public class MainScreen extends AbstractMenuScreen {
     }
 
     private void handleMenuItemChoice(GameContainer gameContainer, StateBasedGame stateBasedGame, int idx) {
+        arrow.currIdx = idx;
         switch (idx) {
             case 0: // NEW
                 // START NEW GAME

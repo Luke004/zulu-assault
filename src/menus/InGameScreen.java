@@ -75,8 +75,7 @@ public class InGameScreen extends AbstractMenuScreen {
             SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             handleMenuItemChoice(gameContainer, stateBasedGame, arrow.currIdx);
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
-            stateBasedGame.enterState(ZuluAssault.prevState.getID(),
-                    new FadeOutTransition(), new FadeInTransition());
+            goToMenu(STATE_CONFIRM_EXIT_MENU, gameContainer);
         }
 
         if (!main_menu_intro_sound.playing()) {
@@ -104,6 +103,7 @@ public class InGameScreen extends AbstractMenuScreen {
     }
 
     private void handleMenuItemChoice(GameContainer gameContainer, StateBasedGame stateBasedGame, int idx) {
+        arrow.currIdx = idx;
         switch (idx) {
             case 0: // RESUME
                 stateBasedGame.enterState(ZuluAssault.prevState.getID(),
@@ -126,7 +126,7 @@ public class InGameScreen extends AbstractMenuScreen {
                 SoundManager.ERROR_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
                 break;
             case 4: // OPTIONS
-                MainMenu.goToMenu(MainMenu.STATE_OPTIONS_MENU, gameContainer);
+                goToMenu(MainMenu.STATE_OPTIONS_MENU, gameContainer);
                 break;
             case 5: // EXIT
                 goToMenu(STATE_CONFIRM_EXIT_MENU, gameContainer);
