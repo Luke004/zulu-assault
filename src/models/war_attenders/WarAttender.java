@@ -133,6 +133,7 @@ public abstract class WarAttender {
     public Weapon getWeapon(MovableWarAttender.WeaponType weaponType) {
         switch (weaponType) {
             case WEAPON_1:
+                if (weapons.size() == 0) return null;    // does not have a WEAPON_1
                 return weapons.get(0);
             case WEAPON_2:
                 if (weapons.size() == 2) return null;    // does not have a WEAPON_2
