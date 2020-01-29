@@ -131,6 +131,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         createStaticWarAttendersFromTiles();
 
         camera = new Camera(gameContainer, map);
+        camera.centerOn(player.getWarAttender().getPosition().x, player.getWarAttender().getPosition().y);
 
         // add listeners for destruction of warAttenders
         for (MovableWarAttender warAttender : friendly_war_attenders) {

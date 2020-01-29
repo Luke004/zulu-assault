@@ -3,6 +3,8 @@ saves/
 native/
 .idea/
 
+src/META-INF
+
 *.class
 
 Zulu-Assault.iml
