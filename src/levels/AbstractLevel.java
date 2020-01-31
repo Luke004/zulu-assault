@@ -399,6 +399,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     @Override
     public void notifyForWarAttenderDeletion(WarAttender warAttender) {
         if (warAttender.isHostile) {
+            all_hostile_war_attenders.remove(warAttender);
             if (warAttender instanceof MovableWarAttender) {
                 hostile_movable_war_attenders.remove(warAttender);
             }

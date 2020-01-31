@@ -104,7 +104,6 @@ public abstract class WarAttender {
             dist = Float.MAX_VALUE;
         }
         // calculate dist between each tank and all its enemies
-        WarAttender closestWarAttender = null;
         for (WarAttender enemy_war_attender : enemies_of_warAttender) {
             float next_xPos = enemy_war_attender.position.x;
             float next_yPos = enemy_war_attender.position.y;
@@ -114,7 +113,6 @@ public abstract class WarAttender {
                 dist = next_dist;
                 xPos = next_xPos;
                 yPos = next_yPos;
-                closestWarAttender = enemy_war_attender;
             }
         }
 
