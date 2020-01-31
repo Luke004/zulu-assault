@@ -20,6 +20,8 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 import org.newdawn.slick.tiled.TiledMap;
 
 import java.util.ArrayList;
@@ -410,6 +412,22 @@ public class Level_1 extends AbstractLevel implements GameState {
         tempList.clear();
 
         return wayPointLists;
+    }
+
+    @Override
+    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) {
+        super.update(gameContainer, stateBasedGame, i);
+
+        if (gameContainer.getInput().isKeyPressed(Input.KEY_BACK)) {
+            try {
+                stateBasedGame.getState(ZuluAssault.LEVEL_2).init(gameContainer, stateBasedGame);
+            } catch (SlickException e) {
+                e.printStackTrace();
+            }
+            stateBasedGame.enterState(ZuluAssault.LEVEL_2,
+                    new FadeOutTransition(), new FadeInTransition());
+            //ZuluAssault.prevState = gameState;
+        }
     }
 
 

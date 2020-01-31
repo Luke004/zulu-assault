@@ -41,7 +41,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     private StateBasedGame stateBasedGame;
     private GameContainer gameContainer;
 
-    private RandomItemDropper randomItemDropper;
+    private static RandomItemDropper randomItemDropper;
 
     private static boolean has_initialized_once;
     protected int init_counter;
@@ -104,8 +104,6 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         if (!has_initialized_once) {
             // this gets only executed once
             has_initialized_once = true;
-            this.stateBasedGame = stateBasedGame;
-            this.gameContainer = gameContainer;
             TileMapInfo.init();
 
             randomItemDropper = new RandomItemDropper();
@@ -117,6 +115,8 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             player.addListener(hud);
             radar = new Radar(gameContainer, player);
         }
+        this.stateBasedGame = stateBasedGame;
+        this.gameContainer = gameContainer;
 
         // create a global movableWarAttender list for collisions between them
         all_movable_war_attenders.addAll(friendly_movable_war_attenders);
