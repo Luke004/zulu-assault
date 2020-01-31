@@ -291,7 +291,6 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             ZuluAssault.prevState = this;
             return;
         }
-
         player.update(gameContainer, deltaTime);
         for (int idx = 0; idx < all_movable_war_attenders.size(); ++idx) {
             all_movable_war_attenders.get(idx).update(gameContainer, deltaTime);
@@ -402,6 +401,8 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             all_hostile_war_attenders.remove(warAttender);
             if (warAttender instanceof MovableWarAttender) {
                 hostile_movable_war_attenders.remove(warAttender);
+            } else if (warAttender instanceof StaticWarAttender) {
+                static_enemies.remove(warAttender);
             }
             player.addPoints(warAttender.getScoreValue());  // add points
             screenDrawer.drawScoreValue(5, warAttender);    // draw the score on the screen
@@ -478,6 +479,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         friendly_movable_war_attenders.clear();
         drivable_war_attenders.clear();
         all_movable_war_attenders.clear();
+        all_hostile_war_attenders.clear();
         renderList.clear();
         static_enemies.clear();
         interaction_circles.clear();

@@ -477,7 +477,6 @@ public class CollisionHandler {
         StaticWarAttender staticWarAttender = static_enemies.get(idx);
         level_delete_listener.notifyForWarAttenderDeletion(staticWarAttender);
         explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
-        static_enemies.remove(idx);
 
         Vector2f[] collision_tiles = staticWarAttender.getCollisionTiles();
 
