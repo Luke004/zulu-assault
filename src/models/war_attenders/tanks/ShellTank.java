@@ -33,14 +33,20 @@ public class ShellTank extends Tank {
             rotate_speed = 0.05f;
         }
 
-        weapons.add(new Shell(isDrivable));   // WEAPON_1
-
         try {
-            base_image = new Image("assets/war_attenders/tanks/shell_tank.png");
-            turret = new Image("assets/war_attenders/tanks/shell_tank_turret.png");
+            if(isHostile){
+                base_image = new Image("assets/war_attenders/tanks/shell_tank_hostile.png");
+                turret = new Image("assets/war_attenders/tanks/shell_tank_hostile_turret.png");
+            } else {
+                base_image = new Image("assets/war_attenders/tanks/shell_tank_friendly.png");
+                turret = new Image("assets/war_attenders/tanks/shell_tank_friendly_turret.png");
+            }
         } catch (SlickException e) {
             e.printStackTrace();
         }
+
+        weapons.add(new Shell(isDrivable));   // WEAPON_1
+
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
         super.init();
     }

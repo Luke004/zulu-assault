@@ -34,11 +34,11 @@ public class CannonTank extends Tank {
 
         try {
             if (isHostile) {
-                base_image = new Image("assets/war_attenders/tanks/cannon_tank_enemy.png");
-                turret = new Image("assets/war_attenders/tanks/cannon_tank_enemy_turret.png");
+                base_image = new Image("assets/war_attenders/tanks/cannon_tank_hostile.png");
+                turret = new Image("assets/war_attenders/tanks/cannon_tank_hostile_turret.png");
             } else {
-                base_image = new Image("assets/war_attenders/tanks/cannon_tank.png");
-                turret = new Image("assets/war_attenders/tanks/cannon_tank_turret.png");
+                base_image = new Image("assets/war_attenders/tanks/cannon_tank_friendly.png");
+                turret = new Image("assets/war_attenders/tanks/cannon_tank_friendly_turret.png");
             }
         } catch (SlickException e) {
             e.printStackTrace();
