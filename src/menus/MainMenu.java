@@ -38,7 +38,7 @@ public class MainMenu extends BasicGameState {
 
     private static String[] info_strings;
     private static TrueTypeFont ttf_info_string;
-    private final static int TEXT_MARGIN = 5;
+    public final static int TEXT_MARGIN = 5;
 
     public MainMenu() {
         try {

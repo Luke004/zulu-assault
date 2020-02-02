@@ -2,20 +2,14 @@ package levels;
 
 import logic.WayPointManager;
 import main.ZuluAssault;
-import menus.UserSettings;
 import models.interaction_circles.HealthCircle;
 import models.interaction_circles.InteractionCircle;
 import models.items.*;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.planes.GreenEnemyPlane;
-import models.war_attenders.planes.Plane;
 import models.war_attenders.robots.PlasmaRobot;
-import models.war_attenders.robots.Robot;
-import models.war_attenders.robots.ShellRobot;
 import models.war_attenders.soldiers.EnemySoldier;
 import models.war_attenders.tanks.*;
-import models.weapons.Cannon;
-import models.weapons.Shell;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.GameState;
@@ -43,6 +37,9 @@ public class Level_1 extends AbstractLevel implements GameState {
         } catch (SlickException e) {
             e.printStackTrace();
         }
+        mission_title = "Take the airfield";
+        briefing_message = "bla bla";
+        debriefing_message = "The airfield has been secured. Good Job.";
 
         // SETUP ENEMY WAR ATTENDERS
         List<Vector2f> wayPoints;
@@ -421,12 +418,11 @@ public class Level_1 extends AbstractLevel implements GameState {
         if (gameContainer.getInput().isKeyPressed(Input.KEY_BACK)) {
             try {
                 stateBasedGame.getState(ZuluAssault.LEVEL_2).init(gameContainer, stateBasedGame);
+                stateBasedGame.enterState(ZuluAssault.LEVEL_2,
+                        new FadeOutTransition(), new FadeInTransition());
             } catch (SlickException e) {
                 e.printStackTrace();
             }
-            stateBasedGame.enterState(ZuluAssault.LEVEL_2,
-                    new FadeOutTransition(), new FadeInTransition());
-            //ZuluAssault.prevState = gameState;
         }
     }
 

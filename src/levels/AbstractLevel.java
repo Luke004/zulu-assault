@@ -49,6 +49,8 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     protected static Sound level_intro_sound;
     protected static Music level_music;
 
+    protected String mission_title, briefing_message, debriefing_message;
+
     public static Player player;
     public TiledMap map;
     public static List<StaticWarAttender> static_enemies;
@@ -280,15 +282,15 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         TileMapInfo.reset();
         level_intro_sound.stop();
         level_music.stop();
+        ZuluAssault.prevState = this;
     }
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int deltaTime) {
         if (hasWonTheLevel) {
-            MainMenu.goToMenu(MainMenu.STATE_MAIN_MENU, gameContainer);
-            stateBasedGame.enterState(ZuluAssault.MAIN_MENU,
+            // enter debriefing
+            stateBasedGame.enterState(ZuluAssault.DEBRIEFING,
                     new FadeOutTransition(), new FadeInTransition());
-            ZuluAssault.prevState = this;
             return;
         }
         player.update(gameContainer, deltaTime);
@@ -486,6 +488,18 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         items.clear();
         player.reset();
         hud.reset();
+    }
+
+    public String getBriefingMessage() {
+        return briefing_message;
+    }
+
+    public String getDebriefingMessage() {
+        return debriefing_message;
+    }
+
+    public String getMissionTitle() {
+        return mission_title;
     }
 
 }
