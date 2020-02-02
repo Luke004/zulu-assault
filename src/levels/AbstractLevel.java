@@ -273,10 +273,6 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         collisionHandler.setPlayer(player);
         collisionHandler.addListener(this);
         keyInputHandler.setPlayer(player);
-
-        // hide the mouse cursor
-        gameContainer.setMouseGrabbed(true);
-
         level_intro_sound.play(1.f, UserSettings.MUSIC_VOLUME);
     }
 
@@ -491,6 +487,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         items.clear();
         player.reset();
         hud.reset();
+        hasWonTheLevel = false;
     }
 
     public String getBriefingMessage() {

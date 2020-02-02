@@ -1,5 +1,6 @@
 package main;
 
+import levels.Briefing;
 import levels.Debriefing;
 import levels.Level_1;
 import levels.Level_2;
@@ -23,6 +24,7 @@ public class ZuluAssault extends StateBasedGame {
     public static final int DEBRIEFING = -2;
 
     public static BasicGameState prevState = null;
+    public static int nextLevelID = 0;
 
     public ZuluAssault(String name) {
         super(name);
@@ -30,6 +32,7 @@ public class ZuluAssault extends StateBasedGame {
         this.addState(new Level_1());
         this.addState(new Level_2());
         this.addState(new Debriefing());
+        this.addState(new Briefing());
     }
 
     public static void main(String[] args) {

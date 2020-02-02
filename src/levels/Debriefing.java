@@ -1,14 +1,15 @@
 package levels;
 
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
 
 import main.ZuluAssault;
+import menus.MainScreen;
 import menus.UserSettings;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.state.transition.FadeInTransition;
-import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import static menus.MainMenu.TEXT_MARGIN;
 
@@ -20,7 +21,8 @@ public class Debriefing extends BasicGameState {
 
     private int finished_level_ID;
 
-    private String debriefing_header, debriefing_mission_header, debriefing_message, confirm_message, mission_name;
+    private List<String> debriefing_message;
+    private String debriefing_header, debriefing_mission_header, confirm_message, mission_name;
     private static TrueTypeFont ttf_info_string;
     private static boolean has_initialized_once;
     private static Image debriefing_screen_image;
@@ -34,17 +36,31 @@ public class Debriefing extends BasicGameState {
 
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-        debriefing_music.play(1.f, UserSettings.SOUND_VOLUME);
+        debriefing_music.play(1.f, UserSettings.MUSIC_VOLUME);
 
-        this.finished_level_ID = ZuluAssault.prevState.getID();
-        if (finished_level_ID > 0) {
-            AbstractLevel level = (AbstractLevel) ZuluAssault.prevState;
-            this.mission_name = "Mission " + finished_level_ID;
-            this.debriefing_message = level.getDebriefingMessage();
-            this.debriefing_mission_header = this.mission_name + " - " + level.getMissionTitle();
+        this.finished_level_ID = ZuluAssault.nextLevelID;
+        AbstractLevel level = (AbstractLevel) ZuluAssault.prevState;
+        this.mission_name = "Mission " + finished_level_ID;
+        String debriefing_message = level.getDebriefingMessage();
+        this.debriefing_message = new ArrayList<>();
+        if (debriefing_message == null || debriefing_message.isEmpty()) {
+            this.debriefing_message.add("You have won the level. Well done!");
         } else {
-            this.debriefing_message = "You have won the level. Well done!";
+            String[] split_strings = debriefing_message.split("\\s+");
+            StringBuilder builder = new StringBuilder();
+
+            for (String next_part : split_strings) {
+                builder.append(next_part).append(" ");
+                if (ttf_info_string.getWidth(builder.toString()) > gameContainer.getWidth() - 40) {
+                    this.debriefing_message.add(builder.toString());
+                    builder.setLength(0);
+                }
+            }
+            if (builder.length() > 0) {
+                this.debriefing_message.add(builder.toString());
+            }
         }
+        this.debriefing_mission_header = this.mission_name + " - " + level.getMissionTitle();
     }
 
     @Override
@@ -83,10 +99,12 @@ public class Debriefing extends BasicGameState {
                 MESSAGE_Y_START + MESSAGE_HEIGHT,
                 debriefing_mission_header);
 
-        ttf_info_string.drawString(
-                TEXT_MARGIN,
-                MESSAGE_Y_START + MESSAGE_HEIGHT * 3,
-                debriefing_message);
+        for (int idx = 0; idx < debriefing_message.size(); ++idx) {
+            ttf_info_string.drawString(
+                    TEXT_MARGIN,
+                    MESSAGE_Y_START + MESSAGE_HEIGHT * (3 + idx),
+                    debriefing_message.get(idx));
+        }
 
         ttf_info_string.drawString(
                 TEXT_MARGIN,
@@ -101,14 +119,8 @@ public class Debriefing extends BasicGameState {
 
     @Override
     public void keyPressed(int key, char c) {
-        try {
-            final int NEXT_LEVEL_ID = finished_level_ID + 1;
-            stateBasedGame.getState(NEXT_LEVEL_ID).init(gameContainer, stateBasedGame);
-            stateBasedGame.enterState(NEXT_LEVEL_ID,
-                    new FadeOutTransition(), new FadeInTransition());
-        } catch (SlickException e) {
-            e.printStackTrace();
-        }
+        final int NEXT_LEVEL_ID = finished_level_ID + 1;
+        MainScreen.startLevel(NEXT_LEVEL_ID, stateBasedGame, this);
     }
 
     @Override

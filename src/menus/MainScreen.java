@@ -100,15 +100,8 @@ public class MainScreen extends AbstractMenuScreen {
         switch (idx) {
             case 0: // NEW
                 // START NEW GAME
-                try {
-                    // init a new game starting with level 1
-                    stateBasedGame.getState(ZuluAssault.LEVEL_1).init(gameContainer, stateBasedGame);
-                    stateBasedGame.enterState(ZuluAssault.LEVEL_1,
-                            new FadeOutTransition(), new FadeInTransition());
-                    ZuluAssault.prevState = gameState;
-                } catch (SlickException e) {
-                    e.printStackTrace();
-                }
+                // init a new game starting with level 1
+                startLevel(ZuluAssault.LEVEL_1, stateBasedGame, gameState);
                 break;  // TODO: LOAD AND SAVE
             case 1: // LOAD
             case 2: // SAVE
@@ -133,5 +126,12 @@ public class MainScreen extends AbstractMenuScreen {
     public void onLeaveState(GameContainer gameContainer) {
         main_menu_intro_sound.stop();
         main_menu_music.stop();
+    }
+
+    public static void startLevel(int levelID, StateBasedGame stateBasedGame, BasicGameState basicGameState) {
+        ZuluAssault.nextLevelID = levelID;
+        stateBasedGame.enterState(ZuluAssault.BRIEFING, new FadeOutTransition(), new FadeInTransition());
+        ZuluAssault.prevState = basicGameState;
+
     }
 }

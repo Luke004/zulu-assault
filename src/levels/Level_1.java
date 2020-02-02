@@ -38,8 +38,9 @@ public class Level_1 extends AbstractLevel implements GameState {
             e.printStackTrace();
         }
         mission_title = "Take the airfield";
-        briefing_message = "bla bla";
-        debriefing_message = "The airfield has been secured. Good Job.";
+        briefing_message = "A key enemy airfield has been located in the northwest quadrant. Alpha team will attack " +
+                "the airfield from the southwest. Provide supporting firepower for Alpha team.";
+        debriefing_message = "The airfield has been secured. Good job.";
 
         // SETUP ENEMY WAR ATTENDERS
         List<Vector2f> wayPoints;

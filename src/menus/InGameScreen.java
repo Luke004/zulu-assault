@@ -106,21 +106,12 @@ public class InGameScreen extends AbstractMenuScreen {
     private void handleMenuItemChoice(GameContainer gameContainer, StateBasedGame stateBasedGame, int idx) {
         arrow.currIdx = idx;
         switch (idx) {
-            case 0: // RESUME
+            case 0: // RESUME CURRENT GAME
                 stateBasedGame.enterState(ZuluAssault.prevState.getID(),
                         new FadeOutTransition(), new FadeInTransition());
                 break;
-            case 1: // NEW
-                // START NEW GAME
-                try {
-                    // init a new game starting with level 1
-                    stateBasedGame.getState(ZuluAssault.LEVEL_1).init(gameContainer, stateBasedGame);
-                    stateBasedGame.enterState(ZuluAssault.LEVEL_1,
-                            new FadeOutTransition(), new FadeInTransition());
-                    ZuluAssault.prevState = gameState;
-                } catch (SlickException e) {
-                    e.printStackTrace();
-                }
+            case 1: // START NEW GAME
+                MainScreen.startLevel(ZuluAssault.LEVEL_1, stateBasedGame, gameState);
                 break;
             case 2: // LOAD
             case 3: // SAVE
