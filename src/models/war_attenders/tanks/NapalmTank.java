@@ -13,11 +13,14 @@ public class NapalmTank extends Tank {
     private static Texture napalm_tank_hostile_texture, napalm_tank_friendly_texture,
             napalm_tank_hostile_turret_texture, napalm_tank_friendly_turret_texture;
 
+    private static final float ARMOR = 75.f;
+
+
     public NapalmTank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
 
         // attributes equal for humans and bots
-        armor = 75;
+
 
         if (isDrivable) {
             // individual NapalmTank attributes for human players
@@ -71,5 +74,10 @@ public class NapalmTank extends Tank {
 
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
         super.init();
+    }
+
+    @Override
+    public void changeHealth(float amount) {
+        super.changeHealth(amount, ARMOR);
     }
 }

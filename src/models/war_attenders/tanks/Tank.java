@@ -19,6 +19,10 @@ public abstract class Tank extends MovableWarAttender {
     private boolean decelerate, centerTurret, isTurretCentered;
     private int TURRET_WIDTH_HALF, TURRET_HEIGHT_HALF;
 
+    // default tank attributes
+    private static final float ARMOR = 50.f;
+    private static final int SCORE_VALUE = 1000;
+
     // each tank has an acceleration and a deceleration
     protected float acceleration_factor;   // number between [0 and 1] -> the smaller the faster the acceleration
     protected float deceleration_factor;   // number between [0 and 1] -> the smaller the faster the deceleration
@@ -27,7 +31,6 @@ public abstract class Tank extends MovableWarAttender {
 
     public Tank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
-        scoreValue = 1000;
         isTurretCentered = true;
     }
 
@@ -44,7 +47,7 @@ public abstract class Tank extends MovableWarAttender {
     public void update(GameContainer gc, int deltaTime) {
         super.update(gc, deltaTime);
 
-        if(this instanceof CannonTank){
+        if (this instanceof CannonTank) {
             System.out.println(position);
         }
 
@@ -169,6 +172,11 @@ public abstract class Tank extends MovableWarAttender {
         return base_image.getRotation();
     }
 
+    @Override
+    public int getScoreValue() {
+        return SCORE_VALUE;
+    }
+
     public void setCurrentSpeed(Direction direction) {
         if (direction == Direction.FORWARD) {
             this.current_speed = 0.f;
@@ -259,6 +267,11 @@ public abstract class Tank extends MovableWarAttender {
         }
         if (weapon == null) return;  // does not have a WEAPON_2, so return
         weapon.fire(position.x, position.y, turret.getRotation());
+    }
+
+    @Override
+    public void changeHealth(float amount) {
+        super.changeHealth(amount, ARMOR);
     }
 
     private class DestructionAnimation {

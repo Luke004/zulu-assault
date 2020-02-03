@@ -20,15 +20,16 @@ public abstract class Windmill extends StaticWarAttender {
     private int smoke_animation_timer;
     private Random random;
 
+    private static final float ARMOR = 10.f;
+    private static final int SCORE_VALUE = 200;
+    private static final float TURRET_ROTATE_SPEED = 0.07f;
+
+
     public Windmill(Vector2f startPos, boolean isHostile, Vector2f[] tile_positions) {
         super(startPos, isHostile, tile_positions);
         random = new Random();
 
         smokeAnimation = new SmokeAnimation(3);
-
-        armor = 10.f;
-
-        scoreValue = 200;
 
         health_bar_position.x = position.x - 27.5f;
         health_bar_position.y = position.y - 35.f;
@@ -83,9 +84,19 @@ public abstract class Windmill extends StaticWarAttender {
     public void changeAimingDirection(float angle, int deltaTime) {
         float rotation = WayPointManager.getShortestSignedAngle(turret.getRotation(), angle);
         if (rotation < 0) {
-            turret.rotate(-turret_rotate_speed * deltaTime);
+            turret.rotate(-TURRET_ROTATE_SPEED * deltaTime);
         } else {
-            turret.rotate(turret_rotate_speed * deltaTime);
+            turret.rotate(TURRET_ROTATE_SPEED * deltaTime);
         }
+    }
+
+    @Override
+    public void changeHealth(float amount) {
+        super.changeHealth(amount, ARMOR);
+    }
+
+    @Override
+    public int getScoreValue() {
+        return SCORE_VALUE;
     }
 }

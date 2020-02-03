@@ -12,13 +12,10 @@ public class ShellTank extends Tank {
     private static Texture shell_tank_hostile_texture, shell_tank_friendly_texture,
             shell_tank_hostile_turret_texture, shell_tank_friendly_turret_texture;
 
+    private static final float ARMOR = 60.f;
+
     public ShellTank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
-
-        // attributes equal for humans and bots
-        armor = 60;
-
-        scoreValue = 1000;
 
         if (isDrivable) {
             // individual ShellTank attributes for human players
@@ -71,5 +68,10 @@ public class ShellTank extends Tank {
 
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
         super.init();
+    }
+
+    @Override
+    public void changeHealth(float amount) {
+        super.changeHealth(amount, ARMOR);
     }
 }

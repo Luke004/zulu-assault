@@ -1,8 +1,6 @@
 package models.war_attenders;
 
 import logic.WayPointManager;
-import models.war_attenders.tanks.NapalmTank;
-import models.war_attenders.tanks.Tank;
 import models.weapons.Weapon;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
@@ -16,10 +14,8 @@ public abstract class WarAttender {
     protected Vector2f health_bar_position;
     // specs related
     protected static final float MAX_HEALTH = 100;
-    public float current_health, armor;
-    protected float turret_rotate_speed;
+    protected float current_health;
     public boolean isHostile, isDestroyed;
-    protected int scoreValue;
     protected Vector2f position;
     private boolean isMandatory;
     protected boolean isEnemyNear;
@@ -29,8 +25,8 @@ public abstract class WarAttender {
         this.position = startPos;
         weapons = new ArrayList<>();    // 3 weapons -> WEAPON_1, WEAPON_2 and MEGA_PULSE
         health_bar_position = new Vector2f();
+
         if (isHostile) {
-            turret_rotate_speed = 0.07f;
             try {
                 health_bar_image = new Image("assets/healthbars/healthbar_enemy.png");
             } catch (SlickException e) {
@@ -44,8 +40,6 @@ public abstract class WarAttender {
             }
         }
         current_health = MAX_HEALTH;
-
-        scoreValue = 100;   // default score value
     }
 
     public void init() {
@@ -160,7 +154,7 @@ public abstract class WarAttender {
         return position;
     }
 
-    public void changeHealth(float amount) {
+    protected void changeHealth(float amount, float armor) {
         if (amount < 0) {
             // damage
             current_health += amount / armor;
@@ -174,7 +168,7 @@ public abstract class WarAttender {
         }
     }
 
-    //protected abstract void showDestructionAnimation(Graphics graphics);
+    public abstract void changeHealth(float amount);
 
     public boolean isMaxHealth() {
         return current_health == MAX_HEALTH;
@@ -184,9 +178,7 @@ public abstract class WarAttender {
         return (int) current_health;
     }
 
-    public int getScoreValue() {
-        return scoreValue;
-    }
+    public abstract int getScoreValue();
 
     public enum WeaponType {
         WEAPON_1, WEAPON_2, MEGA_PULSE

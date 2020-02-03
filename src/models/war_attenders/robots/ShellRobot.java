@@ -13,17 +13,6 @@ public class ShellRobot extends Robot {
     public ShellRobot(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
 
-        // individual ShellRobot attributes for human player
-        armor = 75;
-        max_speed = 0.15f;
-        current_speed = max_speed;
-        rotate_speed = 0.25f;
-
-        init();
-    }
-
-    public void init() {
-        // first weapon
         weapons.add(new DoubleShell(isDrivable));
 
         // LOAD TEXTURES
@@ -39,4 +28,6 @@ public class ShellRobot extends Robot {
 
         super.init();
     }
+
+
 }

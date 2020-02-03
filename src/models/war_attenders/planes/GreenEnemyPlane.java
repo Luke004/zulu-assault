@@ -22,13 +22,11 @@ public class GreenEnemyPlane extends Plane {
 
     private AnimatedCrosshair animatedCrosshair;
 
+    private static final float ARMOR = 40.f;
+    private static final int SCORE_VALUE = 500;
+
     public GreenEnemyPlane(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
-
-        // attributes equal for humans and bots
-        armor = 45; // unknown
-
-        scoreValue = 500;
 
         setMoving(true);    // green plane is always flying
 
@@ -198,5 +196,15 @@ public class GreenEnemyPlane extends Plane {
         } else {
             base_image.rotate(-rotate_speed * deltaTime);
         }
+    }
+
+    @Override
+    public void changeHealth(float amount) {
+        super.changeHealth(amount, ARMOR);
+    }
+
+    @Override
+    public int getScoreValue() {
+        return SCORE_VALUE;
     }
 }

@@ -11,10 +11,10 @@ public class PlayerSoldier extends Soldier {
         super(startPos, isHostile);
 
         // individual PlayerSoldier attributes
-        armor = 2.5f;
         max_speed = 0.1f;
         current_speed = max_speed;
         rotate_speed = 0.25f;
+
         weapons.add(new Uzi(true));
 
         try {

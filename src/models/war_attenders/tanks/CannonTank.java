@@ -13,11 +13,10 @@ public class CannonTank extends Tank {
     private static Texture cannon_tank_hostile_texture, cannon_tank_friendly_texture,
             cannon_tank_hostile_turret_texture, cannon_tank_friendly_turret_texture;
 
+    private static final float ARMOR = 50.f;
+
     public CannonTank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
-
-        // attributes equal for humans and bots
-        armor = 50;
 
         if (isDrivable) {
             // individual MachineGunTank attributes for human players
@@ -70,5 +69,10 @@ public class CannonTank extends Tank {
 
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
         super.init();
+    }
+
+    @Override
+    public void changeHealth(float amount) {
+        super.changeHealth(amount, ARMOR);
     }
 }

@@ -20,9 +20,12 @@ public abstract class Soldier extends MovableWarAttender {
     private static final int FLEE_TIMER = 1500;
     private int time_fleeing;
 
+    // default soldier attributes
+    private static final float ARMOR = 2.5f;
+    private static final int SCORE_VALUE = 100;
+
     public Soldier(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
-        scoreValue = 100;
     }
 
     public void init() {
@@ -123,6 +126,11 @@ public abstract class Soldier extends MovableWarAttender {
     }
 
     @Override
+    public void changeHealth(float amount){
+        super.changeHealth(amount, ARMOR);
+    }
+
+    @Override
     public void rotate(RotateDirection rotateDirection, int deltaTime) {
         switch (rotateDirection) {
             case ROTATE_DIRECTION_LEFT:
@@ -213,4 +221,10 @@ public abstract class Soldier extends MovableWarAttender {
             fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
         }
     }
+
+    @Override
+    public int getScoreValue() {
+        return SCORE_VALUE;
+    }
 }
+

@@ -12,11 +12,10 @@ public class RocketTank extends Tank {
     private static Texture rocket_tank_hostile_texture, rocket_tank_friendly_texture,
             rocket_tank_hostile_turret_texture, rocket_tank_friendly_turret_texture;
 
+    private static final float ARMOR = 50.f;
+
     public RocketTank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
-
-        // attributes equal for humans and bots
-        armor = 50;
 
         if (isDrivable) {
             // individual RocketTank attributes for human players
@@ -69,5 +68,10 @@ public class RocketTank extends Tank {
 
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
         super.init();
+    }
+
+    @Override
+    public void changeHealth(float amount) {
+        super.changeHealth(amount, ARMOR);
     }
 }

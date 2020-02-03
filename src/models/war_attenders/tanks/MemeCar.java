@@ -11,18 +11,18 @@ public class MemeCar extends Tank {
 
     private static Texture meme_car_texture, meme_car_turret_texture;
 
+    private static final float ARMOR = 20.f;
+    private static final int SCORE_VALUE = 50;
+
     public MemeCar(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
 
         // attributes equal for humans and bots
-        armor = 20;
         max_speed = 0.1f;
         backwards_speed = 0.07f;
         acceleration_factor = 0.0005f;
         deceleration_factor = 0.0005f;
         rotate_speed = 0.15f;
-
-        scoreValue = 50;
 
         if (isDrivable) weapons.add(new Uzi(isDrivable));  // WEAPON_1
 
@@ -45,5 +45,10 @@ public class MemeCar extends Tank {
 
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
         super.init();
+    }
+
+    @Override
+    public void changeHealth(float amount) {
+        super.changeHealth(amount, ARMOR);
     }
 }

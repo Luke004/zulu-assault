@@ -12,7 +12,6 @@ import models.weapons.projectiles.Projectile;
 import models.weapons.projectiles.iGroundTileDamageWeapon;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.opengl.Texture;
 import player.Player;
 
 import java.util.Iterator;
@@ -44,6 +43,7 @@ public abstract class MovableWarAttender extends WarAttender {
     public static final float DAMAGE_TO_DESTRUCTIBLE_TILE = 5.f;
     public float max_speed, current_speed;
     public float rotate_speed;
+    protected static float turret_rotate_speed;
 
     // booleans
     public boolean isMoving, isDrivable;

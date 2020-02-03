@@ -13,9 +13,26 @@ public abstract class Robot extends MovableWarAttender {
     private float BASE_WIDTH_HALF, BASE_HEIGHT_HALF;
     private boolean centerTurret;
 
+    // default robot attributes
+    private static final float ARMOR = 75.f;
+    private static final int SCORE_VALUE = 3000;
+
     public Robot(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
-        scoreValue = 3000;
+
+        if (isDrivable) {
+            // individual Robot attributes for human player
+            max_speed = 0.15f;
+            current_speed = max_speed;
+            rotate_speed = 0.25f;
+            //turret_rotate_speed = 0.5f;
+        } else {
+            // individual Robot attributes for bots
+            max_speed = 0.05f;
+            current_speed = max_speed;
+            rotate_speed = 0.25f;
+            //turret_rotate_speed = 0.5f;
+        }
     }
 
     public void init() {
@@ -189,6 +206,11 @@ public abstract class Robot extends MovableWarAttender {
     }
 
     @Override
+    public void changeHealth(float amount) {
+        super.changeHealth(amount, ARMOR);
+    }
+
+    @Override
     public void fireWeapon(WeaponType weapon) {
         switch (weapon) {
             case WEAPON_1:
@@ -206,5 +228,10 @@ public abstract class Robot extends MovableWarAttender {
                 }
                 break;
         }
+    }
+
+    @Override
+    public int getScoreValue() {
+        return SCORE_VALUE;
     }
 }
