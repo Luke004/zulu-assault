@@ -4,6 +4,8 @@ import logic.WayPointManager;
 import models.weapons.Weapon;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.opengl.Texture;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,27 +21,34 @@ public abstract class WarAttender {
     protected Vector2f position;
     private boolean isMandatory;
     protected boolean isEnemyNear;
+    // graphics related
+    private static Texture health_bar_texture_enemy, health_bar_texture_friendly;
 
     public WarAttender(Vector2f startPos, boolean isHostile) {
         this.isHostile = isHostile;
         this.position = startPos;
         weapons = new ArrayList<>();    // 3 weapons -> WEAPON_1, WEAPON_2 and MEGA_PULSE
         health_bar_position = new Vector2f();
-
-        if (isHostile) {
-            try {
-                health_bar_image = new Image("assets/healthbars/healthbar_enemy.png");
-            } catch (SlickException e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                health_bar_image = new Image("assets/healthbars/healthbar_friendly.png");
-            } catch (SlickException e) {
-                e.printStackTrace();
-            }
-        }
         current_health = MAX_HEALTH;
+
+        // LOAD TEXTURES
+        try {
+            if (isHostile) {
+                if (health_bar_texture_enemy == null) {
+                    health_bar_texture_enemy = new Image("assets/healthbars/healthbar_enemy.png")
+                            .getTexture();
+                }
+                health_bar_image = new Image(health_bar_texture_enemy);
+            } else {
+                if (health_bar_texture_friendly == null) {
+                    health_bar_texture_friendly = new Image("assets/healthbars/healthbar_friendly.png")
+                            .getTexture();
+                }
+                health_bar_image = new Image(health_bar_texture_friendly);
+            }
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
     }
 
     public void init() {
