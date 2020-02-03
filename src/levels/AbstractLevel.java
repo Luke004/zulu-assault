@@ -502,4 +502,5 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         return mission_title;
     }
 
+    public abstract void loadLevelMusic();  // load level music in separate thread since it takes long
 }

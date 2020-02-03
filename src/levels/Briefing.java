@@ -2,6 +2,7 @@ package levels;
 
 import main.ZuluAssault;
 import menus.UserSettings;
+import org.lwjgl.Sys;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.*;
@@ -21,6 +22,8 @@ public class Briefing extends BasicGameState {
 
     private GameContainer gameContainer;
     private StateBasedGame stateBasedGame;
+
+    private Thread loadMusicThread;
 
     private int nextLevelID;
 
@@ -64,6 +67,10 @@ public class Briefing extends BasicGameState {
                 this.briefing_message.add(builder.toString());
             }
         }
+
+        loadMusicThread = new LoadMusicThread();
+        loadMusicThread.start();
+
         this.briefing_mission_header = this.mission_name + " - " + level.getMissionTitle();
     }
 
@@ -131,6 +138,7 @@ public class Briefing extends BasicGameState {
 
     @Override
     public void keyPressed(int key, char c) {
+        if (loadMusicThread.isAlive()) return;
         try {
             stateBasedGame.getState(nextLevelID).init(gameContainer, stateBasedGame);
             stateBasedGame.enterState(nextLevelID,
@@ -146,4 +154,12 @@ public class Briefing extends BasicGameState {
         briefing_music.stop();
         ZuluAssault.prevState = this;
     }
+
+    class LoadMusicThread extends Thread {
+        @Override
+        public void run() {
+            ((AbstractLevel) stateBasedGame.getState(nextLevelID)).loadLevelMusic();
+        }
+    }
+
 }

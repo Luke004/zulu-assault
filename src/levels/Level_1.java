@@ -23,6 +23,9 @@ import java.util.List;
 
 public class Level_1 extends AbstractLevel implements GameState {
 
+    private static Sound level1_intro_sound;
+    private static Music level1_music;
+
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         // this makes sure we don't init on the first two calls, since this would be a waste of cpu power
@@ -31,12 +34,9 @@ public class Level_1 extends AbstractLevel implements GameState {
 
         reset();    // reset the level before init
 
-        try {
-            level_intro_sound = new Sound("audio/music/level_1_intro.ogg");
-            level_music = new Music("audio/music/level_1.ogg");
-        } catch (SlickException e) {
-            e.printStackTrace();
-        }
+        level_intro_sound = level1_intro_sound;
+        level_music = level1_music;
+
         mission_title = "Take the airfield";
         briefing_message = "A key enemy airfield has been located in the northwest quadrant. Alpha team will attack " +
                 "the airfield from the southwest. Provide supporting firepower for Alpha team.";
@@ -427,10 +427,16 @@ public class Level_1 extends AbstractLevel implements GameState {
         }
     }
 
-
     @Override
-    public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) {
-        super.render(gameContainer, stateBasedGame, graphics);
+    public void loadLevelMusic() {
+        if (level1_intro_sound == null) {
+            try {
+                level_intro_sound = new Sound("audio/music/level_1_intro.ogg");
+                level_music = new Music("audio/music/level_1.ogg");
+            } catch (SlickException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

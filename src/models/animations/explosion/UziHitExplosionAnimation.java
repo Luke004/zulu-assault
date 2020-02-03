@@ -8,18 +8,21 @@ import org.newdawn.slick.opengl.Texture;
 
 public class UziHitExplosionAnimation extends AbstractVolatileAnimation {
 
+    private static Texture uzi_hit_explosion_animation_texture;
+
     public UziHitExplosionAnimation(final int BUFFER_SIZE) {
         super(BUFFER_SIZE);
     }
 
     @Override
     public void initTexture() throws SlickException {
-        animation_texture = new Image("assets/animations/bullet_explosion.png").getTexture();
+        if (uzi_hit_explosion_animation_texture == null)
+            uzi_hit_explosion_animation_texture = new Image("assets/animations/bullet_explosion.png").getTexture();
     }
 
     @Override
     public void addNewInstance() {
-        Image smoke_animation_image = new Image(animation_texture);
+        Image smoke_animation_image = new Image(uzi_hit_explosion_animation_texture);
         Animation explosion_animation = new Animation(false);
         int IMAGE_COUNT = 9;
         int x = 0;

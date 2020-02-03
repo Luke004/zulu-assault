@@ -4,20 +4,25 @@ import models.animations.AbstractVolatileAnimation;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.opengl.Texture;
 
 public class PlasmaDamageAnimation extends AbstractVolatileAnimation {
+
+    private static Texture plasma_damage_animation_texture;
+
     public PlasmaDamageAnimation(final int BUFFER_SIZE) {
         super(BUFFER_SIZE);
     }
 
     @Override
     public void initTexture() throws SlickException {
-        animation_texture = new Image("assets/animations/plasma_hit.png").getTexture();
+        if (plasma_damage_animation_texture == null)
+            plasma_damage_animation_texture = new Image("assets/animations/plasma_hit.png").getTexture();
     }
 
     @Override
     public void addNewInstance() {
-        Image plasma_hit_animation_image = new Image(animation_texture);
+        Image plasma_hit_animation_image = new Image(plasma_damage_animation_texture);
         Animation plasma_hit_animation = new Animation(false);
         int IMAGE_COUNT = 5;
         int x = 0;

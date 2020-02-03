@@ -12,6 +12,7 @@ import models.weapons.projectiles.Projectile;
 import models.weapons.projectiles.iGroundTileDamageWeapon;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.opengl.Texture;
 import player.Player;
 
 import java.util.Iterator;

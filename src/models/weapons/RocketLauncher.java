@@ -8,6 +8,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.opengl.Texture;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,9 @@ public class RocketLauncher extends Weapon {
     private List<Animation> active_rockets;
     private List<Animation> buffered_rockets;
     int BUFFER_SIZE;
+
+    private static Sound rocket_fire_sound;
+    private static Texture rocket_launcher_hud_texture;
 
     public RocketLauncher(boolean isDrivable) {
         super();
@@ -26,9 +30,18 @@ public class RocketLauncher extends Weapon {
         if (!isDrivable) shot_reload_time *= 5;
 
         try {
-            weapon_hud_image = new Image("assets/hud/weapons/rockets.png");
             projectile_texture = new Image("assets/bullets/shell.png").getTexture();
-            fire_sound = new Sound("audio/sounds/rocket_shot.ogg");
+
+            if (isDrivable && rocket_launcher_hud_texture == null) {
+                rocket_launcher_hud_texture = new Image("assets/hud/weapons/rockets.png").getTexture();
+                weapon_hud_image = new Image(rocket_launcher_hud_texture);
+            }
+
+            if (rocket_fire_sound == null) {
+                rocket_fire_sound = new Sound("audio/sounds/rocket_shot.ogg");
+            }
+            fire_sound = rocket_fire_sound;
+
             if (!isDrivable) {
                 BUFFER_SIZE = 3;
             } else {
@@ -38,9 +51,10 @@ public class RocketLauncher extends Weapon {
             int IMAGE_COUNT = 8;
             int x;
             int idx;
+            Texture rocket_animation_image_texture = new Image("assets/bullets/rocket_animation.png").getTexture();
             for (idx = 0; idx < BUFFER_SIZE; ++idx) {
                 x = 0;
-                Image rocket_animation_image = new Image("assets/bullets/rocket_animation.png");
+                Image rocket_animation_image = new Image(rocket_animation_image_texture);
                 Animation rocket_animation = new Animation(false);
                 for (int idx2 = 0; idx2 < IMAGE_COUNT; ++idx2) {
                     rocket_animation.addFrame(rocket_animation_image.getSubImage(x, 0, 20, 123), 50);

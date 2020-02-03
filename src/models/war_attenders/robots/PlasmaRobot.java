@@ -4,8 +4,11 @@ import models.weapons.DoublePlasma;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.opengl.Texture;
 
 public class PlasmaRobot extends Robot {
+
+    private static Texture plasma_robot_texture;
 
     public PlasmaRobot(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
@@ -29,11 +32,17 @@ public class PlasmaRobot extends Robot {
 
         weapons.add(new DoublePlasma(isDrivable));
 
+        // LOAD TEXTURES
         try {
-            base_image = new Image("assets/war_attenders/robots/plasma_robot.png");
+            if (plasma_robot_texture == null) {
+                plasma_robot_texture = new Image("assets/war_attenders/robots/plasma_robot.png")
+                        .getTexture();
+            }
+            base_image = new Image(plasma_robot_texture);
         } catch (SlickException e) {
             e.printStackTrace();
         }
+
         super.init();
     }
 }

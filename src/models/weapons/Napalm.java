@@ -5,13 +5,19 @@ import models.weapons.projectiles.Projectile;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.opengl.Texture;
 
 public class Napalm extends PiercingWeapon {
 
-    public Napalm() {
+    private static Texture napalm_hud_texture;
+
+    public Napalm(boolean isDrivable) {
         super();
         try {
-            weapon_hud_image = new Image("assets/hud/weapons/napalm.png");
+            if (isDrivable && napalm_hud_texture == null) {
+                napalm_hud_texture = new Image("assets/hud/weapons/napalm.png").getTexture();
+                weapon_hud_image = new Image(napalm_hud_texture);
+            }
 
             projectile_texture = new Image("assets/animations/big_explosion.png").getTexture();
         } catch (SlickException e) {

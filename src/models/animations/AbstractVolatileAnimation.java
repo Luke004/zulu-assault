@@ -16,7 +16,6 @@ A class for animations that only last for a few seconds
 public abstract class AbstractVolatileAnimation {
     private List<AnimationInstance> active_instances;
     protected List<AnimationInstance> buffered_instances;
-    protected Texture animation_texture;
 
     public AbstractVolatileAnimation(final int BUFFER_SIZE) {
         buffered_instances = new ArrayList<>();

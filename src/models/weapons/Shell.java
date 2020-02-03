@@ -9,17 +9,30 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.opengl.Texture;
 
 public class Shell extends Weapon {
+
+    private static Sound shell_fire_sound;
+    private static Texture shell_hud_texture;
+
     protected SmokeAnimation smokeAnimation;
 
     public Shell(boolean isDrivable) {
         super();
         smokeAnimation = new SmokeAnimation(1);
         try {
-            weapon_hud_image = new Image("assets/hud/weapons/shell.png");
+            if (shell_fire_sound == null) {
+                shell_fire_sound = new Sound("audio/sounds/shell_shot.ogg");
+            }
+            fire_sound = shell_fire_sound;
+
+            if (isDrivable && shell_hud_texture == null) {
+                shell_hud_texture = new Image("assets/hud/weapons/shell.png").getTexture();
+                weapon_hud_image = new Image(shell_hud_texture);
+            }
+
             projectile_texture = new Image("assets/bullets/shell.png").getTexture();
-            fire_sound = new Sound("audio/sounds/shell_shot.ogg");
         } catch (SlickException e) {
             e.printStackTrace();
         }

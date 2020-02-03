@@ -12,10 +12,13 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.opengl.Texture;
 
 import java.util.List;
 
 public class GreenEnemyPlane extends Plane {
+
+    private static Texture green_enemy_plane_texture;
 
     private AnimatedCrosshair animatedCrosshair;
 
@@ -45,11 +48,17 @@ public class GreenEnemyPlane extends Plane {
         weapons.add(new Uzi(isDrivable));  // WEAPON_1
         weapons.add(new AGM(isDrivable));  // WEAPON_2
 
+        // LOAD TEXTURES
         try {
-            base_image = new Image("assets/war_attenders/planes/green_enemy_plane.png");
+            if (green_enemy_plane_texture == null) {
+                green_enemy_plane_texture = new Image("assets/war_attenders/planes/green_enemy_plane.png")
+                        .getTexture();
+            }
+            base_image = new Image(green_enemy_plane_texture);
         } catch (SlickException e) {
             e.printStackTrace();
         }
+
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
         super.init();
     }

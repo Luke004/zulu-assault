@@ -6,8 +6,12 @@ import models.animations.smoke.SmokeAnimation;
 import models.weapons.projectiles.Bullet;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.opengl.Texture;
 
 public class Uzi extends Weapon {
+
+    private static Sound uzi_fire_sound;
+    private static Texture uzi_hud_texture;
 
     protected UziFireShotAnimation uziFireShotAnimation;
 
@@ -15,8 +19,16 @@ public class Uzi extends Weapon {
         super();
         uziFireShotAnimation = new UziFireShotAnimation(10);
         try {
-            fire_sound = new Sound("audio/sounds/uzi_shot.ogg");
-            weapon_hud_image = new Image("assets/hud/weapons/uzi.png");
+            if (uzi_fire_sound == null) {
+                uzi_fire_sound = new Sound("audio/sounds/uzi_shot.ogg");
+            }
+            fire_sound = uzi_fire_sound;
+
+            if (isDrivable && uzi_hud_texture == null) {
+                uzi_hud_texture = new Image("assets/hud/weapons/uzi.png").getTexture();
+                weapon_hud_image = new Image(uzi_hud_texture);
+            }
+
             projectile_texture = new Image("assets/bullets/bullet_small.png").getTexture();
         } catch (SlickException e) {
             e.printStackTrace();

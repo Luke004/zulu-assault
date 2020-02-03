@@ -4,8 +4,12 @@ import models.weapons.Shell;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.opengl.Texture;
 
 public class WindmillGrey extends Windmill {
+
+    private static Texture windmill_grey_turret_texture;
+
     public WindmillGrey(Vector2f startPos, boolean isHostile, Vector2f[] tile_positions) {
         super(startPos, isHostile, tile_positions);
 
@@ -14,11 +18,18 @@ public class WindmillGrey extends Windmill {
         weapons.add(new Shell(false));  // WEAPON_1
 
         turret_position = new Vector2f(position.x - 4.f, position.y - 19.f);
+
+        // LOAD TEXTURES
         try {
-            turret = new Image("assets/war_attenders/windmills/GreyWindmill_turret.png");
+            if (windmill_grey_turret_texture == null) {
+                windmill_grey_turret_texture = new Image("assets/war_attenders/windmills/GreyWindmill_turret.png")
+                        .getTexture();
+            }
+            turret = new Image(windmill_grey_turret_texture);
         } catch (SlickException e) {
             e.printStackTrace();
         }
+
         super.init();
     }
 

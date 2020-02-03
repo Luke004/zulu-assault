@@ -4,8 +4,11 @@ import models.animations.AbstractVolatileAnimation;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.opengl.Texture;
 
 public class UziDamageAnimation extends AbstractVolatileAnimation {
+
+    private static Texture uzi_damage_animation_texture;
 
     public UziDamageAnimation(final int BUFFER_SIZE) {
         super(BUFFER_SIZE);
@@ -13,12 +16,13 @@ public class UziDamageAnimation extends AbstractVolatileAnimation {
 
     @Override
     public void initTexture() throws SlickException {
-        animation_texture = new Image("assets/animations/bullet_damage.png").getTexture();
+        if (uzi_damage_animation_texture == null)
+            uzi_damage_animation_texture = new Image("assets/animations/bullet_damage.png").getTexture();
     }
 
     @Override
     public void addNewInstance() {
-        Image smoke_animation_image = new Image(animation_texture);
+        Image smoke_animation_image = new Image(uzi_damage_animation_texture);
         Animation damage_animation = new Animation(false);
         int IMAGE_COUNT = 17;
         int x = 0;

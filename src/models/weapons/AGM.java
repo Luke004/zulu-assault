@@ -11,8 +11,11 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.opengl.Texture;
 
 public class AGM extends RocketLauncher implements iGroundTileDamageWeapon {
+
+    private static Texture agm_hud_texture;
 
     private static BigExplosionAnimation bigExplosionAnimation;
     public GroundTileDamageListener groundTileDamageListener;
@@ -21,7 +24,10 @@ public class AGM extends RocketLauncher implements iGroundTileDamageWeapon {
         super(isDrivable);
 
         try {
-            weapon_hud_image = new Image("assets/hud/weapons/agm.png");
+            if (isDrivable && agm_hud_texture == null) {
+                agm_hud_texture = new Image("assets/hud/weapons/agm.png").getTexture();
+                weapon_hud_image = new Image(agm_hud_texture);
+            }
         } catch (SlickException e) {
             e.printStackTrace();
         }

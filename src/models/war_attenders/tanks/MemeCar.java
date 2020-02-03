@@ -5,8 +5,12 @@ import models.weapons.Uzi;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.opengl.Texture;
 
 public class MemeCar extends Tank {
+
+    private static Texture meme_car_texture, meme_car_turret_texture;
+
     public MemeCar(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
 
@@ -22,12 +26,23 @@ public class MemeCar extends Tank {
 
         if (isDrivable) weapons.add(new Uzi(isDrivable));  // WEAPON_1
 
+        // LOAD TEXTURES
         try {
-            base_image = new Image("assets/war_attenders/tanks/meme_car.png");
-            turret = new Image("assets/war_attenders/tanks/meme_car_turret.png");
+            if (meme_car_texture == null) {
+                meme_car_texture = new Image("assets/war_attenders/tanks/meme_car.png")
+                        .getTexture();
+            }
+            base_image = new Image(meme_car_texture);
+            if (meme_car_turret_texture == null) {
+                meme_car_turret_texture =
+                        new Image("assets/war_attenders/tanks/meme_car_turret.png")
+                                .getTexture();
+            }
+            turret = new Image(meme_car_turret_texture);
         } catch (SlickException e) {
             e.printStackTrace();
         }
+
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
         super.init();
     }
