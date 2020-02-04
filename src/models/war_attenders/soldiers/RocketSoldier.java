@@ -13,11 +13,6 @@ public class RocketSoldier extends Soldier {
     public RocketSoldier(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
 
-        // individual RocketSoldier attributes
-        max_speed = 0.05f;
-        current_speed = max_speed;
-        rotate_speed = 0.25f;
-
         weapons.add(new RocketLauncher(false));
 
         // LOAD TEXTURES

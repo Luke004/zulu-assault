@@ -43,11 +43,11 @@ public abstract class Plane extends MovableWarAttender {
         float degree;
         switch (r) {
             case ROTATE_DIRECTION_LEFT:
-                degree = -rotate_speed * deltaTime;
+                degree = -getBaseRotateSpeed() * deltaTime;
                 base_image.rotate(degree);
                 break;
             case ROTATE_DIRECTION_RIGHT:
-                degree = rotate_speed * deltaTime;
+                degree = getBaseRotateSpeed() * deltaTime;
                 base_image.rotate(degree);
                 break;
         }

@@ -13,11 +13,6 @@ public class EnemySoldier extends Soldier {
     public EnemySoldier(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
 
-        // individual EnemySoldier attributes
-        max_speed = 0.1f;
-        current_speed = max_speed;
-        rotate_speed = 0.25f;
-
         weapons.add(new Uzi(false));
 
         // LOAD TEXTURES

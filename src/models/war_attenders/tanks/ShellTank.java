@@ -12,26 +12,14 @@ public class ShellTank extends Tank {
     private static Texture shell_tank_hostile_texture, shell_tank_friendly_texture,
             shell_tank_hostile_turret_texture, shell_tank_friendly_turret_texture;
 
+    // attributes
     private static final float ARMOR = 60.f;
+    private static final float ROTATE_SPEED_PLAYER = 0.2f, ROTATE_SPEED_BOT = 0.05f;
+    private static final float MAX_SPEED_PLAYER = 0.15f, MAX_SPEED_BOT = 0.05f;
+    private static final float ACCELERATION_FACTOR = 0.00005f, DECELERATION_FACTOR = 0.0009f;
 
     public ShellTank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
-
-        if (isDrivable) {
-            // individual ShellTank attributes for human players
-            max_speed = 0.15f;
-            backwards_speed = max_speed / 2;
-            acceleration_factor = 0.00005f;
-            deceleration_factor = 0.0009f;
-            rotate_speed = 0.2f;
-        } else {
-            // individual ShellTank attributes for bots
-            max_speed = 0.05f;
-            backwards_speed = max_speed / 2;
-            acceleration_factor = 0.00005f;
-            deceleration_factor = 0.0009f;
-            rotate_speed = 0.05f;
-        }
 
         weapons.add(new Shell(isDrivable));   // WEAPON_1
 
@@ -68,6 +56,26 @@ public class ShellTank extends Tank {
 
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
         super.init();
+    }
+
+    @Override
+    protected float getBaseRotateSpeed() {
+        return isDrivable ? ROTATE_SPEED_PLAYER : ROTATE_SPEED_BOT;
+    }
+
+    @Override
+    public float getMaxSpeed() {
+        return isDrivable ? MAX_SPEED_PLAYER : MAX_SPEED_BOT;
+    }
+
+    @Override
+    protected float getAccelerationFactor() {
+        return ACCELERATION_FACTOR;
+    }
+
+    @Override
+    protected float getDecelerationFactor() {
+        return DECELERATION_FACTOR;
     }
 
     @Override

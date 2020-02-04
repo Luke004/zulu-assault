@@ -24,24 +24,17 @@ public class GreenEnemyPlane extends Plane {
 
     private static final float ARMOR = 40.f;
     private static final int SCORE_VALUE = 500;
+    private static final float ROTATE_SPEED_PLAYER = 0.15f, ROTATE_SPEED_BOT = 0.15f;
+    private static final float MAX_SPEED_PLAYER = 0.15f, MAX_SPEED_BOT = 0.2f;
 
     public GreenEnemyPlane(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
 
         setMoving(true);    // green plane is always flying
 
-        if (isDrivable) {
-            animatedCrosshair = new AnimatedCrosshair();
-            // individual GreenEnemyPlane attributes for human players
-            max_speed = 0.15f;
-            rotate_speed = 0.15f;
-        } else {
-            // individual GreenEnemyPlane attributes for bots
-            max_speed = 0.2f;
-            rotate_speed = 0.15f;
-        }
+        if (isDrivable) animatedCrosshair = new AnimatedCrosshair();
 
-        current_speed = max_speed;  // speed is always the same for this plane
+        current_speed = getMaxSpeed();  // speed is always the same for this plane
 
         weapons.add(new Uzi(isDrivable));  // WEAPON_1
         weapons.add(new AGM(isDrivable));  // WEAPON_2
@@ -131,30 +124,20 @@ public class GreenEnemyPlane extends Plane {
 
         // follow the closest enemy
         float rotationDegree;
-        if (dist < 750) {
-            isEnemyNear = true;
-
-            rotationDegree = WayPointManager.calculateAngleToRotateTo(position, new Vector2f(xPos, yPos));
-
-            changeAimingDirection(rotationDegree, deltaTime);
-        } else {
-            isEnemyNear = false;
-        }
         if (dist < 500) {
-            // fire
+            isEnemyNear = true;
+            rotationDegree = WayPointManager.calculateAngleToRotateTo(position, new Vector2f(xPos, yPos));
+            changeAimingDirection(rotationDegree, deltaTime);
             fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
             fireWeapon(WeaponType.WEAPON_2);   // green plane can also shoot wpn2
+        } else {
+            isEnemyNear = false;
         }
     }
 
     @Override
     public void onCollision(MovableWarAttender enemy) {
         // a plane doesn't have collisions
-    }
-
-    @Override
-    public void blockMovement() {
-        // a plane doesn't get its movement blocked
     }
 
     @Override
@@ -192,10 +175,20 @@ public class GreenEnemyPlane extends Plane {
         float rotation_to_make = WayPointManager.getShortestSignedAngle(base_image.getRotation(), angle);
 
         if (rotation_to_make > 0) {
-            base_image.rotate(rotate_speed * deltaTime);
+            base_image.rotate(getBaseRotateSpeed() * deltaTime);
         } else {
-            base_image.rotate(-rotate_speed * deltaTime);
+            base_image.rotate(-getBaseRotateSpeed() * deltaTime);
         }
+    }
+
+    @Override
+    protected float getBaseRotateSpeed() {
+        return isDrivable ? ROTATE_SPEED_PLAYER : ROTATE_SPEED_BOT;
+    }
+
+    @Override
+    protected float getMaxSpeed() {
+        return isDrivable ? MAX_SPEED_PLAYER : MAX_SPEED_BOT;
     }
 
     @Override

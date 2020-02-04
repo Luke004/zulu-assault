@@ -430,7 +430,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
                     ZuluAssault.prevState = this;
                 } else {
                     friendly_movable_war_attenders.remove(warAttender);
-                    if (((MovableWarAttender) warAttender).isDrivable)
+                    if (((MovableWarAttender) warAttender).isDrivable())
                         drivable_war_attenders.remove(warAttender);
                 }
             }
@@ -487,6 +487,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         items.clear();
         player.reset();
         hud.reset();
+        Radar.hideRadar();
         hasWonTheLevel = false;
     }
 

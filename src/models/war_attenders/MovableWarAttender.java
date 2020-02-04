@@ -41,12 +41,11 @@ public abstract class MovableWarAttender extends WarAttender {
 
     // specs related
     public static final float DAMAGE_TO_DESTRUCTIBLE_TILE = 5.f;
-    public float max_speed, current_speed;
-    public float rotate_speed;
-    protected static float turret_rotate_speed;
+    public float current_speed;
+    private static final float TURRET_ROTATE_SPEED_PLAYER = 0.2f, TURRET_ROTATE_SPEED_BOT = 0.07f;
 
     // booleans
-    public boolean isMoving, isDrivable;
+    protected boolean isMoving, isDrivable;
 
     // invincibility item related
     public boolean isInvincible, invincibility_animation_switch;
@@ -76,12 +75,6 @@ public abstract class MovableWarAttender extends WarAttender {
     public MovableWarAttender(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         this(startPos, isHostile);
         this.isDrivable = isDrivable;
-
-        if (isDrivable) {
-            turret_rotate_speed = 0.2f;
-        } else {
-            turret_rotate_speed = 0.07f;
-        }
     }
 
     @Override
@@ -130,7 +123,6 @@ public abstract class MovableWarAttender extends WarAttender {
 
         if (isDestroyed) {
             blockMovement();
-            rotate_speed = 0.f;
         }
     }
 
@@ -229,9 +221,26 @@ public abstract class MovableWarAttender extends WarAttender {
         return isMoving;
     }
 
+    protected float getTurretRotateSpeed() {
+        return isDrivable ? TURRET_ROTATE_SPEED_PLAYER : TURRET_ROTATE_SPEED_BOT;
+    }
+
+    protected abstract float getBaseRotateSpeed();
+
+    protected abstract float getMaxSpeed();
+
+    public boolean isDrivable(){
+        return isDrivable;
+    }
+
     public abstract void onCollision(MovableWarAttender enemy);
 
-    public abstract void blockMovement();
+    public void blockMovement() {
+        position.sub(dir);  // set the position on last position before the collision
+        collisionModel.update(base_image.getRotation());    // update collision model
+        current_speed = 0.f;    // set the speed to zero (stop moving on collision)
+        //rotate_speed = 0.f;
+    }
 
     public abstract float getRotation();
 

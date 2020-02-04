@@ -12,26 +12,14 @@ public class RocketTank extends Tank {
     private static Texture rocket_tank_hostile_texture, rocket_tank_friendly_texture,
             rocket_tank_hostile_turret_texture, rocket_tank_friendly_turret_texture;
 
+    // attributes
     private static final float ARMOR = 50.f;
+    private static final float ROTATE_SPEED_PLAYER = 0.15f, ROTATE_SPEED_BOT = 0.15f;
+    private static final float MAX_SPEED_PLAYER = 0.2f, MAX_SPEED_BOT = 0.07f;
+    private static final float ACCELERATION_FACTOR = 0.0001f, DECELERATION_FACTOR = 0.0009f;
 
     public RocketTank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
-
-        if (isDrivable) {
-            // individual RocketTank attributes for human players
-            max_speed = 0.2f;
-            backwards_speed = max_speed / 2;
-            acceleration_factor = 0.0001f;
-            deceleration_factor = 0.0009f;
-            rotate_speed = 0.15f;
-        } else {
-            // individual RocketTank attributes for bots
-            max_speed = 0.07f;
-            backwards_speed = max_speed / 2;
-            acceleration_factor = 0.0001f;
-            deceleration_factor = 0.0009f;
-            rotate_speed = 0.15f;
-        }
 
         weapons.add(new RocketLauncher(isDrivable));   // WEAPON_1
 
@@ -68,6 +56,26 @@ public class RocketTank extends Tank {
 
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
         super.init();
+    }
+
+    @Override
+    protected float getBaseRotateSpeed() {
+        return isDrivable ? ROTATE_SPEED_PLAYER : ROTATE_SPEED_BOT;
+    }
+
+    @Override
+    public float getMaxSpeed() {
+        return isDrivable ? MAX_SPEED_PLAYER : MAX_SPEED_BOT;
+    }
+
+    @Override
+    protected float getAccelerationFactor() {
+        return ACCELERATION_FACTOR;
+    }
+
+    @Override
+    protected float getDecelerationFactor() {
+        return DECELERATION_FACTOR;
     }
 
     @Override

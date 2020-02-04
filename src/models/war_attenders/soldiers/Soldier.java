@@ -4,6 +4,7 @@ import logic.WayPointManager;
 import models.CollisionModel;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
+import models.war_attenders.planes.Plane;
 import models.war_attenders.robots.Robot;
 import models.war_attenders.tanks.Tank;
 import org.newdawn.slick.Animation;
@@ -23,6 +24,8 @@ public abstract class Soldier extends MovableWarAttender {
     // default soldier attributes
     private static final float ARMOR = 2.5f;
     private static final int SCORE_VALUE = 100;
+    private static final float ROTATE_SPEED_PLAYER = 0.25f, ROTATE_SPEED_BOT = 0.25f;
+    private static final float MAX_SPEED_PLAYER = 0.1f, MAX_SPEED_BOT = 0.1f;
 
     public Soldier(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
@@ -42,6 +45,8 @@ public abstract class Soldier extends MovableWarAttender {
 
         WIDTH_HALF = animation.getImage(0).getWidth() / 2;
         HEIGHT_HALF = animation.getImage(0).getHeight() / 2;
+
+        this.current_speed = getMaxSpeed();
 
         // just use index 0, all indices are same width and height
         collisionModel = new CollisionModel(position, animation.getImage(0).getWidth(), animation.getImage(0).getHeight());
@@ -107,16 +112,10 @@ public abstract class Soldier extends MovableWarAttender {
 
     @Override
     public void onCollision(MovableWarAttender warAttender) {
-        if (warAttender.isDrivable) blockMovement();
-        else if (warAttender instanceof Tank || warAttender instanceof Robot || warAttender instanceof Soldier) {
+        if (warAttender.isDrivable()) blockMovement();
+        else if (!(warAttender instanceof Plane)) {
             blockMovement();
         }
-    }
-
-    @Override
-    public void blockMovement() {
-        position.sub(dir);  // set the position on last position before the collision
-        collisionModel.update(base_image.getRotation());    // update collision model
     }
 
     public void setPosition(Vector2f position) {
@@ -126,7 +125,7 @@ public abstract class Soldier extends MovableWarAttender {
     }
 
     @Override
-    public void changeHealth(float amount){
+    public void changeHealth(float amount) {
         super.changeHealth(amount, ARMOR);
     }
 
@@ -135,12 +134,12 @@ public abstract class Soldier extends MovableWarAttender {
         switch (rotateDirection) {
             case ROTATE_DIRECTION_LEFT:
                 for (int idx = 0; idx < animation.getFrameCount(); ++idx) {
-                    animation.getImage(idx).rotate(-rotate_speed * deltaTime);
+                    animation.getImage(idx).rotate(-getBaseRotateSpeed() * deltaTime);
                 }
                 break;
             case ROTATE_DIRECTION_RIGHT:
                 for (int idx = 0; idx < animation.getFrameCount(); ++idx) {
-                    animation.getImage(idx).rotate(rotate_speed * deltaTime);
+                    animation.getImage(idx).rotate(getBaseRotateSpeed() * deltaTime);
                 }
                 break;
         }
@@ -220,6 +219,16 @@ public abstract class Soldier extends MovableWarAttender {
 
             fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
         }
+    }
+
+    @Override
+    protected float getBaseRotateSpeed() {
+        return isDrivable ? ROTATE_SPEED_PLAYER : ROTATE_SPEED_BOT;
+    }
+
+    @Override
+    protected float getMaxSpeed() {
+        return isDrivable ? MAX_SPEED_PLAYER : MAX_SPEED_BOT;
     }
 
     @Override

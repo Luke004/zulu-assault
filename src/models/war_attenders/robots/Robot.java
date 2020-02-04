@@ -16,23 +16,11 @@ public abstract class Robot extends MovableWarAttender {
     // default robot attributes
     private static final float ARMOR = 75.f;
     private static final int SCORE_VALUE = 3000;
+    private static final float ROTATE_SPEED_PLAYER = 0.25f, ROTATE_SPEED_BOT = 0.25f;
+    private static final float MAX_SPEED_PLAYER = 0.15f, MAX_SPEED_BOT = 0.05f;
 
     public Robot(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
-
-        if (isDrivable) {
-            // individual Robot attributes for human player
-            max_speed = 0.15f;
-            current_speed = max_speed;
-            rotate_speed = 0.25f;
-            //turret_rotate_speed = 0.5f;
-        } else {
-            // individual Robot attributes for bots
-            max_speed = 0.05f;
-            current_speed = max_speed;
-            rotate_speed = 0.25f;
-            //turret_rotate_speed = 0.5f;
-        }
     }
 
     public void init() {
@@ -126,12 +114,6 @@ public abstract class Robot extends MovableWarAttender {
     }
 
     @Override
-    public void blockMovement() {
-        position.sub(dir);  // set the position on last position before the collision
-        collisionModel.update(base_image.getRotation());    // update collision model
-    }
-
-    @Override
     public float getRotation() {
         return walking_animation.getCurrentFrame().getRotation();
     }
@@ -149,15 +131,15 @@ public abstract class Robot extends MovableWarAttender {
         switch (rotateDirection) {
             case ROTATE_DIRECTION_LEFT:
                 for (int idx = 0; idx < walking_animation.getFrameCount(); ++idx) {
-                    walking_animation.getImage(idx).rotate(-rotate_speed * deltaTime);
+                    walking_animation.getImage(idx).rotate(-getBaseRotateSpeed() * deltaTime);
                 }
-                base_image.rotate(-rotate_speed * deltaTime);
+                base_image.rotate(-getBaseRotateSpeed() * deltaTime);
                 break;
             case ROTATE_DIRECTION_RIGHT:
                 for (int idx = 0; idx < walking_animation.getFrameCount(); ++idx) {
-                    walking_animation.getImage(idx).rotate(rotate_speed * deltaTime);
+                    walking_animation.getImage(idx).rotate(getBaseRotateSpeed() * deltaTime);
                 }
-                base_image.rotate(rotate_speed * deltaTime);
+                base_image.rotate(getBaseRotateSpeed() * deltaTime);
                 break;
         }
     }
@@ -165,10 +147,10 @@ public abstract class Robot extends MovableWarAttender {
     public void rotateTurret(RotateDirection r, int deltaTime) {
         switch (r) {
             case ROTATE_DIRECTION_LEFT:
-                base_image.rotate(-turret_rotate_speed * deltaTime);
+                base_image.rotate(-getTurretRotateSpeed() * deltaTime);
                 break;
             case ROTATE_DIRECTION_RIGHT:
-                base_image.rotate(turret_rotate_speed * deltaTime);
+                base_image.rotate(getTurretRotateSpeed() * deltaTime);
                 break;
         }
     }
@@ -199,9 +181,9 @@ public abstract class Robot extends MovableWarAttender {
         if (rotation == 0) return;
 
         if (rotation < 0) {
-            base_image.rotate(-turret_rotate_speed * deltaTime);
+            base_image.rotate(-getTurretRotateSpeed() * deltaTime);
         } else {
-            base_image.rotate(turret_rotate_speed * deltaTime);
+            base_image.rotate(getTurretRotateSpeed() * deltaTime);
         }
     }
 
@@ -228,6 +210,16 @@ public abstract class Robot extends MovableWarAttender {
                 }
                 break;
         }
+    }
+
+    @Override
+    protected float getBaseRotateSpeed() {
+        return isDrivable ? ROTATE_SPEED_PLAYER : ROTATE_SPEED_BOT;
+    }
+
+    @Override
+    protected float getMaxSpeed() {
+        return isDrivable ? MAX_SPEED_PLAYER : MAX_SPEED_BOT;
     }
 
     @Override

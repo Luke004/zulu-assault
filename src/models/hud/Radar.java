@@ -115,6 +115,10 @@ public class Radar {
         radar_image.draw(radar_image_position.x, radar_image_position.y);
     }
 
+    public static void hideRadar() {
+        hideRadar = true;
+    }
+
     public static void toggleRadar() {
         hideRadar = !hideRadar;
     }

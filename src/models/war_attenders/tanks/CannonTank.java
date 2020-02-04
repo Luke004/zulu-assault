@@ -2,7 +2,6 @@ package models.war_attenders.tanks;
 
 import models.CollisionModel;
 import models.weapons.Cannon;
-import org.lwjgl.Sys;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
@@ -13,26 +12,14 @@ public class CannonTank extends Tank {
     private static Texture cannon_tank_hostile_texture, cannon_tank_friendly_texture,
             cannon_tank_hostile_turret_texture, cannon_tank_friendly_turret_texture;
 
+    // attributes
     private static final float ARMOR = 50.f;
+    private static final float ROTATE_SPEED_PLAYER = 0.15f, ROTATE_SPEED_BOT = 0.15f;
+    private static final float MAX_SPEED_PLAYER = 0.27f, MAX_SPEED_BOT = 0.1f;
+    private static final float ACCELERATION_FACTOR = 0.0005f, DECELERATION_FACTOR = 0.0005f;
 
     public CannonTank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
-
-        if (isDrivable) {
-            // individual MachineGunTank attributes for human players
-            max_speed = 0.27f;
-            backwards_speed = 0.15f;
-            acceleration_factor = 0.0005f;
-            deceleration_factor = 0.0005f;
-            rotate_speed = 0.15f;
-        } else {
-            // individual MachineGunTank attributes for bots
-            max_speed = 0.3f;
-            backwards_speed = 0.15f;
-            acceleration_factor = 0.0005f;
-            deceleration_factor = 0.0005f;
-            rotate_speed = 0.15f;
-        }
 
         weapons.add(new Cannon(isDrivable));  // WEAPON_1
 
@@ -69,6 +56,26 @@ public class CannonTank extends Tank {
 
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
         super.init();
+    }
+
+    @Override
+    protected float getBaseRotateSpeed() {
+        return isDrivable ? ROTATE_SPEED_PLAYER : ROTATE_SPEED_BOT;
+    }
+
+    @Override
+    public float getMaxSpeed() {
+        return isDrivable ? MAX_SPEED_PLAYER : MAX_SPEED_BOT;
+    }
+
+    @Override
+    protected float getAccelerationFactor() {
+        return ACCELERATION_FACTOR;
+    }
+
+    @Override
+    protected float getDecelerationFactor() {
+        return DECELERATION_FACTOR;
     }
 
     @Override

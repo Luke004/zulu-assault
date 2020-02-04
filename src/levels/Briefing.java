@@ -1,5 +1,6 @@
 package levels;
 
+import main.SoundManager;
 import main.ZuluAssault;
 import menus.UserSettings;
 import org.lwjgl.Sys;
@@ -139,6 +140,7 @@ public class Briefing extends BasicGameState {
     @Override
     public void keyPressed(int key, char c) {
         if (loadMusicThread.isAlive()) return;
+        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
         try {
             stateBasedGame.getState(nextLevelID).init(gameContainer, stateBasedGame);
             stateBasedGame.enterState(nextLevelID,

@@ -15,17 +15,12 @@ import java.util.Random;
 
 public abstract class Tank extends MovableWarAttender {
     public Image turret;
-    protected float backwards_speed;
     private boolean decelerate, centerTurret, isTurretCentered;
     private int TURRET_WIDTH_HALF, TURRET_HEIGHT_HALF;
 
     // default tank attributes
     private static final float ARMOR = 50.f;
     private static final int SCORE_VALUE = 1000;
-
-    // each tank has an acceleration and a deceleration
-    protected float acceleration_factor;   // number between [0 and 1] -> the smaller the faster the acceleration
-    protected float deceleration_factor;   // number between [0 and 1] -> the smaller the faster the deceleration
 
     private DestructionAnimation destructionAnimation;
 
@@ -47,9 +42,11 @@ public abstract class Tank extends MovableWarAttender {
     public void update(GameContainer gc, int deltaTime) {
         super.update(gc, deltaTime);
 
+        /*
         if (this instanceof CannonTank) {
             System.out.println(position);
         }
+         */
 
         if (decelerate) {
             decelerate(deltaTime);
@@ -108,18 +105,21 @@ public abstract class Tank extends MovableWarAttender {
     }
 
     public void accelerate(int deltaTime) {
-        if (current_speed < max_speed) {
-            current_speed += acceleration_factor * deltaTime;
+        if (current_speed < getMaxSpeed()) {
+            current_speed += getAccelerationFactor() * deltaTime;
         } else {
-            current_speed = max_speed;  // cap the max speed
+            current_speed = getMaxSpeed();  // cap the max speed
         }
         calculateMovementVector(deltaTime, Direction.FORWARD);
         position.add(dir);
     }
 
+    /* get the individual max speed of a tank */
+    public abstract float getMaxSpeed();
+
     public void decelerate(int deltaTime) {
         if (current_speed > 0.f) {  // 0.01f and not 0.f because it will take longer to reach 0.f completely!
-            current_speed -= deceleration_factor * deltaTime;
+            current_speed -= getDecelerationFactor() * deltaTime;
         } else {
             current_speed = 0.f;
             decelerate = false;
@@ -139,7 +139,7 @@ public abstract class Tank extends MovableWarAttender {
 
     public void moveBackwards(int deltaTime) {
         if (decelerate) { // if tank is still decelerating, but player wants to move backwards, decelerate harder
-            current_speed -= acceleration_factor * deltaTime;
+            current_speed -= getAccelerationFactor() * deltaTime;
         }
         calculateMovementVector(deltaTime, Direction.BACKWARDS);
         position.add(dir);
@@ -181,7 +181,7 @@ public abstract class Tank extends MovableWarAttender {
         if (direction == Direction.FORWARD) {
             this.current_speed = 0.f;
         } else {
-            this.current_speed = backwards_speed;
+            this.current_speed = getMaxSpeed() / 2.f;
         }
     }
 
@@ -190,12 +190,12 @@ public abstract class Tank extends MovableWarAttender {
         float degree;
         switch (r) {
             case ROTATE_DIRECTION_LEFT:
-                degree = -rotate_speed * deltaTime;
+                degree = -getBaseRotateSpeed() * deltaTime;
                 base_image.rotate(degree);
                 turret.rotate(degree);
                 break;
             case ROTATE_DIRECTION_RIGHT:
-                degree = rotate_speed * deltaTime;
+                degree = getBaseRotateSpeed() * deltaTime;
                 base_image.rotate(degree);
                 turret.rotate(degree);
                 break;
@@ -221,13 +221,6 @@ public abstract class Tank extends MovableWarAttender {
     }
 
     @Override
-    public void blockMovement() {
-        position.sub(dir);  // set the position on last position before the collision
-        collisionModel.update(base_image.getRotation());    // update collision model
-        current_speed = 0.f;    // set the speed to zero (stop moving on collision)
-    }
-
-    @Override
     public void changeAimingDirection(float angle, int deltaTime) {
         float rotation = WayPointManager.getShortestSignedAngle(turret.getRotation(), angle);
 
@@ -243,10 +236,10 @@ public abstract class Tank extends MovableWarAttender {
         isTurretCentered = false;
         switch (r) {
             case ROTATE_DIRECTION_LEFT:
-                turret.rotate(-turret_rotate_speed * deltaTime);
+                turret.rotate(-getTurretRotateSpeed() * deltaTime);
                 break;
             case ROTATE_DIRECTION_RIGHT:
-                turret.rotate(turret_rotate_speed * deltaTime);
+                turret.rotate(getTurretRotateSpeed() * deltaTime);
                 break;
         }
     }
@@ -268,6 +261,10 @@ public abstract class Tank extends MovableWarAttender {
         if (weapon == null) return;  // does not have a WEAPON_2, so return
         weapon.fire(position.x, position.y, turret.getRotation());
     }
+
+    protected abstract float getAccelerationFactor();
+
+    protected abstract float getDecelerationFactor();
 
     @Override
     public void changeHealth(float amount) {
