@@ -39,7 +39,7 @@ public class CollisionHandler {
     private static final float DESTRUCTIBLE_TILE_LOW_ARMOR = 1.f;
 
     // animations
-    private WarAttenderDeleteListener level_delete_listener;
+    private static WarAttenderDeleteListener level_delete_listener;
     private static SmokeAnimation smokeAnimation;
     private static UziHitExplosionAnimation uziHitExplosionAnimation;
     private static UziDamageAnimation uziDamageAnimation;
@@ -47,7 +47,7 @@ public class CollisionHandler {
     private static PlasmaDamageAnimation plasmaDamageAnimation;
     private static Random random;
     // sounds
-    protected Sound bullet_hit_sound, explosion_sound, new_item_sound;  // fire sound of the weapon;
+    protected static Sound bullet_hit_sound, explosion_sound, new_item_sound;  // fire sound of the weapon;
 
     public CollisionHandler() {
         try {
@@ -169,15 +169,6 @@ public class CollisionHandler {
                 }
             }
 
-            // COLLISION BETWEEN WAR ATTENDER ITSELF AND INDESTRUCTIBLE TILES
-            for (idx = 0; idx < indestructible_tile_indices.length; ++idx) {
-                if (landscape_layer_tile_ID == indestructible_tile_indices[idx]) {
-                    // block movement forever because tile is indestructible
-                    current_warAttender.blockMovement();
-                    return;
-                }
-            }
-
             if (!current_warAttender.isHostile) {
                 // COLLISION BETWEEN FRIENDLY WAR ATTENDER AND STATIC WAR ATTENDERS
                 for (idx = 0; idx < staticWarAttender_indices.length; ++idx) {
@@ -200,7 +191,6 @@ public class CollisionHandler {
             if (movableWarAttender.getPosition() == current_warAttender.getPosition()) continue;    // its himself
             if (current_warAttender.getCollisionModel().intersects(movableWarAttender.getCollisionModel())) {
                 current_warAttender.onCollision(movableWarAttender);
-                return;
             }
         }
 
@@ -209,6 +199,32 @@ public class CollisionHandler {
             if (player.getWarAttender().getPosition() == current_warAttender.getPosition()) return;    // its himself
             current_warAttender.onCollision(player.getWarAttender());
         }
+    }
+
+    public static boolean intersectsWithTileMap(MovableWarAttender movableWarAttender, boolean xPos) {
+        CollisionModel.Point[] collisionPoints = movableWarAttender.getCollisionModel().getPoints();
+        // use first two (idx 0 + 1) coll points when is moving forward, else use last two (idx 2 + 3)
+        int start_idx = movableWarAttender.isMovingForward() ? 0 : 2;
+
+        for (int idx = start_idx; idx < collisionPoints.length; ++idx) {
+            int x = (int) (collisionPoints[idx].x + (xPos ? movableWarAttender.dir.x : 0)) / TILE_WIDTH;
+            int y = (int) (collisionPoints[idx].y + (xPos ? 0 : movableWarAttender.dir.y)) / TILE_HEIGHT;
+
+            // return when "out of map"
+            if (x < 0 || x >= map.getWidth() || y < 0 || y >= map.getHeight()) return true;
+
+            int landscape_layer_tile_ID = map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
+
+            // COLLISION BETWEEN WAR ATTENDER ITSELF AND INDESTRUCTIBLE TILES
+            for (int indestructible_tile_index : indestructible_tile_indices) {
+                if (landscape_layer_tile_ID == indestructible_tile_index) {
+                    return true;
+                }
+            }
+
+            if (movableWarAttender.isMovingForward() && idx >= 1) break;
+        }
+        return false;
     }
 
     private void handleBulletCollisions(MovableWarAttender player_warAttender) {
@@ -497,7 +513,7 @@ public class CollisionHandler {
         }
     }
 
-    private void damageTile(int xPos, int yPos, Weapon weapon, int replaceTileIndex, MovableWarAttender warAttender) {
+    private static void damageTile(int xPos, int yPos, Weapon weapon, int replaceTileIndex, MovableWarAttender warAttender) {
         // if weapon is null, the tile was damaged by contact
         float bullet_damage = weapon == null ? MovableWarAttender.DAMAGE_TO_DESTRUCTIBLE_TILE : weapon.getBulletDamage();
         // use a map to track current destructible tile health

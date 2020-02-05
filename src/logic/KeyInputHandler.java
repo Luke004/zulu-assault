@@ -7,6 +7,10 @@ import models.war_attenders.MovableWarAttender;
 import models.war_attenders.planes.Plane;
 import models.war_attenders.robots.Robot;
 import models.war_attenders.tanks.Tank;
+import org.lwjgl.Sys;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 import player.Player;
 import models.war_attenders.soldiers.Soldier;
 import org.newdawn.slick.GameContainer;
@@ -17,7 +21,7 @@ import static levels.AbstractLevel.drivable_war_attenders;
 
 public class KeyInputHandler {
     private Player player;
-    private boolean KEY_UP_RELEASED, KEY_DOWN_RELEASED;
+    private boolean KEY_UP_RELEASED, KEY_DOWN_RELEASED, KEY_UP_PRESSED, KEY_DOWN_PRESSED;
 
     public void update(GameContainer gameContainer, int deltaTime) {
         Input input = gameContainer.getInput();
@@ -28,6 +32,7 @@ public class KeyInputHandler {
 
                 // forward movement
                 if (input.isKeyPressed(Input.KEY_UP)) {
+                    soldier.setMovingForward(true);
                     soldier.startAnimation();
                     soldier.setMoving(true);
                 } else if (KEY_UP_RELEASED) {
@@ -41,6 +46,7 @@ public class KeyInputHandler {
 
                 // backwards movement
                 if (input.isKeyPressed(Input.KEY_DOWN)) {
+                    soldier.setMovingForward(false);
                     soldier.startAnimation();
                     soldier.setMoving(true);
                 } else if (KEY_DOWN_RELEASED) {
@@ -86,28 +92,50 @@ public class KeyInputHandler {
 
                 // forward movement
                 if (input.isKeyPressed(Input.KEY_UP)) {
-                    tank.setMoving(true);
-                    tank.setCurrentSpeed(MovableWarAttender.Direction.FORWARD);
-                    tank.cancelDeceleration();
-                }
-                if (input.isKeyDown(Input.KEY_UP)) {
-                    tank.accelerate(deltaTime);   // accelerate tank until max_speed
+                    if (KEY_DOWN_PRESSED) return;
+                    KEY_UP_PRESSED = true;
+                    if (tank.isMovingForward()) {
+                        tank.cancelDeceleration();
+                    }
                 } else if (KEY_UP_RELEASED) {
-                    tank.startDeceleration();
+                    tank.startDeceleration(MovableWarAttender.Direction.FORWARD);
                     KEY_UP_RELEASED = false;
+                    KEY_UP_PRESSED = false;
                 }
+
+                if (KEY_UP_PRESSED) {
+                    if (KEY_DOWN_PRESSED) return;
+                    if (tank.isDecelerating()) {
+                        return;
+                    }
+                    tank.setMovingForward(true);
+                    tank.setMoving(true);
+                    tank.accelerate(deltaTime, MovableWarAttender.Direction.FORWARD);
+                }
+
 
                 // backwards movement
                 if (input.isKeyPressed(Input.KEY_DOWN)) {
-                    tank.setMoving(true);
-                    tank.setCurrentSpeed(MovableWarAttender.Direction.BACKWARDS);
+                    if (KEY_UP_PRESSED) return;
+                    KEY_DOWN_PRESSED = true;
+                    if (!tank.isMovingForward()) {
+                        tank.cancelDeceleration();
+                    }
                 } else if (KEY_DOWN_RELEASED) {
-                    tank.setMoving(false);
+                    if (!tank.isMovingForward())
+                        tank.startDeceleration(MovableWarAttender.Direction.BACKWARDS);
                     KEY_DOWN_RELEASED = false;
+                    KEY_DOWN_PRESSED = false;
                 }
 
-                if (input.isKeyDown(Input.KEY_DOWN)) {
-                    tank.moveBackwards(deltaTime);  // drive tank backwards with its backwards_speed
+                if (KEY_DOWN_PRESSED) {
+                    if (KEY_UP_PRESSED) return;
+                    if (tank.isDecelerating()) {
+                        return;
+                    }
+                    tank.setMovingForward(false);
+                    tank.setMoving(true);
+                    tank.accelerate(deltaTime, MovableWarAttender.Direction.BACKWARDS);
                 }
 
                 if (input.isKeyDown(Input.KEY_X)) {
@@ -141,6 +169,7 @@ public class KeyInputHandler {
 
                 // forward movement
                 if (input.isKeyPressed(Input.KEY_UP)) {
+                    robot.setMovingForward(true);
                     robot.startAnimation();
                     robot.setMoving(true);
                 } else if (KEY_UP_RELEASED) {
@@ -154,6 +183,7 @@ public class KeyInputHandler {
 
                 // backwards movement
                 if (input.isKeyPressed(Input.KEY_DOWN)) {
+                    robot.setMovingForward(false);
                     robot.startAnimation();
                     robot.setMoving(true);
                 } else if (KEY_DOWN_RELEASED) {

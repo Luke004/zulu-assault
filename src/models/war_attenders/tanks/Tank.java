@@ -1,5 +1,6 @@
 package models.war_attenders.tanks;
 
+import logic.CollisionHandler;
 import logic.WayPointManager;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.robots.Robot;
@@ -15,8 +16,12 @@ import java.util.Random;
 
 public abstract class Tank extends MovableWarAttender {
     public Image turret;
-    private boolean decelerate, centerTurret, isTurretCentered;
+    private boolean centerTurret, isTurretCentered;
     private int TURRET_WIDTH_HALF, TURRET_HEIGHT_HALF;
+
+    // for deceleration
+    private boolean decelerate;
+    Direction decelerateDirection;
 
     // default tank attributes
     private static final float ARMOR = 50.f;
@@ -48,8 +53,9 @@ public abstract class Tank extends MovableWarAttender {
         }
          */
 
+
         if (decelerate) {
-            decelerate(deltaTime);
+            decelerate(deltaTime, decelerateDirection);
         }
 
         if (isDestroyed) {
@@ -66,7 +72,7 @@ public abstract class Tank extends MovableWarAttender {
         // WAY POINTS
         if (waypointManager != null) {
             // move to next vector
-            accelerate(deltaTime);
+            accelerate(deltaTime, Direction.FORWARD);
             // rotate the tank towards the next vector until it's pointing towards it
             if (waypointManager.wish_angle != (int) getRotation()) {
                 rotate(waypointManager.rotate_direction, deltaTime);
@@ -104,20 +110,23 @@ public abstract class Tank extends MovableWarAttender {
         }
     }
 
-    public void accelerate(int deltaTime) {
+    public void accelerate(int deltaTime, Direction direction) {
         if (current_speed < getMaxSpeed()) {
             current_speed += getAccelerationFactor() * deltaTime;
         } else {
             current_speed = getMaxSpeed();  // cap the max speed
         }
-        calculateMovementVector(deltaTime, Direction.FORWARD);
-        position.add(dir);
+        calculateMovementVector(deltaTime, direction);
+        if (!CollisionHandler.intersectsWithTileMap(this, true))   // check x pos collision
+            position.x += dir.x;
+        if (!CollisionHandler.intersectsWithTileMap(this, false))    // check y pos collision
+            position.y += dir.y;
     }
 
     /* get the individual max speed of a tank */
     public abstract float getMaxSpeed();
 
-    public void decelerate(int deltaTime) {
+    public void decelerate(int deltaTime, Direction direction) {
         if (current_speed > 0.f) {  // 0.01f and not 0.f because it will take longer to reach 0.f completely!
             current_speed -= getDecelerationFactor() * deltaTime;
         } else {
@@ -125,24 +134,24 @@ public abstract class Tank extends MovableWarAttender {
             decelerate = false;
             isMoving = false;
         }
-        calculateMovementVector(deltaTime, Direction.FORWARD);
-        position.add(dir);
+        calculateMovementVector(deltaTime, direction);
+        if (!CollisionHandler.intersectsWithTileMap(this, true))
+            position.x += dir.x;
+        if (!CollisionHandler.intersectsWithTileMap(this, false))
+            position.y += dir.y;
     }
 
-    public void startDeceleration() {
+    public boolean isDecelerating() {
+        return decelerate;
+    }
+
+    public void startDeceleration(Direction decelerateDirection) {
         decelerate = true;
+        this.decelerateDirection = decelerateDirection;
     }
 
     public void cancelDeceleration() {
         decelerate = false;
-    }
-
-    public void moveBackwards(int deltaTime) {
-        if (decelerate) { // if tank is still decelerating, but player wants to move backwards, decelerate harder
-            current_speed -= getAccelerationFactor() * deltaTime;
-        }
-        calculateMovementVector(deltaTime, Direction.BACKWARDS);
-        position.add(dir);
     }
 
     public void autoCenterTurret() {
@@ -175,14 +184,6 @@ public abstract class Tank extends MovableWarAttender {
     @Override
     public int getScoreValue() {
         return SCORE_VALUE;
-    }
-
-    public void setCurrentSpeed(Direction direction) {
-        if (direction == Direction.FORWARD) {
-            this.current_speed = 0.f;
-        } else {
-            this.current_speed = getMaxSpeed() / 2.f;
-        }
     }
 
     @Override

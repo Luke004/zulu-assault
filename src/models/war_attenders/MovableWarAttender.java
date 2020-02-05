@@ -45,7 +45,8 @@ public abstract class MovableWarAttender extends WarAttender {
     private static final float TURRET_ROTATE_SPEED_PLAYER = 0.2f, TURRET_ROTATE_SPEED_BOT = 0.07f;
 
     // booleans
-    protected boolean isMoving, isDrivable;
+    protected boolean isMoving, isMovingForward, isDrivable;
+
 
     // invincibility item related
     public boolean isInvincible, invincibility_animation_switch;
@@ -79,6 +80,7 @@ public abstract class MovableWarAttender extends WarAttender {
 
     @Override
     public void init() {
+        isMovingForward = true;
         if (isDrivable) {
             initAccessibleAnimation();
             weapons.add(new MegaPulse());  // add the MEGA_PULSE (special item)
@@ -217,6 +219,14 @@ public abstract class MovableWarAttender extends WarAttender {
         isMoving = b;
     }
 
+    public void setMovingForward(boolean b) {
+        isMovingForward = b;
+    }
+
+    public boolean isMovingForward() {
+        return isMovingForward;
+    }
+
     public boolean isMoving() {
         return isMoving;
     }
@@ -229,7 +239,7 @@ public abstract class MovableWarAttender extends WarAttender {
 
     protected abstract float getMaxSpeed();
 
-    public boolean isDrivable(){
+    public boolean isDrivable() {
         return isDrivable;
     }
 
@@ -238,7 +248,7 @@ public abstract class MovableWarAttender extends WarAttender {
     public void blockMovement() {
         position.sub(dir);  // set the position on last position before the collision
         collisionModel.update(base_image.getRotation());    // update collision model
-        current_speed = 0.f;    // set the speed to zero (stop moving on collision)
+        //current_speed = 0.f;    // set the speed to zero (stop moving on collision)
         //rotate_speed = 0.f;
     }
 
