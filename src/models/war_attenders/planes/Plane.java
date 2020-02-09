@@ -84,7 +84,7 @@ public abstract class Plane extends MovableWarAttender {
         moveY *= deltaTime * PlaneShadow.STARTING_LANDING_SPEED;
         Vector2f m_dir = new Vector2f(moveX, moveY);
         planeShadow.current_shadow_pos.add(m_dir);  // add the dir of the shadow movement
-        planeShadow.current_shadow_pos.add(dir);    // add the dir of the plane aswell
+        planeShadow.current_shadow_pos.add(dir);    // add the dir of the plane as well
         planeShadow.origin_pos.x = position.x - WIDTH_HALF * 2;
         planeShadow.origin_pos.y = position.y;
     }
@@ -108,6 +108,11 @@ public abstract class Plane extends MovableWarAttender {
             hasLanded = true;
             setMoving(false);
         }
+    }
+
+    @Override
+    public void blockMovement() {
+        // a plane doesn't get its movement blocked
     }
 
     @Override
