@@ -211,7 +211,7 @@ public class CollisionHandler {
             int y = (int) (collisionPoints[idx].y + (xPos ? 0 : movableWarAttender.dir.y)) / TILE_HEIGHT;
 
             // return when "out of map"
-            if (x < 0 || x >= map.getWidth() || y < 0 || y >= map.getHeight()) return true;
+            if (x < 0 || x >= map.getWidth() || y < 0 || y >= map.getHeight()) return false;
 
             int landscape_layer_tile_ID = map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
 

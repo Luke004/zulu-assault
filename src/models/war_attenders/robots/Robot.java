@@ -1,5 +1,6 @@
 package models.war_attenders.robots;
 
+import logic.CollisionHandler;
 import logic.WayPointManager;
 import models.CollisionModel;
 import models.war_attenders.MovableWarAttender;
@@ -21,6 +22,7 @@ public abstract class Robot extends MovableWarAttender {
 
     public Robot(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
+        current_speed = getMaxSpeed();
     }
 
     public void init() {
@@ -91,13 +93,23 @@ public abstract class Robot extends MovableWarAttender {
 
     public void moveForward(int deltaTime) {
         calculateMovementVector(deltaTime, Direction.FORWARD);
-        position.add(dir);
+
+        if (!CollisionHandler.intersectsWithTileMap(this, true))
+            position.x += dir.x;
+        if (!CollisionHandler.intersectsWithTileMap(this, false))
+            position.y += dir.y;
+
         collisionModel.update(base_image.getRotation());
     }
 
     public void moveBackwards(int deltaTime) {
         calculateMovementVector(deltaTime, Direction.BACKWARDS);
-        position.add(dir);
+
+        if (!CollisionHandler.intersectsWithTileMap(this, true))
+            position.x += dir.x;
+        if (!CollisionHandler.intersectsWithTileMap(this, false))
+            position.y += dir.y;
+        
         collisionModel.update(base_image.getRotation());
     }
 
