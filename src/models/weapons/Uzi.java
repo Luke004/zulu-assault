@@ -12,6 +12,7 @@ public class Uzi extends Weapon {
 
     private static Sound uzi_fire_sound;
     private static Texture uzi_hud_texture;
+    private static Texture uzi_bullet_texture;
 
     protected UziFireShotAnimation uziFireShotAnimation;
 
@@ -29,7 +30,9 @@ public class Uzi extends Weapon {
                 weapon_hud_image = new Image(uzi_hud_texture);
             }
 
-            projectile_texture = new Image("assets/bullets/bullet_small.png").getTexture();
+            if (uzi_bullet_texture == null)
+                uzi_bullet_texture = new Image("assets/bullets/bullet_small.png").getTexture();
+            projectile_texture = uzi_bullet_texture;
         } catch (SlickException e) {
             e.printStackTrace();
         }

@@ -15,6 +15,7 @@ public class Shell extends Weapon {
 
     private static Sound shell_fire_sound;
     private static Texture shell_hud_texture;
+    private static Texture shell_bullet_texture;
 
     protected SmokeAnimation smokeAnimation;
 
@@ -32,7 +33,9 @@ public class Shell extends Weapon {
                 weapon_hud_image = new Image(shell_hud_texture);
             }
 
-            projectile_texture = new Image("assets/bullets/shell.png").getTexture();
+            if (shell_bullet_texture == null)
+                shell_bullet_texture = new Image("assets/bullets/shell.png").getTexture();
+            projectile_texture = shell_bullet_texture;
         } catch (SlickException e) {
             e.printStackTrace();
         }

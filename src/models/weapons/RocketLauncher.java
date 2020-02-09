@@ -20,6 +20,7 @@ public class RocketLauncher extends Weapon {
 
     private static Sound rocket_fire_sound;
     private static Texture rocket_launcher_hud_texture;
+    private static Texture rocket_launcher_bullet_texture;
 
     public RocketLauncher(boolean isDrivable) {
         super();
@@ -30,7 +31,9 @@ public class RocketLauncher extends Weapon {
         if (!isDrivable) shot_reload_time *= 5;
 
         try {
-            projectile_texture = new Image("assets/bullets/shell.png").getTexture();
+            if (rocket_launcher_bullet_texture == null)
+                rocket_launcher_bullet_texture = new Image("assets/bullets/shell.png").getTexture();
+            projectile_texture = rocket_launcher_bullet_texture;
 
             if (isDrivable && rocket_launcher_hud_texture == null) {
                 rocket_launcher_hud_texture = new Image("assets/hud/weapons/rockets.png").getTexture();

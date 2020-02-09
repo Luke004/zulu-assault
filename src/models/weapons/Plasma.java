@@ -9,11 +9,14 @@ public class Plasma extends Weapon {
 
     private static Sound plasma_fire_sound;
     private static Texture plasma_hud_texture;
+    private static Texture plasma_bullet_texture;
 
     public Plasma(boolean isDrivable) {
         super();
         try {
-            projectile_texture = new Image("assets/bullets/plasma.png").getTexture();
+            if (plasma_bullet_texture == null)
+                plasma_bullet_texture = new Image("assets/bullets/plasma.png").getTexture();
+            projectile_texture = plasma_bullet_texture;
 
             if (isDrivable && plasma_hud_texture == null) {
                 plasma_hud_texture = new Image("assets/hud/weapons/plasma.png").getTexture();
