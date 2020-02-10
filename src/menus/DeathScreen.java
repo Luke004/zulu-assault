@@ -11,6 +11,8 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
+import static menus.MainScreen.startLevel;
+
 public class DeathScreen extends AbstractMenuScreen {
 
     private BasicGameState gameState;
@@ -77,14 +79,7 @@ public class DeathScreen extends AbstractMenuScreen {
     private void handleMenuItemChoice(GameContainer gameContainer, StateBasedGame stateBasedGame, int idx) {
         switch (idx) {
             case 0: // REPLAY MISSION
-                try {
-                    stateBasedGame.getState(ZuluAssault.LEVEL_1).init(gameContainer, stateBasedGame);
-                    stateBasedGame.enterState(ZuluAssault.LEVEL_1,
-                            new FadeOutTransition(), new FadeInTransition());
-                    ZuluAssault.prevState = gameState;
-                } catch (SlickException e) {
-                    e.printStackTrace();
-                }
+                startLevel(ZuluAssault.LEVEL_1, stateBasedGame, gameState);
                 break;
             case 1: // LOAD A GAME
                 // TODO: LOAD

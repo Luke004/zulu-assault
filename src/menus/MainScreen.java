@@ -132,6 +132,5 @@ public class MainScreen extends AbstractMenuScreen {
         ZuluAssault.nextLevelID = levelID;
         stateBasedGame.enterState(ZuluAssault.BRIEFING, new FadeOutTransition(), new FadeInTransition());
         ZuluAssault.prevState = basicGameState;
-
     }
 }
