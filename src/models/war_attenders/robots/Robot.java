@@ -109,7 +109,7 @@ public abstract class Robot extends MovableWarAttender {
             position.x += dir.x;
         if (!CollisionHandler.intersectsWithTileMap(this, false))
             position.y += dir.y;
-        
+
         collisionModel.update(base_image.getRotation());
     }
 

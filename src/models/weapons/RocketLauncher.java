@@ -35,10 +35,9 @@ public class RocketLauncher extends Weapon {
                 rocket_launcher_bullet_texture = new Image("assets/bullets/shell.png").getTexture();
             projectile_texture = rocket_launcher_bullet_texture;
 
-            if (isDrivable && rocket_launcher_hud_texture == null) {
+            if (rocket_launcher_hud_texture == null)
                 rocket_launcher_hud_texture = new Image("assets/hud/weapons/rockets.png").getTexture();
-                weapon_hud_image = new Image(rocket_launcher_hud_texture);
-            }
+            if (isDrivable) weapon_hud_image = new Image(rocket_launcher_hud_texture);
 
             if (rocket_fire_sound == null) {
                 rocket_fire_sound = new Sound("audio/sounds/rocket_shot.ogg");

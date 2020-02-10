@@ -18,10 +18,9 @@ public class Plasma extends Weapon {
                 plasma_bullet_texture = new Image("assets/bullets/plasma.png").getTexture();
             projectile_texture = plasma_bullet_texture;
 
-            if (isDrivable && plasma_hud_texture == null) {
+            if (plasma_hud_texture == null)
                 plasma_hud_texture = new Image("assets/hud/weapons/plasma.png").getTexture();
-                weapon_hud_image = new Image(plasma_hud_texture);
-            }
+            if (isDrivable) weapon_hud_image = new Image(plasma_hud_texture);
 
             if (plasma_fire_sound == null) {
                 plasma_fire_sound = new Sound("audio/sounds/plasma_shot.ogg");

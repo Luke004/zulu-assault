@@ -18,17 +18,18 @@ public class Uzi extends Weapon {
 
     public Uzi(boolean isDrivable) {
         super();
+
         uziFireShotAnimation = new UziFireShotAnimation(10);
         try {
+
             if (uzi_fire_sound == null) {
                 uzi_fire_sound = new Sound("audio/sounds/uzi_shot.ogg");
             }
             fire_sound = uzi_fire_sound;
 
-            if (isDrivable && uzi_hud_texture == null) {
+            if (uzi_hud_texture == null)
                 uzi_hud_texture = new Image("assets/hud/weapons/uzi.png").getTexture();
-                weapon_hud_image = new Image(uzi_hud_texture);
-            }
+            if (isDrivable) weapon_hud_image = new Image(uzi_hud_texture);
 
             if (uzi_bullet_texture == null)
                 uzi_bullet_texture = new Image("assets/bullets/bullet_small.png").getTexture();

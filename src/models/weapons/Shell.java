@@ -28,10 +28,9 @@ public class Shell extends Weapon {
             }
             fire_sound = shell_fire_sound;
 
-            if (isDrivable && shell_hud_texture == null) {
+            if (shell_hud_texture == null)
                 shell_hud_texture = new Image("assets/hud/weapons/shell.png").getTexture();
-                weapon_hud_image = new Image(shell_hud_texture);
-            }
+            if (isDrivable) weapon_hud_image = new Image(shell_hud_texture);
 
             if (shell_bullet_texture == null)
                 shell_bullet_texture = new Image("assets/bullets/shell.png").getTexture();

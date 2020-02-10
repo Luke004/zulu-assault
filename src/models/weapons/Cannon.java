@@ -4,9 +4,12 @@ import menus.UserSettings;
 import models.weapons.projectiles.Projectile;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.opengl.Texture;
 
 public class Cannon extends Uzi {
     private boolean switch_bullet_spawn_side, isDrivable;
+
+    private static Texture cannon_hud_texture;
 
     public Cannon(boolean isDrivable) {
         super(isDrivable);
@@ -14,7 +17,9 @@ public class Cannon extends Uzi {
         this.isDrivable = isDrivable;
 
         try {
-            weapon_hud_image = new Image("assets/hud/weapons/cannon.png");
+            if (cannon_hud_texture == null)
+                cannon_hud_texture = new Image("assets/hud/weapons/cannon.png").getTexture();
+            if (isDrivable) weapon_hud_image = new Image(cannon_hud_texture);
         } catch (SlickException e) {
             e.printStackTrace();
         }

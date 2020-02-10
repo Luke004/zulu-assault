@@ -30,6 +30,7 @@ public class Player {
     public void init(MovableWarAttender current_warAttender) {
         current_warAttender.showAccessibleAnimation(false);
         this.current_warAttender = current_warAttender;
+        if (this.changeWarAttenderListener != null) this.changeWarAttenderListener.onPlayerChangeWarAttender();
         item_amounts = new int[4];
         base_soldier = new PlayerSoldier(new Vector2f(0, 0), false);
     }
