@@ -140,6 +140,7 @@ public abstract class Robot extends MovableWarAttender {
 
     @Override
     public void rotate(RotateDirection rotateDirection, int deltaTime) {
+        if (isDestroyed) return;
         switch (rotateDirection) {
             case ROTATE_DIRECTION_LEFT:
                 for (int idx = 0; idx < walking_animation.getFrameCount(); ++idx) {

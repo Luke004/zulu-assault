@@ -111,6 +111,7 @@ public abstract class Tank extends MovableWarAttender {
     }
 
     public void accelerate(int deltaTime, Direction direction) {
+        if (isDestroyed) return;
         if (current_speed < getMaxSpeed()) {
             current_speed += getAccelerationFactor() * deltaTime;
         } else {
@@ -127,6 +128,7 @@ public abstract class Tank extends MovableWarAttender {
     public abstract float getMaxSpeed();
 
     public void decelerate(int deltaTime, Direction direction) {
+        if (isDestroyed) return;
         if (current_speed > 0.f) {  // 0.01f and not 0.f because it will take longer to reach 0.f completely!
             current_speed -= getDecelerationFactor() * deltaTime;
         } else {
@@ -188,6 +190,7 @@ public abstract class Tank extends MovableWarAttender {
 
     @Override
     public void rotate(RotateDirection r, int deltaTime) {
+        if (isDestroyed) return;
         float degree;
         switch (r) {
             case ROTATE_DIRECTION_LEFT:

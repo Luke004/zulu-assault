@@ -124,7 +124,7 @@ public class GreenEnemyPlane extends Plane {
 
         // follow the closest enemy
         float rotationDegree;
-        if (dist < 500) {
+        if (dist < 450) {
             isEnemyNear = true;
             rotationDegree = WayPointManager.calculateAngleToRotateTo(position, new Vector2f(xPos, yPos));
             changeAimingDirection(rotationDegree, deltaTime);

@@ -261,6 +261,7 @@ public abstract class MovableWarAttender extends WarAttender {
     public abstract void setRotation(float degree);
 
     public void activateItem(Player.Item_e item) {
+        if (isDestroyed) return;
         switch (item) {
             case INVINCIBILITY:
                 isInvincible = true;
