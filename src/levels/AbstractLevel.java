@@ -44,7 +44,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     private static RandomItemDropper randomItemDropper;
 
     private static boolean has_initialized_once;
-    protected int init_counter;
+    protected boolean calledOnce;
 
     protected static Sound level_intro_sound;
     protected static Music level_music;

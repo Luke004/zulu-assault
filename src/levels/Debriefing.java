@@ -52,7 +52,7 @@ public class Debriefing extends BasicGameState {
 
             for (String next_part : split_strings) {
                 builder.append(next_part).append(" ");
-                if (ttf_info_string.getWidth(builder.toString()) > gameContainer.getWidth() - 40) {
+                if (ttf_info_string.getWidth(builder.toString()) > gameContainer.getWidth() - 50) {
                     this.debriefing_message.add(builder.toString());
                     builder.setLength(0);
                 }

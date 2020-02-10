@@ -11,7 +11,6 @@ import models.items.SilverWrenchItem;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.planes.GreenEnemyPlane;
 import models.war_attenders.robots.PlasmaRobot;
-import models.war_attenders.robots.Robot;
 import models.war_attenders.robots.ShellRobot;
 import models.war_attenders.soldiers.EnemySoldier;
 import models.war_attenders.soldiers.RocketSoldier;
@@ -38,8 +37,15 @@ public class Level_2 extends AbstractLevel implements GameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-        ++init_counter;
-        if (init_counter < 2) return;
+        if (!calledOnce) {
+            mission_title = "Recapture Mechs";
+            briefing_message = "One of our operatives has defective along with two mechs. These mechs are guarded " +
+                    "lightly by a small enemy force. We must recapture the mechs before the enemy can strengthen its " +
+                    "forces.";
+            debriefing_message = "We got the mechs back. Over and Out.";
+            calledOnce = true;
+            return;
+        }
 
         reset();    // reset the level before init
 

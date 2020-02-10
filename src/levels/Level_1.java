@@ -29,18 +29,19 @@ public class Level_1 extends AbstractLevel implements GameState {
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         // this makes sure we don't init on the first two calls, since this would be a waste of cpu power
-        ++init_counter;
-        if (init_counter < 2) return;
+        if (!calledOnce) {    // call this only one time because this is static information
+            mission_title = "Take the airfield";
+            briefing_message = "A key enemy airfield has been located in the northwest quadrant. Alpha team will attack " +
+                    "the airfield from the southwest. Provide supporting firepower for Alpha team.";
+            debriefing_message = "The airfield has been secured. Good job.";
+            calledOnce = true;
+            return;
+        }
 
         reset();    // reset the level before init
 
         level_intro_sound = level1_intro_sound;
         level_music = level1_music;
-
-        mission_title = "Take the airfield";
-        briefing_message = "A key enemy airfield has been located in the northwest quadrant. Alpha team will attack " +
-                "the airfield from the southwest. Provide supporting firepower for Alpha team.";
-        debriefing_message = "The airfield has been secured. Good job.";
 
         // SETUP ENEMY WAR ATTENDERS
         List<Vector2f> wayPoints;
@@ -431,8 +432,8 @@ public class Level_1 extends AbstractLevel implements GameState {
     public void loadLevelMusic() {
         if (level1_intro_sound == null) {
             try {
-                level_intro_sound = new Sound("audio/music/level_1_intro.ogg");
-                level_music = new Music("audio/music/level_1.ogg");
+                level1_intro_sound = new Sound("audio/music/level_1_intro.ogg");
+                level1_music = new Music("audio/music/level_1.ogg");
             } catch (SlickException e) {
                 e.printStackTrace();
             }
