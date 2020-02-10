@@ -621,6 +621,14 @@ public class CollisionHandler {
                             friendly_warAttender.changeHealth(-weapon.getBulletDamage());  //drain health of friend
                         }
                     }
+                    // HOSTILE SHOT COLLISION WITH FRIENDLY DRIVABLE ATTENDERS
+                    for (MovableWarAttender drivable_warAttender : drivable_war_attenders) {
+                        if (projectile.getCollisionModel().intersects(drivable_warAttender.getCollisionModel())) {
+                            showBulletHitAnimation(weapon, projectile);
+                            projectile_iterator.remove();
+                            drivable_warAttender.changeHealth(-weapon.getBulletDamage());
+                        }
+                    }
                 }
             }
         }
