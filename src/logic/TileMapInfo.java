@@ -168,7 +168,7 @@ public class TileMapInfo {
         for (int value : CLASS_GRASS) {
             if (tileID == value) return collision_replace_indices[2];
         }
-        return collision_replace_indices[2];    // return grass by default
+        return -1;
     }
 
     public static boolean isCollisionTile(int tileID) {

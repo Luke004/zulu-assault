@@ -500,8 +500,10 @@ public class CollisionHandler {
             // look what tile lies below destroyed windmill (grass, dirt or concrete)
             int tileID = map.getTileId((int) collision_tile.x, (int) collision_tile.y, LANDSCAPE_TILES_LAYER_IDX);
             int replacement_tile_id = TileMapInfo.getReplacementTileID(tileID);
+            if (replacement_tile_id != -1)
+                map.setTileId((int) collision_tile.x, (int) collision_tile.y, DESTRUCTION_TILES_LAYER_IDX, replacement_tile_id);
+
             map.setTileId((int) collision_tile.x, (int) collision_tile.y, ENEMY_TILES_LAYER_IDX, 0);
-            map.setTileId((int) collision_tile.x, (int) collision_tile.y, DESTRUCTION_TILES_LAYER_IDX, replacement_tile_id);
         }
 
         Vector2f[] replacement_tiles = staticWarAttender.getReplacementTiles();
