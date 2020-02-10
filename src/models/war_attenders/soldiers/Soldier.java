@@ -1,5 +1,6 @@
 package models.war_attenders.soldiers;
 
+import logic.CollisionHandler;
 import logic.WayPointManager;
 import models.CollisionModel;
 import models.war_attenders.MovableWarAttender;
@@ -100,13 +101,23 @@ public abstract class Soldier extends MovableWarAttender {
 
     public void moveForward(int deltaTime) {
         calculateMovementVector(deltaTime, Direction.FORWARD);
-        position.add(dir);
+
+        if (!CollisionHandler.intersectsWithTileMap(this, true))
+            position.x += dir.x;
+        if (!CollisionHandler.intersectsWithTileMap(this, false))
+            position.y += dir.y;
+
         collisionModel.update(base_image.getRotation());
     }
 
     public void moveBackwards(int deltaTime) {
         calculateMovementVector(deltaTime, Direction.BACKWARDS);
-        position.add(dir);
+
+        if (!CollisionHandler.intersectsWithTileMap(this, true))
+            position.x += dir.x;
+        if (!CollisionHandler.intersectsWithTileMap(this, false))
+            position.y += dir.y;
+
         collisionModel.update(base_image.getRotation());
     }
 
