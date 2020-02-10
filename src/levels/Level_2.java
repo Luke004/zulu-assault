@@ -279,6 +279,9 @@ public class Level_2 extends AbstractLevel implements GameState {
                 wayPoints));
         hostile_movable_war_attenders.add(enemy_tank_7);
 
+        MovableWarAttender enemy_drivable_tank_1 = new ShellTank(new Vector2f(2363, 2520), true, true);
+        hostile_movable_war_attenders.add(enemy_drivable_tank_1);
+
         // planes
         MovableWarAttender enemy_plane_1 = new GreenEnemyPlane(new Vector2f(1900, 960), true, false);
         enemy_plane_1.setRotation(90);

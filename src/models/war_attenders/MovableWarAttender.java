@@ -81,7 +81,7 @@ public abstract class MovableWarAttender extends WarAttender {
     @Override
     public void init() {
         isMovingForward = true;
-        if (isDrivable) {
+        if (isDrivable && !isHostile) {
             initAccessibleAnimation();
             weapons.add(new MegaPulse());  // add the MEGA_PULSE (special item)
         }
@@ -104,22 +104,24 @@ public abstract class MovableWarAttender extends WarAttender {
         // COLLISION RELATED STUFF
         collisionModel.update(base_image.getRotation());
 
-        // ITEMS RELATED STUFF
+        if (!isHostile) {
+            // ITEMS RELATED STUFF
 
-        // INVINCIBILITY
-        if (isInvincible) {
-            // invincibility logic itself
-            invincibility_lifetime += deltaTime;
-            if (invincibility_lifetime > INVINCIBILITY_TIME) {
-                isInvincible = false;
-                invincibility_lifetime = 0;
-            }
+            // INVINCIBILITY
+            if (isInvincible) {
+                // invincibility logic itself
+                invincibility_lifetime += deltaTime;
+                if (invincibility_lifetime > INVINCIBILITY_TIME) {
+                    isInvincible = false;
+                    invincibility_lifetime = 0;
+                }
 
-            // invincibility animation related
-            invincible_animation_current_time += deltaTime;
-            if (invincible_animation_current_time >= INVINCIBLE_ANIMATION_TIME_SWITCH) {
-                invincibility_animation_switch = !invincibility_animation_switch;
-                invincible_animation_current_time = 0;
+                // invincibility animation related
+                invincible_animation_current_time += deltaTime;
+                if (invincible_animation_current_time >= INVINCIBLE_ANIMATION_TIME_SWITCH) {
+                    invincibility_animation_switch = !invincibility_animation_switch;
+                    invincible_animation_current_time = 0;
+                }
             }
         }
 

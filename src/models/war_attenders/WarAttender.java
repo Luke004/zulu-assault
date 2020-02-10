@@ -92,6 +92,9 @@ public abstract class WarAttender {
 
     public void shootAtEnemies(MovableWarAttender player, List<? extends WarAttender> enemies_of_warAttender, int deltaTime) {
         if (isDestroyed) return;
+        if (this instanceof MovableWarAttender) {
+            if (((MovableWarAttender) this).isDrivable) return;
+        }
         float xPos, yPos, dist;
         if (player != null) {
             // player not null means it's a hostile tank
