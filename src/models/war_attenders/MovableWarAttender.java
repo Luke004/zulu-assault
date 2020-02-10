@@ -248,6 +248,7 @@ public abstract class MovableWarAttender extends WarAttender {
     public abstract void onCollision(MovableWarAttender enemy);
 
     public void blockMovement() {
+        if(isDestroyed) return;
         position.sub(dir);  // set the position on last position before the collision
         collisionModel.update(base_image.getRotation());    // update collision model
         //current_speed = 0.f;    // set the speed to zero (stop moving on collision)
