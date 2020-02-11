@@ -401,9 +401,6 @@ public class CollisionHandler {
         if (((AirProjectile) projectile).hasChecked(AirProjectile.Target.WarAttenders)) return;
         for (int idx = 0; idx < hostile_movable_war_attenders.size(); ++idx) {
             if (projectile.getCollisionModel().intersects(hostile_movable_war_attenders.get(idx).getCollisionModel())) {
-                if (weapon instanceof AGM) {
-                    //bigExplosionAnimation.play(projectile.pos.x, projectile.pos.y, 90);
-                }
                 hostile_movable_war_attenders.get(idx).changeHealth(-weapon.getBulletDamage());
             }
         }
@@ -420,10 +417,8 @@ public class CollisionHandler {
 
             for (int idx = 0; idx < destructible_tile_indices.length; ++idx) {
                 if (tile_ID == destructible_tile_indices[idx]) {
-                    if (weapon instanceof AGM) {
+                    if (weapon instanceof AGM || weapon instanceof Goliath) {
                         // it's a one shot, destroy tile directly
-                        bigExplosionAnimation.playTenTimes(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20, 0);
-                        // destroy the hit tile directly
                         map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
                         // maybe also destroy other tiles around
                         doCollateralTileDamage(x, y);
@@ -685,8 +680,8 @@ public class CollisionHandler {
             for (int idx2 = 0; idx2 < destructible_tile_indices.length; ++idx2) {
                 if (tile.tileID == destructible_tile_indices[idx2]) {
                     double d = Math.random();
-                    if (d < 0.3) {
-                        // 30% chance of tile getting destroyed
+                    if (d < 0.2) {
+                        // 20% chance of tile getting destroyed
                         map.setTileId(tile.xVal, tile.yVal, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx2]);
                         destructible_tiles_health_info.remove(tile.key);
                     }
