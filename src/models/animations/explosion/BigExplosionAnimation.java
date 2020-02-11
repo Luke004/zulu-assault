@@ -1,17 +1,29 @@
 package models.animations.explosion;
 
+import menus.UserSettings;
 import models.animations.AbstractVolatileAnimation;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.opengl.Texture;
 
 public class BigExplosionAnimation extends AbstractVolatileAnimation {
 
     private static Texture big_explosion_animation_texture;
 
+    private static Sound explosion_sound;
+
     public BigExplosionAnimation(final int BUFFER_SIZE) {
         super(BUFFER_SIZE);
+    }
+
+    static {
+        try {
+            explosion_sound = new Sound("audio/sounds/explosion.ogg");
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -39,8 +51,9 @@ public class BigExplosionAnimation extends AbstractVolatileAnimation {
         final int PLAY_TIMES = 10;
         int counter = 0;
         do {
-            super.play(xPos, yPos, rotation);
+            play(xPos, yPos, rotation);
             counter++;
         } while (counter < PLAY_TIMES);
+        explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
     }
 }

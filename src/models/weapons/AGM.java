@@ -17,23 +17,22 @@ public class AGM extends RocketLauncher implements iGroundTileDamageWeapon {
 
     private static Texture agm_hud_texture;
 
-    private static BigExplosionAnimation bigExplosionAnimation;
+    private BigExplosionAnimation bigExplosionAnimation;
     public GroundTileDamageListener groundTileDamageListener;
 
     public AGM(boolean isDrivable) {
         super(isDrivable);
 
         try {
-            if (isDrivable && agm_hud_texture == null) {
+            if (agm_hud_texture == null)
                 agm_hud_texture = new Image("assets/hud/weapons/agm.png").getTexture();
-                weapon_hud_image = new Image(agm_hud_texture);
-            }
+            if (isDrivable) weapon_hud_image = new Image(agm_hud_texture);
         } catch (SlickException e) {
             e.printStackTrace();
         }
 
         BUFFER_SIZE *= 2;   // double the buffer size, since this is a double rocket launcher
-        bigExplosionAnimation = new BigExplosionAnimation(100);
+        bigExplosionAnimation = new BigExplosionAnimation(50);
 
         //if (!isDrivable) shot_reload_time *= 2;
     }
@@ -92,6 +91,14 @@ public class AGM extends RocketLauncher implements iGroundTileDamageWeapon {
     }
 
     @Override
+    protected void onProjectileRemove(Projectile projectile) {
+        // check if a ground tile is damaged
+        groundTileDamageListener.notifyForGroundTileDamage(projectile.projectile_pos.x,
+                projectile.projectile_pos.y);
+        bigExplosionAnimation.playTenTimes(projectile.projectile_pos.x, projectile.projectile_pos.y, 90);
+    }
+
+    @Override
     public void update(int deltaTime) {
         super.update(deltaTime);
         bigExplosionAnimation.update(deltaTime);
@@ -104,16 +111,10 @@ public class AGM extends RocketLauncher implements iGroundTileDamageWeapon {
     }
 
     public static void playDestructionAnimation(float xPos, float yPos) {
-        bigExplosionAnimation.playTenTimes(xPos, yPos, 90);
     }
 
     @Override
     public void addListener(GroundTileDamageListener groundTileDamageListener) {
         this.groundTileDamageListener = groundTileDamageListener;
-    }
-
-    @Override
-    public GroundTileDamageListener getListener() {
-        return groundTileDamageListener;
     }
 }

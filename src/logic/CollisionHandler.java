@@ -17,8 +17,8 @@ import models.war_attenders.WarAttender;
 import models.war_attenders.planes.Plane;
 import models.war_attenders.soldiers.Soldier;
 import models.weapons.*;
+import models.weapons.projectiles.AirProjectile;
 import models.weapons.projectiles.Projectile;
-import models.weapons.projectiles.iAirProjectile;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
@@ -63,14 +63,13 @@ public class CollisionHandler {
         smokeAnimation = new SmokeAnimation(5);
         uziHitExplosionAnimation = new UziHitExplosionAnimation(20);
         uziDamageAnimation = new UziDamageAnimation(20);
-        bigExplosionAnimation = new BigExplosionAnimation(20);
+        bigExplosionAnimation = new BigExplosionAnimation(50);
         plasmaDamageAnimation = new PlasmaDamageAnimation(20);
         random = new Random();
-
     }
 
     public void addListener(WarAttenderDeleteListener delete_listener) {
-        this.level_delete_listener = delete_listener;
+        level_delete_listener = delete_listener;
     }
 
     public void draw() {
@@ -239,7 +238,7 @@ public class CollisionHandler {
 
                 if (canContinue) continue;
 
-                if (projectile.isGroundProjectile) {
+                if (!(projectile instanceof AirProjectile)) {
                     // PLAYER GROUND PROJECTILE COLLISION WITH HOSTILE WAR ATTENDER
                     canContinue = handleGroundProjectileWarAttenderCollision(projectile, weapon, projectile_iterator);
 
@@ -252,8 +251,8 @@ public class CollisionHandler {
 
                     // PLAYER GROUND PROJECTILE COLLISION WITH STATIC WAR ATTENDERS
                     handleGroundProjectileStaticWarAttenderCollision(projectile, weapon, projectile_iterator);
-                } else {
-                    if (!((iAirProjectile) projectile).hasHitGround()) {
+                } else {    // AIR PROJECTILE
+                    if (!((AirProjectile) projectile).hasHitGround()) {
                         continue;    // wait, since the projectile has not hit the ground yet
                     }
 
@@ -347,23 +346,18 @@ public class CollisionHandler {
             if (tile_ID == destructible_tile_indices[idx]) {
                 if (weapon instanceof RocketLauncher || weapon instanceof Shell) {
                     // it's a one shot, destroy tile directly
-                    bigExplosionAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y, 90);
-
-                    // destroyed by bullet, show destruction animation using level listener
-                    level_delete_listener.notifyForDestructibleTileShotDeletion(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20);
-
+                    bigExplosionAnimation.playTenTimes(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20, 0);
                     // destroy the hit tile directly
                     map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
 
                     // maybe also destroy other tiles around
                     doCollateralTileDamage(x, y);
-                    explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
                 } else {
                     if (weapon instanceof PiercingWeapon) {
                         if (weapon instanceof MegaPulse) {
                             // it's a one shot, destroy tile directly
                             map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
-                            level_delete_listener.notifyForDestructibleTileShotDeletion(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20);
+                            bigExplosionAnimation.playTenTimes(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20, 0);
                         } else if (!((PiercingWeapon) weapon).hasAlreadyHit(generateKey(x, y))) {
                             damageTile(x, y, weapon, destructible_tile_replace_indices[idx], null);
                         }
@@ -404,7 +398,7 @@ public class CollisionHandler {
     }
 
     private void handleAirProjectileWarAttenderCollision(Projectile projectile, Weapon weapon) {
-        if (((iAirProjectile) projectile).hasChecked(iAirProjectile.Target.WarAttenders)) return;
+        if (((AirProjectile) projectile).hasChecked(AirProjectile.Target.WarAttenders)) return;
         for (int idx = 0; idx < hostile_movable_war_attenders.size(); ++idx) {
             if (projectile.getCollisionModel().intersects(hostile_movable_war_attenders.get(idx).getCollisionModel())) {
                 if (weapon instanceof AGM) {
@@ -413,11 +407,11 @@ public class CollisionHandler {
                 hostile_movable_war_attenders.get(idx).changeHealth(-weapon.getBulletDamage());
             }
         }
-        ((iAirProjectile) projectile).setChecked(iAirProjectile.Target.WarAttenders);
+        ((AirProjectile) projectile).setChecked(AirProjectile.Target.WarAttenders);
     }
 
     private void handleAirProjectileTileCollision(Projectile projectile, Weapon weapon) {
-        if (((iAirProjectile) projectile).hasChecked(iAirProjectile.Target.Tiles)) return;
+        if (((AirProjectile) projectile).hasChecked(AirProjectile.Target.Tiles)) return;
         CollisionModel.Point[] collision_points = projectile.getCollisionModel().collision_points;
         for (int i = 0; i < collision_points.length; ++i) {
             int x = (int) collision_points[i].x / TILE_WIDTH;
@@ -428,8 +422,7 @@ public class CollisionHandler {
                 if (tile_ID == destructible_tile_indices[idx]) {
                     if (weapon instanceof AGM) {
                         // it's a one shot, destroy tile directly
-                        // destroyed by bullet, show destruction animation using level listener
-                        level_delete_listener.notifyForDestructibleTileShotDeletion(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20);
+                        bigExplosionAnimation.playTenTimes(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20, 0);
                         // destroy the hit tile directly
                         map.setTileId(x, y, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx]);
                         // maybe also destroy other tiles around
@@ -438,11 +431,11 @@ public class CollisionHandler {
                 }
             }
         }
-        ((iAirProjectile) projectile).setChecked(iAirProjectile.Target.Tiles);
+        ((AirProjectile) projectile).setChecked(AirProjectile.Target.Tiles);
     }
 
     private void handleAirProjectileStaticWarAttenderCollision(Projectile projectile, Weapon weapon) {
-        if (((iAirProjectile) projectile).hasChecked(iAirProjectile.Target.StaticWarAttender)) return;
+        if (((AirProjectile) projectile).hasChecked(AirProjectile.Target.StaticWarAttender)) return;
         CollisionModel.Point[] collision_points = projectile.getCollisionModel().collision_points;
         for (int i = 0; i < collision_points.length; ++i) {
             for (int idx = 0; idx < staticWarAttender_indices.length; ++idx) {
@@ -456,7 +449,7 @@ public class CollisionHandler {
                 }
             }
         }
-        ((iAirProjectile) projectile).setChecked(iAirProjectile.Target.StaticWarAttender);
+        ((AirProjectile) projectile).setChecked(AirProjectile.Target.StaticWarAttender);
     }
 
     private void damageStaticWarAttender(int xPos, int yPos, Weapon weapon) {
@@ -529,10 +522,10 @@ public class CollisionHandler {
                     smokeAnimation.play(warAttender.getPosition().x, warAttender.getPosition().y, warAttender.getRotation());
                 } else {
                     // destroyed by bullet, show destruction animation using level listener
-                    if (!(weapon instanceof Napalm))
-                        level_delete_listener.notifyForDestructibleTileShotDeletion(xPos * TILE_WIDTH + 20,
-                                yPos * TILE_HEIGHT + 20);
-                    explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
+                    if (!(weapon instanceof Napalm)) {
+                        bigExplosionAnimation.playTenTimes(xPos * TILE_WIDTH + 20,
+                                yPos * TILE_HEIGHT + 20, 0);
+                    }
                 }
                 map.setTileId(xPos, yPos, LANDSCAPE_TILES_LAYER_IDX, replaceTileIndex);
                 destructible_tiles_health_info.remove(key);

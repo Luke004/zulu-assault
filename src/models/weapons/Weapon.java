@@ -1,7 +1,7 @@
 package models.weapons;
 
 import menus.UserSettings;
-import models.weapons.projectiles.Bullet;
+import models.weapons.projectiles.GroundBullet;
 import models.weapons.projectiles.Projectile;
 import models.weapons.projectiles.iGroundTileDamageWeapon;
 import org.newdawn.slick.Graphics;
@@ -39,16 +39,14 @@ public abstract class Weapon {
 
             // remove bullet if if max lifetime was reached
             if (projectile.projectile_lifetime > projectile.projectile_max_lifetime) {
-
-                // check if a ground tile is damaged
-                if (this instanceof iGroundTileDamageWeapon) {
-                    ((iGroundTileDamageWeapon) this).getListener().notifyForGroundTileDamage(projectile.projectile_pos.x,
-                            projectile.projectile_pos.y);
-                }
-
+                onProjectileRemove(projectile);
                 iter.remove();
             }
         }
+    }
+
+    protected void onProjectileRemove(Projectile projectile) {
+        // method to override
     }
 
     public void draw(Graphics graphics) {
@@ -68,7 +66,7 @@ public abstract class Weapon {
             float yVal = (float) -Math.cos(rotation_angle * Math.PI / 180);
             Vector2f bullet_dir = new Vector2f(xVal, yVal);
 
-            Projectile bullet = new Bullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
+            Projectile bullet = new GroundBullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
             projectile_list.add(bullet);
             if (fire_sound != null)
                 fire_sound.play(1.f, UserSettings.SOUND_VOLUME);

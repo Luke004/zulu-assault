@@ -1,6 +1,6 @@
 package models.weapons;
 
-import models.weapons.projectiles.Bullet;
+import models.weapons.projectiles.GroundBullet;
 import models.weapons.projectiles.Projectile;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -34,7 +34,7 @@ public class MegaPulse extends PiercingWeapon {
             float yVal = (float) -Math.cos(rotation_angle * Math.PI / 180);
             Vector2f bullet_dir = new Vector2f(xVal, yVal);
 
-            Projectile bullet = new Bullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
+            Projectile bullet = new GroundBullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
             bullet.setProjectileSpeed(MEGA_PULSE_SPEED);    // give mega pulse its own individual speed (slower)
             projectile_list.add(bullet);
         }

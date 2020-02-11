@@ -1,10 +1,7 @@
 package models.weapons;
 
 import menus.UserSettings;
-import models.weapons.projectiles.Bullet;
 import models.weapons.projectiles.Projectile;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Vector2f;
 
 public class DoubleShell extends Shell {
 

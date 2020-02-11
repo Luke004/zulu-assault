@@ -2,8 +2,7 @@ package models.weapons;
 
 import menus.UserSettings;
 import models.animations.explosion.UziFireShotAnimation;
-import models.animations.smoke.SmokeAnimation;
-import models.weapons.projectiles.Bullet;
+import models.weapons.projectiles.GroundBullet;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
@@ -59,14 +58,14 @@ public class Uzi extends Weapon {
     public void fire(float spawnX, float spawnY, float rotation_angle) {
         if (canFire()) {
             current_reload_time = 0;    // reset the reload time when a shot is fired
-            Bullet bullet = addBullet(spawnX, spawnY, rotation_angle, 0.f);
-            projectile_list.add(bullet);
+            GroundBullet groundBullet = addBullet(spawnX, spawnY, rotation_angle, 0.f);
+            projectile_list.add(groundBullet);
 
             fire_sound.play(1.f, UserSettings.SOUND_VOLUME);
         }
     }
 
-    protected Bullet addBullet(float spawnX, float spawnY, float rotation_angle, float x_offset) {
+    protected GroundBullet addBullet(float spawnX, float spawnY, float rotation_angle, float x_offset) {
         float m_spawn_x = spawnX + (float) (Math.cos(((rotation_angle) * Math.PI) / 180) * x_offset
                 + -Math.sin(((rotation_angle) * Math.PI) / 180) * -30.f);
         float m_spawn_y = spawnY + (float) (Math.sin(((rotation_angle) * Math.PI) / 180) * x_offset
@@ -80,6 +79,6 @@ public class Uzi extends Weapon {
 
         uziFireShotAnimation.play(bullet_spawn.x, bullet_spawn.y, rotation_angle);
 
-        return new Bullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
+        return new GroundBullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
     }
 }

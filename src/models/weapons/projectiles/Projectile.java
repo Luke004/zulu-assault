@@ -13,7 +13,6 @@ public abstract class Projectile {
     public Vector2f projectile_pos, projectile_dir;
     protected float projectile_speed;
     protected final int WIDTH_HALF, HEIGHT_HALF;
-    public boolean isGroundProjectile;
 
     public Projectile(Vector2f startPos, Vector2f dir, float rotation, Texture projectile_texture) {
         this.projectile_image = new Image(projectile_texture);
@@ -21,7 +20,6 @@ public abstract class Projectile {
         this.projectile_pos = startPos;
         this.projectile_dir = dir;
         this.projectile_speed = 0.6f;   // default projectile speed
-        this.isGroundProjectile = true;    // default is a ground projectile
         this.projectile_max_lifetime = 4000;   // default maximum lifetime (4 sec)
         WIDTH_HALF = projectile_image.getWidth() / 2;
         HEIGHT_HALF = projectile_image.getHeight() / 2;

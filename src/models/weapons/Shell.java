@@ -2,7 +2,7 @@ package models.weapons;
 
 import menus.UserSettings;
 import models.animations.smoke.SmokeAnimation;
-import models.weapons.projectiles.Bullet;
+import models.weapons.projectiles.GroundBullet;
 import models.weapons.projectiles.Projectile;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -41,6 +41,7 @@ public class Shell extends Weapon {
         // individual Shell specs
         bullet_damage = 750;
         shot_reload_time = 1000;
+
         if (!isDrivable) shot_reload_time *= 5;
     }
 
@@ -68,7 +69,7 @@ public class Shell extends Weapon {
         }
     }
 
-    protected Bullet addBullet(float spawnX, float spawnY, float rotation_angle, float x_offset) {
+    protected GroundBullet addBullet(float spawnX, float spawnY, float rotation_angle, float x_offset) {
         float m_spawn_x = spawnX + (float) (Math.cos(((rotation_angle) * Math.PI) / 180) * x_offset
                 + -Math.sin(((rotation_angle) * Math.PI) / 180) * -30.f);
         float m_spawn_y = spawnY + (float) (Math.sin(((rotation_angle) * Math.PI) / 180) * x_offset
@@ -82,6 +83,6 @@ public class Shell extends Weapon {
 
         smokeAnimation.play(bullet_spawn.x, bullet_spawn.y, rotation_angle);
 
-        return new Bullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
+        return new GroundBullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
     }
 }

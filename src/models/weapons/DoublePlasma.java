@@ -1,7 +1,7 @@
 package models.weapons;
 
 import menus.UserSettings;
-import models.weapons.projectiles.Bullet;
+import models.weapons.projectiles.GroundBullet;
 import org.newdawn.slick.geom.Vector2f;
 
 public class DoublePlasma extends Plasma {
@@ -18,31 +18,31 @@ public class DoublePlasma extends Plasma {
     public void fire(float spawnX, float spawnY, float rotation_angle) {
         if (canFire()) {
             current_reload_time = 0;    // reset the reload time when a shot is fired
-            Bullet bullet;
+            GroundBullet groundBullet;
             if (isDrivable) {
                 if (switch_turret) {
                     switch_turret = false;
                     // right turret
-                    bullet = addBullet(spawnX, spawnY, rotation_angle, false);
+                    groundBullet = addBullet(spawnX, spawnY, rotation_angle, false);
                 } else {
                     switch_turret = true;
                     // left turret
-                    bullet = addBullet(spawnX, spawnY, rotation_angle, true);
+                    groundBullet = addBullet(spawnX, spawnY, rotation_angle, true);
                 }
-                projectile_list.add(bullet);
+                projectile_list.add(groundBullet);
             } else {    // is not drivable
                 // left turret
-                bullet = addBullet(spawnX, spawnY, rotation_angle, true);
-                projectile_list.add(bullet);
+                groundBullet = addBullet(spawnX, spawnY, rotation_angle, true);
+                projectile_list.add(groundBullet);
                 // right turret
-                bullet = addBullet(spawnX, spawnY, rotation_angle, false);
-                projectile_list.add(bullet);
+                groundBullet = addBullet(spawnX, spawnY, rotation_angle, false);
+                projectile_list.add(groundBullet);
             }
             fire_sound.play(1.f, UserSettings.SOUND_VOLUME);
         }
     }
 
-    private Bullet addBullet(float spawnX, float spawnY, float rotation_angle, boolean left) {
+    private GroundBullet addBullet(float spawnX, float spawnY, float rotation_angle, boolean left) {
         float m_spawn_x = spawnX + (float) (Math.cos(((rotation_angle) * Math.PI) / 180) * (left ? -19.5f : 19.5f)
                 + -Math.sin(((rotation_angle) * Math.PI) / 180) * -20.f);
         float m_spawn_y = spawnY + (float) (Math.sin(((rotation_angle) * Math.PI) / 180) * (left ? -19.5f : 19.5f)
@@ -53,6 +53,6 @@ public class DoublePlasma extends Plasma {
         float yVal = (float) -Math.cos(rotation_angle * Math.PI / 180);
         Vector2f bullet_dir = new Vector2f(xVal, yVal);
 
-        return new Bullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
+        return new GroundBullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
     }
 }

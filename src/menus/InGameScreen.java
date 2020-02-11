@@ -135,5 +135,6 @@ public class InGameScreen extends AbstractMenuScreen {
     public void onLeaveState(GameContainer gameContainer) {
         main_menu_intro_sound.stop();
         main_menu_music.stop();
+        gameContainer.setMouseGrabbed(true);
     }
 }

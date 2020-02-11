@@ -1,6 +1,7 @@
 package models.war_attenders.tanks;
 
 import models.CollisionModel;
+import models.weapons.Goliath;
 import models.weapons.Shell;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -22,6 +23,7 @@ public class ShellTank extends Tank {
         super(startPos, isHostile, isDrivable);
 
         weapons.add(new Shell(isDrivable));   // WEAPON_1
+        weapons.add(new Goliath(isDrivable));   // WEAPON_2
 
         // LOAD TEXTURES
         try {

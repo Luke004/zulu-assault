@@ -452,13 +452,6 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         }
     }
 
-
-    @Override
-    public void notifyForDestructibleTileShotDeletion(float xPos, float yPos) {
-        // a destructible tile was deleted
-        bigExplosionAnimation.playTenTimes(xPos, yPos, 0);
-    }
-
     @Override
     public void notifyForGroundTileDamage(float xPos, float yPos) {
         // a ground tile was damaged by an iGroundTileDamageWeapon
