@@ -40,6 +40,7 @@ public abstract class Plane extends MovableWarAttender {
 
     @Override
     public void rotate(RotateDirection r, int deltaTime) {
+        if (landing) return;
         float degree;
         switch (r) {
             case ROTATE_DIRECTION_LEFT:
