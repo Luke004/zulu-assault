@@ -21,7 +21,7 @@ public class CannonTank extends Tank {
     public CannonTank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
 
-        weapons.add(new Cannon(isDrivable));  // WEAPON_1
+        weapons.add(new Cannon(isDrivable, 4));  // WEAPON_1
 
         // LOAD TEXTURES
         try {

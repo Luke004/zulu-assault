@@ -1,6 +1,7 @@
 package models.weapons;
 
 import menus.UserSettings;
+import models.weapons.projectiles.GroundBullet;
 import models.weapons.projectiles.GroundRocket;
 import models.weapons.projectiles.Projectile;
 import org.newdawn.slick.Animation;
@@ -50,11 +51,22 @@ public class RocketLauncher extends Weapon {
                 BUFFER_SIZE = 5;    // player needs more buffer_size, since he can shoot more often
             }
             buffered_rockets = new ArrayList<>();
+
+            addInstances(BUFFER_SIZE);
+
+            active_rockets = new ArrayList<>();
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void addInstances(final int AMOUNT) {
+        try {
             int IMAGE_COUNT = 8;
             int x;
             int idx;
             Texture rocket_animation_image_texture = new Image("assets/bullets/rocket_animation.png").getTexture();
-            for (idx = 0; idx < BUFFER_SIZE; ++idx) {
+            for (idx = 0; idx < AMOUNT; ++idx) {
                 x = 0;
                 Image rocket_animation_image = new Image(rocket_animation_image_texture);
                 Animation rocket_animation = new Animation(false);
@@ -64,7 +76,6 @@ public class RocketLauncher extends Weapon {
                 }
                 buffered_rockets.add(rocket_animation);
             }
-            active_rockets = new ArrayList<>();
         } catch (SlickException e) {
             e.printStackTrace();
         }
@@ -82,28 +93,34 @@ public class RocketLauncher extends Weapon {
     public void fire(float spawnX, float spawnY, float rotation_angle) {
         if (canFire()) {
             current_reload_time = 0;    // reset the reload time when a shot is fired
-            spawnX += -Math.sin(((rotation_angle) * Math.PI) / 180) * -30.f;
-            spawnY += Math.cos(((rotation_angle) * Math.PI) / 180) * -30.f;
-            Vector2f bullet_spawn = new Vector2f(spawnX, spawnY);
 
-            float xVal = (float) Math.sin(rotation_angle * Math.PI / 180);
-            float yVal = (float) -Math.cos(rotation_angle * Math.PI / 180);
-            Vector2f bullet_dir = new Vector2f(xVal, yVal);
-
-            Animation fresh_rocket = getNextFreshRocket();
-
-            for (int idx = 0; idx < fresh_rocket.getFrameCount(); ++idx) {
-                fresh_rocket.getImage(idx).setRotation(rotation_angle);
-            }
-            fresh_rocket.setCurrentFrame(0);
-            fresh_rocket.stopAt(7);
-            fresh_rocket.start();
-
-            Projectile projectile = new GroundRocket(bullet_spawn, bullet_dir, rotation_angle, projectile_texture, fresh_rocket);
+            Projectile projectile = addRocket(spawnX, spawnY, rotation_angle, 0);
             projectile_list.add(projectile);
 
             fire_sound.play(1.f, UserSettings.SOUND_VOLUME);
         }
+    }
+
+    protected GroundRocket addRocket(float spawnX, float spawnY, float rotation_angle, float x_offset) {
+        float m_spawn_x = spawnX + (float) (Math.cos(((rotation_angle) * Math.PI) / 180) * x_offset
+                + -Math.sin(((rotation_angle) * Math.PI) / 180) * -30.f);
+        float m_spawn_y = spawnY + (float) (Math.sin(((rotation_angle) * Math.PI) / 180) * x_offset
+                + Math.cos(((rotation_angle) * Math.PI) / 180) * -30.f);
+        Vector2f bullet_spawn = new Vector2f(m_spawn_x, m_spawn_y);
+
+        float dirX = (float) Math.sin(rotation_angle * Math.PI / 180);
+        float dirY = (float) -Math.cos(rotation_angle * Math.PI / 180);
+        Vector2f bullet_dir = new Vector2f(dirX, dirY);
+
+        Animation fresh_rocket = getNextFreshRocket();
+
+        for (int idx = 0; idx < fresh_rocket.getFrameCount(); ++idx) {
+            fresh_rocket.getImage(idx).setRotation(rotation_angle);
+        }
+        fresh_rocket.setCurrentFrame(0);
+        fresh_rocket.stopAt(7);
+        fresh_rocket.start();
+        return new GroundRocket(bullet_spawn, bullet_dir, rotation_angle, projectile_texture, fresh_rocket);
     }
 
     protected Animation getNextFreshRocket() {

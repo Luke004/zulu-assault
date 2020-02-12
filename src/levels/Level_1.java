@@ -9,6 +9,8 @@ import models.war_attenders.MovableWarAttender;
 import models.war_attenders.planes.GreenEnemyPlane;
 import models.war_attenders.planes.Plane;
 import models.war_attenders.robots.PlasmaRobot;
+import models.war_attenders.robots.Robot;
+import models.war_attenders.robots.RocketRobot;
 import models.war_attenders.soldiers.EnemySoldier;
 import models.war_attenders.tanks.*;
 import org.newdawn.slick.*;
@@ -319,7 +321,7 @@ public class Level_1 extends AbstractLevel implements GameState {
         //Vector2f playerStartPos = new Vector2f(789, 2769);
         //Tank tank = new NapalmTank(playerStartPos, false, true);
         //Tank tank = new ShellTank(playerStartPos, false, true);
-        Tank tank = new ShellTank(playerStartPos, false, true);
+        Tank tank = new CannonTank(playerStartPos, false, true);
         tank.setRotation(190);
         //Plane plane = new GreenEnemyPlane(playerStartPos, false, true);
         //Robot robot = new PlasmaRobot(playerStartPos, false, true);
