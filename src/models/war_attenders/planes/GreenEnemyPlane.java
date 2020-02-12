@@ -25,12 +25,10 @@ public class GreenEnemyPlane extends Plane {
     private static final float ARMOR = 40.f;
     private static final int SCORE_VALUE = 500;
     private static final float ROTATE_SPEED_PLAYER = 0.15f, ROTATE_SPEED_BOT = 0.15f;
-    private static final float MAX_SPEED_PLAYER = 0.15f, MAX_SPEED_BOT = 0.2f;
+    private static final float MAX_SPEED_PLAYER = 0.25f, MAX_SPEED_BOT = 0.2f;
 
     public GreenEnemyPlane(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
-
-        setMoving(true);    // green plane is always flying
 
         if (isDrivable) animatedCrosshair = new AnimatedCrosshair();
 
@@ -50,33 +48,14 @@ public class GreenEnemyPlane extends Plane {
             e.printStackTrace();
         }
 
-        collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
         super.init();
     }
 
     @Override
     public void update(GameContainer gc, int deltaTime) {
         super.update(gc, deltaTime);
-        if (isMoving) {
-            fly(deltaTime); // the plane is always flying forward
-        }
         if (isDrivable)
             animatedCrosshair.update(deltaTime, position, getRotation());
-
-        // WAY POINTS
-        if (waypointManager != null) {
-            if (!isEnemyNear) {
-                // rotate the plane towards the next vector until it's pointing towards it
-                if (waypointManager.wish_angle != (int) getRotation()) {
-                    rotate(waypointManager.rotate_direction, deltaTime);
-                    waypointManager.adjustAfterRotation(this.position, getRotation());
-                }
-
-                if (waypointManager.distToNextVector(this.position) < HEIGHT_HALF * 2) {
-                    waypointManager.setupNextWayPoint(this.position, getRotation());
-                }
-            }
-        }
     }
 
     @Override
@@ -86,10 +65,13 @@ public class GreenEnemyPlane extends Plane {
         if (isDrivable && isMoving) animatedCrosshair.draw();
     }
 
-    public void fly(int deltaTime) {
-        calculateMovementVector(deltaTime, Direction.FORWARD);
-        position.add(dir);
-        collisionModel.update(base_image.getRotation());
+    /* don't use following 2 methods, this plane always flies at same speed */
+    @Override
+    public void increaseSpeed() {
+    }
+
+    @Override
+    public void decreaseSpeed() {
     }
 
     @Override
@@ -132,52 +114,6 @@ public class GreenEnemyPlane extends Plane {
             fireWeapon(WeaponType.WEAPON_2);   // green plane can also shoot wpn2
         } else {
             isEnemyNear = false;
-        }
-    }
-
-    @Override
-    public void onCollision(MovableWarAttender enemy) {
-        // a plane doesn't have collisions
-    }
-
-    @Override
-    public float getRotation() {
-        return base_image.getRotation();
-    }
-
-    @Override
-    public void setRotation(float degree) {
-        base_image.setRotation(degree);
-    }
-
-    @Override
-    public void fireWeapon(WeaponType weapon) {
-        switch (weapon) {
-            case WEAPON_1:
-                weapons.get(0).fire(position.x, position.y, base_image.getRotation());
-                break;
-            case WEAPON_2:
-                if (weapons.size() < 2) return;    // does not have a WEAPON_2, so return
-                weapons.get(1).fire(position.x, position.y, base_image.getRotation());
-                break;
-            case MEGA_PULSE:
-                if (weapons.size() == 2) {   // does not have a WEAPON_2, MEGA_PULSE it at index [1]
-                    weapons.get(1).fire(position.x, position.y, base_image.getRotation());
-                } else {    // does have a WEAPON_2, MEGA_PULSE it at index [2]
-                    weapons.get(2).fire(position.x, position.y, base_image.getRotation());
-                }
-                break;
-        }
-    }
-
-    @Override
-    public void changeAimingDirection(float angle, int deltaTime) {
-        float rotation_to_make = WayPointManager.getShortestSignedAngle(base_image.getRotation(), angle);
-
-        if (rotation_to_make > 0) {
-            base_image.rotate(getBaseRotateSpeed() * deltaTime);
-        } else {
-            base_image.rotate(-getBaseRotateSpeed() * deltaTime);
         }
     }
 

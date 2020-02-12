@@ -223,6 +223,14 @@ public class KeyInputHandler {
             case PLANE:     // player is in a plane
                 Plane plane = (Plane) playerWarAttender;
 
+                if (input.isKeyDown(Input.KEY_UP)) {
+                    plane.increaseSpeed();
+                }
+
+                if (input.isKeyDown(Input.KEY_DOWN)) {
+                    plane.decreaseSpeed();
+                }
+
                 // get out of plane
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
                     plane.initLanding();

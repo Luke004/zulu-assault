@@ -4,6 +4,7 @@ import logic.TileMapInfo;
 import logic.WayPointManager;
 import main.SoundManager;
 import menus.UserSettings;
+import models.CollisionModel;
 import models.war_attenders.MovableWarAttender;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -34,6 +35,9 @@ public abstract class Plane extends MovableWarAttender {
         // THIS EXISTS SO THAT WE CAN FLY FROM START ON IN A GREEN PLANE AND DONT HAVE TO ENTER IT FIRST
         hasStarted = true;
 
+        setMoving(true);    // planes are always flying
+
+        collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
 
         super.init();
     }
@@ -55,8 +59,59 @@ public abstract class Plane extends MovableWarAttender {
     }
 
     @Override
+    public void changeAimingDirection(float angle, int deltaTime) {
+        float rotation_to_make = WayPointManager.getShortestSignedAngle(base_image.getRotation(), angle);
+
+        if (rotation_to_make > 0) {
+            base_image.rotate(getBaseRotateSpeed() * deltaTime);
+        } else {
+            base_image.rotate(-getBaseRotateSpeed() * deltaTime);
+        }
+    }
+
+    @Override
+    public void onCollision(MovableWarAttender enemy) {
+        // a plane doesn't have collision
+    }
+
+    @Override
+    public void setRotation(float degree) {
+        base_image.setRotation(degree);
+    }
+
+    @Override
+    public float getRotation() {
+        return base_image.getRotation();
+    }
+
+    @Override
+    public void fireWeapon(WeaponType weapon) {
+        switch (weapon) {
+            case WEAPON_1:
+                weapons.get(0).fire(position.x, position.y, base_image.getRotation());
+                break;
+            case WEAPON_2:
+                if (weapons.size() < 2) return;    // does not have a WEAPON_2, so return
+                weapons.get(1).fire(position.x, position.y, base_image.getRotation());
+                break;
+            case MEGA_PULSE:
+                if (weapons.size() == 2) {   // does not have a WEAPON_2, MEGA_PULSE it at index [1]
+                    weapons.get(1).fire(position.x, position.y, base_image.getRotation());
+                } else {    // does have a WEAPON_2, MEGA_PULSE it at index [2]
+                    weapons.get(2).fire(position.x, position.y, base_image.getRotation());
+                }
+                break;
+        }
+    }
+
+    @Override
     public void update(GameContainer gc, int deltaTime) {
         super.update(gc, deltaTime);
+
+        if (isMoving) {
+            fly(deltaTime); // the plane is always flying forward
+        }
+
         if (landing) {
             if (hasLanded) return;
             // calc landing shadow positions
@@ -73,9 +128,33 @@ public abstract class Plane extends MovableWarAttender {
                 // normal shadow position
                 planeShadow.update();
             }
+        }
 
+        // WAY POINTS
+        if (waypointManager != null) {
+            if (!isEnemyNear) {
+                // rotate the plane towards the next vector until it's pointing towards it
+                if (waypointManager.wish_angle != (int) getRotation()) {
+                    rotate(waypointManager.rotate_direction, deltaTime);
+                    waypointManager.adjustAfterRotation(this.position, getRotation());
+                }
+
+                if (waypointManager.distToNextVector(this.position) < HEIGHT_HALF * 2) {
+                    waypointManager.setupNextWayPoint(this.position, getRotation());
+                }
+            }
         }
     }
+
+    public void fly(int deltaTime) {
+        calculateMovementVector(deltaTime, Direction.FORWARD);
+        position.add(dir);
+        collisionModel.update(base_image.getRotation());
+    }
+
+    public abstract void increaseSpeed();
+
+    public abstract void decreaseSpeed();
 
     private void movePlaneShadow(int deltaTime, Vector2f target_pos) {
         float angle = WayPointManager.calculateAngleToRotateTo(planeShadow.current_shadow_pos, target_pos);
@@ -162,7 +241,7 @@ public abstract class Plane extends MovableWarAttender {
         hasStarted = false;
     }
 
-    private boolean canLand() {
+    protected boolean canLand() {
         // check the next six tiles before the plane, if they are collision tiles, the plane can't land
 
         // the direction the plane is heading towards
