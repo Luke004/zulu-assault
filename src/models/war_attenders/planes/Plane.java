@@ -23,6 +23,7 @@ public abstract class Plane extends MovableWarAttender {
         super(startPos, isHostile, isDrivable);
     }
 
+    @Override
     public void init() {
         WIDTH_HALF = base_image.getWidth() / 2;
         HEIGHT_HALF = base_image.getHeight() / 2;
