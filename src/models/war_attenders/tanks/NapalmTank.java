@@ -29,25 +29,25 @@ public class NapalmTank extends Tank {
         try {
             if (isHostile) {
                 if (napalm_tank_hostile_texture == null) {
-                    napalm_tank_hostile_texture = new Image("assets/war_attenders/tanks/napalm_tank.png")
+                    napalm_tank_hostile_texture = new Image("assets/war_attenders/tanks/napalm_tank_hostile.png")
                             .getTexture();
                 }
                 base_image = new Image(napalm_tank_hostile_texture);
                 if (napalm_tank_hostile_turret_texture == null) {
                     napalm_tank_hostile_turret_texture =
-                            new Image("assets/war_attenders/tanks/napalm_tank_turret.png")
+                            new Image("assets/war_attenders/tanks/napalm_tank_hostile_turret.png")
                                     .getTexture();
                 }
                 turret = new Image(napalm_tank_hostile_turret_texture);
             } else {    // friendly
                 if (napalm_tank_friendly_texture == null) {
-                    napalm_tank_friendly_texture = new Image("assets/war_attenders/tanks/napalm_tank.png")
+                    napalm_tank_friendly_texture = new Image("assets/war_attenders/tanks/napalm_tank_friendly.png")
                             .getTexture();
                 }
                 base_image = new Image(napalm_tank_friendly_texture);
                 if (napalm_tank_friendly_turret_texture == null) {
                     napalm_tank_friendly_turret_texture =
-                            new Image("assets/war_attenders/tanks/napalm_tank_turret.png")
+                            new Image("assets/war_attenders/tanks/napalm_tank_friendly_turret.png")
                                     .getTexture();
                 }
                 turret = new Image(napalm_tank_friendly_turret_texture);
