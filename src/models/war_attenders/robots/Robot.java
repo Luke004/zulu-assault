@@ -119,10 +119,14 @@ public abstract class Robot extends MovableWarAttender {
     public void onCollision(MovableWarAttender warAttender) {
         if (warAttender instanceof Tank || warAttender instanceof Robot) {
             blockMovement();
-            warAttender.changeHealth(-10.f);
+            if (!isHostile && warAttender.isHostile) {
+                warAttender.changeHealth(-10.f);
+            }
         } else if (warAttender instanceof Soldier) {   // enemy is a soldier (bad for him)
             if (warAttender.isDestroyed) return;
-            warAttender.changeHealth(-150.f);
+            if (!isHostile && warAttender.isHostile) {
+                warAttender.changeHealth(-150.f);
+            }
             blockMovement();
         }
     }

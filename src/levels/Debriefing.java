@@ -6,11 +6,14 @@ import java.util.List;
 
 import main.SoundManager;
 import main.ZuluAssault;
+import menus.MainMenu;
 import menus.MainScreen;
 import menus.UserSettings;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import static menus.MainMenu.TEXT_MARGIN;
 
@@ -122,6 +125,17 @@ public class Debriefing extends BasicGameState {
     public void keyPressed(int key, char c) {
         SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
         final int NEXT_LEVEL_ID = finished_level_ID + 1;
+
+
+        // TODO: remove this, this is temporary for the test version
+        if (NEXT_LEVEL_ID == 4) {
+            MainMenu.goToMenu(MainMenu.STATE_MAIN_MENU, gameContainer);
+            stateBasedGame.enterState(ZuluAssault.MAIN_MENU,
+                    new FadeOutTransition(), new FadeInTransition());
+            return;
+        }
+
+
         MainScreen.startLevel(NEXT_LEVEL_ID, stateBasedGame, this);
     }
 

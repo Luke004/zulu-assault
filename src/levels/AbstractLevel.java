@@ -478,11 +478,14 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         renderList.clear();
         static_enemies.clear();
         interaction_circles.clear();
-        items.clear();
-        player.reset();
-        hud.reset();
         Radar.hideRadar();
         hasWonTheLevel = false;
+
+        if(this instanceof Level_1){
+            items.clear();
+            player.reset();
+            hud.reset();
+        }
     }
 
     public String getBriefingMessage() {

@@ -198,6 +198,10 @@ public class MainMenu extends BasicGameState {
         }
         if (gameContainer.getInput().isKeyPressed(Input.KEY_RIGHT)) {
         }
+        if (gameContainer.getInput().isKeyPressed(Input.KEY_UP)) {
+        }
+        if (gameContainer.getInput().isKeyPressed(Input.KEY_DOWN)) {
+        }
         if (gameContainer.getInput().isKeyPressed(Input.KEY_ENTER)) {
         }
         if (gameContainer.getInput().isKeyPressed(Input.KEY_LSHIFT)) {
