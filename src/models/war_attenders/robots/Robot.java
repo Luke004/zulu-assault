@@ -5,6 +5,7 @@ import logic.WayPointManager;
 import models.CollisionModel;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.soldiers.Soldier;
+import models.war_attenders.tanks.CannonTank;
 import models.war_attenders.tanks.Tank;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
@@ -54,6 +55,7 @@ public abstract class Robot extends MovableWarAttender {
     public void update(GameContainer gameContainer, int deltaTime) {
         super.update(gameContainer, deltaTime);
         walking_animation.update(deltaTime);
+
         if (isDestroyed) {
             level_delete_listener.notifyForWarAttenderDeletion(this);
         }
@@ -212,13 +214,18 @@ public abstract class Robot extends MovableWarAttender {
                 weapons.get(0).fire(position.x, position.y, base_image.getRotation());
                 break;
             case WEAPON_2:
-                if (weapons.size() == 2) return;    // does not have a WEAPON_2, so return
+                if (isDrivable) {
+                    if (weapons.size() == 2) return;    // does not have a WEAPON_2, so return
+                    weapons.get(1).fire(position.x, position.y, base_image.getRotation());
+                } else {    // not drivable -> bots
+                    if (weapons.size() != 2) return;
+                }
                 weapons.get(1).fire(position.x, position.y, base_image.getRotation());
                 break;
             case MEGA_PULSE:
-                if (weapons.size() == 2) {   // does not have a WEAPON_2, MEGA_PULSE it at index [1]
+                if (weapons.size() == 2) {  // does not have a WEAPON_2, MEGA_PULSE it at index [1]
                     weapons.get(1).fire(position.x, position.y, base_image.getRotation());
-                } else {    // does have a WEAPON_2, MEGA_PULSE it at index [2]
+                } else if (weapons.size() == 3) {  // does have a WEAPON_2, MEGA_PULSE it at index [2]
                     weapons.get(2).fire(position.x, position.y, base_image.getRotation());
                 }
                 break;

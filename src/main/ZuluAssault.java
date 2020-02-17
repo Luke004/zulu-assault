@@ -1,9 +1,6 @@
 package main;
 
-import levels.Briefing;
-import levels.Debriefing;
-import levels.Level_1;
-import levels.Level_2;
+import levels.*;
 import menus.MainMenu;
 import org.lwjgl.LWJGLUtil;
 import org.lwjgl.Sys;
@@ -20,6 +17,7 @@ public class ZuluAssault extends StateBasedGame {
     public static final int MAIN_MENU = 0;
     public static final int LEVEL_1 = 1;
     public static final int LEVEL_2 = 2;
+    public static final int LEVEL_3 = 3;
     public static final int BRIEFING = -1;
     public static final int DEBRIEFING = -2;
 
@@ -31,13 +29,14 @@ public class ZuluAssault extends StateBasedGame {
         this.addState(new MainMenu());
         this.addState(new Level_1());
         this.addState(new Level_2());
+        this.addState(new Level_3());
         this.addState(new Debriefing());
         this.addState(new Briefing());
     }
 
     public static void main(String[] args) {
         String gameName = "Zulu Assault";
-        boolean fullscreen = false;
+        boolean fullscreen = true;
 
         // this looks for the 'natives' folder and uses the right dll according to the operating system
         System.setProperty("org.lwjgl.librarypath", new File(

@@ -1,6 +1,6 @@
 package models.war_attenders.planes;
 
-import models.CollisionModel;
+import models.weapons.RocketLauncher;
 import models.weapons.Uzi;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -35,6 +35,7 @@ public class Jet extends Plane {
         }
 
         weapons.add(new Uzi(isDrivable));  // WEAPON_1
+        weapons.add(new RocketLauncher(isDrivable));  // TODO: add 'GUIDED' rockets weapon
 
         super.init();
     }

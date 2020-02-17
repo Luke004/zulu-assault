@@ -63,7 +63,7 @@ public class CollisionHandler {
         smokeAnimation = new SmokeAnimation(5);
         uziHitExplosionAnimation = new UziHitExplosionAnimation(20);
         uziDamageAnimation = new UziDamageAnimation(20);
-        bigExplosionAnimation = new BigExplosionAnimation(50);
+        bigExplosionAnimation = new BigExplosionAnimation(100);
         plasmaDamageAnimation = new PlasmaDamageAnimation(20);
         random = new Random();
     }

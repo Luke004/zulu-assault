@@ -28,7 +28,7 @@ public class Radar {
 
     private static Vector2f radar_origin;
 
-    private final int TIME_SECOND_MILLIS = 1000;
+    private static final int TIME_SECOND_MILLIS = 1000;
     private int current_time_millis;
     private boolean mandatoryBlinker;   // make the mandatory warAttenders blink in second ticks
 

@@ -6,6 +6,7 @@ import main.SoundManager;
 import menus.UserSettings;
 import models.CollisionModel;
 import models.war_attenders.MovableWarAttender;
+import models.war_attenders.tanks.CannonTank;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -28,14 +29,19 @@ public abstract class Plane extends MovableWarAttender {
 
         planeShadow = new PlaneShadow(new Vector2f(position));
 
-        if (isHostile) hasStarted = true;    // hostile planes are already flying from the start
-
-
-        // TODO: REMOVE THIS! (FOR TESTING PURPOSES)
-        // THIS EXISTS SO THAT WE CAN FLY FROM START ON IN A GREEN PLANE AND DONT HAVE TO ENTER IT FIRST
-        hasStarted = true;
-
-        setMoving(true);    // planes are always flying
+        if (!isDrivable){
+            setMoving(true);
+            hasStarted = true;    // bot planes are already flying from the start
+        }
+        else {
+            // for the player, land the plane so he can get in eventually
+            landing = true;
+            /*
+            // this is the code for if the player is starting the level in the plane -> already flying from start
+            hasStarted = true;
+            setMoving(true);
+             */
+        }
 
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
 

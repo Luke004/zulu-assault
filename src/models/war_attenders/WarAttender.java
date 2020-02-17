@@ -1,6 +1,7 @@
 package models.war_attenders;
 
 import logic.WayPointManager;
+import models.war_attenders.robots.RocketRobot;
 import models.weapons.Weapon;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
@@ -135,6 +136,10 @@ public abstract class WarAttender {
         if (dist < 500) {
             // fire
             fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
+
+            if (this instanceof RocketRobot) {  // rocket robot can also fire with 2nd weapon
+                fireWeapon(MovableWarAttender.WeaponType.WEAPON_2);
+            }
         }
     }
 
