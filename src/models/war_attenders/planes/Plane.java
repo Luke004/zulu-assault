@@ -6,7 +6,7 @@ import main.SoundManager;
 import menus.UserSettings;
 import models.CollisionModel;
 import models.war_attenders.MovableWarAttender;
-import models.war_attenders.tanks.CannonTank;
+import org.lwjgl.Sys;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -17,7 +17,7 @@ import static logic.TileMapInfo.*;
 public abstract class Plane extends MovableWarAttender {
 
     protected boolean landing, starting, hasLanded, hasStarted;
-    private PlaneShadow planeShadow;
+    protected PlaneShadow planeShadow;
 
     public Plane(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
@@ -30,11 +30,10 @@ public abstract class Plane extends MovableWarAttender {
 
         planeShadow = new PlaneShadow(new Vector2f(position));
 
-        if (!isDrivable){
+        if (!isDrivable) {
             setMoving(true);
             hasStarted = true;    // bot planes are already flying from the start
-        }
-        else {
+        } else {
             // for the player, land the plane so he can get in eventually
             landing = true;
             /*
@@ -159,11 +158,11 @@ public abstract class Plane extends MovableWarAttender {
         collisionModel.update(base_image.getRotation());
     }
 
-    public abstract void increaseSpeed();
+    public abstract void increaseSpeed(int deltaTime);
 
-    public abstract void decreaseSpeed();
+    public abstract void decreaseSpeed(int deltaTime);
 
-    private void movePlaneShadow(int deltaTime, Vector2f target_pos) {
+    protected void movePlaneShadow(int deltaTime, Vector2f target_pos) {
         float angle = WayPointManager.calculateAngleToRotateTo(planeShadow.current_shadow_pos, target_pos);
         float moveX = (float) Math.sin(angle * Math.PI / 180);
         float moveY = (float) -Math.cos(angle * Math.PI / 180);
@@ -210,7 +209,20 @@ public abstract class Plane extends MovableWarAttender {
             base_image.drawFlash(planeShadow.current_shadow_pos.x, planeShadow.current_shadow_pos.y,
                     WIDTH_HALF * 2, HEIGHT_HALF * 2, Color.black);
         }
+        drawBaseImage();
 
+        // TODO: add destruction animation to plane crash
+        /*
+        if (isDestroyed) {
+            //destructionAnimation.draw(graphics);
+        }
+         */
+    }
+
+    /*
+        this is an extra method so helicopter can draw the base image above its shadow wings
+     */
+    protected void drawBaseImage() {
         if (isInvincible) {
             if (!invincibility_animation_switch) {
                 base_image.drawFlash(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
@@ -220,13 +232,6 @@ public abstract class Plane extends MovableWarAttender {
         } else {
             base_image.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
         }
-
-        // TODO: add destruction animation to plane crash
-        /*
-        if (isDestroyed) {
-            //destructionAnimation.draw(graphics);
-        }
-         */
     }
 
     @Override
@@ -282,8 +287,8 @@ public abstract class Plane extends MovableWarAttender {
         return hasLanded;
     }
 
-    private class PlaneShadow {
-        Vector2f current_shadow_pos;
+    protected class PlaneShadow {
+        protected Vector2f current_shadow_pos;
         final static float STARTING_LANDING_SPEED = 0.05f;
         Vector2f origin_pos;  // the original position/ standard drawing position of the plane's shadow
 

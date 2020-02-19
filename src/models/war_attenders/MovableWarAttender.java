@@ -5,6 +5,7 @@ import logic.level_listeners.WarAttenderDeleteListener;
 import logic.WayPointManager;
 import menus.UserSettings;
 import models.CollisionModel;
+import models.war_attenders.planes.Helicopter;
 import models.war_attenders.planes.Plane;
 import models.weapons.MegaPulse;
 import models.weapons.Weapon;
@@ -248,7 +249,7 @@ public abstract class MovableWarAttender extends WarAttender {
     public abstract void onCollision(MovableWarAttender enemy);
 
     public void blockMovement() {
-        if(isDestroyed) return;
+        if (isDestroyed) return;
         position.sub(dir);  // set the position on last position before the collision
         collisionModel.update(base_image.getRotation());    // update collision model
         //current_speed = 0.f;    // set the speed to zero (stop moving on collision)

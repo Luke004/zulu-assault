@@ -62,16 +62,16 @@ public class GreenEnemyPlane extends Plane {
     public void draw(Graphics graphics) {
         super.draw(graphics);
         // draw the plane's crosshair
-        if (isDrivable && isMoving) animatedCrosshair.draw();
+        if (isDrivable && !hasLanded) animatedCrosshair.draw();
     }
 
     /* don't use following 2 methods, this plane always flies at same speed */
     @Override
-    public void increaseSpeed() {
+    public void increaseSpeed(int deltaTime) {
     }
 
     @Override
-    public void decreaseSpeed() {
+    public void decreaseSpeed(int deltaTime) {
     }
 
     @Override

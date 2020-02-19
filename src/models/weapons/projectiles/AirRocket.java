@@ -14,7 +14,7 @@ public class AirRocket extends AirProjectile {
 
     public AirRocket(Vector2f startPos, Vector2f dir, float rotation, Texture projectile_texture, Animation rocket_animation) {
         super(startPos, dir, rotation, projectile_texture);
-        this.projectile_max_lifetime = 650;   // maximum lifetime is 0.65 sec
+        this.projectile_max_lifetime = 350;   // maximum lifetime is 350 millis
 
         this.rocket_animation = rocket_animation;
         ANIMATION_WIDTH_HALF = rocket_animation.getCurrentFrame().getWidth() / 2;

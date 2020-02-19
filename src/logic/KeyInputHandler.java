@@ -4,6 +4,7 @@ import main.SoundManager;
 import menus.UserSettings;
 import models.hud.Radar;
 import models.war_attenders.MovableWarAttender;
+import models.war_attenders.planes.Helicopter;
 import models.war_attenders.planes.Plane;
 import models.war_attenders.robots.Robot;
 import models.war_attenders.tanks.Tank;
@@ -22,6 +23,53 @@ public class KeyInputHandler {
     public void update(GameContainer gameContainer, int deltaTime) {
         Input input = gameContainer.getInput();
         MovableWarAttender playerWarAttender = player.getWarAttender();
+
+        // keys for all types:
+
+        // left turn
+        if (input.isKeyDown(Input.KEY_LEFT)) {
+            playerWarAttender.rotate(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
+        }
+
+        // right turn
+        if (input.isKeyDown(Input.KEY_RIGHT)) {
+            playerWarAttender.rotate(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
+        }
+
+        // fire weapon1
+        if (input.isKeyDown(Input.KEY_LCONTROL) || input.isKeyPressed(Input.KEY_RCONTROL)) {
+            if (playerWarAttender.isDestroyed) return;
+            playerWarAttender.fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
+        }
+
+        // fire weapon2
+        if (input.isKeyDown(Input.KEY_LALT) || input.isKeyPressed(Input.KEY_RALT)) {
+            if (playerWarAttender.isDestroyed) return;
+            playerWarAttender.fireWeapon(MovableWarAttender.WeaponType.WEAPON_2);
+        }
+
+        // activate items
+        if (input.isKeyPressed(Input.KEY_1)) {
+            player.activateItem(Player.Item_e.INVINCIBILITY);
+        }
+
+        if (input.isKeyPressed(Input.KEY_2)) {
+            player.activateItem(Player.Item_e.EMP);
+        }
+
+        if (input.isKeyPressed(Input.KEY_3)) {
+            player.activateItem(Player.Item_e.MEGA_PULSE);
+        }
+
+        if (input.isKeyPressed(Input.KEY_4)) {
+            player.activateItem(Player.Item_e.EXPAND);
+        }
+
+        // show / hide radar
+        if (input.isKeyPressed(Input.KEY_R)) {
+            Radar.toggleRadar();
+        }
+
         switch (player.getWarAttenderType()) {
             case SOLDIER:   // player is a soldier (goes by foot)
                 Soldier soldier = (Soldier) playerWarAttender;
@@ -220,11 +268,11 @@ public class KeyInputHandler {
                 Plane plane = (Plane) playerWarAttender;
 
                 if (input.isKeyDown(Input.KEY_UP)) {
-                    plane.increaseSpeed();
+                    plane.increaseSpeed(deltaTime);
                 }
 
                 if (input.isKeyDown(Input.KEY_DOWN)) {
-                    plane.decreaseSpeed();
+                    plane.decreaseSpeed(deltaTime);
                 }
 
                 // get out of plane
@@ -237,55 +285,70 @@ public class KeyInputHandler {
                     all_movable_war_attenders.add(plane);
                     player.setWarAttender(plane, Player.EnterAction.LEAVING);
                 }
+                break;
 
+            case HELICOPTER:     // player is in a helicopter
+                Helicopter helicopter = (Helicopter) playerWarAttender;
+
+                // forward movement
+                if (input.isKeyPressed(Input.KEY_UP)) {
+                    if (KEY_DOWN_PRESSED) return;
+                    KEY_UP_PRESSED = true;
+                    if (helicopter.isMovingForward()) {
+                        helicopter.cancelDeceleration();
+                    }
+                } else if (KEY_UP_RELEASED) {
+                    helicopter.startDeceleration(MovableWarAttender.Direction.FORWARD);
+                    KEY_UP_RELEASED = false;
+                    KEY_UP_PRESSED = false;
+                }
+
+                if (KEY_UP_PRESSED) {
+                    if (KEY_DOWN_PRESSED) return;
+                    if (helicopter.isDecelerating()) {
+                        return;
+                    }
+                    helicopter.setMovingForward(true);
+                    helicopter.setMoving(true);
+                    helicopter.increaseSpeed(deltaTime);
+                }
+
+                // backwards movement
+                if (input.isKeyPressed(Input.KEY_DOWN)) {
+                    if (KEY_UP_PRESSED) return;
+                    KEY_DOWN_PRESSED = true;
+                    if (!helicopter.isMovingForward()) {
+                        helicopter.cancelDeceleration();
+                    }
+                } else if (KEY_DOWN_RELEASED) {
+                    if (!helicopter.isMovingForward())
+                        helicopter.startDeceleration(MovableWarAttender.Direction.BACKWARDS);
+                    KEY_DOWN_RELEASED = false;
+                    KEY_DOWN_PRESSED = false;
+                }
+
+                if (KEY_DOWN_PRESSED) {
+                    if (KEY_UP_PRESSED) return;
+                    if (helicopter.isDecelerating()) {
+                        return;
+                    }
+                    helicopter.setMovingForward(false);
+                    helicopter.setMoving(true);
+                    helicopter.decreaseSpeed(deltaTime);
+                }
+
+                // get out of helicopter
+                if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
+                    helicopter.initLanding();
+                }
+                if (helicopter.hasLanded()) {
+                    helicopter.showAccessibleAnimation(true);
+                    drivable_war_attenders.add(helicopter);
+                    all_movable_war_attenders.add(helicopter);
+                    player.setWarAttender(helicopter, Player.EnterAction.LEAVING);
+                }
                 break;
         }
-        // keys for all types:
-
-        // left turn
-        if (input.isKeyDown(Input.KEY_LEFT)) {
-            playerWarAttender.rotate(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
-        }
-
-        // right turn
-        if (input.isKeyDown(Input.KEY_RIGHT)) {
-            playerWarAttender.rotate(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
-        }
-
-        // fire weapon1
-        if (input.isKeyDown(Input.KEY_LCONTROL) || input.isKeyPressed(Input.KEY_RCONTROL)) {
-            if (playerWarAttender.isDestroyed) return;
-            playerWarAttender.fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
-        }
-
-        // fire weapon2
-        if (input.isKeyDown(Input.KEY_LALT) || input.isKeyPressed(Input.KEY_RALT)) {
-            if (playerWarAttender.isDestroyed) return;
-            playerWarAttender.fireWeapon(MovableWarAttender.WeaponType.WEAPON_2);
-        }
-
-        // activate items
-        if (input.isKeyPressed(Input.KEY_1)) {
-            player.activateItem(Player.Item_e.INVINCIBILITY);
-        }
-
-        if (input.isKeyPressed(Input.KEY_2)) {
-            player.activateItem(Player.Item_e.EMP);
-        }
-
-        if (input.isKeyPressed(Input.KEY_3)) {
-            player.activateItem(Player.Item_e.MEGA_PULSE);
-        }
-
-        if (input.isKeyPressed(Input.KEY_4)) {
-            player.activateItem(Player.Item_e.EXPAND);
-        }
-
-        // show / hide radar
-        if (input.isKeyPressed(Input.KEY_R)) {
-            Radar.toggleRadar();
-        }
-
     }
 
     public void onKeyRelease(int key) {

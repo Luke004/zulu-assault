@@ -38,7 +38,7 @@ public class ZuluAssault extends StateBasedGame {
     }
 
     public static void main(String[] args) {
-        boolean fullscreen = true;
+        boolean fullscreen = false;
 
         // this looks for the 'natives' folder and uses the right dll according to the operating system
         System.setProperty("org.lwjgl.librarypath", new File(

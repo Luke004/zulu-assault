@@ -4,6 +4,7 @@ import logic.level_listeners.ChangeWarAttenderListener;
 import logic.level_listeners.ItemChangeListener;
 import models.hud.HUD;
 import models.war_attenders.MovableWarAttender;
+import models.war_attenders.planes.Helicopter;
 import models.war_attenders.planes.Plane;
 import models.war_attenders.robots.Robot;
 import models.war_attenders.soldiers.PlayerSoldier;
@@ -27,7 +28,7 @@ public class Player {
 
     private ChangeWarAttenderListener changeWarAttenderListener;
 
-    public Player(){
+    public Player() {
         item_amounts = new int[4];
     }
 
@@ -57,8 +58,9 @@ public class Player {
         if (current_warAttender instanceof Soldier) return WarAttenderType.SOLDIER;
         if (current_warAttender instanceof Tank) return WarAttenderType.TANK;
         if (current_warAttender instanceof Robot) return WarAttenderType.ROBOT;
+        if (current_warAttender instanceof Helicopter) return WarAttenderType.HELICOPTER;
         if (current_warAttender instanceof Plane) return WarAttenderType.PLANE;
-        else throw new IllegalStateException("Not a soldier, not a tank!");
+        else throw new IllegalStateException("Not a valid WarAttender type!");
     }
 
     /*
@@ -155,7 +157,7 @@ public class Player {
     }
 
     public enum WarAttenderType {
-        SOLDIER, PLANE, TANK, ROBOT
+        SOLDIER, PLANE, TANK, ROBOT, HELICOPTER
     }
 
     public int getPoints() {

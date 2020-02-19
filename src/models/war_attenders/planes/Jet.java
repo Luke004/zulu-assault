@@ -23,7 +23,7 @@ public class Jet extends Plane {
     private static final float ROTATE_SPEED_PLAYER = 0.15f, ROTATE_SPEED_BOT = 0.15f;
     private static final float MAX_SPEED_PLAYER = 0.5f, MAX_SPEED_BOT = 0.2f;
     private static final float MIN_SPEED_PLAYER = 0.1f, MIN_SPEED_BOT = 0.2f;
-    private static final float SPEED_INCREASE_DECREASE_FACTOR = 0.002f;
+    private static final float SPEED_INCREASE_DECREASE_FACTOR = 0.0002f;
 
     static {
         try {
@@ -71,18 +71,18 @@ public class Jet extends Plane {
     }
 
     @Override
-    public void increaseSpeed() {
+    public void increaseSpeed(int deltaTime) {
         if (current_speed < (isDrivable ? MAX_SPEED_PLAYER : MAX_SPEED_BOT)) {
-            current_speed += SPEED_INCREASE_DECREASE_FACTOR;
+            current_speed += SPEED_INCREASE_DECREASE_FACTOR * deltaTime;
             playJetEngineSound();
         }
     }
 
     @Override
-    public void decreaseSpeed() {
+    public void decreaseSpeed(int deltaTime) {
         if (current_speed > (isDrivable ? MIN_SPEED_PLAYER : MIN_SPEED_BOT)) {
             playJetEngineSound();
-            current_speed -= SPEED_INCREASE_DECREASE_FACTOR;
+            current_speed -= SPEED_INCREASE_DECREASE_FACTOR * deltaTime;
         }
     }
 

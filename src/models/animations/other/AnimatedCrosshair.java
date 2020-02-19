@@ -14,7 +14,7 @@ public class AnimatedCrosshair {
         crosshair_pos = new Vector2f();
         final int IMAGE_COUNT = 4;
         int y = 0;
-        Image crosshair_animation_image = null;
+        Image crosshair_animation_image;
         try {
             crosshair_animation_image = new Image("assets/animations/animated_crosshair.png");
             crosshair_animation = new Animation(false);
@@ -31,8 +31,8 @@ public class AnimatedCrosshair {
     public void update(int deltaTime, Vector2f player_pos, float player_rotation) {
         float m_dir_x = (float) Math.sin(player_rotation * Math.PI / 180);
         float m_dir_y = (float) -Math.cos(player_rotation * Math.PI / 180);
-        crosshair_pos.x = player_pos.x + m_dir_x * 190.f;
-        crosshair_pos.y = player_pos.y + m_dir_y * 190.f;
+        crosshair_pos.x = player_pos.x + m_dir_x * 170.f;
+        crosshair_pos.y = player_pos.y + m_dir_y * 170.f;
         crosshair_animation.update(deltaTime);
     }
 
