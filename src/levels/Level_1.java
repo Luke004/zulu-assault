@@ -318,7 +318,7 @@ public class Level_1 extends AbstractLevel implements GameState {
         //Vector2f playerStartPos = new Vector2f(789, 2769);
         //Tank tank = new NapalmTank(playerStartPos, false, true);
         //Tank tank = new ShellTank(playerStartPos, false, true);
-        Tank tank = new ShellTank(playerStartPos, false, true);
+        Tank tank = new CannonTank(playerStartPos, false, true);
         tank.setRotation(190);
         //Plane plane = new GreenEnemyPlane(playerStartPos, false, true);
         //Robot robot = new PlasmaRobot(playerStartPos, false, true);

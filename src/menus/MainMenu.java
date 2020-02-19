@@ -93,7 +93,7 @@ public class MainMenu extends BasicGameState {
         info_strings = new String[3];
         info_strings[0] = "(C) 1998 Dallas Nutsch";
         info_strings[1] = "Rebuild by Lukas Hilfrich";
-        info_strings[2] = "Alpha Test Version 1.0";
+        info_strings[2] = ZuluAssault.gameVersion;
 
 
         try {
