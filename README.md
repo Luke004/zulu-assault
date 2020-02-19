@@ -11,19 +11,19 @@ Taken from the old game's HELPME.TXT.
 |`Up/Down` |Accelerate/Deaccelerate|Yes|
 |`Left/Right`|Turn left/right|Yes|
 |`Ctrl`|Weapon A|Yes|
-|`Alt`|Weapon B|No|
+|`Alt`|Weapon B|Partially|
 |`Shift`|Get In/Out of current vehicle|Yes|
-|`A`|Autocenter turret|No|
+|`A`|Autocenter turret|Yes|
 |`Z`|Turret left|Yes|
 |`X`|Turret Right|Yes|
-|`R`|Toggle Radar|No|
-|`[` |Zoom Radar Out|No|
-|`]`|Zoom Radar In|No|
-|`Escape`|Go to menu|No|
+|`R`|Toggle Radar|Yes|
+|`[` |Zoom Radar Out|Dismissed|
+|`]`|Zoom Radar In|Dismissed|
+|`Escape`|Go to menu|Yes|
 |`1`|Use an invincibility  |Yes|
-|`2`|Use an emp|No|
+|`2`|Use an emp|Yes|
 |`3`|Use a mega pulse|Yes|
-|`4`|Use an expand |No|
+|`4`|Use an expand |Partially|
 
 `1` Use an invincibility  
 `2` Use an emp (Destroys nearby planes)  

@@ -47,7 +47,7 @@ public class Level_2 extends AbstractLevel implements GameState {
             return;
         }
 
-        reset();    // reset the level before init
+        resetLevel();    // reset the level before init
 
         level_intro_sound = level2_intro_sound;
         level_music = level2_music;

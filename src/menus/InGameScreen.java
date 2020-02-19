@@ -1,5 +1,6 @@
 package menus;
 
+import levels.AbstractLevel;
 import main.SoundManager;
 import main.ZuluAssault;
 import menus.menu_elements.Arrow;
@@ -111,6 +112,7 @@ public class InGameScreen extends AbstractMenuScreen {
                         new FadeOutTransition(), new FadeInTransition());
                 break;
             case 1: // START NEW GAME
+                AbstractLevel.resetPlayerStats();
                 MainScreen.startLevel(ZuluAssault.LEVEL_1, stateBasedGame, gameState);
                 break;
             case 2: // LOAD

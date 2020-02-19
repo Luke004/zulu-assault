@@ -1,5 +1,6 @@
 package menus;
 
+import levels.AbstractLevel;
 import main.SoundManager;
 import main.ZuluAssault;
 import menus.menu_elements.Buttons;
@@ -79,7 +80,8 @@ public class DeathScreen extends AbstractMenuScreen {
     private void handleMenuItemChoice(GameContainer gameContainer, StateBasedGame stateBasedGame, int idx) {
         switch (idx) {
             case 0: // REPLAY MISSION
-                startLevel(ZuluAssault.LEVEL_1, stateBasedGame, gameState);
+                AbstractLevel.resetPlayerStats();
+                startLevel(ZuluAssault.nextLevelID, stateBasedGame, gameState);
                 break;
             case 1: // LOAD A GAME
                 // TODO: LOAD

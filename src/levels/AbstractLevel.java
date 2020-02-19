@@ -72,11 +72,11 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
 
     // for destruction of tanks or robots
     private static BigExplosionAnimation bigExplosionAnimation;
-    protected static Sound explosion_sound;  // fire sound of the weapon;
+    protected static Sound explosion_sound;
 
     private static ScreenDrawer screenDrawer;
 
-    boolean hasWonTheLevel;
+    private static boolean hasWonTheLevel;
 
     static {
         has_initialized_once = false;
@@ -90,7 +90,6 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         static_enemies = new ArrayList<>();
         interaction_circles = new ArrayList<>();
         items = new ArrayList<>();
-        player = new Player();
         try {
             explosion_sound = new Sound("audio/sounds/explosion.ogg");
         } catch (SlickException e) {
@@ -468,7 +467,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         keyInputHandler.onKeyRelease(key);
     }
 
-    public void reset() {
+    protected static void resetLevel() {
         if (player.getWarAttender() == null) return;
         hostile_movable_war_attenders.clear();
         friendly_movable_war_attenders.clear();
@@ -478,14 +477,14 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         renderList.clear();
         static_enemies.clear();
         interaction_circles.clear();
+        items.clear();
         Radar.hideRadar();
         hasWonTheLevel = false;
+    }
 
-        if(this instanceof Level_1){
-            items.clear();
-            player.reset();
-            hud.reset();
-        }
+    public static void resetPlayerStats() {
+        player.reset();
+        hud.reset();
     }
 
     public String getBriefingMessage() {

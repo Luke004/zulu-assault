@@ -3,8 +3,7 @@ package models.weapons;
 import logic.level_listeners.GroundTileDamageListener;
 import menus.UserSettings;
 import models.animations.explosion.BigExplosionAnimation;
-import models.weapons.projectiles.AirBullet;
-import models.weapons.projectiles.GroundBullet;
+import models.weapons.projectiles.AirShell;
 import models.weapons.projectiles.Projectile;
 import models.weapons.projectiles.iGroundTileDamageWeapon;
 import org.newdawn.slick.Graphics;
@@ -52,7 +51,7 @@ public class Goliath extends Shell implements iGroundTileDamageWeapon {
                 float dirY = (float) -Math.cos(angle * Math.PI / 180);
                 Vector2f bullet_dir = new Vector2f(dirX, dirY);
 
-                Projectile bullet = new AirBullet(bullet_spawn, bullet_dir, angle, projectile_texture);
+                Projectile bullet = new AirShell(bullet_spawn, bullet_dir, angle, projectile_texture);
 
                 projectile_list.add(bullet);
 

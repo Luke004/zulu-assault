@@ -1,5 +1,6 @@
 package menus;
 
+import levels.AbstractLevel;
 import main.SoundManager;
 import main.ZuluAssault;
 import menus.menu_elements.Arrow;
@@ -101,6 +102,7 @@ public class MainScreen extends AbstractMenuScreen {
             case 0: // NEW
                 // START NEW GAME
                 // init a new game starting with level 1
+                AbstractLevel.resetPlayerStats();
                 startLevel(ZuluAssault.LEVEL_1, stateBasedGame, gameState);
                 break;  // TODO: LOAD AND SAVE
             case 1: // LOAD

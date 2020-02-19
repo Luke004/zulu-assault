@@ -64,8 +64,6 @@ public class Jet extends Plane {
         if (current_jet_engine_sound_play_time > JET_ENGINE_SOUND_MILLIS_TO_WAIT) {
             current_jet_engine_sound_play_time = 0;
             canPlayJetEngineSound = true;
-        } else {
-            canPlayJetEngineSound = false;
         }
         if (!jet_sound.playing()) {
             playJetEngineSound();
@@ -90,6 +88,7 @@ public class Jet extends Plane {
 
     public void playJetEngineSound() {
         if (!isMoving || !canPlayJetEngineSound) return;
+        canPlayJetEngineSound = false;
         jet_sound.stop();
         float pitch = current_speed / MAX_SPEED_PLAYER;
         jet_sound.play(pitch, UserSettings.SOUND_VOLUME);

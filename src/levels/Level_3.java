@@ -2,21 +2,14 @@ package levels;
 
 import logic.WayPointManager;
 import main.ZuluAssault;
-import models.interaction_circles.HealthCircle;
-import models.interaction_circles.InteractionCircle;
 import models.items.GoldenWrenchItem;
 import models.items.InvincibilityItem;
 import models.items.Item;
 import models.items.SilverWrenchItem;
 import models.war_attenders.MovableWarAttender;
-import models.war_attenders.WarAttender;
 import models.war_attenders.planes.GreenEnemyPlane;
 import models.war_attenders.planes.Jet;
-import models.war_attenders.robots.PlasmaRobot;
-import models.war_attenders.robots.Robot;
 import models.war_attenders.robots.RocketRobot;
-import models.war_attenders.robots.ShellRobot;
-import models.war_attenders.soldiers.EnemySoldier;
 import models.war_attenders.soldiers.RocketSoldier;
 import models.war_attenders.tanks.*;
 import org.newdawn.slick.*;
@@ -48,7 +41,7 @@ public class Level_3 extends AbstractLevel implements GameState {
             return;
         }
 
-        reset();    // reset the level before init
+        resetLevel();    // reset the level before init
 
         level_intro_sound = level2_intro_sound;
         level_music = level2_music;
