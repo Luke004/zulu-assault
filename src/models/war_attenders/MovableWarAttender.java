@@ -5,7 +5,6 @@ import logic.level_listeners.WarAttenderDeleteListener;
 import logic.WayPointManager;
 import menus.UserSettings;
 import models.CollisionModel;
-import models.war_attenders.planes.Helicopter;
 import models.war_attenders.planes.Plane;
 import models.weapons.MegaPulse;
 import models.weapons.Weapon;
@@ -133,16 +132,14 @@ public abstract class MovableWarAttender extends WarAttender {
 
     @Override
     public void draw(Graphics graphics) {
-        super.draw(graphics);
-
         // DRAW DRIVABLE ANIMATION
-        showDrivableAnimation();
-
-        // COLLISION RELATED STUFF
+        drawHealthBar(graphics);
+        drawDrivableAnimation();
+        super.draw(graphics);
         //collisionModel.draw(graphics);
     }
 
-    public void showDrivableAnimation() {
+    protected void drawDrivableAnimation() {
         if (show_drivable_animation) {
             drivable_animation.draw(health_bar_position.x + 21.f, health_bar_position.y - 3.f);
         }

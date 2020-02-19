@@ -70,7 +70,7 @@ public abstract class WarAttender {
         }
     }
 
-    public void drawHealthBar(Graphics graphics) {
+    protected void drawHealthBar(Graphics graphics) {
         health_bar_image.draw(health_bar_position.x, health_bar_position.y);
         // draw health bar damage using a black rectangle
         graphics.setColor(Color.black);

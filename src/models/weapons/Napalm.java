@@ -14,10 +14,9 @@ public class Napalm extends PiercingWeapon {
     public Napalm(boolean isDrivable) {
         super();
         try {
-            if (isDrivable && napalm_hud_texture == null) {
+            if (napalm_hud_texture == null)
                 napalm_hud_texture = new Image("assets/hud/weapons/napalm.png").getTexture();
-                weapon_hud_image = new Image(napalm_hud_texture);
-            }
+            if (isDrivable) weapon_hud_image = new Image(napalm_hud_texture);
 
             projectile_texture = new Image("assets/animations/big_explosion.png").getTexture();
         } catch (SlickException e) {

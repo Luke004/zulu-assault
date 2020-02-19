@@ -371,24 +371,11 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             renderInstance.draw(graphics);
         }
 
+        bigExplosionAnimation.draw();
+
         if (player.getWarAttender() instanceof Plane) player.getWarAttender().draw(graphics);
 
-
-        /* ------------ draw all health bars after the warAttenders, so they are drawn on top of them ------------ */
-
-        for (MovableWarAttender drivable_war_attender : drivable_war_attenders) {
-            drivable_war_attender.drawHealthBar(graphics);
-        }
-        for (StaticWarAttender static_enemy : static_enemies) {
-            static_enemy.drawHealthBar(graphics);
-        }
-        for (MovableWarAttender renderInstance : renderList) {
-            renderInstance.drawHealthBar(graphics);
-        }
-        player.getWarAttender().drawHealthBar(graphics);
-
         collisionHandler.draw();
-        bigExplosionAnimation.draw();
         // un-translate graphics to draw the HUD-items
         camera.untranslateGraphics();
         hud.draw();

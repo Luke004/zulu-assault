@@ -84,7 +84,6 @@ public abstract class Tank extends MovableWarAttender {
 
     @Override
     public void draw(Graphics graphics) {
-        super.draw(graphics);
         if (isInvincible) {
             if (!invincibility_animation_switch) {
                 base_image.drawFlash(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
@@ -101,6 +100,8 @@ public abstract class Tank extends MovableWarAttender {
         if (isDestroyed) {
             destructionAnimation.draw(graphics);
         }
+
+        super.draw(graphics);
     }
 
     public void accelerate(int deltaTime, Direction direction) {

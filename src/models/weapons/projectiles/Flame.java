@@ -90,6 +90,8 @@ public class Flame extends Projectile {
         starting_flame.update(deltaTime);
         time += deltaTime;
 
+        projectile_collision_model.update(projectile_image.getRotation());
+
         if (time > CREATE_NEW_FLAME_TIMER) {
             time = 0;
             FlameInstance flameInstance = new FlameInstance(getNextFreshExplosionInstance(), projectile_pos.x, projectile_pos.y);
