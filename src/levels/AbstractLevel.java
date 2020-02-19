@@ -372,10 +372,10 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         }
 
         bigExplosionAnimation.draw();
+        collisionHandler.draw();
 
         if (player.getWarAttender() instanceof Plane) player.getWarAttender().draw(graphics);
 
-        collisionHandler.draw();
         // un-translate graphics to draw the HUD-items
         camera.untranslateGraphics();
         hud.draw();
