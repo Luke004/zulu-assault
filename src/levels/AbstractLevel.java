@@ -16,6 +16,7 @@ import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
 import models.war_attenders.planes.Plane;
 import models.war_attenders.planes.StaticEnemyPlane;
+import models.war_attenders.robots.Robot;
 import models.war_attenders.soldiers.Soldier;
 import models.war_attenders.windmills.Windmill;
 import models.war_attenders.windmills.WindmillGreen;
@@ -313,6 +314,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         screenDrawer.update(deltaTime);
         bigExplosionAnimation.update(deltaTime);
         camera.centerOn(player.getWarAttender().getPosition().x, player.getWarAttender().getPosition().y);
+        camera.update(deltaTime);
 
         if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
             MainMenu.goToMenu(MainMenu.STATE_IN_GAME_MENU, gameContainer);
@@ -388,6 +390,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             all_hostile_war_attenders.remove(warAttender);
             if (warAttender instanceof MovableWarAttender) {
                 hostile_movable_war_attenders.remove(warAttender);
+                if (warAttender instanceof Robot) camera.shake();
             } else if (warAttender instanceof StaticWarAttender) {
                 static_enemies.remove(warAttender);
             }
@@ -407,6 +410,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             }
         } else {
             if (warAttender instanceof MovableWarAttender) {
+                if (warAttender instanceof Robot) camera.shake();
                 if (warAttender == player.getWarAttender()) {
                     // THE PLAYER DIED
                     MainMenu.goToMenu(MainMenu.STATE_DEATH_MENU, gameContainer);

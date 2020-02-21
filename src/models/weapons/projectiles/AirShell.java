@@ -19,7 +19,7 @@ public class AirShell extends AirProjectile {
     @Override
     public void update(int deltaTime) {
         if (projectile_lifetime <= projectile_max_lifetime - 50) {
-            projectile_image.rotate(5);
+            projectile_image.rotate(0.5f * deltaTime);
             super.update(deltaTime);
         } else {
             this.projectile_lifetime += deltaTime;
