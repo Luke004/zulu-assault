@@ -11,8 +11,8 @@ public class AirShell extends AirProjectile {
     public AirShell(Vector2f startPos, Vector2f dir, float rotation, Texture projectile_texture) {
         super(startPos, dir, rotation, projectile_texture);
         this.projectile_max_lifetime = 1000;   // lifetime is 1 sec
-        // special air bullet collision model (collision model is an impact rectangle 40x40px)
-        this.projectile_collision_model = new CollisionModel(projectile_pos, 40, 40);
+        // special air bullet collision model (collision model is an impact rectangle 60x60px)
+        this.projectile_collision_model = new CollisionModel(projectile_pos, 60, 60);
         projectile_speed = 0.3f;
     }
 

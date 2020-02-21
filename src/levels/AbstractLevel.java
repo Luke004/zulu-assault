@@ -448,9 +448,12 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         int mapX = (int) (xPos / TILE_WIDTH);
         int mapY = (int) (yPos / TILE_HEIGHT);
         int tileID = map.getTileId(mapX, mapY, LANDSCAPE_TILES_LAYER_IDX);
+
         int replacement_tile_id = TileMapInfo.getReplacementTileID(tileID);
-        if (replacement_tile_id != -1)
+        if (replacement_tile_id != -1) {
             map.setTileId(mapX, mapY, DESTRUCTION_TILES_LAYER_IDX, replacement_tile_id);
+        }
+        doCollateralTileDamage(mapX, mapY);
     }
 
     @Override

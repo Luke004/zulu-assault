@@ -56,7 +56,7 @@ public class Goliath extends Shell implements iGroundTileDamageWeapon {
                 projectile_list.add(bullet);
 
                 angle += 30;
-            } while(angle < 360);
+            } while (angle < 360);
 
             fire_sound.play(1.f, UserSettings.SOUND_VOLUME);
             smokeAnimation.play(spawnX, spawnY, 0);
