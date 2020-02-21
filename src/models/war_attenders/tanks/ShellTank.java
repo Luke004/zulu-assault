@@ -16,8 +16,8 @@ public class ShellTank extends Tank {
     // attributes
     private static final float ARMOR = 60.f;
     private static final float ROTATE_SPEED_PLAYER = 0.2f, ROTATE_SPEED_BOT = 0.05f;
-    private static final float MAX_SPEED_PLAYER = 0.15f, MAX_SPEED_BOT = 0.05f;
-    private static final float ACCELERATION_FACTOR = 0.00005f, DECELERATION_FACTOR = 0.0009f;
+    private static final float MAX_SPEED_PLAYER = 0.18f, MAX_SPEED_BOT = 0.05f;
+    private static final float ACCELERATION_FACTOR = 0.0003f, DECELERATION_FACTOR = 0.0009f;
 
     public ShellTank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
