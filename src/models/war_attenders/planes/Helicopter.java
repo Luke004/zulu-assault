@@ -1,6 +1,7 @@
 package models.war_attenders.planes;
 
 import logic.TileMapInfo;
+import menus.UserSettings;
 import models.animations.other.AnimatedCrosshair;
 import models.weapons.AGM;
 import models.weapons.RocketLauncher;
@@ -15,6 +16,11 @@ public class Helicopter extends Plane {
 
     private static Texture helicopter_texture;
     private static Texture helicopter_wings_moving_texture, helicopter_wings_idle_texture;
+
+    private static Sound helicopter_sound;
+    private static final int HELICOPTER_ENGINE_SOUND_MILLIS_TO_WAIT = 100;
+    private int current_helicopter_engine_sound_play_time;
+    boolean canPlayHelicopterEngineSound;
 
     private AnimatedCrosshair animatedCrosshair;
 
@@ -36,6 +42,8 @@ public class Helicopter extends Plane {
         super(startPos, isHostile, isDrivable);
 
         if (isDrivable) animatedCrosshair = new AnimatedCrosshair();
+
+        canPlayHelicopterEngineSound = true;
 
         // LOAD TEXTURES
         try {
@@ -62,6 +70,14 @@ public class Helicopter extends Plane {
         super.init();
     }
 
+    static {
+        try {
+            helicopter_sound = new Sound("audio/sounds/helicopter.ogg");
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void fly(int deltaTime) {
         position.add(dir);
@@ -82,6 +98,7 @@ public class Helicopter extends Plane {
         if (isDestroyed) return;
         if (current_speed < getMaxSpeed()) {
             current_speed += ACCELERATION_FACTOR * deltaTime;
+            playHelicopterEngineSound();
         } else {
             current_speed = getMaxSpeed();  // cap the max speed
         }
@@ -92,6 +109,7 @@ public class Helicopter extends Plane {
         if (isDestroyed) return;
         if (current_speed > 0.f) {  // 0.01f and not 0.f because it will take longer to reach 0.f completely!
             current_speed -= DECELERATION_FACTOR * deltaTime;
+            playHelicopterEngineSound();
         } else {
             current_speed = 0.f;
             decelerate = false;
@@ -128,6 +146,17 @@ public class Helicopter extends Plane {
         if (decelerate) {
             decelerate(deltaTime, decelerateDirection);
         }
+
+        current_helicopter_engine_sound_play_time += deltaTime;
+        if (current_helicopter_engine_sound_play_time > HELICOPTER_ENGINE_SOUND_MILLIS_TO_WAIT) {
+            current_helicopter_engine_sound_play_time = 0;
+            canPlayHelicopterEngineSound = true;
+        }
+
+        if (!helicopter_sound.playing() && !hasLanded) {
+            float pitch = 1.f + current_speed;
+            helicopter_sound.play(pitch, UserSettings.SOUND_VOLUME);
+        }
     }
 
     @Override
@@ -160,7 +189,16 @@ public class Helicopter extends Plane {
         if (mapY < 0 || mapY >= LEVEL_HEIGHT_TILES) return false;  // player wants to land out of map
         int tileID = map.getTileId(mapX, mapY, LANDSCAPE_TILES_LAYER_IDX);
         if (TileMapInfo.isCollisionTile(tileID)) return false;
+        helicopter_sound.stop();
         return true;
+    }
+
+    public void playHelicopterEngineSound() {
+        if (!isMoving || !canPlayHelicopterEngineSound) return;
+        canPlayHelicopterEngineSound = false;
+        helicopter_sound.stop();
+        float pitch = 1.f + current_speed;
+        helicopter_sound.play(pitch, UserSettings.SOUND_VOLUME);
     }
 
     @Override
