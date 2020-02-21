@@ -68,6 +68,9 @@ public abstract class WarAttender {
         for (Weapon weapon : weapons) {
             weapon.draw(graphics);
         }
+
+        if (!(this instanceof MovableWarAttender))
+            drawHealthBar(graphics);
     }
 
     protected void drawHealthBar(Graphics graphics) {
