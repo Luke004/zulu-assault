@@ -8,3 +8,5 @@ src/META-INF
 *.class
 
 Zulu-Assault.iml
+
+highscore_table_link\.txt
