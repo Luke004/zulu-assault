@@ -95,7 +95,6 @@ public class MainMenu extends BasicGameState {
         info_strings[1] = "Rebuild by Lukas Hilfrich";
         info_strings[2] = ZuluAssault.gameVersion;
 
-
         try {
             // set custom animated mouse cursor
             gameContainer.setAnimatedMouseCursor(
@@ -137,7 +136,6 @@ public class MainMenu extends BasicGameState {
         clearKeyPresses(gameContainer);
     }
 
-
     public static void returnToPreviousMenu() {
         int temp = prev_menu_idx;
         prev_menu_idx = current_menu_idx;
@@ -167,6 +165,7 @@ public class MainMenu extends BasicGameState {
         }
         menus[current_menu_idx].onLeaveState(gameContainer);
         clearKeyPresses(gameContainer);
+        ZuluAssault.prevState = this;
     }
 
     protected static void drawInfoStrings(GameContainer gameContainer) {

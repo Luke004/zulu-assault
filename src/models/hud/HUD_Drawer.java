@@ -1,11 +1,15 @@
 package models.hud;
 
+import levels.AbstractLevel;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.TrueTypeFont;
 import player.Player;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static models.hud.HUD.GAME_HEIGHT;
 import static models.hud.HUD.GAME_WIDTH;
@@ -17,8 +21,13 @@ public class HUD_Drawer {
     private static final int MARGIN = 10;
     private Player player;
 
+    private TrueTypeFont level_time_text;
+
     HUD_Drawer(Player player) {
         this.player = player;
+
+        Font awtFont = new Font("Arial", Font.PLAIN, 14);
+        this.level_time_text = new TrueTypeFont(awtFont, false);
 
         number_images = new ArrayList<>();
         final int NUM_AMOUNT = 10;  // 10 numbers (0-9)
@@ -72,5 +81,14 @@ public class HUD_Drawer {
         drawNumber(player.getPoints(), GAME_WIDTH / 2 + MARGIN + 35, GAME_HEIGHT - 40);
         // draw the health
         drawNumber(player.getWarAttender().getHealth(), MARGIN + 35, GAME_HEIGHT - 40);
+
+        // draw the current level time
+        long timeSeconds = TimeUnit.MILLISECONDS.toSeconds(AbstractLevel.getTimeInLevel());
+        long minutes = (timeSeconds % 3600) / 60;
+        long seconds = timeSeconds % 60;
+        String time_string = String.format("%02d:%02d", minutes, seconds);
+        level_time_text.drawString(GAME_WIDTH / 2.f - level_time_text.getWidth(time_string) / 2.f,
+                5, time_string, org.newdawn.slick.Color.white);
     }
+
 }
