@@ -34,13 +34,7 @@ public abstract class Plane extends MovableWarAttender {
             setMoving(true);
             hasStarted = true;    // bot planes are already flying from the start
         } else {
-            // for the player, land the plane so he can get in eventually
-            landing = true;
-            /*
-            // this is the code for if the player is starting the level in the plane -> already flying from start
-            hasStarted = true;
-            setMoving(true);
-             */
+            landing = true;     // for the player - land the plane so he can get in eventually
         }
 
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
@@ -286,6 +280,13 @@ public abstract class Plane extends MovableWarAttender {
 
     public boolean hasLanded() {
         return hasLanded;
+    }
+
+    /* call this right after creating an instance of 'Plane' whenever a player is starting the level in this instance */
+    public void setStarting() {
+        landing = false;
+        hasStarted = true;
+        setMoving(true);
     }
 
     protected class PlaneShadow {
