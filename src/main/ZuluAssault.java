@@ -15,12 +15,13 @@ import java.io.File;
 public class ZuluAssault extends StateBasedGame {
 
     public static final String gameName = "Zulu Assault";
-    public static final String gameVersion = "Alpha Test Version 1.02";
+    public static final String gameVersion = "Alpha Test Version 1.1";
 
     public static final int MAIN_MENU = 0;
     public static final int LEVEL_1 = 1;
     public static final int LEVEL_2 = 2;
     public static final int LEVEL_3 = 3;
+    public static final int LEVEL_4 = 4;
     public static final int BRIEFING = -1;
     public static final int DEBRIEFING = -2;
 
@@ -33,6 +34,7 @@ public class ZuluAssault extends StateBasedGame {
         this.addState(new Level_1());
         this.addState(new Level_2());
         this.addState(new Level_3());
+        this.addState(new Level_4());
         this.addState(new Debriefing());
         this.addState(new Briefing());
     }

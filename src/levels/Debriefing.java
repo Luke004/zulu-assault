@@ -128,7 +128,7 @@ public class Debriefing extends BasicGameState {
 
 
         // TODO: remove this, this is temporary for the test version
-        if (NEXT_LEVEL_ID == 4) {
+        if (NEXT_LEVEL_ID == 5) {
             MainMenu.goToMenu(MainMenu.STATE_MAIN_MENU, gameContainer);
             stateBasedGame.enterState(ZuluAssault.MAIN_MENU,
                     new FadeOutTransition(), new FadeInTransition());
