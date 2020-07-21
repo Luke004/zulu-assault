@@ -23,8 +23,8 @@ import java.util.List;
 
 public class Level_3 extends AbstractLevel implements GameState {
 
-    private static Sound level2_intro_sound;
-    private static Music level2_music;
+    private static Sound level3_intro_sound;
+    private static Music level3_music;
 
     public Level_3() {
         super();
@@ -36,15 +36,15 @@ public class Level_3 extends AbstractLevel implements GameState {
             mission_title = "Kill the Operative";
             briefing_message = "We've got the defecting cowards convoy surrounded. Hit the convoy hard and don't " +
                     "leave any survivors.";
-            debriefing_message = "We got the mechs back. Over and Out.";
+            debriefing_message = "The traitorous defector has been taken care of. Good Job.";
             calledOnce = true;
             return;
         }
 
         resetLevel();    // reset the level before init
 
-        level_intro_sound = level2_intro_sound;
-        level_music = level2_music;
+        level_intro_sound = level3_intro_sound;
+        level_music = level3_music;
 
 
         // SETUP ITEMS
@@ -164,7 +164,7 @@ public class Level_3 extends AbstractLevel implements GameState {
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
         Vector2f playerStartPos = new Vector2f(3782, 3750);
 
-        MovableWarAttender robot = new RocketRobot(playerStartPos, false, true);
+        RocketRobot robot = new RocketRobot(playerStartPos, false, true);
 
         // DEFINE THE MAP
         map = new TiledMap("assets/maps/level_3.tmx");
@@ -181,10 +181,10 @@ public class Level_3 extends AbstractLevel implements GameState {
 
     @Override
     public void loadLevelMusic() {
-        if (level2_intro_sound == null) {
+        if (level3_intro_sound == null) {
             try {
-                level2_intro_sound = new Sound("audio/music/level_3_intro.ogg");
-                level2_music = new Music("audio/music/level_3.ogg");
+                level3_intro_sound = new Sound("audio/music/level_3_intro.ogg");
+                level3_music = new Music("audio/music/level_3.ogg");
             } catch (SlickException e) {
                 e.printStackTrace();
             }

@@ -3,7 +3,6 @@ package levels;
 import logic.WayPointManager;
 import main.ZuluAssault;
 import models.interaction_circles.HealthCircle;
-import models.interaction_circles.InteractionCircle;
 import models.items.GoldenWrenchItem;
 import models.items.InvincibilityItem;
 import models.items.Item;
@@ -174,9 +173,9 @@ public class Level_2 extends AbstractLevel implements GameState {
         Item invincibility_item_2 = new InvincibilityItem(new Vector2f(1380, 2940));
         items.add(invincibility_item_2);
 
-        // SETUP INTERACTION CIRCLES
-        InteractionCircle health_circle_1 = new HealthCircle(new Vector2f(147.f, 2612.f));
-        interaction_circles.add(health_circle_1);
+        // SETUP HEALTH CIRCLES
+        HealthCircle health_circle_1 = new HealthCircle(new Vector2f(147.f, 2612.f));
+        health_circles.add(health_circle_1);
 
         // SETUP ENEMY WAR ATTENDERS
         // near health circle
@@ -240,23 +239,26 @@ public class Level_2 extends AbstractLevel implements GameState {
         drivable_war_attenders.add(player_drivable_robot_2);
 
         // middle
+
+        // create the waypoint list for the 3 cannon tanks
+        List<Vector2f> wayPoints_cannon_tanks = new ArrayList<>();
+        wayPoints_cannon_tanks.add(new Vector2f(2454, 160));
+        wayPoints_cannon_tanks.add(new Vector2f(1868, 543));
+        wayPoints_cannon_tanks.add(new Vector2f(1735, 904));
+        wayPoints_cannon_tanks.add(new Vector2f(1821, 1279));
+        wayPoints_cannon_tanks.add(new Vector2f(2103, 1658));
+        wayPoints_cannon_tanks.add(new Vector2f(2467, 1692));
+        wayPoints_cannon_tanks.add(new Vector2f(2962, 1515));
+        wayPoints_cannon_tanks.add(new Vector2f(3148, 1118));
+        wayPoints_cannon_tanks.add(new Vector2f(3196, 645));
+        wayPoints_cannon_tanks.add(new Vector2f(3000, 400));
+
         List<Vector2f> wayPoints;
         MovableWarAttender enemy_tank_5 = new CannonTank(new Vector2f(2454, 140), true, false);
         enemy_tank_5.setMoving(true);
         enemy_tank_5.base_image.setRotation(180);
-        wayPoints = new ArrayList<>();
-        wayPoints.add(new Vector2f(2454, 160));
-        wayPoints.add(new Vector2f(1868, 543));
-        wayPoints.add(new Vector2f(1735, 904));
-        wayPoints.add(new Vector2f(1821, 1279));
-        wayPoints.add(new Vector2f(2103, 1658));
-        wayPoints.add(new Vector2f(2467, 1692));
-        wayPoints.add(new Vector2f(2962, 1515));
-        wayPoints.add(new Vector2f(3148, 1118));
-        wayPoints.add(new Vector2f(3196, 645));
-        wayPoints.add(new Vector2f(3000, 400));
         enemy_tank_5.addWayPoints(new WayPointManager(enemy_tank_5.getPosition(), enemy_tank_5.getRotation(),
-                wayPoints));
+                wayPoints_cannon_tanks));
         hostile_movable_war_attenders.add(enemy_tank_5);
 
         MovableWarAttender enemy_tank_6 = new CannonTank(new Vector2f(2713, 271), true, false);
@@ -264,25 +266,15 @@ public class Level_2 extends AbstractLevel implements GameState {
         enemy_tank_6.base_image.setRotation(310);
         // has same way points as 'enemy_tank_5'
         enemy_tank_6.addWayPoints(new WayPointManager(enemy_tank_6.getPosition(), enemy_tank_6.getRotation(),
-                wayPoints));
+                wayPoints_cannon_tanks));
         hostile_movable_war_attenders.add(enemy_tank_6);
 
         MovableWarAttender enemy_tank_7 = new CannonTank(new Vector2f(2400, 1692), true, false);
         enemy_tank_7.setMoving(true);
         enemy_tank_7.base_image.setRotation(90);
-        wayPoints = new ArrayList<>();
-        wayPoints.add(new Vector2f(2467, 1692));
-        wayPoints.add(new Vector2f(2962, 1515));
-        wayPoints.add(new Vector2f(3148, 1118));
-        wayPoints.add(new Vector2f(3196, 645));
-        wayPoints.add(new Vector2f(3000, 400));
-        wayPoints.add(new Vector2f(2454, 160));
-        wayPoints.add(new Vector2f(1868, 543));
-        wayPoints.add(new Vector2f(1735, 904));
-        wayPoints.add(new Vector2f(1821, 1279));
-        wayPoints.add(new Vector2f(2103, 1658));
         enemy_tank_7.addWayPoints(new WayPointManager(enemy_tank_7.getPosition(), enemy_tank_7.getRotation(),
-                wayPoints));
+                wayPoints_cannon_tanks,
+                5));
         hostile_movable_war_attenders.add(enemy_tank_7);
 
         MovableWarAttender enemy_drivable_tank_1 = new ShellTank(new Vector2f(2363, 2520), true, true);
@@ -341,7 +333,7 @@ public class Level_2 extends AbstractLevel implements GameState {
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
         Vector2f playerStartPos = new Vector2f(3848, 3888);
 
-        Tank tank = new CannonTank(playerStartPos, false, true);
+        CannonTank tank = new CannonTank(playerStartPos, false, true);
 
         // DEFINE THE MAP
         map = new TiledMap("assets/maps/level_2.tmx");

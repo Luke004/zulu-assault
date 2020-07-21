@@ -3,12 +3,9 @@ package levels;
 import logic.WayPointManager;
 import main.ZuluAssault;
 import models.interaction_circles.HealthCircle;
-import models.interaction_circles.InteractionCircle;
 import models.items.*;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.planes.GreenEnemyPlane;
-import models.war_attenders.planes.Helicopter;
-import models.war_attenders.planes.Jet;
 import models.war_attenders.robots.PlasmaRobot;
 import models.war_attenders.soldiers.EnemySoldier;
 import models.war_attenders.tanks.*;
@@ -201,9 +198,9 @@ public class Level_1 extends AbstractLevel implements GameState {
         friendly_movable_war_attenders.add(player_ally_3);
 
 
-        // SETUP INTERACTION CIRCLES
-        InteractionCircle health_circle_1 = new HealthCircle(new Vector2f(2380.f, 340.f));
-        interaction_circles.add(health_circle_1);
+        // SETUP HEALTH CIRCLES
+        HealthCircle health_circle_1 = new HealthCircle(new Vector2f(2380.f, 340.f));
+        health_circles.add(health_circle_1);
 
         // SETUP ITEMS
         // silver wrenches
@@ -317,14 +314,8 @@ public class Level_1 extends AbstractLevel implements GameState {
 
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
         Vector2f playerStartPos = new Vector2f(750, 800);
-        //Vector2f playerStartPos = new Vector2f(789, 2769);
-        //Tank tank = new NapalmTank(playerStartPos, false, true);
-        //Tank tank = new ShellTank(playerStartPos, false, true);
-        MovableWarAttender tank = new CannonTank(playerStartPos, false, true);
+        CannonTank tank = new CannonTank(playerStartPos, false, true);
         tank.setRotation(190);
-        //Plane plane = new GreenEnemyPlane(playerStartPos, false, true);
-        //Robot robot = new PlasmaRobot(playerStartPos, false, true);
-        //MovableWarAttender soldier = new PlayerSoldier(playerStartPos, false);
 
         // DEFINE THE MAP
         map = new TiledMap("assets/maps/level_1.tmx");
