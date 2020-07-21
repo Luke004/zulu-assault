@@ -15,6 +15,12 @@ public class WayPointManager {
     public int wish_angle;
     public MovableWarAttender.RotateDirection rotate_direction;
 
+    private WayPointManager(List<Vector2f> wayPoints) {
+        this.wayPointLists = new ArrayList<>();
+        this.wayPointLists.add(wayPoints);
+        wish_angle = -123456;
+    }
+
     public WayPointManager(List<List<Vector2f>> wayPointLists, Vector2f pos, float angle) {
         this.wayPointLists = wayPointLists;
         wish_angle = -123456;
@@ -24,10 +30,15 @@ public class WayPointManager {
     }
 
     public WayPointManager(Vector2f pos, float angle, List<Vector2f> wayPoints) {
-        this.wayPointLists = new ArrayList<>();
-        this.wayPointLists.add(wayPoints);
-        wish_angle = -123456;
+        this(wayPoints);
         current_point_idx = -1;
+        setupNextWayPoint(pos, angle);
+    }
+
+    /* firstIdx defines the first index of the waypoint in the list that the entity drives towards */
+    public WayPointManager(Vector2f pos, float angle, List<Vector2f> wayPoints, int firstIdx) {
+        this(wayPoints);
+        current_point_idx = firstIdx - 1;
         setupNextWayPoint(pos, angle);
     }
 
@@ -47,7 +58,7 @@ public class WayPointManager {
     }
 
     public void adjustAfterRotation(Vector2f pos, float angle) {
-        if(angle < 0) angle += 360; // only use the positive angles from 'getRotation()'
+        if (angle < 0) angle += 360; // only use the positive angles from 'getRotation()'
         float angle2 = calculateAngleToRotateTo(pos, wayPointLists.get(current_way_point_list_idx).get(current_point_idx));
         float shortest_angle = getShortestSignedAngle(angle2, angle);
 
