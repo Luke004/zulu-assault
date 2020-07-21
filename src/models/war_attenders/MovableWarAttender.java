@@ -5,6 +5,7 @@ import logic.level_listeners.WarAttenderDeleteListener;
 import logic.WayPointManager;
 import menus.UserSettings;
 import models.CollisionModel;
+import models.interaction_circles.TeleportCircle;
 import models.war_attenders.planes.Plane;
 import models.weapons.MegaPulse;
 import models.weapons.Weapon;
@@ -45,7 +46,7 @@ public abstract class MovableWarAttender extends WarAttender {
     private static final float TURRET_ROTATE_SPEED_PLAYER = 0.2f, TURRET_ROTATE_SPEED_BOT = 0.07f;
 
     // booleans
-    protected boolean isMoving, isMovingForward, isDrivable;
+    protected boolean isMoving, isMovingForward, isDrivable, canTeleport;
 
 
     // invincibility item related
@@ -81,6 +82,7 @@ public abstract class MovableWarAttender extends WarAttender {
     @Override
     public void init() {
         isMovingForward = true;
+        canTeleport = true;
         if (isDrivable && !isHostile) {
             initAccessibleAnimation();
             weapons.add(new MegaPulse());  // add the MEGA_PULSE (special item)
@@ -92,6 +94,8 @@ public abstract class MovableWarAttender extends WarAttender {
     @Override
     public void update(GameContainer gc, int deltaTime) {
         super.update(gc, deltaTime);
+
+        //System.out.println("canTeleport: " +canTeleport);
 
         // GRAPHICS RELATED STUFF
         if (show_drivable_animation) {
@@ -297,6 +301,19 @@ public abstract class MovableWarAttender extends WarAttender {
                 }
                 break;
         }
+    }
+
+    public void teleport(Vector2f new_position) {
+        if (canTeleport) {
+            canTeleport = false;
+            this.position.x = new_position.x;
+            this.position.y = new_position.y;
+            TeleportCircle.playTeleportSound();
+        }
+    }
+
+    public void allowTeleport() {
+        canTeleport = true;
     }
 
     public enum RotateDirection {

@@ -10,7 +10,9 @@ import models.StaticWarAttender;
 import models.animations.explosion.BigExplosionAnimation;
 import models.hud.HUD;
 import models.hud.Radar;
+import models.interaction_circles.HealthCircle;
 import models.interaction_circles.InteractionCircle;
+import models.interaction_circles.TeleportCircle;
 import models.items.Item;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
@@ -58,7 +60,8 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     public static Player player;
     public TiledMap map;
     public static List<StaticWarAttender> static_enemies;
-    public static List<InteractionCircle> interaction_circles;
+    public static List<TeleportCircle> teleport_circles;
+    public static List<HealthCircle> health_circles;
     public static List<Item> items;
     public static List<MovableWarAttender> friendly_movable_war_attenders, hostile_movable_war_attenders, drivable_war_attenders,
             all_movable_war_attenders;
@@ -92,7 +95,8 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         all_hostile_war_attenders = new ArrayList<>();
         renderList = new ArrayList<>();
         static_enemies = new ArrayList<>();
-        interaction_circles = new ArrayList<>();
+        health_circles = new ArrayList<>();
+        teleport_circles = new ArrayList<>();
         items = new ArrayList<>();
         try {
             explosion_sound = new Sound("audio/sounds/explosion.ogg");
@@ -110,6 +114,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             // this gets only executed once
             has_initialized_once = true;
             TileMapInfo.init();
+            validateLevel();    // check that everything in the level is setup correctly
 
             randomItemDropper = new RandomItemDropper();
             collisionHandler = new CollisionHandler();
@@ -313,8 +318,11 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             static_enemies.get(idx).update(gameContainer, deltaTime);
         }
 
-        for (InteractionCircle interaction_circle : interaction_circles) {
-            interaction_circle.update(deltaTime);
+        for (InteractionCircle health_circle : health_circles) {
+            health_circle.update(deltaTime);
+        }
+        for (InteractionCircle teleport_circle : teleport_circles) {
+            teleport_circle.update(deltaTime);
         }
         for (Item item : items) {
             item.update(deltaTime);
@@ -361,8 +369,11 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) {
         camera.drawMap();
         camera.translateGraphics();
-        for (InteractionCircle interaction_circle : interaction_circles) {
-            interaction_circle.draw();
+        for (InteractionCircle health_circle : health_circles) {
+            health_circle.draw();
+        }
+        for (InteractionCircle teleport_circle : teleport_circles) {
+            teleport_circle.draw();
         }
         for (Item item : items) {
             item.draw();
@@ -483,10 +494,15 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         all_hostile_war_attenders.clear();
         renderList.clear();
         static_enemies.clear();
-        interaction_circles.clear();
+        health_circles.clear();
+        teleport_circles.clear();
         items.clear();
         Radar.hideRadar();
         hasWonTheLevel = false;
+    }
+
+    protected static void validateLevel() {
+        assert ((teleport_circles.size() & 1) == 0);     // the number of teleport circles must be even
     }
 
     public static void resetPlayerStats() {

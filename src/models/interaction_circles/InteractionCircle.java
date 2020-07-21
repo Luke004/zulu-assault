@@ -1,12 +1,12 @@
 package models.interaction_circles;
 
-import models.CollisionModel;
 import models.StaticCollisionEntity;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
 public abstract class InteractionCircle extends StaticCollisionEntity {
+
     protected Image outerCircle;
 
     public InteractionCircle(Vector2f position) {

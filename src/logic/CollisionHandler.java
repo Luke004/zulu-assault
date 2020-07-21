@@ -92,20 +92,37 @@ public class CollisionHandler {
         handleBulletCollisions(player_warAttender);
         handleHostileCollisions(player_warAttender, friendly_movable_war_attenders, deltaTime);
 
-        for (InteractionCircle interaction_circle : interaction_circles) {
-            if (player_warAttender.getCollisionModel().intersects(interaction_circle.getCollisionModel())) {
-                if (interaction_circle instanceof HealthCircle) {
-                    if (player_warAttender.isMaxHealth()) return;
-                    player_warAttender.changeHealth(HealthCircle.HEAL_SPEED);
-                    break;
-                }
-                if (interaction_circle instanceof TeleportCircle) {
-                    // TODO: teleport player here
-                    break;
-                }
+        // PLAYER COLLIDES WITH HEALTH CIRCLE
+        for (HealthCircle health_circle : health_circles) {
+            if (player_warAttender.getCollisionModel().intersects(health_circle.getCollisionModel())) {
+                if (player_warAttender.isMaxHealth()) return;
+                player_warAttender.changeHealth(HealthCircle.HEAL_SPEED);
+                break;
             }
         }
 
+        // PLAYER COLLIDES WITH TELEPORT CIRCLE
+        boolean noIntersection = true;
+        for (int idx = 0; idx < teleport_circles.size(); ++idx) {
+            if (player_warAttender.getCollisionModel().intersects(teleport_circles.get(idx).getCollisionModel())) {
+                // teleport the player
+                if ((idx & 1) == 0) {
+                    // even idx -> teleport the player to the next teleport circle in the list
+                    player_warAttender.teleport(teleport_circles.get(idx + 1).getPosition());
+                } else {
+                    // odd idx -> teleport the player to the previous teleport circle in the list
+                    player_warAttender.teleport(teleport_circles.get(idx - 1).getPosition());
+                }
+                noIntersection = false;
+                break;
+            }
+        }
+        if (noIntersection) {
+            // allow the player to teleport again as soon as he is not in any teleport circle anymore
+            player_warAttender.allowTeleport();
+        }
+
+        // PLAYER COLLIDES WITH ITEMS
         for (int idx = 0; idx < items.size(); ++idx) {
             if (player_warAttender.getCollisionModel().intersects(items.get(idx).getCollisionModel())) {
                 switch (items.get(idx).getName()) {
