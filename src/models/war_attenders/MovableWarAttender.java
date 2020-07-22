@@ -82,10 +82,9 @@ public abstract class MovableWarAttender extends WarAttender {
     @Override
     public void init() {
         isMovingForward = true;
-        canTeleport = true;
         if (isDrivable && !isHostile) {
             initAccessibleAnimation();
-            weapons.add(new MegaPulse());  // add the MEGA_PULSE (special item)
+            weapons.add(new MegaPulse(isDrivable));  // add the MEGA_PULSE (special item)
         }
         health_bar_offset = new Vector2f(30.f, base_image.getHeight() / 2.f + 20.f);
         super.init();

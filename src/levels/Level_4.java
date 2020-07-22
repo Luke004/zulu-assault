@@ -9,10 +9,7 @@ import models.war_attenders.MovableWarAttender;
 import models.war_attenders.planes.Helicopter;
 import models.war_attenders.soldiers.EnemySoldier;
 import models.war_attenders.soldiers.RocketSoldier;
-import models.war_attenders.tanks.CannonTank;
-import models.war_attenders.tanks.NapalmTank;
-import models.war_attenders.tanks.RocketTank;
-import models.war_attenders.tanks.ShellTank;
+import models.war_attenders.tanks.*;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.GameState;
@@ -208,8 +205,8 @@ public class Level_4 extends AbstractLevel implements GameState {
         enemy_tank_9.setRotation(165);
         enemy_tank_9.setAsMandatory();
         hostile_movable_war_attenders.add(enemy_tank_9);
-        // TODO: add mega pulse tank below
-        MovableWarAttender enemy_tank_10 = new RocketTank(new Vector2f(928, 216), true, false);
+
+        MovableWarAttender enemy_tank_10 = new MegaPulseTank(new Vector2f(928, 216), true, false);
         enemy_tank_10.setRotation(295);
         enemy_tank_10.setAsMandatory();
         hostile_movable_war_attenders.add(enemy_tank_10);
