@@ -69,10 +69,6 @@ public class TileMapInfo {
     public static void init() {
         TILE_WIDTH = map.getTileWidth();
         TILE_HEIGHT = map.getTileHeight();
-        LEVEL_WIDTH_TILES = map.getWidth();
-        LEVEL_HEIGHT_TILES = map.getHeight();
-        LEVEL_WIDTH_PIXELS = LEVEL_WIDTH_TILES * TILE_WIDTH;
-        LEVEL_HEIGHT_PIXELS = LEVEL_HEIGHT_TILES * TILE_HEIGHT;
 
         // create TileInfo for 'landscape_tiles' TileSet
         TileSet landscape_tiles = map.getTileSet(LANDSCAPE_TILES_TILESET_IDX);
@@ -149,6 +145,14 @@ public class TileMapInfo {
         }
 
         destructible_tiles_health_info = new HashMap<>();
+    }
+
+    /* this is called every time a new map is loaded - maps can have different sizes! */
+    public static void update() {
+        LEVEL_WIDTH_TILES = map.getWidth();
+        LEVEL_HEIGHT_TILES = map.getHeight();
+        LEVEL_WIDTH_PIXELS = LEVEL_WIDTH_TILES * TILE_WIDTH;
+        LEVEL_HEIGHT_PIXELS = LEVEL_HEIGHT_TILES * TILE_HEIGHT;
     }
 
     public static void reset() {

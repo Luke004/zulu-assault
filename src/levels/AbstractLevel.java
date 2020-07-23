@@ -127,6 +127,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         }
         this.stateBasedGame = stateBasedGame;
         this.gameContainer = gameContainer;
+        TileMapInfo.update();
         level_starting_time = System.currentTimeMillis();
         level_begin_pause_time = 0;
 
