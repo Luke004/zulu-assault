@@ -148,11 +148,14 @@ public class TileMapInfo {
     }
 
     /* this is called every time a new map is loaded - maps can have different sizes! */
-    public static void update() {
+    public static boolean updateMapSize() {
+        int prevWidth = LEVEL_WIDTH_TILES, prevHeight = LEVEL_HEIGHT_TILES;
         LEVEL_WIDTH_TILES = map.getWidth();
         LEVEL_HEIGHT_TILES = map.getHeight();
         LEVEL_WIDTH_PIXELS = LEVEL_WIDTH_TILES * TILE_WIDTH;
         LEVEL_HEIGHT_PIXELS = LEVEL_HEIGHT_TILES * TILE_HEIGHT;
+        if (prevHeight == 0 && prevWidth == 0) return true;    // first call
+        return prevHeight != LEVEL_HEIGHT_TILES || prevWidth != LEVEL_WIDTH_TILES;
     }
 
     public static void reset() {

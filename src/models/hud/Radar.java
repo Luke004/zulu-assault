@@ -26,6 +26,8 @@ public class Radar {
     private static final int X_START = 24, X_END = 160, Y_START = 10, Y_END = 110,
             RADAR_WIDTH = X_END - X_START, RADAR_HEIGHT = Y_END - Y_START;
 
+    private float RADAR_SCREEN_RECT_WIDTH, RADAR_SCREEN_RECT_HEIGHT;
+
     private static Vector2f radar_origin;
 
     private static final int TIME_SECOND_MILLIS = 1000;
@@ -69,8 +71,12 @@ public class Radar {
                 radar_origin.x + player_x, radar_origin.y + Y_END - Y_START);
         graphics.drawLine(radar_origin.x, radar_origin.y + player_y,
                 radar_origin.x + RADAR_WIDTH, radar_origin.y + player_y);
+        // draw the current screen as a rect that the player can see on radar
         graphics.setColor(Color.white);
-        graphics.drawRect(radar_origin.x + player_x - 10, radar_origin.y + player_y - 6, 20, 12);
+        graphics.drawRect(radar_origin.x + player_x - RADAR_SCREEN_RECT_WIDTH / 2,
+                radar_origin.y + player_y - RADAR_SCREEN_RECT_HEIGHT / 2,
+                RADAR_SCREEN_RECT_WIDTH,
+                RADAR_SCREEN_RECT_HEIGHT);
 
         // draw the friendly warAttenders
         graphics.setColor(Color.green);
@@ -113,6 +119,11 @@ public class Radar {
 
         // draw the radar decoration outline image
         radar_image.draw(radar_image_position.x, radar_image_position.y);
+    }
+
+    public void updateMapSize() {
+        RADAR_SCREEN_RECT_WIDTH = RADAR_WIDTH / (float) TileMapInfo.LEVEL_WIDTH_TILES * 14.07f;
+        RADAR_SCREEN_RECT_HEIGHT = RADAR_HEIGHT / (float) TileMapInfo.LEVEL_HEIGHT_TILES * 12.f;
     }
 
     public static void hideRadar() {

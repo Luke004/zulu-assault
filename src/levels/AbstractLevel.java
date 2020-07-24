@@ -127,7 +127,12 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         }
         this.stateBasedGame = stateBasedGame;
         this.gameContainer = gameContainer;
-        TileMapInfo.update();
+
+        // check if the map size has changed - if so, inform the radar about it
+        boolean map_size_changed = TileMapInfo.updateMapSize();
+        if (map_size_changed) radar.updateMapSize();
+
+        // setup level time
         level_starting_time = System.currentTimeMillis();
         level_begin_pause_time = 0;
 
