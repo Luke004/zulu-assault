@@ -19,7 +19,7 @@
    H4sIAAAAAAAACu3au0oDURAG4A2iL2yhIjaCl3jFxsYmjbVYeUkplr6TU2yjbgyYcOas5/vgZ2CLzCS7Z5dwtutgPSbZAwArs47ztP7bZ3z/yYIKLXHdA7VxX6J11gAAAAAAAAAAAAAAQLs2B45tF55hJ7Ib2Svct3b7fT1I6H2Y0LN2R5HjyEnkNDIt0PMsch65iFxGrgr0HIvrvt4k9L5N6FmjoefHXfEpum6W0BMAABivof8yQ8eA1d1nD8AXD319TJ2iXsv2Kdb1/HiKPEdeIq+R+R8+oxUl9yne+vpesOdYZOxTfBToMXb2Keoyyx4AAOCf2coeAAAAAACAH76/K+XdWwAAaNNG9gAs5NzActYJMDbuW/A7a4RWfQJKy/fNQJwAAA==
   </data>
  </layer>
- <layer name="destruction_tiles" width="100" height="100" visible="0">
+ <layer name="destruction_tiles" width="100" height="100">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAACu3BMQEAAADCoPVP7WULoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgBt5RKnmQJwAAA==
   </data>
