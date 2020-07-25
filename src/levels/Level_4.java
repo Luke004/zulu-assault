@@ -35,7 +35,7 @@ public class Level_4 extends AbstractLevel implements GameState {
             briefing_message = "Our scanners have found several small battle groups around the area. One of theses " +
                     "groups has reportedly captured one of our tanks. Your mission is to find the armor unit and take" +
                     "out the enemy with it.";
-            debriefing_message = "";
+            debriefing_message = "The depot is ours. Good Job.";
             calledOnce = true;
             return;
         }
