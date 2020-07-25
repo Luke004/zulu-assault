@@ -30,6 +30,9 @@ Taken from the old game's HELPME.TXT.
 `3` Use a mega pulse (most powerful weapon)  
 `4` Use an expand (Repels enemy weapons)
 
+## Play now (download):
+https://www.dropbox.com/sh/dft4pes6qxbbuts/AAC3EQgJXdtmXwD29vViDMa4a?dl=0
+
 ## Info
 **Idea by:**  
 Dallas Nutsch  
