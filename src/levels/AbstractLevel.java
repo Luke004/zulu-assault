@@ -1,5 +1,6 @@
 package levels;
 
+import audio.CombatBackgroundMusic;
 import logic.*;
 import logic.level_listeners.GroundTileDamageListener;
 import logic.level_listeners.WarAttenderDeleteListener;
@@ -49,8 +50,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     private static boolean has_initialized_once;
     protected boolean calledOnce;
 
-    protected static Sound level_intro_sound;
-    protected static Music level_music;
+    protected static CombatBackgroundMusic combatBackgroundMusic;
 
     protected String mission_title, briefing_message, debriefing_message;
 
@@ -88,6 +88,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     static {
         has_initialized_once = false;
         player = new Player();
+        combatBackgroundMusic = new CombatBackgroundMusic();
         hostile_movable_war_attenders = new ArrayList<>();
         friendly_movable_war_attenders = new ArrayList<>();
         drivable_war_attenders = new ArrayList<>();
@@ -289,7 +290,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         collisionHandler.setPlayer(player);
         collisionHandler.addListener(this);
         keyInputHandler.setPlayer(player);
-        level_intro_sound.play(1.f, UserSettings.MUSIC_VOLUME);
+        combatBackgroundMusic.start();
 
         if (ZuluAssault.prevState.getID() == ZuluAssault.MAIN_MENU && level_begin_pause_time != 0) {
             // player is resuming the level
@@ -302,8 +303,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     @Override
     public void leave(GameContainer var1, StateBasedGame var2) {
         TileMapInfo.reset();
-        level_intro_sound.stop();
-        level_music.stop();
+        combatBackgroundMusic.stop();
         ZuluAssault.prevState = this;
     }
 
@@ -350,13 +350,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             ZuluAssault.prevState = this;
         }
 
-        if (!level_intro_sound.playing()) {
-            if (!level_music.playing()) {
-                level_music.play();
-                level_music.loop();
-                level_music.setVolume(UserSettings.MUSIC_VOLUME);
-            }
-        }
+        combatBackgroundMusic.update();
         checkWon();
     }
 
@@ -532,5 +526,4 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         return System.currentTimeMillis() - level_starting_time;
     }
 
-    public abstract void loadLevelMusic();  // load level music in separate thread since it takes long
 }

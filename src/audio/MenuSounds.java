@@ -3,7 +3,7 @@ package audio;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
-public class SoundManager {
+public class MenuSounds {
     public static Sound CLICK_SOUND, ERROR_SOUND;
 
     static {

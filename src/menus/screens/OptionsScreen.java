@@ -1,6 +1,6 @@
 package menus.screens;
 
-import audio.SoundManager;
+import audio.MenuSounds;
 import menus.MainMenu;
 import menus.menu_elements.Arrow;
 import menus.menu_elements.Slider;
@@ -68,22 +68,22 @@ public class OptionsScreen extends AbstractMenuScreen {
         super.update(gameContainer, stateBasedGame);
 
         if (gameContainer.getInput().isKeyPressed(Input.KEY_UP)) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             arrow.moveUp();
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_DOWN)) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             arrow.moveDown();
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ENTER)) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             handleMenuItemChoice(arrow.currIdx);
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_LEFT)) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             onLeftKeyPress();
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_RIGHT)) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             onRightKeyPress();
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             returnToPreviousMenu();
         }
 
@@ -133,19 +133,19 @@ public class OptionsScreen extends AbstractMenuScreen {
     public void onMouseClick(GameContainer gameContainer, StateBasedGame stateBasedGame, int mouseX, int mouseY) {
         if (mouseX > back_image_position.x && mouseX < back_image_position.x + back_image.getWidth()) {
             if (mouseY > back_image_position.y && mouseY < back_image_position.y + back_image.getHeight()) {
-                SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+                MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
                 arrow.currIdx = 0;
                 handleMenuItemChoice(0);
             }
         }
         if (sound_volume_slider.onClick(mouseX, mouseY)) {
             arrow.currIdx = 1;
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             UserSettings.setSoundVolume(sound_volume_slider.getValue());
         }
         if (music_volume_slider.onClick(mouseX, mouseY)) {
             arrow.currIdx = 2;
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             UserSettings.setMusicVolume(music_volume_slider.getValue());
             MainMenu.updateMainMenuMusicVolume();
         }

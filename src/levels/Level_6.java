@@ -23,9 +23,6 @@ import java.util.List;
 
 public class Level_6 extends AbstractLevel implements GameState {
 
-    private static Sound level6_intro_sound;
-    private static Music level6_music;
-
     public Level_6() {
         super();
     }
@@ -42,9 +39,7 @@ public class Level_6 extends AbstractLevel implements GameState {
 
         resetLevel();    // reset the level before init
 
-        level_intro_sound = level6_intro_sound;
-        level_music = level6_music;
-
+        combatBackgroundMusic.setIdx(0);
 
         // SETUP ITEMS
         // silver wrenches
@@ -269,18 +264,6 @@ public class Level_6 extends AbstractLevel implements GameState {
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) {
         super.render(gameContainer, stateBasedGame, graphics);
-    }
-
-    @Override
-    public void loadLevelMusic() {
-        if (level6_intro_sound == null) {
-            try {
-                level6_intro_sound = new Sound("audio/music/level_5_intro.ogg");
-                level6_music = new Music("audio/music/level_5.ogg");
-            } catch (SlickException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     @Override

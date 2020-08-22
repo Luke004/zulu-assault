@@ -22,9 +22,6 @@ import java.util.List;
 
 public class Level_1 extends AbstractLevel implements GameState {
 
-    private static Sound level1_intro_sound;
-    private static Music level1_music;
-
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         // this makes sure we don't init on the first two calls, since this would be a waste of cpu power
@@ -39,8 +36,7 @@ public class Level_1 extends AbstractLevel implements GameState {
 
         resetLevel();    // reset the level before init
 
-        level_intro_sound = level1_intro_sound;
-        level_music = level1_music;
+        combatBackgroundMusic.setIdx(0);
 
         // SETUP ENEMY WAR ATTENDERS
         List<Vector2f> wayPoints;
@@ -415,18 +411,6 @@ public class Level_1 extends AbstractLevel implements GameState {
                 stateBasedGame.getState(ZuluAssault.LEVEL_2).init(gameContainer, stateBasedGame);
                 stateBasedGame.enterState(ZuluAssault.LEVEL_2,
                         new FadeOutTransition(), new FadeInTransition());
-            } catch (SlickException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
-    public void loadLevelMusic() {
-        if (level1_intro_sound == null) {
-            try {
-                level1_intro_sound = new Sound("audio/music/level_1_intro.ogg");
-                level1_music = new Music("audio/music/level_1.ogg");
             } catch (SlickException e) {
                 e.printStackTrace();
             }

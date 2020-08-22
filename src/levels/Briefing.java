@@ -1,6 +1,7 @@
 package levels;
 
-import audio.SoundManager;
+import audio.CombatBackgroundMusic;
+import audio.MenuSounds;
 import main.ZuluAssault;
 import settings.UserSettings;
 import org.newdawn.slick.Graphics;
@@ -139,7 +140,7 @@ public class Briefing extends BasicGameState {
     @Override
     public void keyPressed(int key, char c) {
         if (loadMusicThread.isAlive()) return;
-        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+        MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
         try {
             stateBasedGame.getState(nextLevelID).init(gameContainer, stateBasedGame);
             stateBasedGame.enterState(nextLevelID,
@@ -159,7 +160,7 @@ public class Briefing extends BasicGameState {
     class LoadMusicThread extends Thread {
         @Override
         public void run() {
-            ((AbstractLevel) stateBasedGame.getState(nextLevelID)).loadLevelMusic();
+            CombatBackgroundMusic.load(nextLevelID - 1);
         }
     }
 

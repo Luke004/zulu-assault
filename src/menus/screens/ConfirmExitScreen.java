@@ -1,6 +1,6 @@
 package menus.screens;
 
-import audio.SoundManager;
+import audio.MenuSounds;
 import menus.MainMenu;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
@@ -50,17 +50,17 @@ public class ConfirmExitScreen extends AbstractMenuScreen {
 
         // handle key inputs
         if (gameContainer.getInput().isKeyPressed(Input.KEY_ENTER)) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             System.exit(0);
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             MainMenu.returnToPreviousMenu();
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_Y)
                 || gameContainer.getInput().isKeyPressed(Input.KEY_J)) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             System.exit(0);
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_N)) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             MainMenu.returnToPreviousMenu();
         }
 
@@ -83,20 +83,20 @@ public class ConfirmExitScreen extends AbstractMenuScreen {
     @Override
     public void onMouseClick(GameContainer gameContainer, StateBasedGame stateBasedGame, int mouseX, int mouseY) {
         if (mouseX < confirm_exit_image_position.x || mouseX > confirm_exit_image_position.x + confirm_exit_image.getWidth()) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             MainMenu.returnToPreviousMenu();
             return;
         }
         if (mouseY < confirm_exit_image_position.y || mouseY > confirm_exit_image_position.y + confirm_exit_image.getHeight()) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             MainMenu.returnToPreviousMenu();
             return;
         }
         if (confirmRect.contains(mouseX, mouseY)) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             System.exit(0);
         } else if (cancelRect.contains(mouseX, mouseY)) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             MainMenu.returnToPreviousMenu();
         }
     }

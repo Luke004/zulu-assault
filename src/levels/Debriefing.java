@@ -4,7 +4,7 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
-import audio.SoundManager;
+import audio.MenuSounds;
 import main.ZuluAssault;
 import menus.MainMenu;
 import menus.screens.MainScreen;
@@ -123,7 +123,7 @@ public class Debriefing extends BasicGameState {
 
     @Override
     public void keyPressed(int key, char c) {
-        SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+        MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
         final int NEXT_LEVEL_ID = finished_level_ID + 1;
 
 

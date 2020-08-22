@@ -1,7 +1,7 @@
 package menus.screens;
 
 import levels.AbstractLevel;
-import audio.SoundManager;
+import audio.MenuSounds;
 import main.ZuluAssault;
 import menus.MainMenu;
 import menus.menu_elements.Arrow;
@@ -69,16 +69,16 @@ public class InGameScreen extends AbstractMenuScreen {
 
         // handle key inputs
         if (gameContainer.getInput().isKeyPressed(Input.KEY_UP)) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             arrow.moveUp();
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_DOWN)) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             arrow.moveDown();
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ENTER)) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             handleMenuItemChoice(gameContainer, stateBasedGame, arrow.currIdx);
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             arrow.currIdx = 5;
         }
 
@@ -95,7 +95,7 @@ public class InGameScreen extends AbstractMenuScreen {
     public void onMouseClick(GameContainer gameContainer, StateBasedGame stateBasedGame, int mouseX, int mouseY) {
         if (mouseX > main_menu_image_position.x && mouseX < main_menu_image_position.x + main_menu_image.getWidth()) {
             if (mouseY > resume_image_position.y && mouseY < main_menu_image_position.y + main_menu_image.getHeight()) {
-                SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+                MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
                 for (int idx = 0; idx < MENU_Y_MOUSE_CLICK_OFFSETS.length; ++idx) {
                     if (mouseY < MENU_Y_MOUSE_CLICK_OFFSETS[idx]) {
                         handleMenuItemChoice(gameContainer, stateBasedGame, idx);
@@ -119,7 +119,7 @@ public class InGameScreen extends AbstractMenuScreen {
                 break;
             case 2: // LOAD
             case 3: // SAVE
-                SoundManager.ERROR_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+                MenuSounds.ERROR_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
                 break;
             case 4: // OPTIONS
                 goToMenu(MainMenu.STATE_OPTIONS_MENU, gameContainer);

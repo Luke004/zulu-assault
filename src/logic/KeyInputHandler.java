@@ -1,6 +1,6 @@
 package logic;
 
-import audio.SoundManager;
+import audio.MenuSounds;
 import settings.UserSettings;
 import graphics.hud.Radar;
 import models.war_attenders.MovableWarAttender;
@@ -199,7 +199,7 @@ public class KeyInputHandler {
                         player.setWarAttender(tank, Player.EnterAction.LEAVING);
                     } else {
                         // tank is moving, can't get out of it
-                        SoundManager.ERROR_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+                        MenuSounds.ERROR_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
                     }
                 }
 

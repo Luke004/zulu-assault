@@ -1,7 +1,7 @@
 package menus.screens;
 
 import levels.AbstractLevel;
-import audio.SoundManager;
+import audio.MenuSounds;
 import main.ZuluAssault;
 import menus.MainMenu;
 import menus.menu_elements.Buttons;
@@ -59,13 +59,13 @@ public class DeathScreen extends AbstractMenuScreen {
 
         // handle key inputs
         if (gameContainer.getInput().isKeyPressed(Input.KEY_UP)) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             buttons.onUpKeyPress();
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_DOWN)) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             buttons.onDownKeyPress();
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ENTER)) {
-            SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             handleMenuItemChoice(gameContainer, stateBasedGame, buttons.getCurrentButtonIdx());
         }
     }
@@ -73,7 +73,7 @@ public class DeathScreen extends AbstractMenuScreen {
     @Override
     public void onMouseClick(GameContainer gameContainer, StateBasedGame stateBasedGame, int mouseX, int mouseY) {
         int idx = buttons.isClicked(mouseX, mouseY);
-        if (idx != -1) SoundManager.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+        if (idx != -1) MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
         handleMenuItemChoice(gameContainer, stateBasedGame, idx);
     }
 
@@ -85,7 +85,7 @@ public class DeathScreen extends AbstractMenuScreen {
                 break;
             case 1: // LOAD A GAME
                 // TODO: LOAD
-                SoundManager.ERROR_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+                MenuSounds.ERROR_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
                 break;
             case 2: // MAIN MENU
                 you_are_dead_sound.stop();

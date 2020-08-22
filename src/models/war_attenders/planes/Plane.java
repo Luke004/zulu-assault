@@ -2,7 +2,7 @@ package models.war_attenders.planes;
 
 import logic.TileMapInfo;
 import logic.WayPointManager;
-import audio.SoundManager;
+import audio.MenuSounds;
 import settings.UserSettings;
 import models.CollisionModel;
 import models.war_attenders.MovableWarAttender;
@@ -239,7 +239,7 @@ public abstract class Plane extends MovableWarAttender {
 
     public void initLanding() {
         if (!canLand()) {
-            SoundManager.ERROR_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.ERROR_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             return;
         }
         landing = true;
