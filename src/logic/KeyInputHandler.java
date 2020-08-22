@@ -1,8 +1,8 @@
 package logic;
 
-import main.SoundManager;
-import menus.UserSettings;
-import models.hud.Radar;
+import audio.SoundManager;
+import settings.UserSettings;
+import graphics.hud.Radar;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.planes.Helicopter;
 import models.war_attenders.planes.Plane;

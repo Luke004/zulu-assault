@@ -1,9 +1,8 @@
 package levels;
 
-import main.SoundManager;
+import audio.SoundManager;
 import main.ZuluAssault;
-import menus.UserSettings;
-import org.lwjgl.Sys;
+import settings.UserSettings;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.*;

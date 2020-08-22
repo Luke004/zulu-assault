@@ -1,10 +1,12 @@
 package menus;
 
 import main.ZuluAssault;
+import menus.screens.*;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import settings.UserSettings;
 
 import java.awt.Font;
 import java.io.File;
@@ -29,8 +31,8 @@ public class MainMenu extends BasicGameState {
 
     private static boolean firstCall_leave = true, firstCall_enter = true;
 
-    protected static Sound main_menu_intro_sound;
-    protected static Music main_menu_music;
+    public static Sound main_menu_intro_sound;
+    public static Music main_menu_music;
 
     protected static String title_string;
     protected static Vector2f title_string_position;
@@ -168,7 +170,7 @@ public class MainMenu extends BasicGameState {
         ZuluAssault.prevState = this;
     }
 
-    protected static void drawInfoStrings(GameContainer gameContainer) {
+    public static void drawInfoStrings(GameContainer gameContainer) {
         ttf_info_string.drawString(
                 TEXT_MARGIN,
                 gameContainer.getHeight() - ttf_info_string.getHeight() - TEXT_MARGIN,
@@ -183,7 +185,7 @@ public class MainMenu extends BasicGameState {
                 info_strings[2]);
     }
 
-    protected static void drawGameTitle() {
+    public static void drawGameTitle() {
         ttf_title_string.drawString(
                 title_string_position.x,
                 title_string_position.y,

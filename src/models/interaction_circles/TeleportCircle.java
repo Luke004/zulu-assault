@@ -1,6 +1,6 @@
 package models.interaction_circles;
 
-import menus.UserSettings;
+import settings.UserSettings;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;

@@ -1,6 +1,6 @@
 package models.weapons;
 
-import menus.UserSettings;
+import settings.UserSettings;
 import models.weapons.projectiles.Projectile;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;

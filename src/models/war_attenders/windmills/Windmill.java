@@ -2,7 +2,7 @@ package models.war_attenders.windmills;
 
 import logic.WayPointManager;
 import models.StaticWarAttender;
-import models.animations.smoke.SmokeAnimation;
+import graphics.animations.smoke.SmokeAnimation;
 import models.war_attenders.MovableWarAttender;
 import models.weapons.Weapon;
 import org.newdawn.slick.GameContainer;

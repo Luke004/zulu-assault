@@ -2,7 +2,7 @@ package player;
 
 import logic.level_listeners.ChangeWarAttenderListener;
 import logic.level_listeners.ItemChangeListener;
-import models.hud.HUD;
+import graphics.hud.HUD;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.planes.Helicopter;
 import models.war_attenders.planes.Plane;

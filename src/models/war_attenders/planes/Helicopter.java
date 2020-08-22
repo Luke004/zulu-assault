@@ -1,8 +1,8 @@
 package models.war_attenders.planes;
 
 import logic.TileMapInfo;
-import menus.UserSettings;
-import models.animations.other.AnimatedCrosshair;
+import settings.UserSettings;
+import graphics.animations.other.AnimatedCrosshair;
 import models.weapons.AGM;
 import models.weapons.RocketLauncher;
 import org.newdawn.slick.*;

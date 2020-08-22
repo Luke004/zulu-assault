@@ -2,11 +2,10 @@ package models.war_attenders.planes;
 
 import logic.TileMapInfo;
 import logic.WayPointManager;
-import main.SoundManager;
-import menus.UserSettings;
+import audio.SoundManager;
+import settings.UserSettings;
 import models.CollisionModel;
 import models.war_attenders.MovableWarAttender;
-import org.lwjgl.Sys;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;

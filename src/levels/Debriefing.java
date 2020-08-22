@@ -4,11 +4,11 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.SoundManager;
+import audio.SoundManager;
 import main.ZuluAssault;
 import menus.MainMenu;
-import menus.MainScreen;
-import menus.UserSettings;
+import menus.screens.MainScreen;
+import settings.UserSettings;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;

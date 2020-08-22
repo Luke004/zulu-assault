@@ -1,7 +1,6 @@
 package models.weapons;
 
-import menus.UserSettings;
-import models.weapons.projectiles.GroundBullet;
+import settings.UserSettings;
 import models.weapons.projectiles.GroundRocket;
 import models.weapons.projectiles.Projectile;
 import org.newdawn.slick.Animation;

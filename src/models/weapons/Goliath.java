@@ -1,8 +1,8 @@
 package models.weapons;
 
 import logic.level_listeners.GroundTileDamageListener;
-import menus.UserSettings;
-import models.animations.explosion.BigExplosionAnimation;
+import settings.UserSettings;
+import graphics.animations.explosion.BigExplosionAnimation;
 import models.weapons.projectiles.AirShell;
 import models.weapons.projectiles.Projectile;
 import models.weapons.projectiles.iGroundTileDamageWeapon;

@@ -1,6 +1,6 @@
 package models.war_attenders.planes;
 
-import menus.UserSettings;
+import settings.UserSettings;
 import models.weapons.RocketLauncher;
 import models.weapons.Uzi;
 import org.newdawn.slick.Image;

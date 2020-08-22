@@ -1,8 +1,7 @@
 package models.war_attenders.planes;
 
 import logic.WayPointManager;
-import models.CollisionModel;
-import models.animations.other.AnimatedCrosshair;
+import graphics.animations.other.AnimatedCrosshair;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
 import models.weapons.AGM;

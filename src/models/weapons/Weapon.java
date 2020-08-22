@@ -1,9 +1,8 @@
 package models.weapons;
 
-import menus.UserSettings;
+import settings.UserSettings;
 import models.weapons.projectiles.GroundBullet;
 import models.weapons.projectiles.Projectile;
-import models.weapons.projectiles.iGroundTileDamageWeapon;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Sound;

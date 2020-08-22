@@ -1,7 +1,7 @@
 package models.weapons;
 
-import menus.UserSettings;
-import models.animations.smoke.SmokeAnimation;
+import settings.UserSettings;
+import graphics.animations.smoke.SmokeAnimation;
 import models.weapons.projectiles.GroundBullet;
 import models.weapons.projectiles.Projectile;
 import org.newdawn.slick.Graphics;

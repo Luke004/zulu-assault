@@ -1,17 +1,15 @@
 package logic;
 
 import logic.level_listeners.WarAttenderDeleteListener;
-import menus.UserSettings;
+import settings.UserSettings;
 import models.CollisionModel;
 import models.StaticWarAttender;
-import models.animations.damage.PlasmaDamageAnimation;
-import models.animations.damage.UziDamageAnimation;
-import models.animations.explosion.BigExplosionAnimation;
-import models.animations.explosion.UziHitExplosionAnimation;
-import models.animations.smoke.SmokeAnimation;
+import graphics.animations.damage.PlasmaDamageAnimation;
+import graphics.animations.damage.UziDamageAnimation;
+import graphics.animations.explosion.BigExplosionAnimation;
+import graphics.animations.explosion.UziHitExplosionAnimation;
+import graphics.animations.smoke.SmokeAnimation;
 import models.interaction_circles.HealthCircle;
-import models.interaction_circles.InteractionCircle;
-import models.interaction_circles.TeleportCircle;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
 import models.war_attenders.planes.Plane;

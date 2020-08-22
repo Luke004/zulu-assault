@@ -1,7 +1,7 @@
 package models.weapons;
 
-import menus.UserSettings;
-import models.animations.explosion.UziFireShotAnimation;
+import settings.UserSettings;
+import graphics.animations.explosion.UziFireShotAnimation;
 import models.weapons.projectiles.GroundBullet;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;

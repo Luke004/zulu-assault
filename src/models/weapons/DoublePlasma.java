@@ -1,6 +1,6 @@
 package models.weapons;
 
-import menus.UserSettings;
+import settings.UserSettings;
 import models.weapons.projectiles.GroundBullet;
 import org.newdawn.slick.geom.Vector2f;
 

@@ -3,7 +3,7 @@ package models.war_attenders;
 import levels.AbstractLevel;
 import logic.level_listeners.WarAttenderDeleteListener;
 import logic.WayPointManager;
-import menus.UserSettings;
+import settings.UserSettings;
 import models.CollisionModel;
 import models.interaction_circles.TeleportCircle;
 import models.war_attenders.planes.Plane;
