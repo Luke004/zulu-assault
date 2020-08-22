@@ -1,4 +1,4 @@
-package menus;
+package menus.screens;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;

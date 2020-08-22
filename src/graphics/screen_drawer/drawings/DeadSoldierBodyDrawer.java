@@ -1,4 +1,4 @@
-package screen_drawer.drawings;
+package graphics.screen_drawer.drawings;
 
 import models.war_attenders.WarAttender;
 import org.newdawn.slick.Image;
