@@ -160,7 +160,7 @@ public class Briefing extends BasicGameState {
     class LoadMusicThread extends Thread {
         @Override
         public void run() {
-            CombatBackgroundMusic.load(nextLevelID - 1);
+            CombatBackgroundMusic.load(((AbstractLevel) stateBasedGame.getState(nextLevelID)).getCombatMusicIdx());
         }
     }
 

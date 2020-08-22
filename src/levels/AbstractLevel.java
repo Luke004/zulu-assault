@@ -110,6 +110,8 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         // set the current tilemap based on the level
         TileMapInfo.setMap(map);
+        // set the combat music based on the level
+        combatBackgroundMusic.setIdx(getCombatMusicIdx());
         // reset the level info
         if (!has_initialized_once) {
             // this gets only executed once
@@ -526,4 +528,5 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         return System.currentTimeMillis() - level_starting_time;
     }
 
+    public abstract int getCombatMusicIdx();
 }

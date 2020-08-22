@@ -36,8 +36,6 @@ public class Level_1 extends AbstractLevel implements GameState {
 
         resetLevel();    // reset the level before init
 
-        combatBackgroundMusic.setIdx(0);
-
         // SETUP ENEMY WAR ATTENDERS
         List<Vector2f> wayPoints;
 
@@ -415,6 +413,11 @@ public class Level_1 extends AbstractLevel implements GameState {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public int getCombatMusicIdx() {
+        return 0;
     }
 
     @Override

@@ -39,8 +39,6 @@ public class Level_4 extends AbstractLevel implements GameState {
 
         resetLevel();    // reset the level before init
 
-        combatBackgroundMusic.setIdx(3);
-
         // SETUP ITEMS
         // silver wrenches
         Item silver_wrench_1 = new SilverWrenchItem(new Vector2f(3283, 1921));
@@ -302,6 +300,11 @@ public class Level_4 extends AbstractLevel implements GameState {
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) {
         super.render(gameContainer, stateBasedGame, graphics);
+    }
+
+    @Override
+    public int getCombatMusicIdx() {
+        return 3;
     }
 
     @Override

@@ -105,7 +105,7 @@ public class MainScreen extends AbstractMenuScreen {
                 // START NEW GAME
                 // init a new game starting with level 1
                 AbstractLevel.resetPlayerStats();
-                startLevel(ZuluAssault.LEVEL_1, stateBasedGame, gameState);
+                startLevel(ZuluAssault.LEVEL_6, stateBasedGame, gameState);
                 break;  // TODO: LOAD AND SAVE
             case 1: // LOAD
             case 2: // SAVE
