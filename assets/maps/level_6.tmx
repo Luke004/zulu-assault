@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="40" tileheight="40" infinite="0" nextobjectid="32">
+ <tileset firstgid="1" name="enemy_tiles" tilewidth="40" tileheight="40" tilecount="8" columns="8">
+  <image source="../tilesets/enemy_tiles.png" width="320" height="40"/>
+ </tileset>
+ <tileset firstgid="9" name="landscape_tiles" tilewidth="40" tileheight="40" tilecount="104" columns="8">
+  <image source="../tilesets/landscape_tiles.png" width="320" height="520"/>
+ </tileset>
+ <tileset firstgid="113" name="plane_tiles" tilewidth="40" tileheight="40" tilecount="100" columns="10">
+  <image source="../tilesets/plane_tiles.png" width="400" height="400"/>
+ </tileset>
+ <layer name="landscape_tiles" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   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
+  </data>
+ </layer>
+ <layer name="enemy_tiles" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3bMQ6DMAwFUCa4/40rVFWVKoJKE5K4fm+DIQrfJnhhWQDiWS/eBwDm43sOAAAAAHBsG72BRGTdn8zbOctyZM5qDABArSgzZZR9AjE4U2JRr7ZmyXOWffDf9Bk7fQAAZHfXPGTOemuZxdFavbJW0yc5xONf+X5kHY8zLRb16suZllO29yzb845Uk/XrPNo+rmvXBQBgHHNcPRmWXc1GlnGUaqWGAECJOYGW9BNnfukPPcUIrftOH99PxgAAAAAAAAAAAHzjAdDJYTtAnAAA
+  </data>
+ </layer>
+ <layer name="destruction_tiles" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3BMQEAAADCoPVP7WULoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgBt5RKnmQJwAAA==
+  </data>
+ </layer>
+</map>

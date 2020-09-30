@@ -82,6 +82,7 @@ public class Helicopter extends Plane {
     public void fly(int deltaTime) {
         position.add(dir);
         collisionModel.update(base_image.getRotation());
+        System.out.println(position);
     }
 
     @Override

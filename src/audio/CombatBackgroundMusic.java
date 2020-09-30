@@ -8,9 +8,9 @@ import settings.UserSettings;
 /*
     This class handles the music that is played in the background during combat.
     NOTICE: In this game, each in game background music has its own intro that is only played ONCE at the beginning
-            -> background_intro_sound
+            -> 'combat_background_intro_sounds'
             After that, the main background music follows and is looped infinitely
-            -> background_music
+            -> 'combat_background_music'
  */
 
 public class CombatBackgroundMusic {
