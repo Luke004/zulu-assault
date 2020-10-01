@@ -57,6 +57,7 @@ public class OptionsScreen extends AbstractMenuScreen {
 
     @Override
     public void render(GameContainer gameContainer) {
+        super.render(gameContainer);
         back_image.draw(back_image_position.x, back_image_position.y);
         sound_volume_slider.draw();
         music_volume_slider.draw();

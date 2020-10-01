@@ -49,6 +49,7 @@ public class DeathScreen extends AbstractMenuScreen {
 
     @Override
     public void render(GameContainer gameContainer) {
+        super.render(gameContainer);
         you_are_dead_background_image.draw();
         buttons.draw();
     }

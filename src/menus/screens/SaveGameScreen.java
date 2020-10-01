@@ -17,6 +17,7 @@ public class SaveGameScreen extends AbstractMenuScreen {
 
     @Override
     public void render(GameContainer gameContainer) {
+        super.render(gameContainer);
 
     }
 

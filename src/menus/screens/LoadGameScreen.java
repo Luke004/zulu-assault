@@ -13,6 +13,7 @@ public class LoadGameScreen extends AbstractMenuScreen {
 
     @Override
     public void render(GameContainer gameContainer) {
+        super.render(gameContainer);
 
     }
 

@@ -56,6 +56,7 @@ public class InGameScreen extends AbstractMenuScreen {
 
     @Override
     public void render(GameContainer gameContainer) {
+        super.render(gameContainer);
         resume_image.draw(resume_image_position.x, resume_image_position.y);
         MainMenu.drawGameTitle();
         main_menu_image.draw(main_menu_image_position.x, main_menu_image_position.y);
