@@ -69,4 +69,10 @@ public class ZuluAssault extends StateBasedGame {
         this.getState(LEVEL_1).init(gameContainer, this);   // pre-load the first level at the start
         this.enterState(MAIN_MENU);
     }
+
+    public static boolean existsLevel(int id) {
+        if (id < 1 || id > 6) return false;
+        return true;
+    }
+
 }
