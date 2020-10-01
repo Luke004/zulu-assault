@@ -1,5 +1,6 @@
 package menus;
 
+import console.Console;
 import main.ZuluAssault;
 import menus.screens.*;
 import org.newdawn.slick.*;
@@ -119,6 +120,8 @@ public class MainMenu extends BasicGameState {
         menus[STATE_DEATH_MENU] = new DeathScreen(this);
         menus[STATE_CONFIRM_EXIT_MENU] = new ConfirmExitScreen(this, gameContainer);
 
+        Console.init(gameContainer);    // init the console
+
         goToMenu(STATE_MAIN_MENU, gameContainer);
     }
 
@@ -223,6 +226,12 @@ public class MainMenu extends BasicGameState {
         }
         if (gameContainer.getInput().isKeyPressed(Input.KEY_N)) {
         }
+    }
+
+    @Override
+    public void keyPressed(int key, char c) {
+        if (!Console.isActive()) return;
+        else Console.handleUserInput(key, c);
     }
 
 

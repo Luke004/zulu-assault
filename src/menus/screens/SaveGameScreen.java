@@ -21,6 +21,11 @@ public class SaveGameScreen extends AbstractMenuScreen {
     }
 
     @Override
+    public void handleKeyInput(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+
+    }
+
+    @Override
     public void onMouseClick(GameContainer gameContainer, StateBasedGame stateBasedGame, int mouseX, int mouseY) {
 
     }

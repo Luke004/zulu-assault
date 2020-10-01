@@ -17,6 +17,11 @@ public class LoadGameScreen extends AbstractMenuScreen {
     }
 
     @Override
+    public void handleKeyInput(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+
+    }
+
+    @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame) {
 
     }

@@ -48,6 +48,7 @@ public class MainScreen extends AbstractMenuScreen {
 
     @Override
     public void render(GameContainer gameContainer) {
+        super.render(gameContainer);
         main_menu_image.draw(main_menu_image_position.x, main_menu_image_position.y);
         MainMenu.drawGameTitle();
         arrow.draw();
@@ -55,10 +56,7 @@ public class MainScreen extends AbstractMenuScreen {
     }
 
     @Override
-    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-        super.update(gameContainer, stateBasedGame);
-
-        // handle key inputs
+    public void handleKeyInput(GameContainer gameContainer, StateBasedGame stateBasedGame) {
         if (gameContainer.getInput().isKeyPressed(Input.KEY_UP)) {
             MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             arrow.moveUp();
@@ -71,14 +69,6 @@ public class MainScreen extends AbstractMenuScreen {
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
             MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
             arrow.currIdx = 4;
-        }
-
-        if (!main_menu_intro_sound.playing()) {
-            if (!main_menu_music.playing()) {
-                main_menu_music.play();
-                main_menu_music.loop();
-                main_menu_music.setVolume(UserSettings.MUSIC_VOLUME);
-            }
         }
     }
 
