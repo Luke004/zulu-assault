@@ -45,6 +45,25 @@ public class ConfirmExitScreen extends AbstractMenuScreen {
     }
 
     @Override
+    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+        if (gameContainer.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+            onMouseClick(gameContainer, stateBasedGame,
+                    gameContainer.getInput().getMouseX(),
+                    gameContainer.getInput().getMouseY());
+        }
+        handleKeyInput(gameContainer, stateBasedGame);
+
+        // loop the menu sound
+        if (!main_menu_intro_sound.playing()) {
+            if (!main_menu_music.playing()) {
+                main_menu_music.play();
+                main_menu_music.loop();
+                main_menu_music.setVolume(UserSettings.MUSIC_VOLUME);
+            }
+        }
+    }
+
+    @Override
     public void render(GameContainer gameContainer) {
         confirm_exit_image.draw(confirm_exit_image_position.x, confirm_exit_image_position.y);
         MainMenu.drawInfoStrings(gameContainer);
