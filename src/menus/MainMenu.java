@@ -122,7 +122,7 @@ public class MainMenu extends BasicGameState {
 
         Console.init(gameContainer);    // init the console
 
-        goToMenu(STATE_MAIN_MENU, gameContainer);
+        goToMenu(STATE_MAIN_MENU);
     }
 
     @Override
@@ -135,10 +135,10 @@ public class MainMenu extends BasicGameState {
         menus[current_menu_idx].update(gameContainer, stateBasedGame);
     }
 
-    public static void goToMenu(int menu_idx, GameContainer gameContainer) {
+    public static void goToMenu(int menu_idx) {
         prev_menu_idx = current_menu_idx;
         current_menu_idx = menu_idx;
-        gameContainer.getInput().clearKeyPressedRecord();
+        //gameContainer.getInput().clearKeyPressedRecord();
     }
 
     public static void returnToPreviousMenu() {

@@ -20,8 +20,8 @@ import static menus.MainMenu.TEXT_MARGIN;
 
 public class Debriefing extends BasicGameState {
 
-    private GameContainer gameContainer;
-    private StateBasedGame stateBasedGame;
+    //private GameContainer gameContainer;
+    //private StateBasedGame stateBasedGame;
 
     private int finished_level_ID;
 
@@ -72,8 +72,8 @@ public class Debriefing extends BasicGameState {
         if (!has_initialized_once) {
             // this gets only executed once
             has_initialized_once = true;
-            this.gameContainer = gameContainer;
-            this.stateBasedGame = stateBasedGame;
+            //this.gameContainer = gameContainer;
+            //this.stateBasedGame = stateBasedGame;
             Font awtFont = new java.awt.Font("DialogInput", java.awt.Font.PLAIN, 14);
             ttf_info_string = new TrueTypeFont(awtFont, false);
             MESSAGE_Y_START = gameContainer.getHeight() / 8.f;
@@ -124,9 +124,11 @@ public class Debriefing extends BasicGameState {
     @Override
     public void keyPressed(int key, char c) {
         MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
-        final int NEXT_LEVEL_ID = finished_level_ID + 1;
 
+        if (LevelHandler.playerIsInPlayThrough()) {
+            final int NEXT_LEVEL_ID = finished_level_ID + 1;
 
+            /*
         // TODO: remove this, this is temporary for the test version
         if (NEXT_LEVEL_ID == 6) {
             MainMenu.goToMenu(MainMenu.STATE_MAIN_MENU, gameContainer);
@@ -134,9 +136,12 @@ public class Debriefing extends BasicGameState {
                     new FadeOutTransition(), new FadeInTransition());
             return;
         }
+         */
 
-
-        MainScreen.startLevel(NEXT_LEVEL_ID, stateBasedGame, this);
+            LevelHandler.startNextLevel(NEXT_LEVEL_ID, this);
+        } else {
+            LevelHandler.goToMainMenu();
+        }
     }
 
     @Override

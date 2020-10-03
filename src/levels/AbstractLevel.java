@@ -42,7 +42,6 @@ import static logic.TileMapInfo.*;
 
 public abstract class AbstractLevel extends BasicGameState implements WarAttenderDeleteListener, GroundTileDamageListener {
 
-    private StateBasedGame stateBasedGame;
     private GameContainer gameContainer;
 
     private static RandomItemDropper randomItemDropper;
@@ -117,6 +116,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             // this gets only executed once
             has_initialized_once = true;
             TileMapInfo.init();
+            LevelHandler.init(stateBasedGame);
             validateLevel();    // check that everything in the level is setup correctly
 
             randomItemDropper = new RandomItemDropper();
@@ -128,7 +128,6 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             player.addListener(hud);
             radar = new Radar(gameContainer, player);
         }
-        this.stateBasedGame = stateBasedGame;
         this.gameContainer = gameContainer;
 
         // check if the map size has changed - if so, inform the radar about it
@@ -346,7 +345,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
 
         if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {  // paused the game
             level_begin_pause_time = System.currentTimeMillis();
-            MainMenu.goToMenu(MainMenu.STATE_IN_GAME_MENU, gameContainer);
+            MainMenu.goToMenu(MainMenu.STATE_IN_GAME_MENU);
             stateBasedGame.enterState(ZuluAssault.MAIN_MENU,
                     new FadeOutTransition(), new FadeInTransition());
             ZuluAssault.prevState = this;
@@ -439,11 +438,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
                 if (warAttender instanceof Robot) camera.shake();
                 if (warAttender == player.getWarAttender()) {
                     // THE PLAYER DIED
-                    MainMenu.goToMenu(MainMenu.STATE_DEATH_MENU, gameContainer);
-                    stateBasedGame.enterState(ZuluAssault.MAIN_MENU,
-                            new FadeOutTransition(), new FadeInTransition()
-                    );
-                    ZuluAssault.prevState = this;
+                    LevelHandler.gameOver(this);
                 } else {
                     friendly_movable_war_attenders.remove(warAttender);
                     if (((MovableWarAttender) warAttender).isDrivable())

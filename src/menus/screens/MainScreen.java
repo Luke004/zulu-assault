@@ -1,7 +1,7 @@
 package menus.screens;
 
-import levels.AbstractLevel;
 import audio.MenuSounds;
+import levels.LevelHandler;
 import main.ZuluAssault;
 import menus.MainMenu;
 import menus.menu_elements.Arrow;
@@ -94,19 +94,18 @@ public class MainScreen extends AbstractMenuScreen {
             case 0: // NEW
                 // START NEW GAME
                 // init a new game starting with level 1
-                AbstractLevel.resetPlayerStats();
-                startLevel(ZuluAssault.LEVEL_6, stateBasedGame, gameState);
+                LevelHandler.startNewGame(ZuluAssault.LEVEL_1, basicGameState);
                 break;  // TODO: LOAD AND SAVE
             case 1: // LOAD
             case 2: // SAVE
                 MenuSounds.ERROR_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
                 break;
             case 3: // OPTIONS
-                MainMenu.goToMenu(MainMenu.STATE_OPTIONS_MENU, gameContainer);
+                MainMenu.goToMenu(MainMenu.STATE_OPTIONS_MENU);
 
                 break;
             case 4: // EXIT
-                goToMenu(STATE_CONFIRM_EXIT_MENU, gameContainer);
+                goToMenu(STATE_CONFIRM_EXIT_MENU);
                 break;
         }
     }
@@ -122,9 +121,4 @@ public class MainScreen extends AbstractMenuScreen {
         main_menu_music.stop();
     }
 
-    public static void startLevel(int levelID, StateBasedGame stateBasedGame, BasicGameState basicGameState) {
-        ZuluAssault.nextLevelID = levelID;
-        stateBasedGame.enterState(ZuluAssault.BRIEFING, new FadeOutTransition(), new FadeInTransition());
-        ZuluAssault.prevState = basicGameState;
-    }
 }

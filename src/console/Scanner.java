@@ -1,5 +1,6 @@
 package console;
 
+import levels.LevelHandler;
 import main.ZuluAssault;
 
 import java.util.regex.Matcher;
@@ -26,7 +27,8 @@ public class Scanner {
                     if (matcher.matches()) {
                         int levelID = Integer.parseInt(matcher.group(1));
                         if (ZuluAssault.existsLevel(levelID)) {
-                            // TODO: open level by id
+                            LevelHandler.openSingleLevel(levelID);
+                            closeConsoleWithDelay();
                             return "Opening level " + levelID + " ...";
                         }
                         return "Level " + levelID + " doesn't exist yet.";
@@ -40,7 +42,8 @@ public class Scanner {
                         return "Level " + s_levelID + " doesn't exist.";
                     }
                     if (ZuluAssault.existsLevel(levelID)) {
-                        // TODO: open level by id
+                        LevelHandler.openSingleLevel(levelID);
+                        closeConsoleWithDelay();
                         return "Opening level " + levelID + " ...";
                     }
                     return "Level " + levelID + " doesn't exist yet.";
@@ -57,6 +60,19 @@ public class Scanner {
         }
         return ERROR_UNRECOGNIZED;
 
+    }
+
+    private static void closeConsoleWithDelay() {
+        // just because it looks cool when you see the 'opening level x ...' message before it runs Xd
+        Thread t1 = new Thread(() -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Console.toggle();
+        });
+        t1.start();
     }
 
 }

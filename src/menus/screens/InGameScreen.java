@@ -2,6 +2,7 @@ package menus.screens;
 
 import levels.AbstractLevel;
 import audio.MenuSounds;
+import levels.LevelHandler;
 import main.ZuluAssault;
 import menus.MainMenu;
 import menus.menu_elements.Arrow;
@@ -104,18 +105,17 @@ public class InGameScreen extends AbstractMenuScreen {
                         new FadeOutTransition(), new FadeInTransition());
                 break;
             case 1: // START NEW GAME
-                AbstractLevel.resetPlayerStats();
-                MainScreen.startLevel(ZuluAssault.LEVEL_1, stateBasedGame, gameState);
+                LevelHandler.startNewGame(ZuluAssault.LEVEL_1, gameState);
                 break;
             case 2: // LOAD
             case 3: // SAVE
                 MenuSounds.ERROR_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
                 break;
             case 4: // OPTIONS
-                goToMenu(MainMenu.STATE_OPTIONS_MENU, gameContainer);
+                goToMenu(MainMenu.STATE_OPTIONS_MENU);
                 break;
             case 5: // EXIT
-                goToMenu(STATE_CONFIRM_EXIT_MENU, gameContainer);
+                goToMenu(STATE_CONFIRM_EXIT_MENU);
                 break;
         }
     }

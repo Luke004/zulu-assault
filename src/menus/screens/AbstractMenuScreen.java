@@ -12,10 +12,10 @@ import static menus.MainMenu.main_menu_music;
 
 public abstract class AbstractMenuScreen implements iMenuScreen {
 
-    protected BasicGameState gameState;
+    protected BasicGameState basicGameState;
 
     public AbstractMenuScreen(BasicGameState gameState) {
-        this.gameState = gameState;
+        this.basicGameState = gameState;
     }
 
     @Override
