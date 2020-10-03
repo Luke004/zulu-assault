@@ -1,5 +1,6 @@
 package menus.screens;
 
+import console.Console;
 import levels.AbstractLevel;
 import audio.MenuSounds;
 import levels.LevelHandler;
@@ -12,6 +13,9 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import settings.UserSettings;
+
+import static menus.MainMenu.main_menu_intro_sound;
+import static menus.MainMenu.main_menu_music;
 
 public class DeathScreen extends AbstractMenuScreen {
 
@@ -43,6 +47,16 @@ public class DeathScreen extends AbstractMenuScreen {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+        if (gameContainer.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+            onMouseClick(gameContainer, stateBasedGame,
+                    gameContainer.getInput().getMouseX(),
+                    gameContainer.getInput().getMouseY());
+        }
+        handleKeyInput(gameContainer, stateBasedGame);
     }
 
 
