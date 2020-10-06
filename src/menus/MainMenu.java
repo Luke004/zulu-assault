@@ -83,7 +83,7 @@ public class MainMenu extends BasicGameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-        Font awtFont = new Font("Courier", Font.BOLD, 50);
+        Font awtFont = new Font("Stencil", Font.PLAIN, 60);
         ttf_title_string = new TrueTypeFont(awtFont, false);
         title_string = "ZULU ASSAULT";
         title_string_position = new Vector2f(
