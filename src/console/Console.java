@@ -172,7 +172,6 @@ public class Console {
         }
         memory.add(cmd);
         currMemoryIdx = memory.size() - 1;
-        System.out.println(currMemoryIdx);
     }
 
     private static void clear() {

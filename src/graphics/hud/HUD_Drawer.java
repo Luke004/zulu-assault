@@ -15,11 +15,14 @@ import static graphics.hud.HUD.GAME_HEIGHT;
 import static graphics.hud.HUD.GAME_WIDTH;
 
 public class HUD_Drawer {
+
     private List<Image> number_images;
     private Image dmg_image, pts_image;
     private static final int OFFSET = 19;
     private static final int MARGIN = 10;
     private Player player;
+
+    public static boolean displayTime = true;
 
     private TrueTypeFont level_time_text;
 
@@ -82,13 +85,20 @@ public class HUD_Drawer {
         // draw the health
         drawNumber(player.getWarAttender().getHealth(), MARGIN + 35, GAME_HEIGHT - 40);
 
-        // draw the current level time
-        long timeSeconds = TimeUnit.MILLISECONDS.toSeconds(AbstractLevel.getTimeInLevel());
-        long minutes = (timeSeconds % 3600) / 60;
-        long seconds = timeSeconds % 60;
-        String time_string = String.format("%02d:%02d", minutes, seconds);
-        level_time_text.drawString(GAME_WIDTH / 2.f - level_time_text.getWidth(time_string) / 2.f,
-                5, time_string, org.newdawn.slick.Color.white);
+        if (displayTime) {
+            // draw the current level time
+            long timeSeconds = TimeUnit.MILLISECONDS.toSeconds(AbstractLevel.getTimeInLevel());
+            long minutes = (timeSeconds % 3600) / 60;
+            long seconds = timeSeconds % 60;
+            String time_string = String.format("%02d:%02d", minutes, seconds);
+            level_time_text.drawString(GAME_WIDTH / 2.f - level_time_text.getWidth(time_string) / 2.f,
+                    5, time_string, org.newdawn.slick.Color.white);
+        }
+    }
+
+    public static boolean toggleTimeDisplay() {
+        displayTime = !displayTime;
+        return displayTime;
     }
 
 }

@@ -1,5 +1,6 @@
 package console;
 
+import graphics.hud.HUD_Drawer;
 import levels.LevelHandler;
 import main.ZuluAssault;
 
@@ -12,6 +13,8 @@ public class Scanner {
     private static final String ERROR_UNRECOGNIZED = "Unrecognized command.";
 
     public static String scan(String input) {
+        if (input.isEmpty()) return "";
+
         String[] input_split_by_whitespace = input.split("\\s+");
         String command = input_split_by_whitespace[0];
 
@@ -49,6 +52,16 @@ public class Scanner {
                     return "Level " + levelID + " doesn't exist yet.";
                 }
                 return "Level doesn't exist.";
+            case "show":
+                String element = input_split_by_whitespace[1];
+                switch (element) {
+                    case "time":    // display the time needed for the play through
+                        boolean isDisplayingTime = HUD_Drawer.toggleTimeDisplay();
+                        if (isDisplayingTime) return "Time display enabled.";
+                        else return "Time display disabled.";
+                    default:
+                        return ERROR_UNRECOGNIZED;
+                }
             case "exit":    // all commands to exit the console
             case "leave":
             case "end":
