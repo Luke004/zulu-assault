@@ -30,8 +30,15 @@ Taken from the old game's HELPME.TXT.
 `3` Use a mega pulse (most powerful weapon)  
 `4` Use an expand (Repels enemy weapons)
 
-## Play now (download):
+## Play now (download)
 https://www.dropbox.com/sh/dft4pes6qxbbuts/AAC3EQgJXdtmXwD29vViDMa4a?dl=0
+
+## Console commands
+
+You can open the console in the menu by pressing ^ (German version - key to the left of 1)
+
+*open level_x* - open the level x  
+*show time* - display the time needed for the play through
 
 ## Info
 **Idea by:**  
