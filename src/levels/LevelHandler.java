@@ -1,5 +1,6 @@
 package levels;
 
+import logic.TimeManager;
 import main.ZuluAssault;
 import menus.MainMenu;
 import org.newdawn.slick.GameContainer;
@@ -17,6 +18,7 @@ public class LevelHandler {
     public static void startNewGame(int levelID, BasicGameState bgs) {
         playerIsInPlayThrough = true;
         AbstractLevel.resetPlayerStats();
+        TimeManager.reset();
         startNextLevel(levelID, bgs);
     }
 

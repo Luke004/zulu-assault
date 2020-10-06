@@ -53,9 +53,6 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
 
     protected String mission_title, briefing_message, debriefing_message;
 
-    // keep track of the time that the player has been in the level
-    private static long level_starting_time, level_begin_pause_time;
-
     public static Player player;
     public TiledMap map;
     public static List<StaticWarAttender> static_enemies;
@@ -134,9 +131,8 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         boolean map_size_changed = TileMapInfo.updateMapSize();
         if (map_size_changed) radar.updateMapSize();
 
-        // setup level time
-        level_starting_time = System.currentTimeMillis();
-        level_begin_pause_time = 0;
+        // init time manager for each level
+        TimeManager.init();
 
         // create a global movableWarAttender list for collisions between them
         all_movable_war_attenders.addAll(friendly_movable_war_attenders);
@@ -293,12 +289,11 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         keyInputHandler.setPlayer(player);
         combatBackgroundMusic.start();
 
-        if (ZuluAssault.prevState.getID() == ZuluAssault.MAIN_MENU && level_begin_pause_time != 0) {
+        /*
+        if (ZuluAssault.prevState.getID() == ZuluAssault.MAIN_MENU) {
             // player is resuming the level
-
-            // remove the time the player has lost while in main menu:
-            level_starting_time += System.currentTimeMillis() - level_begin_pause_time;
         }
+         */
     }
 
     @Override
@@ -311,6 +306,8 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int deltaTime) {
         if (hasWonTheLevel) {
+            // notify TimeManager that the level is finished
+            TimeManager.finishLevel();
             // enter debriefing
             stateBasedGame.enterState(ZuluAssault.DEBRIEFING,
                     new FadeOutTransition(), new FadeInTransition());
@@ -342,9 +339,9 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
         bigExplosionAnimation.update(deltaTime);
         camera.centerOn(player.getWarAttender().getPosition().x, player.getWarAttender().getPosition().y);
         camera.update(deltaTime);
+        TimeManager.update(deltaTime);
 
         if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {  // paused the game
-            level_begin_pause_time = System.currentTimeMillis();
             MainMenu.goToMenu(MainMenu.STATE_IN_GAME_MENU);
             stateBasedGame.enterState(ZuluAssault.MAIN_MENU,
                     new FadeOutTransition(), new FadeInTransition());
@@ -517,10 +514,6 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
 
     public String getMissionTitle() {
         return mission_title;
-    }
-
-    public static long getTimeInLevel() {
-        return System.currentTimeMillis() - level_starting_time;
     }
 
     public abstract int getCombatMusicIdx();

@@ -2,6 +2,7 @@ package console;
 
 import graphics.hud.HUD_Drawer;
 import levels.LevelHandler;
+import logic.TimeManager;
 import main.ZuluAssault;
 
 import java.util.regex.Matcher;
@@ -56,8 +57,8 @@ public class Scanner {
                 String element = input_split_by_whitespace[1];
                 switch (element) {
                     case "time":    // display the time needed for the play through
-                        boolean isDisplayingTime = HUD_Drawer.toggleTimeDisplay();
-                        if (isDisplayingTime) return "Time display enabled.";
+                        TimeManager.toggleTimeDisplay();
+                        if (TimeManager.displayTime()) return "Time display enabled.";
                         else return "Time display disabled.";
                     default:
                         return ERROR_UNRECOGNIZED;

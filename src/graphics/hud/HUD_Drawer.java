@@ -1,6 +1,7 @@
 package graphics.hud;
 
-import levels.AbstractLevel;
+import levels.LevelHandler;
+import logic.TimeManager;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
@@ -22,15 +23,13 @@ public class HUD_Drawer {
     private static final int MARGIN = 10;
     private Player player;
 
-    public static boolean displayTime = true;
-
-    private TrueTypeFont level_time_text;
+    private TrueTypeFont time_text, time_text_header;
 
     HUD_Drawer(Player player) {
         this.player = player;
 
-        Font awtFont = new Font("Arial", Font.PLAIN, 14);
-        this.level_time_text = new TrueTypeFont(awtFont, false);
+        this.time_text = new TrueTypeFont(new Font("Stencil", Font.PLAIN, 11), true);
+        this.time_text_header = new TrueTypeFont(new Font("Stencil", Font.PLAIN, 12), true);
 
         number_images = new ArrayList<>();
         final int NUM_AMOUNT = 10;  // 10 numbers (0-9)
@@ -85,20 +84,26 @@ public class HUD_Drawer {
         // draw the health
         drawNumber(player.getWarAttender().getHealth(), MARGIN + 35, GAME_HEIGHT - 40);
 
-        if (displayTime) {
-            // draw the current level time
-            long timeSeconds = TimeUnit.MILLISECONDS.toSeconds(AbstractLevel.getTimeInLevel());
-            long minutes = (timeSeconds % 3600) / 60;
-            long seconds = timeSeconds % 60;
-            String time_string = String.format("%02d:%02d", minutes, seconds);
-            level_time_text.drawString(GAME_WIDTH / 2.f - level_time_text.getWidth(time_string) / 2.f,
-                    5, time_string, org.newdawn.slick.Color.white);
+        if (TimeManager.displayTime()) {
+            // draw the current time spent in level
+            drawTime(TimeManager.getTimeInLevel(), 5.f, TimeManager.TEXT_LEVEL_TIME);
+            // draw the total time spent in the current play through
+            if (LevelHandler.playerIsInPlayThrough())
+                drawTime(TimeManager.getTotalTime(), 33.f, TimeManager.TEXT_TOTAL_TIME);
         }
     }
 
-    public static boolean toggleTimeDisplay() {
-        displayTime = !displayTime;
-        return displayTime;
+    private void drawTime(long timeMilliseconds, float y_pos, String info) {
+        // draw info
+        time_text_header.drawString((int) (GAME_WIDTH / 2.f - time_text_header.getWidth(info) / 2.f),
+                y_pos, info, org.newdawn.slick.Color.white);
+        // draw actual time one line below
+        long timeSeconds = TimeUnit.MILLISECONDS.toSeconds(timeMilliseconds);
+        long minutes = (timeSeconds % 3600) / 60;
+        long seconds = timeSeconds % 60;
+        String time_string = String.format("%02d:%02d", minutes, seconds);
+        time_text.drawString((int) (GAME_WIDTH / 2.f - time_text.getWidth(time_string) / 2.f),
+                y_pos + 15, time_string, org.newdawn.slick.Color.white);
     }
 
 }
