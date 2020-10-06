@@ -1,6 +1,7 @@
 package menus;
 
 import console.Console;
+import logic.SettingsManager;
 import main.ZuluAssault;
 import menus.screens.*;
 import org.newdawn.slick.*;
@@ -10,10 +11,6 @@ import org.newdawn.slick.state.StateBasedGame;
 import settings.UserSettings;
 
 import java.awt.Font;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
 
 public class MainMenu extends BasicGameState {
 
@@ -51,28 +48,28 @@ public class MainMenu extends BasicGameState {
             e.printStackTrace();
         }
 
-        File directory = new File("saves/settings/");
         // try to load user settings
-        try {
-            File user_settings_file = new File(directory + File.separator + "user_settings");
-            if (user_settings_file.exists()) {
-                Properties props = new Properties();
-                FileInputStream in = new FileInputStream(directory + File.separator + "user_settings");
-                props.load(in);
-                UserSettings.setSoundVolume(Integer.parseInt(props.getProperty("sound_volume_level")));
-                UserSettings.setMusicVolume(Integer.parseInt(props.getProperty("music_volume_level")));
-                in.close();
-            } else {
-                // user settings don't exist -> use default settings
-                UserSettings.setSoundVolume(UserSettings.VOLUME_MAX_LEVEL);
-                UserSettings.setMusicVolume(UserSettings.VOLUME_MAX_LEVEL);
-            }
-        } catch (IOException e) {
-            System.out.println("could not load 'user_settings'");
-            // use default settings
+
+        // SOUND SETTING
+        String sound_value = SettingsManager.loadSetting("sound_volume_level");
+        if (sound_value.isEmpty()) {
+            // sound setting doesn't exist -> create one and use default setting
+            SettingsManager.storeSetting(new SettingsManager.Property("sound_volume_level",
+                    Integer.toString(UserSettings.VOLUME_MAX_LEVEL)));
             UserSettings.setSoundVolume(UserSettings.VOLUME_MAX_LEVEL);
+        } else {
+            UserSettings.setSoundVolume(Integer.parseInt(sound_value));
+        }
+
+        // MUSIC SETTING
+        String music_value = SettingsManager.loadSetting("music_volume_level");
+        if (music_value.isEmpty()) {
+            // music setting doesn't exist -> create one and use default setting
+            SettingsManager.storeSetting(new SettingsManager.Property("music_volume_level",
+                    Integer.toString(UserSettings.VOLUME_MAX_LEVEL)));
             UserSettings.setMusicVolume(UserSettings.VOLUME_MAX_LEVEL);
-            e.printStackTrace();
+        } else {
+            UserSettings.setMusicVolume(Integer.parseInt(music_value));
         }
     }
 

@@ -1,9 +1,9 @@
 package main;
 
 import levels.*;
+import logic.SettingsManager;
 import menus.MainMenu;
 import org.lwjgl.LWJGLUtil;
-import org.lwjgl.Sys;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -51,7 +51,7 @@ public class ZuluAssault extends StateBasedGame {
                 new File(System.getProperty("user.dir"), "native"),
                 LWJGLUtil.getPlatformName())
                 .getAbsolutePath());
-
+        SettingsManager.createSettingsFile();
         try {
             AppGameContainer app = new AppGameContainer(new ZuluAssault(gameName));
             app.setDisplayMode(640, 480, fullscreen);

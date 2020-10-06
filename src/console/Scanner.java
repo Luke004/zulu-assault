@@ -1,7 +1,7 @@
 package console;
 
-import graphics.hud.HUD_Drawer;
 import levels.LevelHandler;
+import logic.SettingsManager;
 import logic.TimeManager;
 import main.ZuluAssault;
 
@@ -58,8 +58,13 @@ public class Scanner {
                 switch (element) {
                     case "time":    // display the time needed for the play through
                         TimeManager.toggleTimeDisplay();
-                        if (TimeManager.displayTime()) return "Time display enabled.";
-                        else return "Time display disabled.";
+                        if (TimeManager.displayTime()) {
+                            SettingsManager.storeSetting(new SettingsManager.Property("show_time", "true"));
+                            return "Time display enabled.";
+                        } else {
+                            SettingsManager.storeSetting(new SettingsManager.Property("show_time", "false"));
+                            return "Time display disabled.";
+                        }
                     default:
                         return ERROR_UNRECOGNIZED;
                 }

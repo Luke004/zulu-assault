@@ -1,7 +1,7 @@
 package menus.screens;
 
 import audio.MenuSounds;
-import console.Console;
+import logic.SettingsManager;
 import menus.MainMenu;
 import menus.menu_elements.Arrow;
 import menus.menu_elements.Slider;
@@ -11,11 +11,6 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import settings.UserSettings;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Properties;
 
 import static menus.MainMenu.*;
 import static settings.UserSettings.VOLUME_MAX_LEVEL;
@@ -92,25 +87,14 @@ public class OptionsScreen extends AbstractMenuScreen {
         switch (idx) {
             case 0: // BACK
                 MainMenu.returnToPreviousMenu();
-                // store the settings from user in the file 'user_settings'
-                try {
-                    File directory = new File("saves/settings/");
-                    //noinspection ResultOfMethodCallIgnored
-                    directory.mkdirs();
-                    File user_settings_file = new File(directory + File.separator + "user_settings");
-                    //noinspection ResultOfMethodCallIgnored
-                    user_settings_file.createNewFile(); // this creates a file only if it not already exists
-                    // store audio properties in 'user_settings' file
-                    Properties userProps = new Properties();
-                    userProps.setProperty("sound_volume_level", Integer.toString(sound_volume_slider.getValue()));
-                    userProps.setProperty("music_volume_level", Integer.toString(music_volume_slider.getValue()));
-                    FileOutputStream out = new FileOutputStream(directory + File.separator + "user_settings");
-                    userProps.store(out, "audio volume");
-                    out.close();
-                } catch (IOException e) {
-                    System.out.println("could not create or store data in file 'src/main/saves/user_settings'");
-                    e.printStackTrace();
-                }
+                // store the settings from user in the file 'config.properties'
+                SettingsManager.Property[] properties = new SettingsManager.Property[2];
+                properties[0] = new SettingsManager.Property("sound_volume_level",
+                        Integer.toString(sound_volume_slider.getValue()));
+                properties[1] = new SettingsManager.Property("music_volume_level",
+                        Integer.toString(music_volume_slider.getValue()));
+
+                SettingsManager.storeSettings(properties);
                 break;
             case 1: // SOUND VOLUME
 
