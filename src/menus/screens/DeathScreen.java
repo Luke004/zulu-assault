@@ -1,7 +1,5 @@
 package menus.screens;
 
-import console.Console;
-import levels.AbstractLevel;
 import audio.MenuSounds;
 import levels.LevelHandler;
 import main.ZuluAssault;
@@ -14,14 +12,12 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import settings.UserSettings;
 
-import static menus.MainMenu.main_menu_intro_sound;
-import static menus.MainMenu.main_menu_music;
 
 public class DeathScreen extends AbstractMenuScreen {
 
     private BasicGameState gameState;
 
-    private Image you_are_dead_background_image;
+    private Image you_are_dead_image;
     private Sound you_are_dead_sound;
 
     private Buttons buttons;
@@ -30,8 +26,8 @@ public class DeathScreen extends AbstractMenuScreen {
         super(gameState);
         this.gameState = gameState;
         try {
-            you_are_dead_background_image = new Image("assets/menus/you_are_dead.png");
-            you_are_dead_sound = new Sound("audio/sounds/you_are_dead.ogg");
+            you_are_dead_image = new Image("assets/menus/you_are_dead.png");
+            you_are_dead_sound = new Sound("audio/music/you_are_dead.ogg");
         } catch (SlickException e) {
             e.printStackTrace();
         }
@@ -63,7 +59,7 @@ public class DeathScreen extends AbstractMenuScreen {
     @Override
     public void render(GameContainer gameContainer) {
         super.render(gameContainer);
-        you_are_dead_background_image.draw();
+        you_are_dead_image.draw();
         buttons.draw();
     }
 
