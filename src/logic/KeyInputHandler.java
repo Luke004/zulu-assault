@@ -199,7 +199,7 @@ public class KeyInputHandler {
                         player.setWarAttender(tank, Player.EnterAction.LEAVING);
                     } else {
                         // tank is moving, can't get out of it
-                        MenuSounds.ERROR_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+                        MenuSounds.ERROR_SOUND.play(1.f, UserSettings.soundVolume);
                     }
                 }
 

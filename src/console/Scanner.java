@@ -4,6 +4,7 @@ import levels.LevelHandler;
 import logic.SettingsManager;
 import logic.TimeManager;
 import main.ZuluAssault;
+import settings.UserSettings;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -58,7 +59,7 @@ public class Scanner {
                 switch (element) {
                     case "time":    // display the time needed for the play through
                         TimeManager.toggleTimeDisplay();
-                        if (TimeManager.displayTime()) {
+                        if (UserSettings.displayTime) {
                             SettingsManager.storeSetting(new SettingsManager.Property("show_time", "true"));
                             return "Time display enabled.";
                         } else {

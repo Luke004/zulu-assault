@@ -54,6 +54,6 @@ public class BigExplosionAnimation extends AbstractVolatileAnimation {
             play(xPos, yPos, rotation);
             counter++;
         } while (counter < PLAY_TIMES);
-        explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
+        explosion_sound.play(1.f, UserSettings.soundVolume);
     }
 }

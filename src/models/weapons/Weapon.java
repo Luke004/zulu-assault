@@ -68,7 +68,7 @@ public abstract class Weapon {
             Projectile bullet = new GroundBullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
             projectile_list.add(bullet);
             if (fire_sound != null)
-                fire_sound.play(1.f, UserSettings.SOUND_VOLUME);
+                fire_sound.play(1.f, UserSettings.soundVolume);
         }
     }
 

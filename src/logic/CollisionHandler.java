@@ -145,7 +145,7 @@ public class CollisionHandler {
                         player.getWarAttender().changeHealth(50);
                         break;
                 }
-                new_item_sound.play(1.f, UserSettings.SOUND_VOLUME);
+                new_item_sound.play(1.f, UserSettings.soundVolume);
                 items.remove(idx); // remove the item
                 break;
             }
@@ -294,7 +294,7 @@ public class CollisionHandler {
                     }
                     continue;
                 } else if (weapon instanceof Uzi) {
-                    bullet_hit_sound.play(1.f, UserSettings.SOUND_VOLUME);
+                    bullet_hit_sound.play(1.f, UserSettings.soundVolume);
                     if (!(hostileWarAttender instanceof Soldier)) {
                         uziHitExplosionAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y,
                                 random.nextInt(360));
@@ -305,10 +305,10 @@ public class CollisionHandler {
                         // add random extra rotation [-30 , +30]
                     }
                 } else if (weapon instanceof Shell || weapon instanceof RocketLauncher) {
-                    explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
+                    explosion_sound.play(1.f, UserSettings.soundVolume);
                     bigExplosionAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y, 90);
                 } else if (weapon instanceof Plasma) {
-                    bullet_hit_sound.play(1.f, UserSettings.SOUND_VOLUME);
+                    bullet_hit_sound.play(1.f, UserSettings.soundVolume);
                     plasmaDamageAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y, 0);
                 }
                 hostileWarAttender.changeHealth(-weapon.getBulletDamage());
@@ -378,10 +378,10 @@ public class CollisionHandler {
                         }
                         continue;
                     } else if (weapon instanceof Uzi) {
-                        bullet_hit_sound.play(1.f, UserSettings.SOUND_VOLUME);
+                        bullet_hit_sound.play(1.f, UserSettings.soundVolume);
                         uziHitExplosionAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y, random.nextInt(360));
                     } else if (weapon instanceof Plasma) {
-                        bullet_hit_sound.play(1.f, UserSettings.SOUND_VOLUME);
+                        bullet_hit_sound.play(1.f, UserSettings.soundVolume);
                         plasmaDamageAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y, 0);
                     }
                     damageTile(x, y, weapon, destructible_tile_replace_indices[idx], null);
@@ -402,9 +402,9 @@ public class CollisionHandler {
             if (tile_ID == staticWarAttender_indices[idx]) {
                 damageStaticWarAttender(x, y, weapon);
                 if (weapon instanceof Uzi || weapon instanceof Plasma)
-                    bullet_hit_sound.play(1.f, UserSettings.SOUND_VOLUME);
+                    bullet_hit_sound.play(1.f, UserSettings.soundVolume);
                 else if (weapon instanceof Shell || weapon instanceof RocketLauncher)
-                    explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
+                    explosion_sound.play(1.f, UserSettings.soundVolume);
                 if (weapon instanceof PiercingWeapon) continue;
                 else showBulletHitAnimation(weapon, projectile);
                 bullet_iterator.remove();
@@ -495,7 +495,7 @@ public class CollisionHandler {
     private void replaceStaticWarAttenderTile(int idx) {
         StaticWarAttender staticWarAttender = static_enemies.get(idx);
         level_delete_listener.notifyForWarAttenderDeletion(staticWarAttender);
-        explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
+        explosion_sound.play(1.f, UserSettings.soundVolume);
 
         Vector2f[] collision_tiles = staticWarAttender.getCollisionTiles();
 
@@ -586,9 +586,9 @@ public class CollisionHandler {
                     // HOSTILE SHOT COLLISION WITH PLAYER
                     if (projectile.getCollisionModel().intersects(player.getCollisionModel())) {
                         if (weapon instanceof RocketLauncher || weapon instanceof Shell) {
-                            explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
+                            explosion_sound.play(1.f, UserSettings.soundVolume);
                         } else if (weapon instanceof Uzi || weapon instanceof Plasma) {
-                            bullet_hit_sound.play(1.f, UserSettings.SOUND_VOLUME);
+                            bullet_hit_sound.play(1.f, UserSettings.soundVolume);
                         }
                         showBulletHitAnimation(weapon, projectile);
                         projectile_iterator.remove();   // remove bullet

@@ -23,7 +23,7 @@ public class DoubleShell extends Shell {
             bullet = addBullet(spawnX, spawnY, rotation_angle, -19.5f);
             projectile_list.add(bullet);
 
-            fire_sound.play(1.f, UserSettings.SOUND_VOLUME);
+            fire_sound.play(1.f, UserSettings.soundVolume);
         }
     }
 }

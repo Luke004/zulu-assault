@@ -269,7 +269,7 @@ public abstract class MovableWarAttender extends WarAttender {
                 isInvincible = true;
                 break;
             case EMP:   // destroy all nearby planes
-                emp_use_sound.play(1.f, UserSettings.SOUND_VOLUME);
+                emp_use_sound.play(1.f, UserSettings.soundVolume);
                 for (int idx = 0; idx < hostile_movable_war_attenders.size(); ++idx) {
                     MovableWarAttender hostileWarAttender = hostile_movable_war_attenders.get(idx);
                     if (hostileWarAttender instanceof Plane) {
@@ -280,11 +280,11 @@ public abstract class MovableWarAttender extends WarAttender {
                 }
                 break;
             case MEGA_PULSE:
-                mega_pulse_use_sound.play(1.f, UserSettings.SOUND_VOLUME);
+                mega_pulse_use_sound.play(1.f, UserSettings.soundVolume);
                 fireWeapon(WeaponType.MEGA_PULSE);
                 break;
             case EXPAND:
-                expand_use_sound.play(1.f, UserSettings.SOUND_VOLUME);
+                expand_use_sound.play(1.f, UserSettings.soundVolume);
                 for (int idx = 0; idx < all_movable_war_attenders.size(); ++idx) {
                     MovableWarAttender movableWarAttender = all_movable_war_attenders.get(idx);
                     if (WayPointManager.dist(movableWarAttender.getPosition(), this.getPosition()) < 500) {

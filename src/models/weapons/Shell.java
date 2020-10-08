@@ -65,7 +65,7 @@ public class Shell extends Weapon {
             Projectile bullet = addBullet(spawnX, spawnY, rotation_angle, 0.f);
             projectile_list.add(bullet);
 
-            fire_sound.play(1.f, UserSettings.SOUND_VOLUME);
+            fire_sound.play(1.f, UserSettings.soundVolume);
         }
     }
 

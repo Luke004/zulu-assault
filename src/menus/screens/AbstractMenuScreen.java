@@ -40,7 +40,7 @@ public abstract class AbstractMenuScreen implements iMenuScreen {
             if (!main_menu_music.playing()) {
                 main_menu_music.play();
                 main_menu_music.loop();
-                main_menu_music.setVolume(UserSettings.MUSIC_VOLUME);
+                main_menu_music.setVolume(UserSettings.musicVolume);
             }
         }
     }

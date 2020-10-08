@@ -44,7 +44,7 @@ public class Briefing extends BasicGameState {
 
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-        briefing_music_intro.play(1.f, UserSettings.MUSIC_VOLUME);
+        briefing_music_intro.play(1.f, UserSettings.musicVolume);
         gameContainer.setMouseGrabbed(true);    // hide the mouse cursor
         this.nextLevelID = ZuluAssault.nextLevelID;
         AbstractLevel level = (AbstractLevel) stateBasedGame.getState(nextLevelID);
@@ -100,7 +100,7 @@ public class Briefing extends BasicGameState {
             if (!briefing_music.playing()) {
                 briefing_music.play();
                 briefing_music.loop();
-                briefing_music.setVolume(UserSettings.MUSIC_VOLUME);
+                briefing_music.setVolume(UserSettings.musicVolume);
             }
         }
     }
@@ -140,7 +140,7 @@ public class Briefing extends BasicGameState {
     @Override
     public void keyPressed(int key, char c) {
         if (loadMusicThread.isAlive()) return;
-        MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+        MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
         try {
             stateBasedGame.getState(nextLevelID).init(gameContainer, stateBasedGame);
             stateBasedGame.enterState(nextLevelID,

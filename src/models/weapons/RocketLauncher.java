@@ -96,7 +96,7 @@ public class RocketLauncher extends Weapon {
             Projectile projectile = addRocket(spawnX, spawnY, rotation_angle, 0);
             projectile_list.add(projectile);
 
-            fire_sound.play(1.f, UserSettings.SOUND_VOLUME);
+            fire_sound.play(1.f, UserSettings.soundVolume);
         }
     }
 

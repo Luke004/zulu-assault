@@ -32,7 +32,7 @@ public class CombatBackgroundMusic {
     }
 
     public void start() {
-        combat_background_intro_sounds[idx].play(1.f, UserSettings.MUSIC_VOLUME);
+        combat_background_intro_sounds[idx].play(1.f, UserSettings.musicVolume);
     }
 
     public void update() {
@@ -40,7 +40,7 @@ public class CombatBackgroundMusic {
             if (!combat_background_music[idx].playing()) {
                 combat_background_music[idx].play();
                 combat_background_music[idx].loop();
-                combat_background_music[idx].setVolume(UserSettings.MUSIC_VOLUME);
+                combat_background_music[idx].setVolume(UserSettings.musicVolume);
             }
         }
     }

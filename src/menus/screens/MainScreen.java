@@ -10,8 +10,6 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.state.transition.FadeInTransition;
-import org.newdawn.slick.state.transition.FadeOutTransition;
 import settings.UserSettings;
 
 import static menus.MainMenu.*;
@@ -58,16 +56,16 @@ public class MainScreen extends AbstractMenuScreen {
     @Override
     public void handleKeyInput(GameContainer gameContainer, StateBasedGame stateBasedGame) {
         if (gameContainer.getInput().isKeyPressed(Input.KEY_UP)) {
-            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             arrow.moveUp();
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_DOWN)) {
-            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             arrow.moveDown();
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ENTER)) {
-            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             handleMenuItemChoice(gameContainer, stateBasedGame, arrow.currIdx);
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
-            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             arrow.currIdx = 4;
         }
     }
@@ -77,7 +75,7 @@ public class MainScreen extends AbstractMenuScreen {
     public void onMouseClick(GameContainer gameContainer, StateBasedGame stateBasedGame, int mouseX, int mouseY) {
         if (mouseX > main_menu_image_position.x && mouseX < main_menu_image_position.x + main_menu_image.getWidth()) {
             if (mouseY > main_menu_image_position.y && mouseY < main_menu_image_position.y + main_menu_image.getHeight()) {
-                MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+                MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
                 for (int idx = 0; idx < MENU_Y_MOUSE_CLICK_OFFSETS.length; ++idx) {
                     if (mouseY < MENU_Y_MOUSE_CLICK_OFFSETS[idx]) {
                         handleMenuItemChoice(gameContainer, stateBasedGame, idx);
@@ -98,7 +96,7 @@ public class MainScreen extends AbstractMenuScreen {
                 break;  // TODO: LOAD AND SAVE
             case 1: // LOAD
             case 2: // SAVE
-                MenuSounds.ERROR_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+                MenuSounds.ERROR_SOUND.play(1.f, UserSettings.soundVolume);
                 break;
             case 3: // OPTIONS
                 MainMenu.goToMenu(MainMenu.STATE_OPTIONS_MENU);
@@ -112,7 +110,7 @@ public class MainScreen extends AbstractMenuScreen {
 
     @Override
     public void onEnterState(GameContainer gc) {
-        main_menu_intro_sound.play(1.f, UserSettings.MUSIC_VOLUME);
+        main_menu_intro_sound.play(1.f, UserSettings.musicVolume);
     }
 
     @Override

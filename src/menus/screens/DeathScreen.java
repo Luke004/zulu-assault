@@ -66,13 +66,13 @@ public class DeathScreen extends AbstractMenuScreen {
     @Override
     public void handleKeyInput(GameContainer gameContainer, StateBasedGame stateBasedGame) {
         if (gameContainer.getInput().isKeyPressed(Input.KEY_UP)) {
-            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             buttons.onUpKeyPress();
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_DOWN)) {
-            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             buttons.onDownKeyPress();
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ENTER)) {
-            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             handleMenuItemChoice(gameContainer, stateBasedGame, buttons.getCurrentButtonIdx());
         }
     }
@@ -80,7 +80,7 @@ public class DeathScreen extends AbstractMenuScreen {
     @Override
     public void onMouseClick(GameContainer gameContainer, StateBasedGame stateBasedGame, int mouseX, int mouseY) {
         int idx = buttons.isClicked(mouseX, mouseY);
-        if (idx != -1) MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+        if (idx != -1) MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
         handleMenuItemChoice(gameContainer, stateBasedGame, idx);
     }
 
@@ -91,7 +91,7 @@ public class DeathScreen extends AbstractMenuScreen {
                 break;
             case 1: // LOAD A GAME
                 // TODO: LOAD
-                MenuSounds.ERROR_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+                MenuSounds.ERROR_SOUND.play(1.f, UserSettings.soundVolume);
                 break;
             case 2: // MAIN MENU
                 you_are_dead_sound.stop();
@@ -102,7 +102,7 @@ public class DeathScreen extends AbstractMenuScreen {
 
     @Override
     public void onEnterState(GameContainer gc) {
-        you_are_dead_sound.play(1.f, UserSettings.MUSIC_VOLUME);
+        you_are_dead_sound.play(1.f, UserSettings.musicVolume);
     }
 
     @Override

@@ -38,7 +38,7 @@ public class DoubleRocketLauncher extends RocketLauncher {
             bullet = addRocket(spawnX, spawnY, rotation_angle + bullet_spread, -SIDE_OFFSET);
             projectile_list.add(bullet);
 
-            fire_sound.play(1.f, UserSettings.SOUND_VOLUME);
+            fire_sound.play(1.f, UserSettings.soundVolume);
         }
     }
 }

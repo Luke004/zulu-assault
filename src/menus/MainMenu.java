@@ -47,30 +47,6 @@ public class MainMenu extends BasicGameState {
         } catch (SlickException e) {
             e.printStackTrace();
         }
-
-        // try to load user settings
-
-        // SOUND SETTING
-        String sound_value = SettingsManager.loadSetting("sound_volume_level");
-        if (sound_value.isEmpty()) {
-            // sound setting doesn't exist -> create one and use default setting
-            SettingsManager.storeSetting(new SettingsManager.Property("sound_volume_level",
-                    Integer.toString(UserSettings.VOLUME_MAX_LEVEL)));
-            UserSettings.setSoundVolume(UserSettings.VOLUME_MAX_LEVEL);
-        } else {
-            UserSettings.setSoundVolume(Integer.parseInt(sound_value));
-        }
-
-        // MUSIC SETTING
-        String music_value = SettingsManager.loadSetting("music_volume_level");
-        if (music_value.isEmpty()) {
-            // music setting doesn't exist -> create one and use default setting
-            SettingsManager.storeSetting(new SettingsManager.Property("music_volume_level",
-                    Integer.toString(UserSettings.VOLUME_MAX_LEVEL)));
-            UserSettings.setMusicVolume(UserSettings.VOLUME_MAX_LEVEL);
-        } else {
-            UserSettings.setMusicVolume(Integer.parseInt(music_value));
-        }
     }
 
     @Override
@@ -145,7 +121,7 @@ public class MainMenu extends BasicGameState {
     }
 
     public static void updateMainMenuMusicVolume() {
-        main_menu_music.setVolume(UserSettings.MUSIC_VOLUME);
+        main_menu_music.setVolume(UserSettings.musicVolume);
     }
 
     @Override

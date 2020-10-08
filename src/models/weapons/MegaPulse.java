@@ -49,7 +49,7 @@ public class MegaPulse extends PiercingWeapon {
             bullet.setProjectileSpeed(MEGA_PULSE_SPEED);    // give mega pulse its own individual speed (slower)
             projectile_list.add(bullet);
             // make a sound only if the enemy shoots it
-            if (!isDrivable) mega_pulse_fire_sound.play(1.f, UserSettings.SOUND_VOLUME);
+            if (!isDrivable) mega_pulse_fire_sound.play(1.f, UserSettings.soundVolume);
         }
     }
 }

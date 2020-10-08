@@ -38,7 +38,7 @@ public class DoublePlasma extends Plasma {
                 groundBullet = addBullet(spawnX, spawnY, rotation_angle, false);
                 projectile_list.add(groundBullet);
             }
-            fire_sound.play(1.f, UserSettings.SOUND_VOLUME);
+            fire_sound.play(1.f, UserSettings.soundVolume);
         }
     }
 

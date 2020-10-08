@@ -156,7 +156,7 @@ public class Helicopter extends Plane {
 
         if (!helicopter_sound.playing() && !hasLanded) {
             float pitch = 1.f + current_speed;
-            helicopter_sound.play(pitch, UserSettings.SOUND_VOLUME);
+            helicopter_sound.play(pitch, UserSettings.soundVolume);
         }
     }
 
@@ -199,7 +199,7 @@ public class Helicopter extends Plane {
         canPlayHelicopterEngineSound = false;
         helicopter_sound.stop();
         float pitch = 1.f + current_speed;
-        helicopter_sound.play(pitch, UserSettings.SOUND_VOLUME);
+        helicopter_sound.play(pitch, UserSettings.soundVolume);
     }
 
     @Override

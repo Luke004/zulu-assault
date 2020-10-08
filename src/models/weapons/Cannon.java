@@ -59,7 +59,7 @@ public class Cannon extends Uzi {
             }
             projectile_list.add(bullet);
 
-            fire_sound.play(1.f, UserSettings.SOUND_VOLUME);
+            fire_sound.play(1.f, UserSettings.soundVolume);
         }
     }
 }

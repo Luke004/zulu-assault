@@ -422,12 +422,12 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             if (warAttender instanceof Windmill) {
                 bigExplosionAnimation.playTenTimes(warAttender.getPosition().x + 20,
                         warAttender.getPosition().y + 20, 0);
-                explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
+                explosion_sound.play(1.f, UserSettings.soundVolume);
             } else {
                 if (warAttender instanceof Soldier) screenDrawer.drawDeadSoldierBody(10, warAttender);
                 else {
                     bigExplosionAnimation.playTenTimes(warAttender.getPosition().x, warAttender.getPosition().y, 0);
-                    explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
+                    explosion_sound.play(1.f, UserSettings.soundVolume);
                 }
             }
         } else {
@@ -445,7 +445,7 @@ public abstract class AbstractLevel extends BasicGameState implements WarAttende
             if (warAttender instanceof Soldier) screenDrawer.drawDeadSoldierBody(10, warAttender);
             else {
                 bigExplosionAnimation.playTenTimes(warAttender.getPosition().x, warAttender.getPosition().y, 0);
-                explosion_sound.play(1.f, UserSettings.SOUND_VOLUME);
+                explosion_sound.play(1.f, UserSettings.soundVolume);
             }
         }
         // maybe drop an item

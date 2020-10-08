@@ -36,13 +36,13 @@ public class OptionsScreen extends AbstractMenuScreen {
                     back_image_position.x - 9,
                     back_image_position.y + back_image.getHeight()
             ), "Sound Volume", VOLUME_MAX_LEVEL);
-            sound_volume_slider.setValue(UserSettings.SOUND_VOLUME_LEVEL);
+            sound_volume_slider.setValue(UserSettings.soundVolumeLevel);
 
             music_volume_slider = new Slider(slider_texture, slider_value_texture, new Vector2f(
                     back_image_position.x - 9,
                     back_image_position.y + back_image.getHeight() * 2
             ), "Music Volume", VOLUME_MAX_LEVEL);
-            music_volume_slider.setValue(UserSettings.MUSIC_VOLUME_LEVEL);
+            music_volume_slider.setValue(UserSettings.musicVolumeLevel);
 
             arrow = new Arrow(gameContainer, 3, (int) back_image_position.y);
         } catch (SlickException e) {
@@ -63,22 +63,22 @@ public class OptionsScreen extends AbstractMenuScreen {
     @Override
     public void handleKeyInput(GameContainer gameContainer, StateBasedGame stateBasedGame) {
         if (gameContainer.getInput().isKeyPressed(Input.KEY_UP)) {
-            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             arrow.moveUp();
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_DOWN)) {
-            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             arrow.moveDown();
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ENTER)) {
-            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             handleMenuItemChoice(arrow.currIdx);
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_LEFT)) {
-            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             onLeftKeyPress();
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_RIGHT)) {
-            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             onRightKeyPress();
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
-            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             returnToPreviousMenu();
         }
     }
@@ -109,19 +109,19 @@ public class OptionsScreen extends AbstractMenuScreen {
     public void onMouseClick(GameContainer gameContainer, StateBasedGame stateBasedGame, int mouseX, int mouseY) {
         if (mouseX > back_image_position.x && mouseX < back_image_position.x + back_image.getWidth()) {
             if (mouseY > back_image_position.y && mouseY < back_image_position.y + back_image.getHeight()) {
-                MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+                MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
                 arrow.currIdx = 0;
                 handleMenuItemChoice(0);
             }
         }
         if (sound_volume_slider.onClick(mouseX, mouseY)) {
             arrow.currIdx = 1;
-            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             UserSettings.setSoundVolume(sound_volume_slider.getValue());
         }
         if (music_volume_slider.onClick(mouseX, mouseY)) {
             arrow.currIdx = 2;
-            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             UserSettings.setMusicVolume(music_volume_slider.getValue());
             MainMenu.updateMainMenuMusicVolume();
         }

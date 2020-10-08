@@ -46,7 +46,7 @@ public class TeleportCircle extends InteractionCircle {
     }
 
     public static void playTeleportSound() {
-        teleport_sound.play(1.f, UserSettings.SOUND_VOLUME);
+        teleport_sound.play(1.f, UserSettings.soundVolume);
     }
 
 }

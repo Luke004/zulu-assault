@@ -58,7 +58,7 @@ public class ConfirmExitScreen extends AbstractMenuScreen {
             if (!main_menu_music.playing()) {
                 main_menu_music.play();
                 main_menu_music.loop();
-                main_menu_music.setVolume(UserSettings.MUSIC_VOLUME);
+                main_menu_music.setVolume(UserSettings.musicVolume);
             }
         }
     }
@@ -72,17 +72,17 @@ public class ConfirmExitScreen extends AbstractMenuScreen {
     @Override
     public void handleKeyInput(GameContainer gameContainer, StateBasedGame stateBasedGame) {
         if (gameContainer.getInput().isKeyPressed(Input.KEY_ENTER)) {
-            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             System.exit(0);
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
-            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             MainMenu.returnToPreviousMenu();
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_Y)
                 || gameContainer.getInput().isKeyPressed(Input.KEY_J)) {
-            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             System.exit(0);
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_N)) {
-            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             MainMenu.returnToPreviousMenu();
         }
     }
@@ -90,20 +90,20 @@ public class ConfirmExitScreen extends AbstractMenuScreen {
     @Override
     public void onMouseClick(GameContainer gameContainer, StateBasedGame stateBasedGame, int mouseX, int mouseY) {
         if (mouseX < confirm_exit_image_position.x || mouseX > confirm_exit_image_position.x + confirm_exit_image.getWidth()) {
-            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             MainMenu.returnToPreviousMenu();
             return;
         }
         if (mouseY < confirm_exit_image_position.y || mouseY > confirm_exit_image_position.y + confirm_exit_image.getHeight()) {
-            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             MainMenu.returnToPreviousMenu();
             return;
         }
         if (confirmRect.contains(mouseX, mouseY)) {
-            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             System.exit(0);
         } else if (cancelRect.contains(mouseX, mouseY)) {
-            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             MainMenu.returnToPreviousMenu();
         }
     }

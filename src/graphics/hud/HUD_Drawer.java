@@ -6,6 +6,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
 import player.Player;
+import settings.UserSettings;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -84,7 +85,7 @@ public class HUD_Drawer {
         // draw the health
         drawNumber(player.getWarAttender().getHealth(), MARGIN + 35, GAME_HEIGHT - 40);
 
-        if (TimeManager.displayTime()) {
+        if (UserSettings.displayTime) {
             // draw the current time spent in level
             drawTime(TimeManager.getTimeInLevel(), 5.f, TimeManager.TEXT_LEVEL_TIME);
             // draw the total time spent in the current play through

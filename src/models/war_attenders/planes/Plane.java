@@ -239,7 +239,7 @@ public abstract class Plane extends MovableWarAttender {
 
     public void initLanding() {
         if (!canLand()) {
-            MenuSounds.ERROR_SOUND.play(1.f, UserSettings.SOUND_VOLUME);
+            MenuSounds.ERROR_SOUND.play(1.f, UserSettings.soundVolume);
             return;
         }
         landing = true;

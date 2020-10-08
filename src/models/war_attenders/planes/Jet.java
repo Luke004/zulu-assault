@@ -91,7 +91,7 @@ public class Jet extends Plane {
         canPlayJetEngineSound = false;
         jet_sound.stop();
         float pitch = current_speed / MAX_SPEED_PLAYER;
-        jet_sound.play(pitch, UserSettings.SOUND_VOLUME);
+        jet_sound.play(pitch, UserSettings.soundVolume);
     }
 
     /* only allow the jet to land if its not too fast */

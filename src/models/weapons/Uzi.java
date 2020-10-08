@@ -61,7 +61,7 @@ public class Uzi extends Weapon {
             GroundBullet groundBullet = addBullet(spawnX, spawnY, rotation_angle, 0.f);
             projectile_list.add(groundBullet);
 
-            fire_sound.play(1.f, UserSettings.SOUND_VOLUME);
+            fire_sound.play(1.f, UserSettings.soundVolume);
         }
     }
 
