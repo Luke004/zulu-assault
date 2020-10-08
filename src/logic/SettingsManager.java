@@ -63,22 +63,23 @@ public class SettingsManager {
         }
     }
 
-    public static String loadSetting(String key) {
+    public static String loadSetting(String key, String defaultValue) {
         // try to load the user setting
         File user_settings_file = new File(directory + File.separator + SETTINGS_FILE_NAME);
         if (user_settings_file.exists()) {
             Properties props = loadProperties();
             if (props == null) {
-                System.out.println("Could not load '" + key + "' from 'config.properties'");
+                System.out.println("Error: Could not load file 'config.properties'!");
                 return "";
             }
             String value = props.getProperty(key);
             if (value != null) {
                 return value;
-            } else {
-                return "";
             }
-        } else return "";
+        }
+        // key doesn't exist -> create one with the default value
+        SettingsManager.storeSetting(new SettingsManager.Property(key, defaultValue));
+        return defaultValue;
     }
 
     private static Properties loadProperties() {
