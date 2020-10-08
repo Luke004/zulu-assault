@@ -17,14 +17,14 @@ public class CombatBackgroundMusic {
 
     private static final int COMBAT_MUSIC_SIZE = 5;     // there are 5 combat music songs
 
-    private static Sound[] combat_background_intro_sounds;
-    private static Music[] combat_background_music;
+    private static Sound[] combat_background_intro_sound_list;
+    private static Music[] combat_background_music_list;
 
     private static int idx;
 
     static {
-        combat_background_intro_sounds = new Sound[COMBAT_MUSIC_SIZE];
-        combat_background_music = new Music[COMBAT_MUSIC_SIZE];
+        combat_background_intro_sound_list = new Sound[COMBAT_MUSIC_SIZE];
+        combat_background_music_list = new Music[COMBAT_MUSIC_SIZE];
     }
 
     public void setIdx(int m_idx) {
@@ -32,47 +32,47 @@ public class CombatBackgroundMusic {
     }
 
     public void start() {
-        combat_background_intro_sounds[idx].play(1.f, UserSettings.musicVolume);
+        combat_background_intro_sound_list[idx].play(1.f, UserSettings.musicVolume);
     }
 
     public void update() {
-        if (!combat_background_intro_sounds[idx].playing()) {
-            if (!combat_background_music[idx].playing()) {
-                combat_background_music[idx].play();
-                combat_background_music[idx].loop();
-                combat_background_music[idx].setVolume(UserSettings.musicVolume);
+        if (!combat_background_intro_sound_list[idx].playing()) {
+            if (!combat_background_music_list[idx].playing()) {
+                combat_background_music_list[idx].play();
+                combat_background_music_list[idx].loop();
+                combat_background_music_list[idx].setVolume(UserSettings.musicVolume);
             }
         }
     }
 
     public void stop() {
-        combat_background_intro_sounds[idx].stop();
-        combat_background_music[idx].stop();
+        combat_background_intro_sound_list[idx].stop();
+        combat_background_music_list[idx].stop();
     }
 
     public static void load(int idx) {
-        if (combat_background_music[idx] != null) return;  // return when sound has already been loaded
+        if (combat_background_music_list[idx] != null) return;  // return when sound has already been loaded
         try {
             switch (idx) {
                 case 1:
-                    combat_background_music[idx] = new Music("audio/music/level_2.ogg");
-                    combat_background_intro_sounds[idx] = new Sound("audio/music/level_2_intro.ogg");
+                    combat_background_music_list[idx] = new Music("audio/music/level_2.ogg");
+                    combat_background_intro_sound_list[idx] = new Sound("audio/music/level_2_intro.ogg");
                     break;
                 case 2:
-                    combat_background_music[idx] = new Music("audio/music/level_3.ogg");
-                    combat_background_intro_sounds[idx] = new Sound("audio/music/level_3_intro.ogg");
+                    combat_background_music_list[idx] = new Music("audio/music/level_3.ogg");
+                    combat_background_intro_sound_list[idx] = new Sound("audio/music/level_3_intro.ogg");
                     break;
                 case 3:
-                    combat_background_music[idx] = new Music("audio/music/level_4.ogg");
-                    combat_background_intro_sounds[idx] = new Sound("audio/music/level_4_intro.ogg");
+                    combat_background_music_list[idx] = new Music("audio/music/level_4.ogg");
+                    combat_background_intro_sound_list[idx] = new Sound("audio/music/level_4_intro.ogg");
                     break;
                 case 4:
-                    combat_background_music[idx] = new Music("audio/music/level_5.ogg");
-                    combat_background_intro_sounds[idx] = new Sound("audio/music/level_5_intro.ogg");
+                    combat_background_music_list[idx] = new Music("audio/music/level_5.ogg");
+                    combat_background_intro_sound_list[idx] = new Sound("audio/music/level_5_intro.ogg");
                     break;
                 default:
-                    combat_background_music[idx] = new Music("audio/music/level_1.ogg");
-                    combat_background_intro_sounds[idx] = new Sound("audio/music/level_1_intro.ogg");
+                    combat_background_music_list[idx] = new Music("audio/music/level_1.ogg");
+                    combat_background_intro_sound_list[idx] = new Sound("audio/music/level_1_intro.ogg");
                     break;
             }
         } catch (SlickException e) {
