@@ -37,7 +37,8 @@ https://www.dropbox.com/sh/dft4pes6qxbbuts/AAC3EQgJXdtmXwD29vViDMa4a?dl=0
 You can open the console in the menu by pressing ^ (German version - key to the left of 1)
 
 *open level_x* - open the level x  
-*show time* - display the time needed for the play through
+*show time* - display the time needed for the play through  
+*keyboard_layout x* - switch between keyboard layouts (1 = German, 2 = English)
 
 ## Info
 **Idea by:**  

@@ -12,6 +12,9 @@ public class UserSettings {
     // display elements
     public static boolean displayTime;
 
+    // 2 keyboard layouts (Y and Z switched)
+    public static boolean keyboardLayout_1;
+
     static {
         // load sound level
         String sound_value = SettingsManager.loadSetting("sound_volume_level");
@@ -38,9 +41,16 @@ public class UserSettings {
         if (time_display_value.isEmpty()) {
             // setting doesn't exist -> store new one and use default
             SettingsManager.storeSetting(new SettingsManager.Property("show_time", "false"));
-            // displayTime = false; // -> redundant
         } else {
             displayTime = time_display_value.equals("true");
+        }
+        // load keyboard layout
+        String keyboard_layout_value = SettingsManager.loadSetting("keyboard_layout_1");
+        if (keyboard_layout_value.isEmpty()) {
+            // setting doesn't exist -> store new one and use default
+            SettingsManager.storeSetting(new SettingsManager.Property("keyboard_layout_1", "true"));
+        } else {
+            keyboardLayout_1 = keyboard_layout_value.equals("true");
         }
     }
 

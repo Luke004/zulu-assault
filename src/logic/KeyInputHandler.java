@@ -186,9 +186,10 @@ public class KeyInputHandler {
                     tank.rotateTurret(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
                 }
 
-                if (input.isKeyDown(Input.KEY_Y)) {
+                if (input.isKeyDown(UserSettings.keyboardLayout_1 ? Input.KEY_Y : Input.KEY_Z)) {
                     tank.rotateTurret(MovableWarAttender.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
                 }
+
 
                 // get out of tank
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {

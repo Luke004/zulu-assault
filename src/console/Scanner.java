@@ -69,6 +69,21 @@ public class Scanner {
                     default:
                         return ERROR_UNRECOGNIZED;
                 }
+            case "keyboard_layout":
+                String country = input_split_by_whitespace[1];
+                switch (country) {
+                    case "1":   // German
+                        UserSettings.keyboardLayout_1 = true;
+                        SettingsManager.storeSetting(new SettingsManager.Property("keyboard_layout_1", "true"));
+                        return "Using keyboard layout 1 (German).";
+                    case "2":   // English
+                        UserSettings.keyboardLayout_1 = false;
+                        SettingsManager.storeSetting(new SettingsManager.Property("keyboard_layout_1", "false"));
+                        return "Using keyboard layout 2 (English).";
+                    default:
+                        return ERROR_UNRECOGNIZED;
+                }
+
             case "exit":    // all commands to exit the console
             case "leave":
             case "end":
