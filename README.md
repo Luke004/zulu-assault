@@ -1,7 +1,6 @@
 # Zulu Assault
-I'm trying to recreate this old awesome game by Dallas Nutsch.
-The game was made only for Windows 95/98/NT Platforms supporting DirectX 5.0 or higher, soon it will run perfectly on Windows 10 aswell :-p
-
+I'm working on recreating this old awesome game by Dallas Nutsch that I used to play a lot back in the days.
+The game was originally published in July 1998 for Windows 95/98/NT platforms supporting DirectX 5.0, which is really outdated. I am using Java with the libraries "LWJGL" and "Slick2D" to develop this game for newer operating systems.
 ## Instructions
 
 Taken from the old game's HELPME.TXT.
