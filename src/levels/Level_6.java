@@ -337,7 +337,7 @@ public class Level_6 extends AbstractLevel implements GameState {
         // SETUP THE PLAYER START POSITION AND WAR ATTENDER
         Vector2f playerStartPos = new Vector2f(3590, 415);
         CannonTank tank = new CannonTank(playerStartPos, false, true);
-H
+
         // DEFINE THE MAP
         map = new TiledMap("assets/maps/level_6.tmx");
 
