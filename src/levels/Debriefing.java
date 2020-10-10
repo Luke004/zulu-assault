@@ -124,15 +124,11 @@ public class Debriefing extends BasicGameState {
         if (LevelHandler.playerIsInPlayThrough()) {
             final int NEXT_LEVEL_ID = finished_level_ID + 1;
 
-            /*
-        // TODO: remove this, this is temporary for the test version
-        if (NEXT_LEVEL_ID == 6) {
-            MainMenu.goToMenu(MainMenu.STATE_MAIN_MENU, gameContainer);
-            stateBasedGame.enterState(ZuluAssault.MAIN_MENU,
-                    new FadeOutTransition(), new FadeInTransition());
-            return;
-        }
-         */
+            // TODO: remove this, this is temporary for the alpha version
+            if (NEXT_LEVEL_ID == 7) {
+                LevelHandler.goToMainMenu();
+                return;
+            }
 
             LevelHandler.startNextLevel(NEXT_LEVEL_ID, this);
         } else {
