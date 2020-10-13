@@ -6,7 +6,7 @@ import models.interaction_circles.HealthCircle;
 import models.interaction_circles.TeleportCircle;
 import models.items.*;
 import models.war_attenders.MovableWarAttender;
-import models.war_attenders.planes.Helicopter;
+import models.war_attenders.aircraft.friendly.Helicopter;
 import models.war_attenders.soldiers.EnemySoldier;
 import models.war_attenders.soldiers.RocketSoldier;
 import models.war_attenders.tanks.*;

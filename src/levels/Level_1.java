@@ -5,7 +5,7 @@ import main.ZuluAssault;
 import models.interaction_circles.HealthCircle;
 import models.items.*;
 import models.war_attenders.MovableWarAttender;
-import models.war_attenders.planes.GreenEnemyPlane;
+import models.war_attenders.aircraft.hostile.GreenEnemyPlane;
 import models.war_attenders.robots.PlasmaRobot;
 import models.war_attenders.soldiers.EnemySoldier;
 import models.war_attenders.tanks.*;

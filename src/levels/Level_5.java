@@ -5,7 +5,7 @@ import main.ZuluAssault;
 import models.interaction_circles.TeleportCircle;
 import models.items.*;
 import models.war_attenders.MovableWarAttender;
-import models.war_attenders.planes.GreenEnemyPlane;
+import models.war_attenders.aircraft.hostile.GreenEnemyPlane;
 import models.war_attenders.robots.RocketRobot;
 import models.war_attenders.tanks.*;
 import org.newdawn.slick.*;

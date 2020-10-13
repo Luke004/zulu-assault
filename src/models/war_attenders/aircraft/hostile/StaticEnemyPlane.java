@@ -1,4 +1,4 @@
-package models.war_attenders.planes;
+package models.war_attenders.aircraft.hostile;
 
 import models.StaticWarAttender;
 import org.newdawn.slick.geom.Vector2f;

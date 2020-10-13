@@ -1,4 +1,4 @@
-package models.war_attenders.planes;
+package models.war_attenders.aircraft.friendly;
 
 import logic.TileMapInfo;
 import settings.UserSettings;

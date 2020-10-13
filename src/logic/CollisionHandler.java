@@ -12,7 +12,7 @@ import graphics.animations.smoke.SmokeAnimation;
 import models.interaction_circles.HealthCircle;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
-import models.war_attenders.planes.Plane;
+import models.war_attenders.aircraft.friendly.Plane;
 import models.war_attenders.soldiers.Soldier;
 import models.weapons.*;
 import models.weapons.projectiles.AirProjectile;

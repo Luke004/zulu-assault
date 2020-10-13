@@ -5,7 +5,7 @@ import logic.WayPointManager;
 import models.CollisionModel;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
-import models.war_attenders.planes.Plane;
+import models.war_attenders.aircraft.friendly.Plane;
 import models.war_attenders.robots.Robot;
 import models.war_attenders.tanks.Tank;
 import org.newdawn.slick.Animation;
