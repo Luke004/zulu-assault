@@ -1,53 +1,26 @@
-package models.war_attenders.planes;
+package models.war_attenders.aircraft.hostile;
 
-import logic.WayPointManager;
 import graphics.animations.other.AnimatedCrosshair;
+import logic.WayPointManager;
 import models.war_attenders.MovableWarAttender;
 import models.war_attenders.WarAttender;
-import models.weapons.AGM;
-import models.weapons.Uzi;
+import models.war_attenders.aircraft.friendly.Plane;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.opengl.Texture;
 
 import java.util.List;
 
-public class GreenEnemyPlane extends Plane {
-
-    private static Texture green_enemy_plane_texture;
+public abstract class EnemyFlyingEntity extends Plane {
 
     private AnimatedCrosshair animatedCrosshair;
 
-    private static final float ARMOR = 40.f;
-    private static final int SCORE_VALUE = 500;
-    private static final float ROTATE_SPEED_PLAYER = 0.15f, ROTATE_SPEED_BOT = 0.15f;
-    private static final float MAX_SPEED_PLAYER = 0.25f, MAX_SPEED_BOT = 0.2f;
-
-    public GreenEnemyPlane(Vector2f startPos, boolean isHostile, boolean isDrivable) {
+    public EnemyFlyingEntity(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
 
         if (isDrivable) animatedCrosshair = new AnimatedCrosshair();
 
-        current_speed = getMaxSpeed();  // speed is always the same for this plane
-
-        weapons.add(new Uzi(isDrivable));  // WEAPON_1
-        weapons.add(new AGM(isDrivable));  // WEAPON_2
-
-        // LOAD TEXTURES
-        try {
-            if (green_enemy_plane_texture == null) {
-                green_enemy_plane_texture = new Image("assets/war_attenders/planes/green_enemy_plane.png")
-                        .getTexture();
-            }
-            base_image = new Image(green_enemy_plane_texture);
-        } catch (SlickException e) {
-            e.printStackTrace();
-        }
-
-        super.init();
+        current_speed = getMaxSpeed();  // speed is always the same
     }
 
     @Override
@@ -64,7 +37,7 @@ public class GreenEnemyPlane extends Plane {
         if (isDrivable && !hasLanded) animatedCrosshair.draw();
     }
 
-    /* don't use following 2 methods, this plane always flies at same speed */
+    /* don't use following 2 methods, enemy planes always fly at the same speed */
     @Override
     public void increaseSpeed(int deltaTime) {
     }
@@ -116,23 +89,4 @@ public class GreenEnemyPlane extends Plane {
         }
     }
 
-    @Override
-    protected float getBaseRotateSpeed() {
-        return isDrivable ? ROTATE_SPEED_PLAYER : ROTATE_SPEED_BOT;
-    }
-
-    @Override
-    protected float getMaxSpeed() {
-        return isDrivable ? MAX_SPEED_PLAYER : MAX_SPEED_BOT;
-    }
-
-    @Override
-    public void changeHealth(float amount) {
-        super.changeHealth(amount, ARMOR);
-    }
-
-    @Override
-    public int getScoreValue() {
-        return SCORE_VALUE;
-    }
 }
