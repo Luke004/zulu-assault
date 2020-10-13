@@ -1,11 +1,9 @@
 # Zulu Assault
 I'm working on recreating this old awesome game by Dallas Nutsch that I used to play a lot back in the days.
-The game was originally published in July 1998 for Windows 95/98/NT platforms supporting DirectX 5.0, which is really outdated. I am using Java with the libraries "LWJGL" and "Slick2D" to develop this game for newer operating systems.
+The game was originally published in July 1998 for Windows 95/98/NT platforms supporting DirectX 5.0, which is really outdated. I am using Java with the libraries "LWJGL" and "Slick2D" to develop this game for newer operating systems like Windows 10, Mac or Linux.
 ## Instructions
 
-Taken from the old game's HELPME.TXT.
-
-|     |Action|Implemented|
+|     |Action|Implemented?|
 |-----|------|-----------|
 |`Up/Down` |Accelerate/Deaccelerate|Yes|
 |`Left/Right`|Turn left/right|Yes|
@@ -28,6 +26,8 @@ Taken from the old game's HELPME.TXT.
 `2` Use an emp (Destroys nearby planes)  
 `3` Use a mega pulse (most powerful weapon)  
 `4` Use an expand (Repels enemy weapons)
+
+> **_Note:_**  Instructions above were taken from the original game's 'HELPME.TXT' file.
 
 ## Play now (download)
 https://www.dropbox.com/sh/dft4pes6qxbbuts/AAC3EQgJXdtmXwD29vViDMa4a?dl=0
