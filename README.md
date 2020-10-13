@@ -1,44 +1,59 @@
 # Zulu Assault
 I'm working on recreating this old awesome game by Dallas Nutsch that I used to play a lot back in the days.
-The game was originally published in July 1998 for Windows 95/98/NT platforms supporting DirectX 5.0, which is really outdated. I am using Java with the libraries "LWJGL" and "Slick2D" to develop this game for newer operating systems.
+The game was originally published in July 1998 for Windows 95/98/NT platforms supporting DirectX 5.0, which is really outdated. I am using Java with the libraries "LWJGL" and "Slick2D" to develop this game for newer operating systems like Windows 10, Mac or Linux.
+
 ## Instructions
 
-Taken from the old game's HELPME.TXT.
+### Keys
 
-|     |Action|Implemented|
+|Key|Action|Implemented?|
 |-----|------|-----------|
-|`Up/Down` |Accelerate/Deaccelerate|Yes|
-|`Left/Right`|Turn left/right|Yes|
-|`Ctrl`|Weapon A|Yes|
-|`Alt`|Weapon B|Partially|
-|`Shift`|Get In/Out of current vehicle|Yes|
-|`A`|Autocenter turret|Yes|
-|`Z`|Turret left|Yes|
-|`X`|Turret Right|Yes|
-|`R`|Toggle Radar|Yes|
-|`[` |Zoom Radar Out|Dismissed|
-|`]`|Zoom Radar In|Dismissed|
-|`Escape`|Go to menu|Yes|
-|`1`|Use an invincibility  |Yes|
-|`2`|Use an emp|Yes|
-|`3`|Use a mega pulse|Yes|
-|`4`|Use an expand |Partially|
+|<kbd>Up/Down</kbd>|Accelerate/Deaccelerate|Yes|
+|<kbd>Left/Right</kbd>|Turn left/right|Yes|
+|<kbd>Ctrl</kbd>|Weapon A|Yes|
+|<kbd>Alt</kbd>|Weapon B|Partially|
+|<kbd>Shift</kbd>|Get In/Out of current vehicle|Yes|
+|<kbd>A</kbd>|Autocenter turret|Yes|
+|<kbd>Z</kbd>|Turret left|Yes|
+|<kbd>X</kbd>|Turret Right|Yes|
+|<kbd>R</kbd>|Toggle Radar|Yes|
+|<kbd>[</kbd>|Zoom Radar Out|Dismissed|
+|<kbd>]</kbd>|Zoom Radar In|Dismissed|
+|<kbd>Esc</kbd>|Go to menu|Yes|
+|<kbd>1</kbd>|Use an invincibility  |Yes|
+|<kbd>2</kbd>|Use an emp|Yes|
+|<kbd>3</kbd>|Use a mega pulse|Yes|
+|<kbd>4</kbd>|Use an expand |Partially|
 
-`1` Use an invincibility  
-`2` Use an emp (Destroys nearby planes)  
-`3` Use a mega pulse (most powerful weapon)  
-`4` Use an expand (Repels enemy weapons)
+> **_Note:_**  Key table above was taken from the original game's 'HELPME.TXT' file.
+
+### Items
+![invincibility item](https://github.com/Luke004/Zulu-Assault/blob/master/assets/items/invincibility/invincibility.png?raw=true)
+<kbd>1</kbd> Activate **Invincibility**  
+*Become invincible for 10 seconds*  
+![emp item](https://github.com/Luke004/Zulu-Assault/blob/master/assets/items/emp/emp.png?raw=true)
+<kbd>2</kbd> Activate **EMP**  
+*Destroy nearby planes instantly*  
+![mega pulse item](https://github.com/Luke004/Zulu-Assault/blob/master/assets/items/mega_pulse/mega_pulse.png?raw=true)
+<kbd>3</kbd> Shoot a **Mega Pulse**  
+*Most powerful weapon in the game*  
+![expand item](https://github.com/Luke004/Zulu-Assault/blob/master/assets/items/expand/expand.png?raw=true)
+<kbd>4</kbd> Activate **Expand**  
+*Repel projectiles of enemy weapons*
+
 
 ## Play now (download)
 https://www.dropbox.com/sh/dft4pes6qxbbuts/AAC3EQgJXdtmXwD29vViDMa4a?dl=0
 
 ## Console commands
 
-You can open the console in the menu by pressing ^ (German version - key to the left of 1)
+You can open the console in the menu by pressing <kbd>^</kbd> (German version - key to the left of 1)
 
-*open level_x* - open the level x  
-*show time* - display the time needed for the play through  
-*keyboard_layout x* - switch between keyboard layouts (1 = German, 2 = English)
+|Command|Action|
+|-----|-----------|
+|*open level_x* |open and play a single level x|
+|*show time* |display the time needed for the play through (speedrunner support =D)|
+|*keyboard_layout x* |switch between keyboard layouts (1 = German, 2 = English)|
 
 ## Info
 **Idea by:**  
