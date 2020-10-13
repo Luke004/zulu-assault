@@ -24,8 +24,11 @@ public class ZuluAssault extends StateBasedGame {
     public static final int LEVEL_4 = 4;
     public static final int LEVEL_5 = 5;
     public static final int LEVEL_6 = 6;
+    public static final int LEVEL_7 = 7;
     public static final int BRIEFING = -1;
     public static final int DEBRIEFING = -2;
+
+    private static final int MAX_LEVEL = LEVEL_7;
 
     public static BasicGameState prevState = null;
     public static int nextLevelID = 0;
@@ -39,6 +42,7 @@ public class ZuluAssault extends StateBasedGame {
         this.addState(new Level_4());
         this.addState(new Level_5());
         this.addState(new Level_6());
+        this.addState(new Level_7());
         this.addState(new Debriefing());
         this.addState(new Briefing());
     }
@@ -71,7 +75,7 @@ public class ZuluAssault extends StateBasedGame {
     }
 
     public static boolean existsLevel(int id) {
-        if (id < 1 || id > 6) return false;
+        if (id < 1 || id > MAX_LEVEL) return false;
         return true;
     }
 

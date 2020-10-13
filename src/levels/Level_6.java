@@ -31,7 +31,7 @@ public class Level_6 extends AbstractLevel implements GameState {
             mission_title = "Fortress";
             briefing_message = "The enemy has built a virtual mountain of defenses around its base. Your job is" +
                     " simple - go in and clean them out. Watch out for enemy A10s.";
-            debriefing_message = "";
+            debriefing_message = "I've never seen so much wrecked hardware. Good job.";
             calledOnce = true;
             return;
         }
