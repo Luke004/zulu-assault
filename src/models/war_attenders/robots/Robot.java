@@ -19,7 +19,7 @@ public abstract class Robot extends MovableWarAttender {
     private static final float ARMOR = 75.f;
     private static final int SCORE_VALUE = 3000;
     private static final float ROTATE_SPEED_PLAYER = 0.25f, ROTATE_SPEED_BOT = 0.25f;
-    private static final float MAX_SPEED_PLAYER = 0.15f, MAX_SPEED_BOT = 0.05f;
+    private static final float MAX_SPEED_PLAYER = 0.15f, MAX_SPEED_BOT = 0.07f;
 
     public Robot(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
@@ -62,6 +62,25 @@ public abstract class Robot extends MovableWarAttender {
 
         if (centerTurret) {
             centerTurret(deltaTime);
+        }
+
+        // WAY POINTS
+        if (waypointManager != null) {
+            // move to next vector
+            moveForward(deltaTime);
+            // rotate the robot towards the next vector until it's pointing towards it
+            if (waypointManager.wish_angle != (int) getRotation()) {
+                rotate(waypointManager.rotate_direction, deltaTime);
+                waypointManager.adjustAfterRotation(this.position, getRotation());
+            }
+
+            if (waypointManager.distToNextVector(this.position) < HEIGHT_HALF * 2) {
+                waypointManager.setupNextWayPoint(this.position, getRotation());
+            }
+
+            if (!isEnemyNear) {
+                autoCenterTurret();
+            }
         }
     }
 
@@ -113,6 +132,15 @@ public abstract class Robot extends MovableWarAttender {
             position.y += dir.y;
 
         collisionModel.update(base_image.getRotation());
+    }
+
+    @Override
+    public void addWayPoints(WayPointManager waypointManager) {
+        super.addWayPoints(waypointManager);
+        // start the animation since the robot is moving because of way points
+        this.setMovingForward(true);
+        this.startAnimation();
+        this.setMoving(true);
     }
 
     @Override
