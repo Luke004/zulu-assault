@@ -1,12 +1,12 @@
-package models.war_attenders;
+package models.entities;
 
 import levels.AbstractLevel;
-import logic.level_listeners.WarAttenderDeleteListener;
+import logic.level_listeners.EntityDeleteListener;
 import logic.WayPointManager;
 import settings.UserSettings;
 import models.CollisionModel;
 import models.interaction_circles.TeleportCircle;
-import models.war_attenders.aircraft.friendly.Plane;
+import models.entities.aircraft.friendly.Plane;
 import models.weapons.MegaPulse;
 import models.weapons.Weapon;
 import models.weapons.projectiles.Projectile;
@@ -17,12 +17,12 @@ import player.Player;
 
 import java.util.Iterator;
 
-import static levels.AbstractLevel.all_movable_war_attenders;
-import static levels.AbstractLevel.hostile_movable_war_attenders;
+import static levels.AbstractLevel.all_movable_entities;
+import static levels.AbstractLevel.hostile_movable_entities;
 
-public abstract class MovableWarAttender extends WarAttender {
+public abstract class MovableEntity extends Entity {
     // listener
-    protected WarAttenderDeleteListener level_delete_listener;
+    protected EntityDeleteListener level_delete_listener;
     // model related
     public Image base_image;
     public CollisionModel collisionModel;
@@ -69,12 +69,12 @@ public abstract class MovableWarAttender extends WarAttender {
         }
     }
 
-    public MovableWarAttender(Vector2f startPos, boolean isHostile) {
+    public MovableEntity(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
         dir = new Vector2f(0, 0);
     }
 
-    public MovableWarAttender(Vector2f startPos, boolean isHostile, boolean isDrivable) {
+    public MovableEntity(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         this(startPos, isHostile);
         this.isDrivable = isDrivable;
     }
@@ -246,7 +246,7 @@ public abstract class MovableWarAttender extends WarAttender {
         return isDrivable;
     }
 
-    public abstract void onCollision(MovableWarAttender enemy);
+    public abstract void onCollision(MovableEntity enemy);
 
     public void blockMovement() {
         if (isDestroyed) return;
@@ -270,11 +270,11 @@ public abstract class MovableWarAttender extends WarAttender {
                 break;
             case EMP:   // destroy all nearby planes
                 emp_use_sound.play(1.f, UserSettings.soundVolume);
-                for (int idx = 0; idx < hostile_movable_war_attenders.size(); ++idx) {
-                    MovableWarAttender hostileWarAttender = hostile_movable_war_attenders.get(idx);
-                    if (hostileWarAttender instanceof Plane) {
-                        if (WayPointManager.dist(hostileWarAttender.getPosition(), this.getPosition()) < 300) {
-                            hostileWarAttender.isDestroyed = true;
+                for (int idx = 0; idx < hostile_movable_entities.size(); ++idx) {
+                    MovableEntity hostileEntity = hostile_movable_entities.get(idx);
+                    if (hostileEntity instanceof Plane) {
+                        if (WayPointManager.dist(hostileEntity.getPosition(), this.getPosition()) < 300) {
+                            hostileEntity.isDestroyed = true;
                         }
                     }
                 }
@@ -285,10 +285,10 @@ public abstract class MovableWarAttender extends WarAttender {
                 break;
             case EXPAND:
                 expand_use_sound.play(1.f, UserSettings.soundVolume);
-                for (int idx = 0; idx < all_movable_war_attenders.size(); ++idx) {
-                    MovableWarAttender movableWarAttender = all_movable_war_attenders.get(idx);
-                    if (WayPointManager.dist(movableWarAttender.getPosition(), this.getPosition()) < 500) {
-                        for (Weapon weapon : movableWarAttender.getWeapons()) {
+                for (int idx = 0; idx < all_movable_entities.size(); ++idx) {
+                    MovableEntity movableEntity = all_movable_entities.get(idx);
+                    if (WayPointManager.dist(movableEntity.getPosition(), this.getPosition()) < 500) {
+                        for (Weapon weapon : movableEntity.getWeapons()) {
                             Iterator<Projectile> projectile_iterator = weapon.getProjectiles();
                             while (projectile_iterator.hasNext()) {
                                 Projectile projectile = projectile_iterator.next();

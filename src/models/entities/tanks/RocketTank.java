@@ -1,4 +1,4 @@
-package models.war_attenders.tanks;
+package models.entities.tanks;
 
 import models.CollisionModel;
 import models.weapons.RocketLauncher;
@@ -27,25 +27,25 @@ public class RocketTank extends Tank {
         try {
             if (isHostile) {
                 if (rocket_tank_hostile_texture == null) {
-                    rocket_tank_hostile_texture = new Image("assets/war_attenders/tanks/rocket_tank_hostile.png")
+                    rocket_tank_hostile_texture = new Image("assets/entities/tanks/rocket_tank_hostile.png")
                             .getTexture();
                 }
                 base_image = new Image(rocket_tank_hostile_texture);
                 if (rocket_tank_hostile_turret_texture == null) {
                     rocket_tank_hostile_turret_texture =
-                            new Image("assets/war_attenders/tanks/rocket_tank_hostile_turret.png")
+                            new Image("assets/entities/tanks/rocket_tank_hostile_turret.png")
                                     .getTexture();
                 }
                 turret = new Image(rocket_tank_hostile_turret_texture);
             } else {    // friendly
                 if (rocket_tank_friendly_texture == null) {
-                    rocket_tank_friendly_texture = new Image("assets/war_attenders/tanks/rocket_tank_friendly.png")
+                    rocket_tank_friendly_texture = new Image("assets/entities/tanks/rocket_tank_friendly.png")
                             .getTexture();
                 }
                 base_image = new Image(rocket_tank_friendly_texture);
                 if (rocket_tank_friendly_turret_texture == null) {
                     rocket_tank_friendly_turret_texture =
-                            new Image("assets/war_attenders/tanks/rocket_tank_friendly_turret.png")
+                            new Image("assets/entities/tanks/rocket_tank_friendly_turret.png")
                                     .getTexture();
                 }
                 turret = new Image(rocket_tank_friendly_turret_texture);

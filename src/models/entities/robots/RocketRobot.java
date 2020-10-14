@@ -1,4 +1,4 @@
-package models.war_attenders.robots;
+package models.entities.robots;
 
 import models.weapons.Cannon;
 import models.weapons.DoubleRocketLauncher;
@@ -17,7 +17,7 @@ public class RocketRobot extends Robot {
         // LOAD TEXTURES
         try {
             if (rocket_robot_texture == null) {
-                rocket_robot_texture = new Image("assets/war_attenders/robots/rocket_robot.png")
+                rocket_robot_texture = new Image("assets/entities/robots/rocket_robot.png")
                         .getTexture();
             }
             base_image = new Image(rocket_robot_texture);

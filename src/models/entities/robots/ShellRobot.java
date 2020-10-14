@@ -1,4 +1,4 @@
-package models.war_attenders.robots;
+package models.entities.robots;
 
 import models.weapons.DoubleShell;
 import org.newdawn.slick.Image;
@@ -18,7 +18,7 @@ public class ShellRobot extends Robot {
         // LOAD TEXTURES
         try {
             if (shell_robot_texture == null) {
-                shell_robot_texture = new Image("assets/war_attenders/robots/shell_robot.png")
+                shell_robot_texture = new Image("assets/entities/robots/shell_robot.png")
                         .getTexture();
             }
             base_image = new Image(shell_robot_texture);

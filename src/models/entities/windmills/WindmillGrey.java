@@ -1,4 +1,4 @@
-package models.war_attenders.windmills;
+package models.entities.windmills;
 
 import models.weapons.Shell;
 import org.newdawn.slick.Image;
@@ -22,7 +22,7 @@ public class WindmillGrey extends Windmill {
         // LOAD TEXTURES
         try {
             if (windmill_grey_turret_texture == null) {
-                windmill_grey_turret_texture = new Image("assets/war_attenders/windmills/GreyWindmill_turret.png")
+                windmill_grey_turret_texture = new Image("assets/entities/windmills/grey_windmill_turret.png")
                         .getTexture();
             }
             turret = new Image(windmill_grey_turret_texture);

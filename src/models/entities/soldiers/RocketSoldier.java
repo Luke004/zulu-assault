@@ -1,4 +1,4 @@
-package models.war_attenders.soldiers;
+package models.entities.soldiers;
 
 import models.weapons.RocketLauncher;
 import org.newdawn.slick.Image;
@@ -18,7 +18,7 @@ public class RocketSoldier extends Soldier {
         // LOAD TEXTURES
         try {
             if (rocket_soldier_animation_texture == null) {
-                rocket_soldier_animation_texture = new Image("assets/war_attenders/soldiers/rocket_soldier_animation.png")
+                rocket_soldier_animation_texture = new Image("assets/entities/soldiers/rocket_soldier_animation.png")
                         .getTexture();
             }
             base_image = new Image(rocket_soldier_animation_texture);

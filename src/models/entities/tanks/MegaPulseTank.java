@@ -1,4 +1,4 @@
-package models.war_attenders.tanks;
+package models.entities.tanks;
 
 import models.CollisionModel;
 import models.weapons.MegaPulse;
@@ -30,13 +30,13 @@ public class MegaPulseTank extends Tank {
         // LOAD TEXTURES
         try {
             if (mega_pulse_tank_hostile_texture == null) {
-                mega_pulse_tank_hostile_texture = new Image("assets/war_attenders/tanks/mega_pulse_tank.png")
+                mega_pulse_tank_hostile_texture = new Image("assets/entities/tanks/mega_pulse_tank.png")
                         .getTexture();
             }
             base_image = new Image(mega_pulse_tank_hostile_texture);
             if (mega_pulse_tank_hostile_turret_texture == null) {
                 mega_pulse_tank_hostile_turret_texture =
-                        new Image("assets/war_attenders/tanks/mega_pulse_tank_turret.png")
+                        new Image("assets/entities/tanks/mega_pulse_tank_turret.png")
                                 .getTexture();
             }
             turret = new Image(mega_pulse_tank_hostile_turret_texture);

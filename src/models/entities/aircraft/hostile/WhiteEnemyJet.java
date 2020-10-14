@@ -1,4 +1,4 @@
-package models.war_attenders.aircraft.hostile;
+package models.entities.aircraft.hostile;
 
 import models.weapons.AGM;
 import models.weapons.Uzi;
@@ -27,7 +27,7 @@ public class WhiteEnemyJet extends EnemyFlyingEntity {
         // LOAD TEXTURES
         try {
             if (white_enemy_jet_texture == null) {
-                white_enemy_jet_texture = new Image("assets/war_attenders/planes/jet_enemy.png")
+                white_enemy_jet_texture = new Image("assets/entities/planes/jet_enemy.png")
                         .getTexture();
             }
             base_image = new Image(white_enemy_jet_texture);

@@ -1,9 +1,9 @@
-package models.war_attenders.windmills;
+package models.entities.windmills;
 
 import logic.WayPointManager;
-import models.StaticWarAttender;
+import models.StaticEntity;
 import graphics.animations.smoke.SmokeAnimation;
-import models.war_attenders.MovableWarAttender;
+import models.entities.MovableEntity;
 import models.weapons.Weapon;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -12,7 +12,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 import java.util.Random;
 
-public abstract class Windmill extends StaticWarAttender {
+public abstract class Windmill extends StaticEntity {
     protected Image turret;
     protected Vector2f turret_position;
     private SmokeAnimation smokeAnimation;
@@ -63,17 +63,17 @@ public abstract class Windmill extends StaticWarAttender {
     }
 
     @Override
-    public void fireWeapon(MovableWarAttender.WeaponType weaponType) {
+    public void fireWeapon(MovableEntity.WeaponType weaponType) {
         Weapon weapon = null;
         switch (weaponType) {
             case WEAPON_1:
-                weapon = getWeapon(MovableWarAttender.WeaponType.WEAPON_1);
+                weapon = getWeapon(MovableEntity.WeaponType.WEAPON_1);
                 break;
             case WEAPON_2:
-                weapon = getWeapon(MovableWarAttender.WeaponType.WEAPON_2);
+                weapon = getWeapon(MovableEntity.WeaponType.WEAPON_2);
                 break;
             case MEGA_PULSE:
-                weapon = getWeapon(MovableWarAttender.WeaponType.MEGA_PULSE);
+                weapon = getWeapon(MovableEntity.WeaponType.MEGA_PULSE);
                 break;
         }
         if (weapon == null) return;  // does not have a WEAPON_2, so return

@@ -1,4 +1,4 @@
-package models.war_attenders.tanks;
+package models.entities.tanks;
 
 import models.CollisionModel;
 import models.weapons.Uzi;
@@ -26,13 +26,13 @@ public class MemeCar extends Tank {
         // LOAD TEXTURES
         try {
             if (meme_car_texture == null) {
-                meme_car_texture = new Image("assets/war_attenders/tanks/meme_car.png")
+                meme_car_texture = new Image("assets/entities/tanks/meme_car.png")
                         .getTexture();
             }
             base_image = new Image(meme_car_texture);
             if (meme_car_turret_texture == null) {
                 meme_car_turret_texture =
-                        new Image("assets/war_attenders/tanks/meme_car_turret.png")
+                        new Image("assets/entities/tanks/meme_car_turret.png")
                                 .getTexture();
             }
             turret = new Image(meme_car_turret_texture);

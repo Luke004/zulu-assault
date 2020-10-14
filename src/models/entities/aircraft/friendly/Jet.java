@@ -1,4 +1,4 @@
-package models.war_attenders.aircraft.friendly;
+package models.entities.aircraft.friendly;
 
 import settings.UserSettings;
 import models.weapons.RocketLauncher;
@@ -43,7 +43,7 @@ public class Jet extends Plane {
         // LOAD TEXTURES
         try {
             if (jet_texture == null) {
-                jet_texture = new Image("assets/war_attenders/planes/jet.png")
+                jet_texture = new Image("assets/entities/planes/jet.png")
                         .getTexture();
             }
             base_image = new Image(jet_texture);

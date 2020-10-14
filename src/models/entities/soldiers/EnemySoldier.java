@@ -1,4 +1,4 @@
-package models.war_attenders.soldiers;
+package models.entities.soldiers;
 
 import models.weapons.Uzi;
 import org.newdawn.slick.Image;
@@ -18,7 +18,7 @@ public class EnemySoldier extends Soldier {
         // LOAD TEXTURES
         try {
             if (enemy_soldier_animation_texture == null) {
-                enemy_soldier_animation_texture = new Image("assets/war_attenders/soldiers/enemy_soldier_animation.png")
+                enemy_soldier_animation_texture = new Image("assets/entities/soldiers/enemy_soldier_animation.png")
                         .getTexture();
             }
             base_image = new Image(enemy_soldier_animation_texture);

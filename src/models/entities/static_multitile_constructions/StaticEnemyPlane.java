@@ -1,9 +1,9 @@
-package models.war_attenders.aircraft.hostile;
+package models.entities.static_multitile_constructions;
 
-import models.StaticWarAttender;
+import models.StaticEntity;
 import org.newdawn.slick.geom.Vector2f;
 
-public class StaticEnemyPlane extends StaticWarAttender {
+public class StaticEnemyPlane extends StaticEntity {
 
     private static final float ARMOR = 50.f;
     private static final int SCORE_VALUE = 2000;

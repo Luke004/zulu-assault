@@ -1,8 +1,7 @@
-package models.war_attenders.tanks;
+package models.entities.tanks;
 
 import models.CollisionModel;
 import models.weapons.Cannon;
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
@@ -28,25 +27,25 @@ public class CannonTank extends Tank {
         try {
             if (isHostile) {
                 if (cannon_tank_hostile_texture == null) {
-                    cannon_tank_hostile_texture = new Image("assets/war_attenders/tanks/cannon_tank_hostile.png")
+                    cannon_tank_hostile_texture = new Image("assets/entities/tanks/cannon_tank_hostile.png")
                             .getTexture();
                 }
                 base_image = new Image(cannon_tank_hostile_texture);
                 if (cannon_tank_hostile_turret_texture == null) {
                     cannon_tank_hostile_turret_texture =
-                            new Image("assets/war_attenders/tanks/cannon_tank_hostile_turret.png")
+                            new Image("assets/entities/tanks/cannon_tank_hostile_turret.png")
                                     .getTexture();
                 }
                 turret = new Image(cannon_tank_hostile_turret_texture);
             } else {    // friendly
                 if (cannon_tank_friendly_texture == null) {
-                    cannon_tank_friendly_texture = new Image("assets/war_attenders/tanks/cannon_tank_friendly.png")
+                    cannon_tank_friendly_texture = new Image("assets/entities/tanks/cannon_tank_friendly.png")
                             .getTexture();
                 }
                 base_image = new Image(cannon_tank_friendly_texture);
                 if (cannon_tank_friendly_turret_texture == null) {
                     cannon_tank_friendly_turret_texture =
-                            new Image("assets/war_attenders/tanks/cannon_tank_friendly_turret.png")
+                            new Image("assets/entities/tanks/cannon_tank_friendly_turret.png")
                                     .getTexture();
                 }
                 turret = new Image(cannon_tank_friendly_turret_texture);

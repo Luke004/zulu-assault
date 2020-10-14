@@ -1,4 +1,4 @@
-package models.war_attenders.robots;
+package models.entities.robots;
 
 import models.weapons.DoublePlasma;
 import org.newdawn.slick.Image;
@@ -18,7 +18,7 @@ public class PlasmaRobot extends Robot {
         // LOAD TEXTURES
         try {
             if (plasma_robot_texture == null) {
-                plasma_robot_texture = new Image("assets/war_attenders/robots/plasma_robot.png")
+                plasma_robot_texture = new Image("assets/entities/robots/plasma_robot.png")
                         .getTexture();
             }
             base_image = new Image(plasma_robot_texture);

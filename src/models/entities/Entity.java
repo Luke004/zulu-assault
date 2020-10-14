@@ -1,17 +1,16 @@
-package models.war_attenders;
+package models.entities;
 
 import logic.WayPointManager;
-import models.war_attenders.robots.RocketRobot;
+import models.entities.robots.RocketRobot;
 import models.weapons.Weapon;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class WarAttender {
+public abstract class Entity {
     protected List<Weapon> weapons;
     private Image health_bar_image;
     protected Vector2f health_bar_position;
@@ -25,7 +24,7 @@ public abstract class WarAttender {
     // graphics related
     private static Texture health_bar_texture_enemy, health_bar_texture_friendly;
 
-    public WarAttender(Vector2f startPos, boolean isHostile) {
+    public Entity(Vector2f startPos, boolean isHostile) {
         this.isHostile = isHostile;
         this.position = startPos;
         weapons = new ArrayList<>();    // 3 weapons -> WEAPON_1, WEAPON_2 and MEGA_PULSE
@@ -69,7 +68,7 @@ public abstract class WarAttender {
             weapon.draw(graphics);
         }
 
-        if (!(this instanceof MovableWarAttender))
+        if (!(this instanceof MovableEntity))
             drawHealthBar(graphics);
     }
 
@@ -94,10 +93,10 @@ public abstract class WarAttender {
         }
     }
 
-    public void shootAtEnemies(MovableWarAttender player, List<? extends WarAttender> enemies_of_warAttender, int deltaTime) {
+    public void shootAtEnemies(MovableEntity player, List<? extends Entity> enemies_of_entity, int deltaTime) {
         if (isDestroyed) return;
-        if (this instanceof MovableWarAttender) {
-            if (((MovableWarAttender) this).isDrivable) return;
+        if (this instanceof MovableEntity) {
+            if (((MovableEntity) this).isDrivable) return;
         }
         float xPos, yPos, dist;
         if (player != null) {
@@ -114,7 +113,7 @@ public abstract class WarAttender {
             dist = Float.MAX_VALUE;
         }
         // calculate dist between each tank and all its enemies
-        for (WarAttender enemy_war_attender : enemies_of_warAttender) {
+        for (Entity enemy_war_attender : enemies_of_entity) {
             float next_xPos = enemy_war_attender.position.x;
             float next_yPos = enemy_war_attender.position.y;
             float next_dist = WayPointManager.dist(position, new Vector2f(next_xPos, next_yPos));
@@ -138,20 +137,20 @@ public abstract class WarAttender {
         }
         if (dist < 500) {
             // fire
-            fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
+            fireWeapon(MovableEntity.WeaponType.WEAPON_1);
 
             if (this instanceof RocketRobot) {  // rocket robot can also fire with 2nd weapon
-                fireWeapon(MovableWarAttender.WeaponType.WEAPON_2);
+                fireWeapon(MovableEntity.WeaponType.WEAPON_2);
             }
         }
     }
 
-    public abstract void fireWeapon(MovableWarAttender.WeaponType weapon);
+    public abstract void fireWeapon(MovableEntity.WeaponType weapon);
 
     public abstract void changeAimingDirection(float degree, int deltaTime);
 
 
-    public Weapon getWeapon(MovableWarAttender.WeaponType weaponType) {
+    public Weapon getWeapon(MovableEntity.WeaponType weaponType) {
         switch (weaponType) {
             case WEAPON_1:
                 if (weapons.size() == 0) return null;    // does not have a WEAPON_1

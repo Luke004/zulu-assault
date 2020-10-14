@@ -1,4 +1,4 @@
-package models.war_attenders.windmills;
+package models.entities.windmills;
 
 import models.weapons.Uzi;
 import org.newdawn.slick.Image;
@@ -22,7 +22,7 @@ public class WindmillGreen extends Windmill {
         // LOAD TEXTURES
         try {
             if (windmill_green_turret_texture == null) {
-                windmill_green_turret_texture = new Image("assets/war_attenders/windmills/GreenWindmill_turret.png")
+                windmill_green_turret_texture = new Image("assets/entities/windmills/green_windmill_turret.png")
                         .getTexture();
             }
             turret = new Image(windmill_green_turret_texture);

@@ -1,11 +1,11 @@
-package models.war_attenders.aircraft.friendly;
+package models.entities.aircraft.friendly;
 
 import logic.TileMapInfo;
 import logic.WayPointManager;
 import audio.MenuSounds;
 import settings.UserSettings;
 import models.CollisionModel;
-import models.war_attenders.MovableWarAttender;
+import models.entities.MovableEntity;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -13,7 +13,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 import static logic.TileMapInfo.*;
 
-public abstract class Plane extends MovableWarAttender {
+public abstract class Plane extends MovableEntity {
 
     protected boolean landing, starting, hasLanded, hasStarted;
     protected PlaneShadow planeShadow;
@@ -69,7 +69,7 @@ public abstract class Plane extends MovableWarAttender {
     }
 
     @Override
-    public void onCollision(MovableWarAttender enemy) {
+    public void onCollision(MovableEntity enemy) {
         // a plane doesn't have collision
     }
 
@@ -122,7 +122,7 @@ public abstract class Plane extends MovableWarAttender {
             if (isDestroyed) {
                 // crash the plane and remove it after it has reached the ground
                 landPlane(deltaTime);   // land plane -> to simulate a plane crash -> it looks like landing
-                if (hasLanded) level_delete_listener.notifyForWarAttenderDeletion(this);
+                if (hasLanded) level_delete_listener.notifyForEntityDestruction(this);
             } else {
                 // normal shadow position
                 planeShadow.update();

@@ -1,16 +1,15 @@
-package models.war_attenders.robots;
+package models.entities.robots;
 
 import logic.CollisionHandler;
 import logic.WayPointManager;
 import models.CollisionModel;
-import models.war_attenders.MovableWarAttender;
-import models.war_attenders.soldiers.Soldier;
-import models.war_attenders.tanks.CannonTank;
-import models.war_attenders.tanks.Tank;
+import models.entities.MovableEntity;
+import models.entities.soldiers.Soldier;
+import models.entities.tanks.Tank;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
-public abstract class Robot extends MovableWarAttender {
+public abstract class Robot extends MovableEntity {
     private Animation walking_animation;
     private float BASE_WIDTH_HALF, BASE_HEIGHT_HALF;
     private boolean centerTurret;
@@ -28,7 +27,7 @@ public abstract class Robot extends MovableWarAttender {
 
     public void init() {
         try {
-            Image walking_animation_image = new Image("assets/war_attenders/robots/robot_walking_animation.png");
+            Image walking_animation_image = new Image("assets/entities/robots/robot_walking_animation.png");
             walking_animation = new Animation(false);
             int x = 0;
             do {
@@ -57,7 +56,7 @@ public abstract class Robot extends MovableWarAttender {
         walking_animation.update(deltaTime);
 
         if (isDestroyed) {
-            level_delete_listener.notifyForWarAttenderDeletion(this);
+            level_delete_listener.notifyForEntityDestruction(this);
         }
 
         if (centerTurret) {
@@ -144,16 +143,16 @@ public abstract class Robot extends MovableWarAttender {
     }
 
     @Override
-    public void onCollision(MovableWarAttender warAttender) {
-        if (warAttender instanceof Tank || warAttender instanceof Robot) {
+    public void onCollision(MovableEntity movableEntity) {
+        if (movableEntity instanceof Tank || movableEntity instanceof Robot) {
             blockMovement();
-            if (!isHostile && warAttender.isHostile) {
-                warAttender.changeHealth(-10.f);
+            if (!isHostile && movableEntity.isHostile) {
+                movableEntity.changeHealth(-10.f);
             }
-        } else if (warAttender instanceof Soldier) {   // enemy is a soldier (bad for him)
-            if (warAttender.isDestroyed) return;
-            if (!isHostile && warAttender.isHostile) {
-                warAttender.changeHealth(-150.f);
+        } else if (movableEntity instanceof Soldier) {   // enemy is a soldier (bad for him)
+            if (movableEntity.isDestroyed) return;
+            if (!isHostile && movableEntity.isHostile) {
+                movableEntity.changeHealth(-150.f);
             }
             blockMovement();
         }

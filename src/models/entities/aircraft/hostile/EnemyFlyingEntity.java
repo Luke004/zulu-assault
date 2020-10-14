@@ -1,10 +1,10 @@
-package models.war_attenders.aircraft.hostile;
+package models.entities.aircraft.hostile;
 
 import graphics.animations.other.AnimatedCrosshair;
 import logic.WayPointManager;
-import models.war_attenders.MovableWarAttender;
-import models.war_attenders.WarAttender;
-import models.war_attenders.aircraft.friendly.Plane;
+import models.entities.MovableEntity;
+import models.entities.Entity;
+import models.entities.aircraft.friendly.Plane;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -47,7 +47,7 @@ public abstract class EnemyFlyingEntity extends Plane {
     }
 
     @Override
-    public void shootAtEnemies(MovableWarAttender player, List<? extends WarAttender> enemies_of_warAttender, int deltaTime) {
+    public void shootAtEnemies(MovableEntity player, List<? extends Entity> enemies_of_entity, int deltaTime) {
         if (isDestroyed) return;
         float xPos, yPos, dist;
         if (player != null) {
@@ -64,7 +64,7 @@ public abstract class EnemyFlyingEntity extends Plane {
             dist = Float.MAX_VALUE;
         }
         // calculate dist between each tank and all its enemies
-        for (WarAttender enemy_war_attender : enemies_of_warAttender) {
+        for (Entity enemy_war_attender : enemies_of_entity) {
             float next_xPos = enemy_war_attender.getPosition().x;
             float next_yPos = enemy_war_attender.getPosition().y;
             float next_dist = WayPointManager.dist(position, new Vector2f(next_xPos, next_yPos));
@@ -82,7 +82,7 @@ public abstract class EnemyFlyingEntity extends Plane {
             isEnemyNear = true;
             rotationDegree = WayPointManager.calculateAngleToRotateTo(position, new Vector2f(xPos, yPos));
             changeAimingDirection(rotationDegree, deltaTime);
-            fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
+            fireWeapon(MovableEntity.WeaponType.WEAPON_1);
             fireWeapon(WeaponType.WEAPON_2);   // green plane can also shoot wpn2
         } else {
             isEnemyNear = false;

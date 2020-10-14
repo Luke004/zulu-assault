@@ -1,4 +1,4 @@
-package models.war_attenders.aircraft.friendly;
+package models.entities.aircraft.friendly;
 
 import logic.TileMapInfo;
 import settings.UserSettings;
@@ -48,11 +48,11 @@ public class Helicopter extends Plane {
         // LOAD TEXTURES
         try {
             if (helicopter_texture == null) {
-                helicopter_texture = new Image("assets/war_attenders/planes/helicopter.png")
+                helicopter_texture = new Image("assets/entities/planes/helicopter.png")
                         .getTexture();
-                helicopter_wings_moving_texture = new Image("assets/war_attenders/planes/helicopter_wings_moving.png")
+                helicopter_wings_moving_texture = new Image("assets/entities/planes/helicopter_wings_moving.png")
                         .getTexture();
-                helicopter_wings_idle_texture = new Image("assets/war_attenders/planes/helicopter_wings_idle.png")
+                helicopter_wings_idle_texture = new Image("assets/entities/planes/helicopter_wings_idle.png")
                         .getTexture();
             }
             base_image = new Image(helicopter_texture);

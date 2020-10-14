@@ -1,13 +1,13 @@
-package models.war_attenders.soldiers;
+package models.entities.soldiers;
 
 import logic.CollisionHandler;
 import logic.WayPointManager;
 import models.CollisionModel;
-import models.war_attenders.MovableWarAttender;
-import models.war_attenders.WarAttender;
-import models.war_attenders.aircraft.friendly.Plane;
-import models.war_attenders.robots.Robot;
-import models.war_attenders.tanks.Tank;
+import models.entities.MovableEntity;
+import models.entities.Entity;
+import models.entities.aircraft.friendly.Plane;
+import models.entities.robots.Robot;
+import models.entities.tanks.Tank;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -15,7 +15,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 import java.util.List;
 
-public abstract class Soldier extends MovableWarAttender {
+public abstract class Soldier extends MovableEntity {
     Animation animation;
 
     private boolean isFleeing;
@@ -60,7 +60,7 @@ public abstract class Soldier extends MovableWarAttender {
         animation.update(deltaTime);
 
         if (isDestroyed) {
-            level_delete_listener.notifyForWarAttenderDeletion(this);
+            level_delete_listener.notifyForEntityDestruction(this);
         } else if (isFleeing) {
             time_fleeing += deltaTime;
             if (time_fleeing > FLEE_TIMER) {
@@ -122,9 +122,9 @@ public abstract class Soldier extends MovableWarAttender {
     }
 
     @Override
-    public void onCollision(MovableWarAttender warAttender) {
-        if (warAttender.isDrivable()) blockMovement();
-        else if (!(warAttender instanceof Plane)) {
+    public void onCollision(MovableEntity movableEntity) {
+        if (movableEntity.isDrivable()) blockMovement();
+        else if (!(movableEntity instanceof Plane)) {
             blockMovement();
         }
     }
@@ -195,9 +195,9 @@ public abstract class Soldier extends MovableWarAttender {
     }
 
     @Override
-    public void shootAtEnemies(MovableWarAttender player, List<? extends WarAttender> enemyWarAttenders, int deltaTime) {
+    public void shootAtEnemies(MovableEntity player, List<? extends Entity> enemies_of_entity, int deltaTime) {
         if (isFleeing) return;
-        MovableWarAttender closest_warAttender = player;
+        MovableEntity closest_entity = player;
         // calculate dist between the player and the enemy
         float xPos = player.getPosition().x;
         float yPos = player.getPosition().y;
@@ -205,22 +205,22 @@ public abstract class Soldier extends MovableWarAttender {
                 + (yPos - position.y) * (yPos - position.y));
 
         // calculate dist between each friend and the enemy
-        for (WarAttender enemyWarAttender : enemyWarAttenders) {
-            float next_xPos = enemyWarAttender.getPosition().x;
-            float next_yPos = enemyWarAttender.getPosition().y;
+        for (Entity enemyEntity : enemies_of_entity) {
+            float next_xPos = enemyEntity.getPosition().x;
+            float next_yPos = enemyEntity.getPosition().y;
             float next_dist = (float) Math.sqrt((next_xPos - position.x) * (next_xPos - position.x)
                     + (next_yPos - position.y) * (next_yPos - position.y));
             if (next_dist < dist) {
                 dist = next_dist;
                 xPos = next_xPos;
                 yPos = next_yPos;
-                closest_warAttender = (MovableWarAttender) enemyWarAttender;
+                closest_entity = (MovableEntity) enemyEntity;
             }
         }
 
-        // flee when the closest warAttender gets too close and is a tank or a robot
-        if (dist < 100 && (closest_warAttender instanceof Tank || closest_warAttender instanceof Robot)) {
-            changeAimingDirection(closest_warAttender.getRotation(), deltaTime);
+        // flee when the closest entity gets too close and is a tank or a robot
+        if (dist < 100 && (closest_entity instanceof Tank || closest_entity instanceof Robot)) {
+            changeAimingDirection(closest_entity.getRotation(), deltaTime);
             isFleeing = true;
         } else if (dist < 500) {
             // aim at the closest enemy and fire
@@ -228,7 +228,7 @@ public abstract class Soldier extends MovableWarAttender {
 
             changeAimingDirection(rotationDegree, deltaTime);
 
-            fireWeapon(MovableWarAttender.WeaponType.WEAPON_1);
+            fireWeapon(MovableEntity.WeaponType.WEAPON_1);
         }
     }
 

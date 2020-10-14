@@ -1,4 +1,4 @@
-package models.war_attenders.soldiers;
+package models.entities.soldiers;
 
 import models.weapons.Uzi;
 import org.newdawn.slick.Image;
@@ -13,7 +13,7 @@ public class PlayerSoldier extends Soldier {
         weapons.add(new Uzi(true));
 
         try {
-            base_image = new Image("assets/war_attenders/soldiers/player_soldier_animation.png");
+            base_image = new Image("assets/entities/soldiers/player_soldier_animation.png");
         } catch (SlickException e) {
             e.printStackTrace();
         }
