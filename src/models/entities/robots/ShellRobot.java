@@ -1,6 +1,7 @@
 package models.entities.robots;
 
 import models.weapons.DoubleShell;
+import models.weapons.Napalm;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
@@ -14,6 +15,7 @@ public class ShellRobot extends Robot {
         super(startPos, isHostile, isDrivable);
 
         weapons.add(new DoubleShell(isDrivable));
+        weapons.add(new Napalm(isDrivable));
 
         // LOAD TEXTURES
         try {
