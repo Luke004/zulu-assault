@@ -10,7 +10,7 @@ public class UserSettings {
     public static int soundVolumeLevel, musicVolumeLevel;
 
     // display elements
-    public static boolean displayTime;
+    public static boolean displayTime, displayFPS;
 
     // 2 keyboard layouts (Y and Z switched)
     public static boolean keyboardLayout_1;
@@ -33,6 +33,11 @@ public class UserSettings {
         if (!time_display_value.isEmpty()) {
             displayTime = time_display_value.equals("true");
         }
+        // load FPS display
+        String fps_display_value = SettingsManager.loadSetting("show_fps", "false");
+        if (!fps_display_value.isEmpty()) {
+            displayFPS = fps_display_value.equals("true");
+        }
         // load keyboard layout
         String keyboard_layout_value = SettingsManager.loadSetting("keyboard_layout_1", "true");
         if (!keyboard_layout_value.isEmpty()) {
@@ -48,6 +53,14 @@ public class UserSettings {
     public static void setMusicVolume(int level) {
         musicVolume = level / (float) VOLUME_MAX_LEVEL;
         musicVolumeLevel = level;
+    }
+
+    public static void toggleTimeDisplay() {
+        displayTime = !displayTime;
+    }
+
+    public static void toggleFPSDisplay() {
+        displayFPS = !displayFPS;
     }
 
 }

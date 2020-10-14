@@ -53,6 +53,7 @@ You can open the console in the menu by pressing <kbd>^</kbd> (German version - 
 |-----|-----------|
 |*open level_x* |open and play a single level x|
 |*show time* |display the time needed for the play through (speedrunner support =D)|
+|*show fps* |display the frames per second (bottom right corner)|
 |*keyboard_layout x* |switch between keyboard layouts (1 = German, 2 = English)|
 
 ## Info

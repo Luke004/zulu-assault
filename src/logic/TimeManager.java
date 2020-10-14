@@ -2,8 +2,6 @@ package logic;
 
 import levels.LevelHandler;
 
-import static settings.UserSettings.displayTime;
-
 public class TimeManager {
 
     public static final String TEXT_TOTAL_TIME = "TOTAL", TEXT_LEVEL_TIME = "LEVEL";
@@ -29,11 +27,6 @@ public class TimeManager {
     public static long getTotalTime() {
         return timeTotalMillis + timeInLevelMillis;
     }
-
-    public static void toggleTimeDisplay() {
-        displayTime = !displayTime;
-    }
-
 
     public static void update(int deltaTime) {
         timeInLevelMillis += deltaTime;

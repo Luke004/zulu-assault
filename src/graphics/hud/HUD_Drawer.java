@@ -3,9 +3,7 @@ package graphics.hud;
 import graphics.fonts.FontManager;
 import levels.LevelHandler;
 import logic.TimeManager;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.TrueTypeFont;
+import org.newdawn.slick.*;
 import player.Player;
 import settings.UserSettings;
 
@@ -24,13 +22,19 @@ public class HUD_Drawer {
     private static final int MARGIN = 10;
     private Player player;
 
-    private TrueTypeFont time_text, time_text_header;
+    private TrueTypeFont time_text, time_text_header, fps_drawer;
 
-    HUD_Drawer(Player player) {
+    private static int fps_drawer_x, fps_drawer_y;
+
+    HUD_Drawer(Player player, GameContainer gc) {
         this.player = player;
 
         this.time_text = FontManager.getStencilSmaller();
         this.time_text_header = FontManager.getStencilSmall();
+        this.fps_drawer = FontManager.getConsoleOutputFont();
+
+        fps_drawer_x = gc.getWidth() - fps_drawer.getWidth("FPS: 000") - 2;
+        fps_drawer_y = gc.getHeight() - fps_drawer.getHeight("F") - 2;
 
         number_images = new ArrayList<>();
         final int NUM_AMOUNT = 10;  // 10 numbers (0-9)
@@ -75,7 +79,7 @@ public class HUD_Drawer {
         return (int) (Math.log10(number) + 1);
     }
 
-    public void draw() {
+    public void draw(GameContainer gc) {
         // draw both the 'DMG' and the 'PTS' text as an image
         dmg_image.draw(MARGIN, GAME_HEIGHT - 30);
         pts_image.draw(GAME_WIDTH / 2.f + MARGIN, GAME_HEIGHT - 30);
@@ -91,6 +95,10 @@ public class HUD_Drawer {
             // draw the total time spent in the current play through
             if (LevelHandler.playerIsInPlayThrough())
                 drawTime(TimeManager.getTotalTime(), 33.f, TimeManager.TEXT_TOTAL_TIME);
+        }
+
+        if (UserSettings.displayFPS) {
+            fps_drawer.drawString(fps_drawer_x, fps_drawer_y, "FPS: " + gc.getFPS());
         }
     }
 

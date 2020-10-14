@@ -377,7 +377,7 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
             item.draw();
         }
 
-        screenDrawer.draw();    // dead bodies and score values
+        screenDrawer.draw();    // draws dead bodies and score values
 
         /* --------------------- draw all entities --------------------- */
 
@@ -402,7 +402,7 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
 
         // un-translate graphics to draw the HUD-items
         camera.untranslateGraphics();
-        hud.draw();
+        hud.draw(gameContainer);
         radar.draw(graphics);
     }
 

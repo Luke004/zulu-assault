@@ -58,13 +58,22 @@ public class Scanner {
                 String element = input_split_by_whitespace[1];
                 switch (element) {
                     case "time":    // display the time needed for the play through
-                        TimeManager.toggleTimeDisplay();
+                        UserSettings.toggleTimeDisplay();
                         if (UserSettings.displayTime) {
                             SettingsManager.storeSetting(new SettingsManager.Property("show_time", "true"));
                             return "Time display enabled.";
                         } else {
                             SettingsManager.storeSetting(new SettingsManager.Property("show_time", "false"));
                             return "Time display disabled.";
+                        }
+                    case "fps":    // display frames per second
+                        UserSettings.toggleFPSDisplay();
+                        if (UserSettings.displayFPS) {
+                            SettingsManager.storeSetting(new SettingsManager.Property("show_fps", "true"));
+                            return "FPS display enabled.";
+                        } else {
+                            SettingsManager.storeSetting(new SettingsManager.Property("show_fps", "false"));
+                            return "FPS display disabled.";
                         }
                     default:
                         return ERROR_UNRECOGNIZED;

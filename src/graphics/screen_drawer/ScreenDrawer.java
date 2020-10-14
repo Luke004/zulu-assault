@@ -5,8 +5,9 @@ import graphics.screen_drawer.drawings.DeadSoldierBodyDrawer;
 import graphics.screen_drawer.drawings.ScoreValueDrawer;
 
 public class ScreenDrawer {
-    DeadSoldierBodyDrawer deadSoldierBodyDrawer;
-    ScoreValueDrawer scoreValueDrawer;
+
+    private DeadSoldierBodyDrawer deadSoldierBodyDrawer;
+    private ScoreValueDrawer scoreValueDrawer;
 
     public ScreenDrawer() {
         deadSoldierBodyDrawer = new DeadSoldierBodyDrawer();
@@ -30,6 +31,5 @@ public class ScreenDrawer {
     public void drawScoreValue(int seconds, Entity destroyedEntity) {
         scoreValueDrawer.init(seconds, destroyedEntity);
     }
-
 
 }

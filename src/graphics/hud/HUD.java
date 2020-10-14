@@ -41,10 +41,10 @@ public class HUD implements ItemChangeListener, ChangeVehicleListener {
         items[3] = (new Item(Player.Item_e.EXPAND));
 
         // draw damage and points
-        HUDDrawer = new HUD_Drawer(player);
+        HUDDrawer = new HUD_Drawer(player, gc);
     }
 
-    public void draw() {
+    public void draw(GameContainer gc) {
         weapon_board_image.draw(0, 0);
 
         for (int i = 0; i < weapons.size(); ++i) {
@@ -67,7 +67,7 @@ public class HUD implements ItemChangeListener, ChangeVehicleListener {
             item.draw();
         }
 
-        HUDDrawer.draw();
+        HUDDrawer.draw(gc);
     }
 
     public void update(int deltaTime) {
