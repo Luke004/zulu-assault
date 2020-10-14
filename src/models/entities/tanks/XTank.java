@@ -16,9 +16,9 @@ public class XTank extends Tank {
     private static Texture x_tank_texture, x_tank_turret_texture;
 
     // attributes
-    private static final float ARMOR = 360.f;
+    private static final float ARMOR = 500.f;
     private static final float ROTATE_SPEED_PLAYER = 0.15f, ROTATE_SPEED_BOT = 0.05f;
-    private static final float MAX_SPEED_PLAYER = 0.03f, MAX_SPEED_BOT = 0.03f;
+    private static final float MAX_SPEED_PLAYER = 0.03f, MAX_SPEED_BOT = 0.01f;
     private static final float ACCELERATION_FACTOR = 0.0005f, DECELERATION_FACTOR = 0.0005f;
 
     public XTank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
@@ -46,7 +46,7 @@ public class XTank extends Tank {
         super.init();
     }
 
-    /* the x-tank rotates itself, not a turret */
+    /* The x-tank rotates itself, not a turret. It also follows the player. */
     @Override
     public void changeAimingDirection(float angle, int deltaTime) {
         float rotation = WayPointManager.getShortestSignedAngle(base_image.getRotation(), angle);
@@ -56,6 +56,9 @@ public class XTank extends Tank {
         } else {
             rotate(RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
         }
+
+        // follow the player
+        accelerate(deltaTime, Direction.FORWARD);
     }
 
     @Override
