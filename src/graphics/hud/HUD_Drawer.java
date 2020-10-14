@@ -29,8 +29,8 @@ public class HUD_Drawer {
     HUD_Drawer(Player player, GameContainer gc) {
         this.player = player;
 
-        this.time_text = FontManager.getStencilSmaller();
-        this.time_text_header = FontManager.getStencilSmall();
+        this.time_text = FontManager.getStencilSmallerFont();
+        this.time_text_header = FontManager.getStencilSmallFont();
         this.fps_drawer = FontManager.getConsoleOutputFont();
 
         fps_drawer_x = gc.getWidth() - fps_drawer.getWidth("FPS: 000") - 2;

@@ -16,7 +16,7 @@ public class ScoreValueDrawer extends Drawing {
     private ArrayList<ScoreValueDrawer> extraDrawers;
 
     public ScoreValueDrawer() {
-        point_drawer = FontManager.getStencilSmall();
+        point_drawer = FontManager.getStencilSmallFont();
         extraDrawers = new ArrayList<>();
     }
 

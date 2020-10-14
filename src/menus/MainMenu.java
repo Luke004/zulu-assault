@@ -54,7 +54,7 @@ public class MainMenu extends BasicGameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-        title_string_drawer = FontManager.getMainFont();
+        title_string_drawer = FontManager.getGameTitleFont();
         title_string = "ZULU ASSAULT";
         title_string_position = new Vector2f(
                 gameContainer.getWidth() / 2.f - title_string_drawer.getWidth(title_string) / 2.f,
@@ -145,15 +145,18 @@ public class MainMenu extends BasicGameState {
         info_string_drawer.drawString(
                 TEXT_MARGIN,
                 gameContainer.getHeight() - info_string_drawer.getHeight() - TEXT_MARGIN,
-                info_strings[0]);
+                info_strings[0],
+                Color.lightGray);
         info_string_drawer.drawString(
                 gameContainer.getWidth() - info_string_drawer.getWidth(info_strings[1]) - TEXT_MARGIN,
                 gameContainer.getHeight() - info_string_drawer.getHeight() - TEXT_MARGIN,
-                info_strings[1]);
+                info_strings[1],
+                Color.lightGray);
         info_string_drawer.drawString(
                 gameContainer.getWidth() - info_string_drawer.getWidth(info_strings[2]) - TEXT_MARGIN,
                 TEXT_MARGIN,
-                info_strings[2]);
+                info_strings[2],
+                Color.lightGray);
     }
 
     public static void drawGameTitle() {
@@ -161,7 +164,7 @@ public class MainMenu extends BasicGameState {
                 title_string_position.x,
                 title_string_position.y,
                 title_string,
-                org.newdawn.slick.Color.lightGray);
+                Color.darkGray);
     }
 
     @Override

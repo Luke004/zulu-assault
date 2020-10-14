@@ -6,49 +6,54 @@ import java.awt.*;
 
 public class FontManager {
 
-    // main game font
-    private static final TrueTypeFont mainFont;
+    // game title font
+    private static final TrueTypeFont game_title;
 
     // stencil
-    private static final TrueTypeFont stencil_smaller, stencil_small;
+    private static final TrueTypeFont stencil_smaller, stencil_small, stencil_big;
 
     // console fonts
-    private static final TrueTypeFont console_inputFont, console_outputFont;
+    private static final TrueTypeFont console_input, console_output;
 
     // item font
-    private static final TrueTypeFont itemFont;
+    private static final TrueTypeFont item;
 
     static {
-        console_inputFont = new TrueTypeFont(new java.awt.Font("DialogInput", java.awt.Font.PLAIN, 14), false);
-        console_outputFont = new TrueTypeFont(new java.awt.Font("DialogInput", java.awt.Font.PLAIN, 11), false);
-        mainFont = new TrueTypeFont(new java.awt.Font("Stencil", java.awt.Font.PLAIN, 60), false);
+        console_input = new TrueTypeFont(new java.awt.Font("DialogInput", java.awt.Font.PLAIN, 14), false);
+        console_output = new TrueTypeFont(new java.awt.Font("DialogInput", java.awt.Font.PLAIN, 11), false);
+        game_title = new TrueTypeFont(new java.awt.Font("Stencil", java.awt.Font.PLAIN, 69), false);
         stencil_small = new TrueTypeFont(new Font("Stencil", Font.PLAIN, 12), true);
         stencil_smaller = new TrueTypeFont(new Font("Stencil", Font.PLAIN, 11), true);
-        itemFont = new TrueTypeFont(new Font("Century Gothic", Font.PLAIN, 11), true);
+        stencil_big = new TrueTypeFont(new Font("Stencil", Font.PLAIN, 45), true);
+        item = new TrueTypeFont(new Font("Century Gothic", Font.PLAIN, 11), true);
     }
 
-    public static TrueTypeFont getMainFont() {
-        return mainFont;
+    public static TrueTypeFont getGameTitleFont() {
+        return game_title;
     }
 
     public static TrueTypeFont getConsoleInputFont() {
-        return console_inputFont;
+        return console_input;
     }
 
     public static TrueTypeFont getConsoleOutputFont() {
-        return console_outputFont;
+        return console_output;
     }
 
-    public static TrueTypeFont getStencilSmall() {
+    public static TrueTypeFont getStencilSmallFont() {
         return stencil_small;
     }
 
-    public static TrueTypeFont getStencilSmaller() {
+    public static TrueTypeFont getStencilSmallerFont() {
         return stencil_smaller;
     }
 
+    public static TrueTypeFont getStencilBigFont() {
+        return stencil_big;
+    }
+
     public static TrueTypeFont getItemFont() {
-        return itemFont;
+        return item;
     }
 
 }
