@@ -83,7 +83,7 @@ public class HUD_Drawer {
         // draw the points
         drawNumber(player.getPoints(), GAME_WIDTH / 2 + MARGIN + 35, GAME_HEIGHT - 40);
         // draw the health
-        drawNumber(player.getWarAttender().getHealth(), MARGIN + 35, GAME_HEIGHT - 40);
+        drawNumber(player.getEntity().getHealth(), MARGIN + 35, GAME_HEIGHT - 40);
 
         if (UserSettings.displayTime) {
             // draw the current time spent in level

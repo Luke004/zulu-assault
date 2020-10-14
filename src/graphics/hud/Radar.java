@@ -1,9 +1,9 @@
 package graphics.hud;
 
 import logic.TileMapInfo;
-import models.StaticWarAttender;
-import models.war_attenders.MovableWarAttender;
-import models.war_attenders.aircraft.hostile.StaticEnemyPlane;
+import models.StaticEntity;
+import models.entities.MovableEntity;
+import models.entities.static_multitile_constructions.StaticEnemyPlane;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -32,7 +32,7 @@ public class Radar {
 
     private static final int TIME_SECOND_MILLIS = 1000;
     private int current_time_millis;
-    private boolean mandatoryBlinker;   // make the mandatory warAttenders blink in second ticks
+    private boolean mandatoryBlinker;   // make the mandatory entities blink in second ticks
 
     public Radar(GameContainer gameContainer, Player player) {
         this.player = player;
@@ -63,8 +63,8 @@ public class Radar {
         // draw the players position
         graphics.setLineWidth(1);
 
-        float player_x = player.getWarAttender().getPosition().x * ((float) RADAR_WIDTH / TileMapInfo.LEVEL_WIDTH_PIXELS);
-        float player_y = player.getWarAttender().getPosition().y * ((float) RADAR_HEIGHT / TileMapInfo.LEVEL_HEIGHT_PIXELS);
+        float player_x = player.getEntity().getPosition().x * ((float) RADAR_WIDTH / TileMapInfo.LEVEL_WIDTH_PIXELS);
+        float player_y = player.getEntity().getPosition().y * ((float) RADAR_HEIGHT / TileMapInfo.LEVEL_HEIGHT_PIXELS);
 
         graphics.setColor(Color.decode("#808080"));
         graphics.drawLine(radar_origin.x + player_x, radar_origin.y,
@@ -78,37 +78,37 @@ public class Radar {
                 RADAR_SCREEN_RECT_WIDTH,
                 RADAR_SCREEN_RECT_HEIGHT);
 
-        // draw the friendly warAttenders
+        // draw the friendly entities
         graphics.setColor(Color.green);
-        for (MovableWarAttender friendly_war_attender : friendly_movable_war_attenders) {
-            float friend_x = friendly_war_attender.getPosition().x * ((float) RADAR_WIDTH / TileMapInfo.LEVEL_WIDTH_PIXELS);
-            float friend_y = friendly_war_attender.getPosition().y * ((float) RADAR_HEIGHT / TileMapInfo.LEVEL_HEIGHT_PIXELS);
+        for (MovableEntity friendly_entity : friendly_movable_entities) {
+            float friend_x = friendly_entity.getPosition().x * ((float) RADAR_WIDTH / TileMapInfo.LEVEL_WIDTH_PIXELS);
+            float friend_y = friendly_entity.getPosition().y * ((float) RADAR_HEIGHT / TileMapInfo.LEVEL_HEIGHT_PIXELS);
             graphics.fillRect(radar_origin.x + friend_x, radar_origin.y + friend_y, 2, 2);
         }
 
-        // draw the drivable warAttenders
+        // draw the drivable entities
         graphics.setColor(Color.decode("#808080"));
-        for (MovableWarAttender drivable_war_attender : drivable_war_attenders) {
-            float friend_x = drivable_war_attender.getPosition().x * ((float) RADAR_WIDTH / TileMapInfo.LEVEL_WIDTH_PIXELS);
-            float friend_y = drivable_war_attender.getPosition().y * ((float) RADAR_HEIGHT / TileMapInfo.LEVEL_HEIGHT_PIXELS);
+        for (MovableEntity drivable_entity : drivable_entities) {
+            float friend_x = drivable_entity.getPosition().x * ((float) RADAR_WIDTH / TileMapInfo.LEVEL_WIDTH_PIXELS);
+            float friend_y = drivable_entity.getPosition().y * ((float) RADAR_HEIGHT / TileMapInfo.LEVEL_HEIGHT_PIXELS);
             graphics.fillRect(radar_origin.x + friend_x, radar_origin.y + friend_y, 1, 1);
         }
 
-        // draw the enemy warAttenders
+        // draw the enemy entities
         graphics.setColor(Color.red);
-        // MovableWarAttenders
-        for (MovableWarAttender enemy_war_attender : hostile_movable_war_attenders) {
-            if (enemy_war_attender.isMandatory() && mandatoryBlinker) continue;
-            float enemy_x = enemy_war_attender.getPosition().x * ((float) RADAR_WIDTH / TileMapInfo.LEVEL_WIDTH_PIXELS);
-            float enemy_y = enemy_war_attender.getPosition().y * ((float) RADAR_HEIGHT / TileMapInfo.LEVEL_HEIGHT_PIXELS);
+        // movable entities
+        for (MovableEntity enemy_entity : hostile_movable_entities) {
+            if (enemy_entity.isMandatory() && mandatoryBlinker) continue;
+            float enemy_x = enemy_entity.getPosition().x * ((float) RADAR_WIDTH / TileMapInfo.LEVEL_WIDTH_PIXELS);
+            float enemy_y = enemy_entity.getPosition().y * ((float) RADAR_HEIGHT / TileMapInfo.LEVEL_HEIGHT_PIXELS);
             graphics.fillRect(radar_origin.x + enemy_x, radar_origin.y + enemy_y, 2, 2);
         }
-        // StaticEnemies
-        for (StaticWarAttender staticWarAttender : static_enemies) {
-            if (staticWarAttender.isMandatory() && mandatoryBlinker) continue;
-            float enemy_x = staticWarAttender.getPosition().x * ((float) RADAR_WIDTH / TileMapInfo.LEVEL_WIDTH_PIXELS);
-            float enemy_y = staticWarAttender.getPosition().y * ((float) RADAR_HEIGHT / TileMapInfo.LEVEL_HEIGHT_PIXELS);
-            if (staticWarAttender instanceof StaticEnemyPlane) {
+        // static enemy entities
+        for (StaticEntity staticEnemyEntity : static_enemy_entities) {
+            if (staticEnemyEntity.isMandatory() && mandatoryBlinker) continue;
+            float enemy_x = staticEnemyEntity.getPosition().x * ((float) RADAR_WIDTH / TileMapInfo.LEVEL_WIDTH_PIXELS);
+            float enemy_y = staticEnemyEntity.getPosition().y * ((float) RADAR_HEIGHT / TileMapInfo.LEVEL_HEIGHT_PIXELS);
+            if (staticEnemyEntity instanceof StaticEnemyPlane) {
                 graphics.setColor(Color.decode("#808080"));
                 graphics.fillRect(radar_origin.x + enemy_x, radar_origin.y + enemy_y, 1, 1);
             } else {

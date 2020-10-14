@@ -38,6 +38,6 @@ public class AirProjectile extends Projectile {
     }
 
     public enum Target {
-        WarAttenders, Tiles, StaticWarAttender
+        Entities, Tiles, StaticEntities
     }
 }

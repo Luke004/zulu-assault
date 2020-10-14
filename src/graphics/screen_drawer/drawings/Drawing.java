@@ -1,6 +1,6 @@
 package graphics.screen_drawer.drawings;
 
-import models.war_attenders.WarAttender;
+import models.entities.Entity;
 
 public abstract class Drawing {
     protected int DRAW_TIME;
@@ -12,12 +12,12 @@ public abstract class Drawing {
         isStopped = true;
     }
 
-    public void init(int seconds, WarAttender warAttender) {
+    public void init(int seconds, Entity entity) {
         this.DRAW_TIME = seconds * 1000;
         current_time = 0;
         isStopped = false;
-        this.xPos = warAttender.getPosition().x;
-        this.yPos = warAttender.getPosition().y;
+        this.xPos = entity.getPosition().x;
+        this.yPos = entity.getPosition().y;
     }
 
     public void update(int deltaTime) {

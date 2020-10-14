@@ -29,7 +29,7 @@ public class TileMapInfo {
 
     public static int[] CLASS_GRASS, CLASS_CONCRETE, CLASS_DIRT;
 
-    public static int[] staticWarAttender_indices;
+    public static int[] static_entity_indices;
 
     public static final int[] windmill_indices;
     public static final int[] static_plane_creation_indices;
@@ -137,11 +137,11 @@ public class TileMapInfo {
             }
         }
 
-        staticWarAttender_indices = new int[static_plane_collision_indices.length + windmill_indices.length];
-        for (int i = 0; i < staticWarAttender_indices.length; ++i) {
+        static_entity_indices = new int[static_plane_collision_indices.length + windmill_indices.length];
+        for (int i = 0; i < static_entity_indices.length; ++i) {
             if (i < static_plane_collision_indices.length)
-                staticWarAttender_indices[i] = static_plane_collision_indices[i];
-            else staticWarAttender_indices[i] = windmill_indices[i - static_plane_collision_indices.length];
+                static_entity_indices[i] = static_plane_collision_indices[i];
+            else static_entity_indices[i] = windmill_indices[i - static_plane_collision_indices.length];
         }
 
         destructible_tiles_health_info = new HashMap<>();

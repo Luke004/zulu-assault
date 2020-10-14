@@ -1,6 +1,6 @@
 package graphics.screen_drawer.drawings;
 
-import models.war_attenders.WarAttender;
+import models.entities.Entity;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
@@ -12,8 +12,8 @@ public class DeadSoldierBodyDrawer extends Drawing {
     public DeadSoldierBodyDrawer() {
         super();
         try {
-            dead_body_image_friendly = new Image("assets/war_attenders/soldiers/player_soldier_dead.png");
-            dead_body_image_hostile = new Image("assets/war_attenders/soldiers/enemy_soldier_dead.png");
+            dead_body_image_friendly = new Image("assets/entities/soldiers/player_soldier_dead.png");
+            dead_body_image_hostile = new Image("assets/entities/soldiers/enemy_soldier_dead.png");
         } catch (SlickException e) {
             e.printStackTrace();
         }
@@ -21,9 +21,9 @@ public class DeadSoldierBodyDrawer extends Drawing {
     }
 
     @Override
-    public void init(int seconds, WarAttender warAttender) {
-        super.init(seconds, warAttender);
-        this.isHostile = warAttender.isHostile;
+    public void init(int seconds, Entity entity) {
+        super.init(seconds, entity);
+        this.isHostile = entity.isHostile;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package graphics.hud;
 
-import logic.level_listeners.ChangeWarAttenderListener;
+import logic.level_listeners.ChangeVehicleListener;
 import logic.level_listeners.ItemChangeListener;
 import models.weapons.Weapon;
 import org.newdawn.slick.*;
@@ -9,7 +9,7 @@ import player.Player;
 import java.util.List;
 
 
-public class HUD implements ItemChangeListener, ChangeWarAttenderListener {
+public class HUD implements ItemChangeListener, ChangeVehicleListener {
     private Player player;
 
     private Item[] items;
@@ -23,8 +23,8 @@ public class HUD implements ItemChangeListener, ChangeWarAttenderListener {
 
     public HUD(Player player, GameContainer gc) {
         this.player = player;
-        this.player.addChangeWarAttenderListener(this);
-        weapons = player.getWarAttender().getWeapons();
+        this.player.addChangeVehicleListener(this);
+        weapons = player.getEntity().getWeapons();
         try {
             weapon_board_image = new Image("assets/hud/weapons/weapon_board.png");
         } catch (SlickException e) {
@@ -91,8 +91,8 @@ public class HUD implements ItemChangeListener, ChangeWarAttenderListener {
     }
 
     @Override
-    public void onPlayerChangeWarAttender() {
-        weapons = player.getWarAttender().getWeapons();
+    public void onPlayerChangeVehicle() {
+        weapons = player.getEntity().getWeapons();
     }
 
     public void reset() {

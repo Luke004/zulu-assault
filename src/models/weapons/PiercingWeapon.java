@@ -1,6 +1,6 @@
 package models.weapons;
 
-import models.war_attenders.WarAttender;
+import models.entities.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +20,9 @@ public abstract class PiercingWeapon extends Weapon {
         } else return true;
     }
 
-    public boolean hasAlreadyHit(WarAttender warAttender) {
-        if (!hit_indices.contains(warAttender.hashCode())) {
-            hit_indices.add(warAttender.hashCode());
+    public boolean hasAlreadyHit(Entity entity) {
+        if (!hit_indices.contains(entity.hashCode())) {
+            hit_indices.add(entity.hashCode());
             return false;
         } else return true;
     }

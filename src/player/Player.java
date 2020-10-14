@@ -1,15 +1,15 @@
 package player;
 
-import logic.level_listeners.ChangeWarAttenderListener;
+import logic.level_listeners.ChangeVehicleListener;
 import logic.level_listeners.ItemChangeListener;
 import graphics.hud.HUD;
-import models.war_attenders.MovableWarAttender;
-import models.war_attenders.aircraft.friendly.Helicopter;
-import models.war_attenders.aircraft.friendly.Plane;
-import models.war_attenders.robots.Robot;
-import models.war_attenders.soldiers.PlayerSoldier;
-import models.war_attenders.soldiers.Soldier;
-import models.war_attenders.tanks.Tank;
+import models.entities.MovableEntity;
+import models.entities.aircraft.friendly.Helicopter;
+import models.entities.aircraft.friendly.Plane;
+import models.entities.robots.Robot;
+import models.entities.soldiers.PlayerSoldier;
+import models.entities.soldiers.Soldier;
+import models.entities.tanks.Tank;
 import models.weapons.MegaPulse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
@@ -21,69 +21,69 @@ import static logic.TileMapInfo.LEVEL_WIDTH_PIXELS;
 
 public class Player {
     private PlayerSoldier base_soldier;
-    private MovableWarAttender current_warAttender;
+    private MovableEntity current_entity;
     private ItemChangeListener GUI_listener;
     private int[] item_amounts;
     private int points;
 
-    private ChangeWarAttenderListener changeWarAttenderListener;
+    private ChangeVehicleListener changeVehicleListener;
 
     public Player() {
         item_amounts = new int[4];
     }
 
-    public void init(MovableWarAttender current_warAttender) {
-        current_warAttender.showAccessibleAnimation(false);
-        this.current_warAttender = current_warAttender;
-        if (this.changeWarAttenderListener != null) this.changeWarAttenderListener.onPlayerChangeWarAttender();
+    public void init(MovableEntity current_entity) {
+        current_entity.showAccessibleAnimation(false);
+        this.current_entity = current_entity;
+        if (this.changeVehicleListener != null) this.changeVehicleListener.onPlayerChangeVehicle();
         base_soldier = new PlayerSoldier(new Vector2f(0, 0), false);
     }
 
     public void update(GameContainer gameContainer, int deltaTime) {
-        current_warAttender.update(gameContainer, deltaTime);
+        current_entity.update(gameContainer, deltaTime);
 
         // check for map boundaries, don't let the player cross them
-        if (current_warAttender.getPosition().x <= 0) {
-            current_warAttender.getPosition().x = 0;
-        } else if (current_warAttender.getPosition().x >= LEVEL_WIDTH_PIXELS) {
-            current_warAttender.getPosition().x = LEVEL_WIDTH_PIXELS;
-        } else if (current_warAttender.getPosition().y <= 0) {
-            current_warAttender.getPosition().y = 0;
-        } else if (current_warAttender.getPosition().y >= LEVEL_HEIGHT_PIXELS) {
-            current_warAttender.getPosition().y = LEVEL_HEIGHT_PIXELS;
+        if (current_entity.getPosition().x <= 0) {
+            current_entity.getPosition().x = 0;
+        } else if (current_entity.getPosition().x >= LEVEL_WIDTH_PIXELS) {
+            current_entity.getPosition().x = LEVEL_WIDTH_PIXELS;
+        } else if (current_entity.getPosition().y <= 0) {
+            current_entity.getPosition().y = 0;
+        } else if (current_entity.getPosition().y >= LEVEL_HEIGHT_PIXELS) {
+            current_entity.getPosition().y = LEVEL_HEIGHT_PIXELS;
         }
     }
 
-    public WarAttenderType getWarAttenderType() {
-        if (current_warAttender instanceof Soldier) return WarAttenderType.SOLDIER;
-        if (current_warAttender instanceof Tank) return WarAttenderType.TANK;
-        if (current_warAttender instanceof Robot) return WarAttenderType.ROBOT;
-        if (current_warAttender instanceof Helicopter) return WarAttenderType.HELICOPTER;
-        if (current_warAttender instanceof Plane) return WarAttenderType.PLANE;
-        else throw new IllegalStateException("Not a valid WarAttender type!");
+    public EntityType getEntityType() {
+        if (current_entity instanceof Soldier) return EntityType.SOLDIER;
+        if (current_entity instanceof Tank) return EntityType.TANK;
+        if (current_entity instanceof Robot) return EntityType.ROBOT;
+        if (current_entity instanceof Helicopter) return EntityType.HELICOPTER;
+        if (current_entity instanceof Plane) return EntityType.PLANE;
+        else throw new IllegalStateException("Not a valid entity type!");
     }
 
     /*
     soldier goes back in a once used tank or plane
      */
-    public void setWarAttender(MovableWarAttender warAttender, EnterAction action) {
+    public void setEntity(MovableEntity entity, EnterAction action) {
         switch (action) {
             case ENTERING:
-                this.current_warAttender = warAttender;
+                this.current_entity = entity;
                 break;
             case LEAVING:
-                Vector2f spawn_position = warAttender.calculateSoldierSpawnPosition();
+                Vector2f spawn_position = entity.calculateSoldierSpawnPosition();
                 base_soldier.setPosition(spawn_position);
                 // set soldiers rotation so he's facing towards the tank at its back
-                base_soldier.setRotation(warAttender.getRotation());
-                this.current_warAttender = base_soldier;
+                base_soldier.setRotation(entity.getRotation());
+                this.current_entity = base_soldier;
                 break;
         }
-        this.changeWarAttenderListener.onPlayerChangeWarAttender();
+        this.changeVehicleListener.onPlayerChangeVehicle();
     }
 
-    public MovableWarAttender getWarAttender() {
-        return current_warAttender;
+    public MovableEntity getEntity() {
+        return current_entity;
     }
 
     public PlayerSoldier getBaseSoldier() {
@@ -120,14 +120,14 @@ public class Player {
         int idx = -1;
         switch (item) {
             case INVINCIBILITY:
-                if (current_warAttender.isInvincible()) return;
+                if (current_entity.isInvincible()) return;
                 idx = 0;
                 break;
             case EMP:
                 idx = 1;
                 break;
             case MEGA_PULSE:
-                MegaPulse mega_pulse = (MegaPulse) current_warAttender.getWeapon(MovableWarAttender.WeaponType.MEGA_PULSE);
+                MegaPulse mega_pulse = (MegaPulse) current_entity.getWeapon(MovableEntity.WeaponType.MEGA_PULSE);
                 if (!mega_pulse.canFire()) return;
                 else mega_pulse.clearHitList();
                 idx = 2;
@@ -140,12 +140,12 @@ public class Player {
         }
         if (item_amounts[idx] == 0) return;
         item_amounts[idx]--;
-        current_warAttender.activateItem(item);
+        current_entity.activateItem(item);
         GUI_listener.itemActivated(idx);
     }
 
-    public void addChangeWarAttenderListener(HUD hud) {
-        this.changeWarAttenderListener = hud;
+    public void addChangeVehicleListener(HUD hud) {
+        this.changeVehicleListener = hud;
     }
 
     public enum Item_e {
@@ -156,7 +156,7 @@ public class Player {
         ENTERING, LEAVING
     }
 
-    public enum WarAttenderType {
+    public enum EntityType {
         SOLDIER, PLANE, TANK, ROBOT, HELICOPTER
     }
 

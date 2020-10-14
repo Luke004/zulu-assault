@@ -1,6 +1,6 @@
 package graphics.screen_drawer.drawings;
 
-import models.war_attenders.WarAttender;
+import models.entities.Entity;
 import org.newdawn.slick.TrueTypeFont;
 
 import java.awt.*;
@@ -22,17 +22,17 @@ public class ScoreValueDrawer extends Drawing {
     }
 
     @Override
-    public void init(int seconds, WarAttender warAttender) {
+    public void init(int seconds, Entity entity) {
         if (!isStopped) {
             // this is called when score is still being drawn somewhere else but we need to draw another score
             ScoreValueDrawer extraScoreValueDrawer = new ScoreValueDrawer();
-            extraScoreValueDrawer.init(seconds, warAttender);
+            extraScoreValueDrawer.init(seconds, entity);
             extraDrawers.add(extraScoreValueDrawer);
             return;
         }
-        super.init(seconds, warAttender);
+        super.init(seconds, entity);
         // get the score value to print as a string
-        this.score_value_string = Integer.toString(warAttender.getScoreValue());
+        this.score_value_string = Integer.toString(entity.getScoreValue());
         int textWidth = point_text.getWidth(score_value_string);
         this.xPos -= textWidth / 2.f;
         int textHeight = point_text.getHeight(score_value_string);

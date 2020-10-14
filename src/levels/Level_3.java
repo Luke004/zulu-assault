@@ -6,12 +6,12 @@ import models.items.GoldenWrenchItem;
 import models.items.InvincibilityItem;
 import models.items.Item;
 import models.items.SilverWrenchItem;
-import models.war_attenders.MovableWarAttender;
-import models.war_attenders.aircraft.hostile.GreenEnemyPlane;
-import models.war_attenders.aircraft.friendly.Jet;
-import models.war_attenders.robots.RocketRobot;
-import models.war_attenders.soldiers.RocketSoldier;
-import models.war_attenders.tanks.*;
+import models.entities.MovableEntity;
+import models.entities.aircraft.hostile.GreenEnemyPlane;
+import models.entities.aircraft.friendly.Jet;
+import models.entities.robots.RocketRobot;
+import models.entities.soldiers.RocketSoldier;
+import models.entities.tanks.*;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.GameState;
@@ -40,7 +40,8 @@ public class Level_3 extends AbstractLevel implements GameState {
 
         resetLevel();    // reset the level before init
 
-        // SETUP ITEMS
+        /* ---------- SETUP ITEMS ---------- */
+
         // silver wrenches
         Item silver_wrench_1 = new SilverWrenchItem(new Vector2f(3280, 2220));
         items.add(silver_wrench_1);
@@ -66,7 +67,6 @@ public class Level_3 extends AbstractLevel implements GameState {
         Item silver_wrench_8 = new SilverWrenchItem(new Vector2f(170, 3900));
         items.add(silver_wrench_8);
 
-
         // golden wrenches
         Item golden_wrench_1 = new GoldenWrenchItem(new Vector2f(380, 2630));
         items.add(golden_wrench_1);
@@ -74,96 +74,114 @@ public class Level_3 extends AbstractLevel implements GameState {
         Item golden_wrench_2 = new GoldenWrenchItem(new Vector2f(450, 2625));
         items.add(golden_wrench_2);
 
+        // mega pulse
+        /* --- none --- */
 
         // invincibility
         Item invincibility_item_1 = new InvincibilityItem(new Vector2f(1175, 1685));
         items.add(invincibility_item_1);
 
+        // EMP
+        /* --- none --- */
 
-        // SETUP ENEMY WAR ATTENDERS
-        MovableWarAttender enemy_tank_1 = new NapalmTank(new Vector2f(1703, 103), true, false);
+
+        /* ---------- SETUP TELEPORT CIRCLES ---------- */
+        /* --- none --- */
+
+
+        /* ---------- SETUP HEALTH CIRCLES ---------- */
+        /* --- none --- */
+
+
+        /* ---------- SETUP ENEMY ENTITIES NOT MOVING ---------- */
+        MovableEntity enemy_tank_1 = new NapalmTank(new Vector2f(1703, 103), true, false);
         enemy_tank_1.setRotation(90);
         enemy_tank_1.setAsMandatory();
-        hostile_movable_war_attenders.add(enemy_tank_1);
+        hostile_movable_entities.add(enemy_tank_1);
 
-        MovableWarAttender enemy_tank_2 = new NapalmTank(new Vector2f(1850, 103), true, false);
+        MovableEntity enemy_tank_2 = new NapalmTank(new Vector2f(1850, 103), true, false);
         enemy_tank_2.setRotation(90);
         enemy_tank_2.setAsMandatory();
-        hostile_movable_war_attenders.add(enemy_tank_2);
+        hostile_movable_entities.add(enemy_tank_2);
 
-        MovableWarAttender enemy_tank_3 = new NapalmTank(new Vector2f(1965, 108), true, false);
+        MovableEntity enemy_tank_3 = new NapalmTank(new Vector2f(1965, 108), true, false);
         enemy_tank_3.setRotation(90);
         enemy_tank_3.setAsMandatory();
-        hostile_movable_war_attenders.add(enemy_tank_3);
+        hostile_movable_entities.add(enemy_tank_3);
 
-        MovableWarAttender enemy_robot_1 = new RocketRobot(new Vector2f(1850, 300), true, false);
+        MovableEntity enemy_robot_1 = new RocketRobot(new Vector2f(1850, 300), true, false);
         enemy_robot_1.setRotation(270);
         enemy_robot_1.setAsMandatory();
-        hostile_movable_war_attenders.add(enemy_robot_1);
+        hostile_movable_entities.add(enemy_robot_1);
 
-        MovableWarAttender enemy_soldier_1 = new RocketSoldier(new Vector2f(2200, 147), true);
+        MovableEntity enemy_soldier_1 = new RocketSoldier(new Vector2f(2200, 147), true);
         enemy_soldier_1.setAsMandatory();
-        hostile_movable_war_attenders.add(enemy_soldier_1);
+        hostile_movable_entities.add(enemy_soldier_1);
 
-        // enemy plane
-        MovableWarAttender enemy_plane_1 = new GreenEnemyPlane(new Vector2f(1368, 913), true, false);
+
+        /* ---------- SETUP ENEMY ENTITIES THAT ARE MOVING ---------- */
+        /* --- none --- */
+
+
+        /* ---------- SETUP ENEMY PLANES ---------- */
+        MovableEntity enemy_plane_1 = new GreenEnemyPlane(new Vector2f(1368, 913), true, false);
         enemy_plane_1.setRotation(90);
 
-        List<Vector2f> wayPoints = new ArrayList<>();
-        wayPoints.add(new Vector2f(1468, 913));
-        wayPoints.add(new Vector2f(1568, 1013));
-        wayPoints.add(new Vector2f(1568, 1813));
-        wayPoints.add(new Vector2f(1468, 1913));
-        wayPoints.add(new Vector2f(668, 1913));
-        wayPoints.add(new Vector2f(568, 1813));
-        wayPoints.add(new Vector2f(568, 1013));
-        wayPoints.add(new Vector2f(668, 913));
+        final List<Vector2f> enemy_plane_wayPoints = new ArrayList<>();
+        enemy_plane_wayPoints.add(new Vector2f(1468, 913));
+        enemy_plane_wayPoints.add(new Vector2f(1568, 1013));
+        enemy_plane_wayPoints.add(new Vector2f(1568, 1813));
+        enemy_plane_wayPoints.add(new Vector2f(1468, 1913));
+        enemy_plane_wayPoints.add(new Vector2f(668, 1913));
+        enemy_plane_wayPoints.add(new Vector2f(568, 1813));
+        enemy_plane_wayPoints.add(new Vector2f(568, 1013));
+        enemy_plane_wayPoints.add(new Vector2f(668, 913));
         enemy_plane_1.addWayPoints(new WayPointManager(enemy_plane_1.getPosition(),
                 enemy_plane_1.getRotation(),
-                wayPoints));
-        hostile_movable_war_attenders.add(enemy_plane_1);
+                enemy_plane_wayPoints));
+        hostile_movable_entities.add(enemy_plane_1);
 
 
-        // SETUP PLAYER'S DRIVABLE WAR ATTENDERS
-        MovableWarAttender player_drivable_jet_1 = new Jet(new Vector2f(278, 2360), false, true);
-        drivable_war_attenders.add(player_drivable_jet_1);
-
-        MovableWarAttender player_drivable_jet_2 = new Jet(new Vector2f(372, 2360), false, true);
-        drivable_war_attenders.add(player_drivable_jet_2);
-
-
-        // SETUP FRIENDLY WAR ATTENDERS
-        MovableWarAttender player_friendly_tank_1 = new NapalmTank(new Vector2f(3521, 3694), false, false);
+        /* ---------- SETUP THE PLAYERS ALLIED ENTITIES ---------- */
+        MovableEntity player_friendly_tank_1 = new NapalmTank(new Vector2f(3521, 3694), false, false);
         player_friendly_tank_1.setRotation(295);
-        friendly_movable_war_attenders.add(player_friendly_tank_1);
+        friendly_movable_entities.add(player_friendly_tank_1);
 
-        MovableWarAttender player_friendly_tank_2 = new NapalmTank(new Vector2f(3653, 3541), false, false);
-        friendly_movable_war_attenders.add(player_friendly_tank_2);
+        MovableEntity player_friendly_tank_2 = new NapalmTank(new Vector2f(3653, 3541), false, false);
+        friendly_movable_entities.add(player_friendly_tank_2);
 
         // top of map
-        MovableWarAttender player_friendly_tank_3 = new RocketTank(new Vector2f(900, 40), false, false);
+        MovableEntity player_friendly_tank_3 = new RocketTank(new Vector2f(900, 40), false, false);
         player_friendly_tank_3.setRotation(110);
-        friendly_movable_war_attenders.add(player_friendly_tank_3);
+        friendly_movable_entities.add(player_friendly_tank_3);
 
-        MovableWarAttender player_friendly_tank_4 = new RocketTank(new Vector2f(1000, 210), false, false);
+        MovableEntity player_friendly_tank_4 = new RocketTank(new Vector2f(1000, 210), false, false);
         player_friendly_tank_4.setRotation(45);
-        friendly_movable_war_attenders.add(player_friendly_tank_4);
+        friendly_movable_entities.add(player_friendly_tank_4);
 
-        MovableWarAttender player_friendly_tank_5 = new RocketTank(new Vector2f(2975, 200), false, false);
+        MovableEntity player_friendly_tank_5 = new RocketTank(new Vector2f(2975, 200), false, false);
         player_friendly_tank_5.setRotation(300);
-        friendly_movable_war_attenders.add(player_friendly_tank_5);
+        friendly_movable_entities.add(player_friendly_tank_5);
 
 
-        // SETUP THE PLAYER START POSITION AND WAR ATTENDER
+        /* ---------- SETUP THE PLAYERS DRIVABLE ENTITIES ---------- */
+        MovableEntity player_drivable_jet_1 = new Jet(new Vector2f(278, 2360), false, true);
+        drivable_entities.add(player_drivable_jet_1);
+
+        MovableEntity player_drivable_jet_2 = new Jet(new Vector2f(372, 2360), false, true);
+        drivable_entities.add(player_drivable_jet_2);
+
+
+        /* ---------- SETUP THE PLAYER START POSITION AND ENTITY ---------- */
         Vector2f playerStartPos = new Vector2f(3782, 3750);
-
         RocketRobot robot = new RocketRobot(playerStartPos, false, true);
 
-        // DEFINE THE MAP
+
+        /* ---------- DEFINE THE MAP ---------- */
         map = new TiledMap("assets/maps/level_3.tmx");
 
-        player.init(robot);
 
+        player.init(robot);
         super.init(gameContainer, stateBasedGame);
     }
 

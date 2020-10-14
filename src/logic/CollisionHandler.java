@@ -1,19 +1,19 @@
 package logic;
 
-import logic.level_listeners.WarAttenderDeleteListener;
+import logic.level_listeners.EntityDeleteListener;
 import settings.UserSettings;
 import models.CollisionModel;
-import models.StaticWarAttender;
+import models.StaticEntity;
 import graphics.animations.damage.PlasmaDamageAnimation;
 import graphics.animations.damage.UziDamageAnimation;
 import graphics.animations.explosion.BigExplosionAnimation;
 import graphics.animations.explosion.UziHitExplosionAnimation;
 import graphics.animations.smoke.SmokeAnimation;
 import models.interaction_circles.HealthCircle;
-import models.war_attenders.MovableWarAttender;
-import models.war_attenders.WarAttender;
-import models.war_attenders.aircraft.friendly.Plane;
-import models.war_attenders.soldiers.Soldier;
+import models.entities.MovableEntity;
+import models.entities.Entity;
+import models.entities.aircraft.friendly.Plane;
+import models.entities.soldiers.Soldier;
 import models.weapons.*;
 import models.weapons.projectiles.AirProjectile;
 import models.weapons.projectiles.Projectile;
@@ -37,7 +37,7 @@ public class CollisionHandler {
     private static final float DESTRUCTIBLE_TILE_LOW_ARMOR = 1.f;
 
     // animations
-    private static WarAttenderDeleteListener level_delete_listener;
+    private static EntityDeleteListener level_delete_listener;
     private static SmokeAnimation smokeAnimation;
     private static UziHitExplosionAnimation uziHitExplosionAnimation;
     private static UziDamageAnimation uziDamageAnimation;
@@ -66,7 +66,7 @@ public class CollisionHandler {
         random = new Random();
     }
 
-    public void addListener(WarAttenderDeleteListener delete_listener) {
+    public void addListener(EntityDeleteListener delete_listener) {
         level_delete_listener = delete_listener;
     }
 
@@ -85,16 +85,16 @@ public class CollisionHandler {
         bigExplosionAnimation.update(deltaTime);
         plasmaDamageAnimation.update(deltaTime);
 
-        MovableWarAttender player_warAttender = player.getWarAttender();
-        handleMovableWarAttenderCollisions(player_warAttender);
-        handleBulletCollisions(player_warAttender);
-        handleHostileCollisions(player_warAttender, friendly_movable_war_attenders, deltaTime);
+        MovableEntity player_entity = player.getEntity();
+        handleMovableEntityCollisions(player_entity);
+        handleBulletCollisions(player_entity);
+        handleHostileCollisions(player_entity, friendly_movable_entities, deltaTime);
 
         // PLAYER COLLIDES WITH HEALTH CIRCLE
         for (HealthCircle health_circle : health_circles) {
-            if (player_warAttender.getCollisionModel().intersects(health_circle.getCollisionModel())) {
-                if (player_warAttender.isMaxHealth()) return;
-                player_warAttender.changeHealth(HealthCircle.HEAL_SPEED);
+            if (player_entity.getCollisionModel().intersects(health_circle.getCollisionModel())) {
+                if (player_entity.isMaxHealth()) return;
+                player_entity.changeHealth(HealthCircle.HEAL_SPEED);
                 break;
             }
         }
@@ -102,14 +102,14 @@ public class CollisionHandler {
         // PLAYER COLLIDES WITH TELEPORT CIRCLE
         boolean noIntersection = true;
         for (int idx = 0; idx < teleport_circles.size(); ++idx) {
-            if (player_warAttender.getCollisionModel().intersects(teleport_circles.get(idx).getCollisionModel())) {
+            if (player_entity.getCollisionModel().intersects(teleport_circles.get(idx).getCollisionModel())) {
                 // teleport the player
                 if ((idx & 1) == 0) {
                     // even idx -> teleport the player to the next teleport circle in the list
-                    player_warAttender.teleport(teleport_circles.get(idx + 1).getPosition());
+                    player_entity.teleport(teleport_circles.get(idx + 1).getPosition());
                 } else {
                     // odd idx -> teleport the player to the previous teleport circle in the list
-                    player_warAttender.teleport(teleport_circles.get(idx - 1).getPosition());
+                    player_entity.teleport(teleport_circles.get(idx - 1).getPosition());
                 }
                 noIntersection = false;
                 break;
@@ -117,12 +117,12 @@ public class CollisionHandler {
         }
         if (noIntersection) {
             // allow the player to teleport again as soon as he is not in any teleport circle anymore
-            player_warAttender.allowTeleport();
+            player_entity.allowTeleport();
         }
 
         // PLAYER COLLIDES WITH ITEMS
         for (int idx = 0; idx < items.size(); ++idx) {
-            if (player_warAttender.getCollisionModel().intersects(items.get(idx).getCollisionModel())) {
+            if (player_entity.getCollisionModel().intersects(items.get(idx).getCollisionModel())) {
                 switch (items.get(idx).getName()) {
                     case "MEGA_PULSE":
                         player.addItem(Player.Item_e.MEGA_PULSE);
@@ -137,12 +137,12 @@ public class CollisionHandler {
                         player.addItem(Player.Item_e.EXPAND);
                         break;
                     case "SILVER_WRENCH":
-                        if (player.getWarAttender().isMaxHealth()) return;
-                        player.getWarAttender().changeHealth(10);
+                        if (player.getEntity().isMaxHealth()) return;
+                        player.getEntity().changeHealth(10);
                         break;
                     case "GOLDEN_WRENCH":
-                        if (player.getWarAttender().isMaxHealth()) return;
-                        player.getWarAttender().changeHealth(50);
+                        if (player.getEntity().isMaxHealth()) return;
+                        player.getEntity().changeHealth(50);
                         break;
                 }
                 new_item_sound.play(1.f, UserSettings.soundVolume);
@@ -152,11 +152,11 @@ public class CollisionHandler {
         }
     }
 
-    private void handleMovableWarAttenderCollisions(MovableWarAttender current_warAttender) {
-        if (!current_warAttender.isMoving()) return;
-        if (current_warAttender instanceof Plane) return;
+    private void handleMovableEntityCollisions(MovableEntity current_movableEntity) {
+        if (!current_movableEntity.isMoving()) return;
+        if (current_movableEntity instanceof Plane) return;
 
-        CollisionModel.Point[] playerCorners = current_warAttender.getCollisionModel().getPoints();
+        CollisionModel.Point[] playerCorners = current_movableEntity.getCollisionModel().getPoints();
         int idx, landscape_layer_tile_ID, enemy_layer_tile_ID, x, y;
 
         for (CollisionModel.Point p : playerCorners) {
@@ -169,81 +169,81 @@ public class CollisionHandler {
             landscape_layer_tile_ID = map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
             enemy_layer_tile_ID = map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
 
-            // COLLISION BETWEEN WAR ATTENDER ITSELF AND DESTRUCTIBLE TILES
+            // COLLISION BETWEEN ENTITY ITSELF AND DESTRUCTIBLE TILES
             for (idx = 0; idx < destructible_tile_indices.length; ++idx) {
                 if (landscape_layer_tile_ID == destructible_tile_indices[idx]) {
                     // block movement as long as tile exists and damage the destructible tile
-                    current_warAttender.blockMovement();
+                    current_movableEntity.blockMovement();
 
                     // damage ONLY when we are not a solider
-                    if (current_warAttender instanceof Soldier) return;
+                    if (current_movableEntity instanceof Soldier) return;
 
-                    damageTile(x, y, null, destructible_tile_replace_indices[idx], current_warAttender);
+                    damageTile(x, y, null, destructible_tile_replace_indices[idx], current_movableEntity);
                     return;
                 }
             }
 
-            if (!current_warAttender.isHostile) {
-                // COLLISION BETWEEN FRIENDLY WAR ATTENDER AND STATIC WAR ATTENDERS
-                for (idx = 0; idx < staticWarAttender_indices.length; ++idx) {
-                    if (enemy_layer_tile_ID == staticWarAttender_indices[idx]) {
+            if (!current_movableEntity.isHostile) {
+                // COLLISION BETWEEN FRIENDLY ENTITY AND STATIC ENTITIES
+                for (idx = 0; idx < static_entity_indices.length; ++idx) {
+                    if (enemy_layer_tile_ID == static_entity_indices[idx]) {
                         // block movement as long as tile exists and damage the destructible tile
-                        current_warAttender.blockMovement();
+                        current_movableEntity.blockMovement();
 
                         // damage ONLY when we are not a solider
-                        if (current_warAttender instanceof Soldier) return;
+                        if (current_movableEntity instanceof Soldier) return;
 
-                        damageStaticWarAttender(x, y);
+                        damageStaticEntity(x, y);
                         return;
                     }
                 }
             }
         }
 
-        // COLLISION BETWEEN WAR ATTENDER ITSELF AND OTHER WAR ATTENDERS
-        for (MovableWarAttender movableWarAttender : all_movable_war_attenders) {
-            if (movableWarAttender.getPosition() == current_warAttender.getPosition()) continue;    // its himself
-            if (current_warAttender.getCollisionModel().intersects(movableWarAttender.getCollisionModel())) {
-                current_warAttender.onCollision(movableWarAttender);
+        // COLLISION BETWEEN ENTITY ITSELF AND OTHER ENTITIES
+        for (MovableEntity movableEntity : all_movable_entities) {
+            if (movableEntity.getPosition() == current_movableEntity.getPosition()) continue;    // its himself
+            if (current_movableEntity.getCollisionModel().intersects(movableEntity.getCollisionModel())) {
+                current_movableEntity.onCollision(movableEntity);
             }
         }
 
-        // COLLISION BETWEEN WAR ATTENDER ITSELF AND THE PLAYER
-        if (current_warAttender.getCollisionModel().intersects(player.getWarAttender().getCollisionModel())) {
-            if (player.getWarAttender().getPosition() == current_warAttender.getPosition()) return;    // its himself
-            current_warAttender.onCollision(player.getWarAttender());
+        // COLLISION BETWEEN ENTITY ITSELF AND THE PLAYER
+        if (current_movableEntity.getCollisionModel().intersects(player.getEntity().getCollisionModel())) {
+            if (player.getEntity().getPosition() == current_movableEntity.getPosition()) return;    // its himself
+            current_movableEntity.onCollision(player.getEntity());
         }
     }
 
-    public static boolean intersectsWithTileMap(MovableWarAttender movableWarAttender, boolean xPos) {
-        CollisionModel.Point[] collisionPoints = movableWarAttender.getCollisionModel().getPoints();
+    public static boolean intersectsWithTileMap(MovableEntity movableEntity, boolean xPos) {
+        CollisionModel.Point[] collisionPoints = movableEntity.getCollisionModel().getPoints();
         // use first two (idx 0 + 1) coll points when is moving forward, else use last two (idx 2 + 3)
-        int start_idx = movableWarAttender.isMovingForward() ? 0 : 2;
+        int start_idx = movableEntity.isMovingForward() ? 0 : 2;
 
         for (int idx = start_idx; idx < collisionPoints.length; ++idx) {
-            int x = (int) (collisionPoints[idx].x + (xPos ? movableWarAttender.dir.x : 0)) / TILE_WIDTH;
-            int y = (int) (collisionPoints[idx].y + (xPos ? 0 : movableWarAttender.dir.y)) / TILE_HEIGHT;
+            int x = (int) (collisionPoints[idx].x + (xPos ? movableEntity.dir.x : 0)) / TILE_WIDTH;
+            int y = (int) (collisionPoints[idx].y + (xPos ? 0 : movableEntity.dir.y)) / TILE_HEIGHT;
 
             // return when "out of map"
             if (x < 0 || x >= map.getWidth() || y < 0 || y >= map.getHeight()) return false;
 
             int landscape_layer_tile_ID = map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
 
-            // COLLISION BETWEEN WAR ATTENDER ITSELF AND INDESTRUCTIBLE TILES
+            // COLLISION BETWEEN ENTITY ITSELF AND INDESTRUCTIBLE TILES
             for (int indestructible_tile_index : indestructible_tile_indices) {
                 if (landscape_layer_tile_ID == indestructible_tile_index) {
                     return true;
                 }
             }
 
-            if (movableWarAttender.isMovingForward() && idx >= 1) break;
+            if (movableEntity.isMovingForward() && idx >= 1) break;
         }
         return false;
     }
 
-    private void handleBulletCollisions(MovableWarAttender player_warAttender) {
+    private void handleBulletCollisions(MovableEntity player_entity) {
         // PLAYER BULLET COLLISIONS
-        for (Weapon weapon : player_warAttender.getWeapons()) {
+        for (Weapon weapon : player_entity.getWeapons()) {
             Iterator<Projectile> projectile_iterator = weapon.getProjectiles();
             while (projectile_iterator.hasNext()) {
                 Projectile projectile = projectile_iterator.next();
@@ -254,8 +254,8 @@ public class CollisionHandler {
                 if (canContinue) continue;
 
                 if (!(projectile instanceof AirProjectile)) {
-                    // PLAYER GROUND PROJECTILE COLLISION WITH HOSTILE WAR ATTENDER
-                    canContinue = handleGroundProjectileWarAttenderCollision(projectile, weapon, projectile_iterator);
+                    // PLAYER GROUND PROJECTILE COLLISION WITH HOSTILE ENTITIES
+                    canContinue = handleGroundProjectileEntityCollision(projectile, weapon, projectile_iterator);
 
                     if (canContinue) continue;
 
@@ -264,38 +264,38 @@ public class CollisionHandler {
 
                     if (canContinue) continue;
 
-                    // PLAYER GROUND PROJECTILE COLLISION WITH STATIC WAR ATTENDERS
-                    handleGroundProjectileStaticWarAttenderCollision(projectile, weapon, projectile_iterator);
+                    // PLAYER GROUND PROJECTILE COLLISION WITH STATIC ENTITIES
+                    handleGroundProjectileStaticEntityCollision(projectile, weapon, projectile_iterator);
                 } else {    // AIR PROJECTILE
                     if (!((AirProjectile) projectile).hasHitGround()) {
                         continue;    // wait, since the projectile has not hit the ground yet
                     }
 
-                    // PLAYER AIR PROJECTILE COLLISION WITH HOSTILE WAR ATTENDER
-                    handleAirProjectileWarAttenderCollision(projectile, weapon);
+                    // PLAYER AIR PROJECTILE COLLISION WITH HOSTILE ENTITIES
+                    handleAirProjectileEntityCollision(projectile, weapon);
 
                     // PLAYER AIR PROJECTILE COLLISION WITH DESTRUCTIBLE MAP TILE
                     handleAirProjectileTileCollision(projectile, weapon);
 
-                    // PLAYER AIR PROJECTILE COLLISION WITH STATIC WAR ATTENDERS
-                    handleAirProjectileStaticWarAttenderCollision(projectile, weapon);
+                    // PLAYER AIR PROJECTILE COLLISION WITH STATIC ENTITIES
+                    handleAirProjectileStaticEntityCollision(projectile, weapon);
                 }
             }
         }
     }
 
-    private boolean handleGroundProjectileWarAttenderCollision(Projectile projectile, Weapon weapon, Iterator<Projectile> projectile_iterator) {
-        for (MovableWarAttender hostileWarAttender : hostile_movable_war_attenders) {
-            if (projectile.getCollisionModel().intersects(hostileWarAttender.getCollisionModel())) {
+    private boolean handleGroundProjectileEntityCollision(Projectile projectile, Weapon weapon, Iterator<Projectile> projectile_iterator) {
+        for (MovableEntity hostileEntity : hostile_movable_entities) {
+            if (projectile.getCollisionModel().intersects(hostileEntity.getCollisionModel())) {
                 if (weapon instanceof PiercingWeapon) {
-                    if (!((PiercingWeapon) weapon).hasAlreadyHit(hostileWarAttender)) {
+                    if (!((PiercingWeapon) weapon).hasAlreadyHit(hostileEntity)) {
                         //drain health of hit tank:
-                        hostileWarAttender.changeHealth(-weapon.getBulletDamage());
+                        hostileEntity.changeHealth(-weapon.getBulletDamage());
                     }
                     continue;
                 } else if (weapon instanceof Uzi) {
                     bullet_hit_sound.play(1.f, UserSettings.soundVolume);
-                    if (!(hostileWarAttender instanceof Soldier)) {
+                    if (!(hostileEntity instanceof Soldier)) {
                         uziHitExplosionAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y,
                                 random.nextInt(360));
 
@@ -311,44 +311,12 @@ public class CollisionHandler {
                     bullet_hit_sound.play(1.f, UserSettings.soundVolume);
                     plasmaDamageAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y, 0);
                 }
-                hostileWarAttender.changeHealth(-weapon.getBulletDamage());
+                hostileEntity.changeHealth(-weapon.getBulletDamage());
                 projectile_iterator.remove();   // remove bullet
                 return true;
             }
         }
         return false;
-
-        /*
-        for (int idx = 0; idx < hostile_war_attenders.size(); ++idx) {
-            if (projectile.getCollisionModel().intersects(hostile_war_attenders.get(idx).getCollisionModel())) {
-                if (weapon instanceof PiercingWeapon) {
-                    if (!((PiercingWeapon) weapon).hasAlreadyHit(idx)) {
-                        //drain health of hit tank:
-                        hostile_war_attenders.get(idx).changeHealth(-weapon.getBulletDamage());
-                    }
-                    continue;
-                } else if (weapon instanceof Uzi) {
-                    if (!(hostile_war_attenders.get(idx) instanceof Soldier)) {
-                        uziHitExplosionAnimation.play(projectile.pos.x, projectile.pos.y,
-                                random.nextInt(360));
-
-                        uziDamageAnimation.play(projectile.pos.x, projectile.pos.y,
-                                projectile.image.getRotation() - 90
-                                        + random.nextInt(30 + 1 + 30) - 30);
-                        // add random extra rotation [-30 , +30]
-                    }
-                } else if (weapon instanceof Shell || weapon instanceof RocketLauncher) {
-                    bigExplosionAnimation.play(projectile.pos.x, projectile.pos.y, 90);
-                } else if (weapon instanceof Plasma) {
-                    plasmaDamageAnimation.play(projectile.pos.x, projectile.pos.y, 0);
-                }
-                hostile_war_attenders.get(idx).changeHealth(-weapon.getBulletDamage());
-                projectile_iterator.remove();   // remove bullet
-                return true;
-            }
-        }
-        return false;
-        */
     }
 
     private boolean handleGroundProjectileTileCollision(Projectile projectile, Weapon weapon, Iterator<Projectile> bullet_iterator) {
@@ -393,14 +361,14 @@ public class CollisionHandler {
         return false;
     }
 
-    private void handleGroundProjectileStaticWarAttenderCollision(Projectile projectile, Weapon weapon, Iterator<Projectile> bullet_iterator) {
+    private void handleGroundProjectileStaticEntityCollision(Projectile projectile, Weapon weapon, Iterator<Projectile> bullet_iterator) {
         int x = (int) projectile.projectile_pos.x / TILE_WIDTH;
         int y = (int) projectile.projectile_pos.y / TILE_HEIGHT;
         int tile_ID = map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
 
-        for (int idx = 0; idx < staticWarAttender_indices.length; ++idx) {
-            if (tile_ID == staticWarAttender_indices[idx]) {
-                damageStaticWarAttender(x, y, weapon);
+        for (int idx = 0; idx < static_entity_indices.length; ++idx) {
+            if (tile_ID == static_entity_indices[idx]) {
+                damageStaticEntity(x, y, weapon);
                 if (weapon instanceof Uzi || weapon instanceof Plasma)
                     bullet_hit_sound.play(1.f, UserSettings.soundVolume);
                 else if (weapon instanceof Shell || weapon instanceof RocketLauncher)
@@ -412,14 +380,14 @@ public class CollisionHandler {
         }
     }
 
-    private void handleAirProjectileWarAttenderCollision(Projectile projectile, Weapon weapon) {
-        if (((AirProjectile) projectile).hasChecked(AirProjectile.Target.WarAttenders)) return;
-        for (int idx = 0; idx < hostile_movable_war_attenders.size(); ++idx) {
-            if (projectile.getCollisionModel().intersects(hostile_movable_war_attenders.get(idx).getCollisionModel())) {
-                hostile_movable_war_attenders.get(idx).changeHealth(-weapon.getBulletDamage());
+    private void handleAirProjectileEntityCollision(Projectile projectile, Weapon weapon) {
+        if (((AirProjectile) projectile).hasChecked(AirProjectile.Target.Entities)) return;
+        for (int idx = 0; idx < hostile_movable_entities.size(); ++idx) {
+            if (projectile.getCollisionModel().intersects(hostile_movable_entities.get(idx).getCollisionModel())) {
+                hostile_movable_entities.get(idx).changeHealth(-weapon.getBulletDamage());
             }
         }
-        ((AirProjectile) projectile).setChecked(AirProjectile.Target.WarAttenders);
+        ((AirProjectile) projectile).setChecked(AirProjectile.Target.Entities);
     }
 
     private void handleAirProjectileTileCollision(Projectile projectile, Weapon weapon) {
@@ -444,60 +412,60 @@ public class CollisionHandler {
         ((AirProjectile) projectile).setChecked(AirProjectile.Target.Tiles);
     }
 
-    private void handleAirProjectileStaticWarAttenderCollision(Projectile projectile, Weapon weapon) {
-        if (((AirProjectile) projectile).hasChecked(AirProjectile.Target.StaticWarAttender)) return;
+    private void handleAirProjectileStaticEntityCollision(Projectile projectile, Weapon weapon) {
+        if (((AirProjectile) projectile).hasChecked(AirProjectile.Target.StaticEntities)) return;
         CollisionModel.Point[] collision_points = projectile.getCollisionModel().collision_points;
         for (int i = 0; i < collision_points.length; ++i) {
-            for (int idx = 0; idx < staticWarAttender_indices.length; ++idx) {
+            for (int idx = 0; idx < static_entity_indices.length; ++idx) {
                 int x = (int) collision_points[i].x / TILE_WIDTH;
                 int y = (int) collision_points[i].y / TILE_HEIGHT;
                 int tile_ID = map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
-                if (tile_ID == staticWarAttender_indices[idx]) {
-                    damageStaticWarAttender(x, y, weapon);
+                if (tile_ID == static_entity_indices[idx]) {
+                    damageStaticEntity(x, y, weapon);
                     if (weapon instanceof PiercingWeapon) continue;
                     else showBulletHitAnimation(weapon, projectile);
                 }
             }
         }
-        ((AirProjectile) projectile).setChecked(AirProjectile.Target.StaticWarAttender);
+        ((AirProjectile) projectile).setChecked(AirProjectile.Target.StaticEntities);
     }
 
-    private void damageStaticWarAttender(int xPos, int yPos, Weapon weapon) {
-        for (int idx = 0; idx < static_enemies.size(); ++idx) {
-            StaticWarAttender staticWarAttender = static_enemies.get(idx);
-            if (!staticWarAttender.containsTilePosition(xPos, yPos)) continue;
+    private void damageStaticEntity(int xPos, int yPos, Weapon weapon) {
+        for (int idx = 0; idx < static_enemy_entities.size(); ++idx) {
+            StaticEntity staticEntity = static_enemy_entities.get(idx);
+            if (!staticEntity.containsTilePosition(xPos, yPos)) continue;
             if (weapon instanceof PiercingWeapon) {
-                if (!((PiercingWeapon) weapon).hasAlreadyHit(staticWarAttender)) {
-                    staticWarAttender.changeHealth(-weapon.getBulletDamage()); //drain health of hit tank
+                if (!((PiercingWeapon) weapon).hasAlreadyHit(staticEntity)) {
+                    staticEntity.changeHealth(-weapon.getBulletDamage()); //drain health of hit tank
                     break;
                 }
             } else {
-                staticWarAttender.changeHealth(-weapon.getBulletDamage());
+                staticEntity.changeHealth(-weapon.getBulletDamage());
             }
-            if (staticWarAttender.isDestroyed) {
-                replaceStaticWarAttenderTile(idx);
+            if (staticEntity.isDestroyed) {
+                replaceStaticEntityTile(idx);
             }
         }
     }
 
-    private void damageStaticWarAttender(int xPos, int yPos) {
-        for (int idx = 0; idx < static_enemies.size(); ++idx) {
-            if (static_enemies.get(idx).containsTilePosition(xPos, yPos)) {   // find the windmill by its tile position
-                static_enemies.get(idx).changeHealth(-MovableWarAttender.DAMAGE_TO_DESTRUCTIBLE_TILE);
-                if (static_enemies.get(idx).isDestroyed) {
-                    replaceStaticWarAttenderTile(idx);
+    private void damageStaticEntity(int xPos, int yPos) {
+        for (int idx = 0; idx < static_enemy_entities.size(); ++idx) {
+            if (static_enemy_entities.get(idx).containsTilePosition(xPos, yPos)) {   // find the windmill by its tile position
+                static_enemy_entities.get(idx).changeHealth(-MovableEntity.DAMAGE_TO_DESTRUCTIBLE_TILE);
+                if (static_enemy_entities.get(idx).isDestroyed) {
+                    replaceStaticEntityTile(idx);
                 }
                 break;
             }
         }
     }
 
-    private void replaceStaticWarAttenderTile(int idx) {
-        StaticWarAttender staticWarAttender = static_enemies.get(idx);
-        level_delete_listener.notifyForWarAttenderDeletion(staticWarAttender);
+    private void replaceStaticEntityTile(int idx) {
+        StaticEntity staticEntity = static_enemy_entities.get(idx);
+        level_delete_listener.notifyForEntityDestruction(staticEntity);
         explosion_sound.play(1.f, UserSettings.soundVolume);
 
-        Vector2f[] collision_tiles = staticWarAttender.getCollisionTiles();
+        Vector2f[] collision_tiles = staticEntity.getCollisionTiles();
 
         for (Vector2f collision_tile : collision_tiles) {
             // look what tile lies below destroyed windmill (grass, dirt or concrete)
@@ -509,7 +477,7 @@ public class CollisionHandler {
             map.setTileId((int) collision_tile.x, (int) collision_tile.y, ENEMY_TILES_LAYER_IDX, 0);
         }
 
-        Vector2f[] replacement_tiles = staticWarAttender.getReplacementTiles();
+        Vector2f[] replacement_tiles = staticEntity.getReplacementTiles();
         if (replacement_tiles == null) return;
 
         for (Vector2f replacement_tile : replacement_tiles) {
@@ -518,9 +486,9 @@ public class CollisionHandler {
         }
     }
 
-    private static void damageTile(int xPos, int yPos, Weapon weapon, int replaceTileIndex, MovableWarAttender warAttender) {
+    private static void damageTile(int xPos, int yPos, Weapon weapon, int replaceTileIndex, MovableEntity movableEntity) {
         // if weapon is null, the tile was damaged by contact
-        float bullet_damage = weapon == null ? MovableWarAttender.DAMAGE_TO_DESTRUCTIBLE_TILE : weapon.getBulletDamage();
+        float bullet_damage = weapon == null ? MovableEntity.DAMAGE_TO_DESTRUCTIBLE_TILE : weapon.getBulletDamage();
         // use a map to track current destructible tile health
         int key = generateKey(xPos, yPos);
         if (destructible_tiles_health_info.containsKey(key)) {
@@ -529,7 +497,7 @@ public class CollisionHandler {
                 // TILE DESTROYED
                 if (weapon == null) {
                     // show smoke animation only when drove over tile, not bullet destruction
-                    smokeAnimation.play(warAttender.getPosition().x, warAttender.getPosition().y, warAttender.getRotation());
+                    smokeAnimation.play(movableEntity.getPosition().x, movableEntity.getPosition().y, movableEntity.getRotation());
                 } else {
                     // destroyed by bullet, show destruction animation using level listener
                     if (!(weapon instanceof Napalm)) {
@@ -551,26 +519,26 @@ public class CollisionHandler {
         }
     }
 
-    private void handleHostileCollisions(MovableWarAttender player_warAttender, List<MovableWarAttender> friendly_war_attenders, int deltaTime) {
-        for (MovableWarAttender hostile_warAttender : hostile_movable_war_attenders) {
-            hostile_warAttender.shootAtEnemies(player_warAttender, friendly_war_attenders, deltaTime);
-            handleShotCollisions(hostile_warAttender, player_warAttender);
-            handleMovableWarAttenderCollisions(hostile_warAttender);
+    private void handleHostileCollisions(MovableEntity player_entity, List<MovableEntity> friendly_entities, int deltaTime) {
+        for (MovableEntity hostile_entity : hostile_movable_entities) {
+            hostile_entity.shootAtEnemies(player_entity, friendly_entities, deltaTime);
+            handleShotCollisions(hostile_entity, player_entity);
+            handleMovableEntityCollisions(hostile_entity);
         }
 
-        for (StaticWarAttender enemy_staticWarAttender : static_enemies) {
-            enemy_staticWarAttender.shootAtEnemies(player_warAttender, friendly_war_attenders, deltaTime);
-            handleShotCollisions(enemy_staticWarAttender, player_warAttender);
+        for (StaticEntity enemy_staticEntity : static_enemy_entities) {
+            enemy_staticEntity.shootAtEnemies(player_entity, friendly_entities, deltaTime);
+            handleShotCollisions(enemy_staticEntity, player_entity);
         }
 
-        for (MovableWarAttender friendly_war_attender : friendly_war_attenders) {
-            friendly_war_attender.shootAtEnemies(null, all_hostile_war_attenders, deltaTime);
-            handleMovableWarAttenderCollisions(friendly_war_attender);
-            handleShotCollisions(friendly_war_attender, null);
+        for (MovableEntity friendly_entity : friendly_entities) {
+            friendly_entity.shootAtEnemies(null, all_hostile_entities, deltaTime);
+            handleMovableEntityCollisions(friendly_entity);
+            handleShotCollisions(friendly_entity, null);
         }
     }
 
-    private void handleShotCollisions(WarAttender w, MovableWarAttender player) {
+    private void handleShotCollisions(Entity w, MovableEntity player) {
         for (Weapon weapon : w.getWeapons()) {
             Iterator<Projectile> projectile_iterator = weapon.getProjectiles();
 
@@ -605,33 +573,33 @@ public class CollisionHandler {
                 if (canContinue) continue;
 
                 if (player == null) {
-                    // FRIENDLY SHOT COLLISION WITH HOSTILE WAR ATTENDERS
-                    for (MovableWarAttender hostile_warAttender : hostile_movable_war_attenders) {
-                        if (projectile.getCollisionModel().intersects(hostile_warAttender.getCollisionModel())) {
+                    // FRIENDLY SHOT COLLISION WITH HOSTILE ENTITIES
+                    for (MovableEntity hostile_entity : hostile_movable_entities) {
+                        if (projectile.getCollisionModel().intersects(hostile_entity.getCollisionModel())) {
                             showBulletHitAnimation(weapon, projectile);
                             projectile_iterator.remove();   // TODO: FIX CRASH BUG ON REMOVE
-                            hostile_warAttender.changeHealth(-weapon.getBulletDamage());  //drain health of enemy
+                            hostile_entity.changeHealth(-weapon.getBulletDamage());  //drain health of enemy
                             canContinue = true;
                         }
                     }
                     if (canContinue) continue;
-                    // FRIENDLY SHOT COLLISION WITH STATIC WAR ATTENDERS
-                    handleGroundProjectileStaticWarAttenderCollision(projectile, weapon, projectile_iterator);
+                    // FRIENDLY SHOT COLLISION WITH STATIC ENTITIES
+                    handleGroundProjectileStaticEntityCollision(projectile, weapon, projectile_iterator);
                 } else {
-                    // HOSTILE SHOT COLLISION WITH FRIENDLY WAR ATTENDERS
-                    for (MovableWarAttender friendly_warAttender : friendly_movable_war_attenders) {
-                        if (projectile.getCollisionModel().intersects(friendly_warAttender.getCollisionModel())) {
+                    // HOSTILE SHOT COLLISION WITH FRIENDLY ENTITIES
+                    for (MovableEntity friendly_entity : friendly_movable_entities) {
+                        if (projectile.getCollisionModel().intersects(friendly_entity.getCollisionModel())) {
                             showBulletHitAnimation(weapon, projectile);
                             projectile_iterator.remove();
-                            friendly_warAttender.changeHealth(-weapon.getBulletDamage());  //drain health of friend
+                            friendly_entity.changeHealth(-weapon.getBulletDamage());  //drain health of friend
                         }
                     }
-                    // HOSTILE SHOT COLLISION WITH FRIENDLY DRIVABLE ATTENDERS
-                    for (MovableWarAttender drivable_warAttender : drivable_war_attenders) {
-                        if (projectile.getCollisionModel().intersects(drivable_warAttender.getCollisionModel())) {
+                    // HOSTILE SHOT COLLISION WITH FRIENDLY DRIVABLE ENTITIES
+                    for (MovableEntity drivable_entity : drivable_entities) {
+                        if (projectile.getCollisionModel().intersects(drivable_entity.getCollisionModel())) {
                             showBulletHitAnimation(weapon, projectile);
                             projectile_iterator.remove();
-                            drivable_warAttender.changeHealth(-weapon.getBulletDamage());
+                            drivable_entity.changeHealth(-weapon.getBulletDamage());
                         }
                     }
                 }

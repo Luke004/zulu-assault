@@ -1,18 +1,18 @@
 package models;
 
-import models.war_attenders.WarAttender;
+import models.entities.Entity;
 import org.newdawn.slick.geom.Vector2f;
 
 /*
-StaticWarAttender are created from the tile map and each object has a list of collision tiles and tiles to replace
-when the StaticWarAttender is destroyed
+Static entities are created from the tile map and each object has a list of collision tiles and tiles to replace
+when the static entity is destroyed
  */
-public abstract class StaticWarAttender extends WarAttender {
+public abstract class StaticEntity extends Entity {
 
     protected Vector2f[] collision_tiles;
     protected Vector2f[] replacement_tiles;
 
-    public StaticWarAttender(Vector2f startPos, boolean isHostile, Vector2f[] collision_tiles) {
+    public StaticEntity(Vector2f startPos, boolean isHostile, Vector2f[] collision_tiles) {
         super(startPos, isHostile);
         this.collision_tiles = collision_tiles;
     }

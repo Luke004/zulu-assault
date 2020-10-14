@@ -1,6 +1,6 @@
 package logic;
 
-import models.war_attenders.MovableWarAttender;
+import models.entities.MovableEntity;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ public class WayPointManager {
     private int current_way_point_list_idx;
     private int current_point_idx;
     public int wish_angle;
-    public MovableWarAttender.RotateDirection rotate_direction;
+    public MovableEntity.RotateDirection rotate_direction;
 
     private WayPointManager(List<Vector2f> wayPoints) {
         this.wayPointLists = new ArrayList<>();
@@ -63,9 +63,9 @@ public class WayPointManager {
         float shortest_angle = getShortestSignedAngle(angle2, angle);
 
         if (shortest_angle > 0) {
-            rotate_direction = MovableWarAttender.RotateDirection.ROTATE_DIRECTION_LEFT;
+            rotate_direction = MovableEntity.RotateDirection.ROTATE_DIRECTION_LEFT;
         } else {
-            rotate_direction = MovableWarAttender.RotateDirection.ROTATE_DIRECTION_RIGHT;
+            rotate_direction = MovableEntity.RotateDirection.ROTATE_DIRECTION_RIGHT;
         }
 
         wish_angle = (int) (angle - shortest_angle);
