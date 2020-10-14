@@ -2,6 +2,7 @@ package models.entities;
 
 import logic.WayPointManager;
 import models.entities.robots.RocketRobot;
+import models.entities.tanks.XTank;
 import models.weapons.Weapon;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
@@ -139,7 +140,8 @@ public abstract class Entity {
             // fire
             fireWeapon(MovableEntity.WeaponType.WEAPON_1);
 
-            if (this instanceof RocketRobot) {  // rocket robot can also fire with 2nd weapon
+            // following bot controlled entities can also fire their 2nd weapon
+            if (this instanceof RocketRobot || this instanceof XTank) {
                 fireWeapon(MovableEntity.WeaponType.WEAPON_2);
             }
         }
