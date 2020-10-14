@@ -1,23 +1,22 @@
 package graphics.screen_drawer.drawings;
 
+import graphics.fonts.FontManager;
 import models.entities.Entity;
 import org.newdawn.slick.TrueTypeFont;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 
 public class ScoreValueDrawer extends Drawing {
 
-    private TrueTypeFont point_text;
+    private TrueTypeFont point_drawer;
     private String score_value_string;
 
     // create extra instances of this class in case there are already scores being drawn somewhere else
     private ArrayList<ScoreValueDrawer> extraDrawers;
 
     public ScoreValueDrawer() {
-        Font awtFont = new Font("Arial", Font.PLAIN, 12);
-        point_text = new TrueTypeFont(awtFont, false);
+        point_drawer = FontManager.getStencilSmall();
         extraDrawers = new ArrayList<>();
     }
 
@@ -33,9 +32,9 @@ public class ScoreValueDrawer extends Drawing {
         super.init(seconds, entity);
         // get the score value to print as a string
         this.score_value_string = Integer.toString(entity.getScoreValue());
-        int textWidth = point_text.getWidth(score_value_string);
+        int textWidth = point_drawer.getWidth(score_value_string);
         this.xPos -= textWidth / 2.f;
-        int textHeight = point_text.getHeight(score_value_string);
+        int textHeight = point_drawer.getHeight(score_value_string);
         this.yPos -= textHeight / 2.f;
     }
 
@@ -52,7 +51,7 @@ public class ScoreValueDrawer extends Drawing {
     @Override
     public void draw() {
         if (!isStopped) {
-            point_text.drawString(xPos, yPos, score_value_string, org.newdawn.slick.Color.white);
+            point_drawer.drawString(xPos, yPos, score_value_string, org.newdawn.slick.Color.white);
         }
 
         for (ScoreValueDrawer extraDrawer : extraDrawers) {

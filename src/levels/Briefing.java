@@ -2,6 +2,7 @@ package levels;
 
 import audio.CombatBackgroundMusic;
 import audio.MenuSounds;
+import graphics.fonts.FontManager;
 import main.ZuluAssault;
 import settings.UserSettings;
 import org.newdawn.slick.Graphics;
@@ -12,7 +13,6 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class Briefing extends BasicGameState {
 
     private List<String> briefing_message;
     private String briefing_header, briefing_mission_header, confirm_message, mission_name;
-    private static TrueTypeFont ttf_info_string;
+    private static TrueTypeFont text_drawer;
     private static boolean has_initialized_once;
     private static Image briefing_screen_image;
     private static Sound briefing_music_intro;
@@ -59,7 +59,7 @@ public class Briefing extends BasicGameState {
 
             for (String next_part : split_strings) {
                 builder.append(next_part).append(" ");
-                if (ttf_info_string.getWidth(builder.toString()) > gameContainer.getWidth() - 50) {
+                if (text_drawer.getWidth(builder.toString()) > gameContainer.getWidth() - 50) {
                     this.briefing_message.add(builder.toString());
                     builder.setLength(0);
                 }
@@ -82,12 +82,11 @@ public class Briefing extends BasicGameState {
             has_initialized_once = true;
             this.gameContainer = gameContainer;
             this.stateBasedGame = stateBasedGame;
-            Font awtFont = new Font("DialogInput", Font.PLAIN, 14);
-            ttf_info_string = new TrueTypeFont(awtFont, false);
+            text_drawer = FontManager.getConsoleInputFont();
             MESSAGE_Y_START = gameContainer.getHeight() / 8.f;
             this.confirm_message = "Press a key to start mission.";
             this.briefing_header = "ZULU TEAM - BRIEFING";
-            MESSAGE_HEIGHT = ttf_info_string.getHeight(briefing_header);
+            MESSAGE_HEIGHT = text_drawer.getHeight(briefing_header);
             briefing_music_intro = new Sound("audio/music/briefing_intro.ogg");
             briefing_music = new Music("audio/music/briefing.ogg");
             briefing_screen_image = new Image("assets/menus/briefing.png");
@@ -109,31 +108,31 @@ public class Briefing extends BasicGameState {
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) {
         briefing_screen_image.draw();
 
-        ttf_info_string.drawString(
+        text_drawer.drawString(
                 TEXT_MARGIN,
                 MESSAGE_Y_START,
                 briefing_header);
 
-        ttf_info_string.drawString(
+        text_drawer.drawString(
                 TEXT_MARGIN,
                 MESSAGE_Y_START + MESSAGE_HEIGHT,
                 briefing_mission_header);
 
         for (int idx = 0; idx < briefing_message.size(); ++idx) {
-            ttf_info_string.drawString(
+            text_drawer.drawString(
                     TEXT_MARGIN,
                     MESSAGE_Y_START + MESSAGE_HEIGHT * (3 + idx),
                     briefing_message.get(idx));
         }
 
-        ttf_info_string.drawString(
+        text_drawer.drawString(
                 TEXT_MARGIN,
-                gameContainer.getHeight() - ttf_info_string.getHeight(mission_name) - TEXT_MARGIN,
+                gameContainer.getHeight() - text_drawer.getHeight(mission_name) - TEXT_MARGIN,
                 mission_name);
 
-        ttf_info_string.drawString(
-                gameContainer.getWidth() / 2.f - ttf_info_string.getWidth(confirm_message) / 2.f,
-                gameContainer.getHeight() - ttf_info_string.getHeight(confirm_message) - TEXT_MARGIN,
+        text_drawer.drawString(
+                gameContainer.getWidth() / 2.f - text_drawer.getWidth(confirm_message) / 2.f,
+                gameContainer.getHeight() - text_drawer.getHeight(confirm_message) - TEXT_MARGIN,
                 confirm_message);
     }
 

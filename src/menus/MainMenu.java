@@ -1,7 +1,7 @@
 package menus;
 
 import console.Console;
-import logic.SettingsManager;
+import graphics.fonts.FontManager;
 import main.ZuluAssault;
 import menus.screens.*;
 import org.newdawn.slick.*;
@@ -9,8 +9,6 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import settings.UserSettings;
-
-import java.awt.Font;
 
 public class MainMenu extends BasicGameState {
 
@@ -34,10 +32,10 @@ public class MainMenu extends BasicGameState {
 
     protected static String title_string;
     protected static Vector2f title_string_position;
-    private static TrueTypeFont ttf_title_string;
+    private static TrueTypeFont title_string_drawer;
 
     private static String[] info_strings;
-    private static TrueTypeFont ttf_info_string;
+    private static TrueTypeFont info_string_drawer;
     public final static int TEXT_MARGIN = 5;
 
     public MainMenu() {
@@ -56,16 +54,13 @@ public class MainMenu extends BasicGameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-        Font awtFont = new Font("Stencil", Font.PLAIN, 60);
-        ttf_title_string = new TrueTypeFont(awtFont, false);
+        title_string_drawer = FontManager.getMainFont();
         title_string = "ZULU ASSAULT";
         title_string_position = new Vector2f(
-                gameContainer.getWidth() / 2.f - ttf_title_string.getWidth(title_string) / 2.f,
-                gameContainer.getHeight() / 4.f - ttf_title_string.getHeight(title_string) / 2.f
+                gameContainer.getWidth() / 2.f - title_string_drawer.getWidth(title_string) / 2.f,
+                gameContainer.getHeight() / 4.f - title_string_drawer.getHeight(title_string) / 2.f
         );
-
-        awtFont = new Font("DialogInput", Font.PLAIN, 11);
-        ttf_info_string = new TrueTypeFont(awtFont, false);
+        info_string_drawer = FontManager.getConsoleOutputFont();
         info_strings = new String[3];
         info_strings[0] = "(C) 1998 Dallas Nutsch";
         info_strings[1] = "Rebuild by Lukas Hilfrich";
@@ -147,22 +142,22 @@ public class MainMenu extends BasicGameState {
     }
 
     public static void drawInfoStrings(GameContainer gameContainer) {
-        ttf_info_string.drawString(
+        info_string_drawer.drawString(
                 TEXT_MARGIN,
-                gameContainer.getHeight() - ttf_info_string.getHeight() - TEXT_MARGIN,
+                gameContainer.getHeight() - info_string_drawer.getHeight() - TEXT_MARGIN,
                 info_strings[0]);
-        ttf_info_string.drawString(
-                gameContainer.getWidth() - ttf_info_string.getWidth(info_strings[1]) - TEXT_MARGIN,
-                gameContainer.getHeight() - ttf_info_string.getHeight() - TEXT_MARGIN,
+        info_string_drawer.drawString(
+                gameContainer.getWidth() - info_string_drawer.getWidth(info_strings[1]) - TEXT_MARGIN,
+                gameContainer.getHeight() - info_string_drawer.getHeight() - TEXT_MARGIN,
                 info_strings[1]);
-        ttf_info_string.drawString(
-                gameContainer.getWidth() - ttf_info_string.getWidth(info_strings[2]) - TEXT_MARGIN,
+        info_string_drawer.drawString(
+                gameContainer.getWidth() - info_string_drawer.getWidth(info_strings[2]) - TEXT_MARGIN,
                 TEXT_MARGIN,
                 info_strings[2]);
     }
 
     public static void drawGameTitle() {
-        ttf_title_string.drawString(
+        title_string_drawer.drawString(
                 title_string_position.x,
                 title_string_position.y,
                 title_string,

@@ -1,10 +1,10 @@
 package levels;
 
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
 import audio.MenuSounds;
+import graphics.fonts.FontManager;
 import main.ZuluAssault;
 import settings.UserSettings;
 import org.newdawn.slick.*;
@@ -23,7 +23,7 @@ public class Debriefing extends BasicGameState {
 
     private List<String> debriefing_message;
     private String debriefing_header, debriefing_mission_header, confirm_message, mission_name;
-    private static TrueTypeFont ttf_info_string;
+    private static TrueTypeFont text_drawer;
     private static boolean has_initialized_once;
     private static Image debriefing_screen_image;
     private static Sound debriefing_music;
@@ -51,7 +51,7 @@ public class Debriefing extends BasicGameState {
 
             for (String next_part : split_strings) {
                 builder.append(next_part).append(" ");
-                if (ttf_info_string.getWidth(builder.toString()) > gameContainer.getWidth() - 50) {
+                if (text_drawer.getWidth(builder.toString()) > gameContainer.getWidth() - 50) {
                     this.debriefing_message.add(builder.toString());
                     builder.setLength(0);
                 }
@@ -70,12 +70,11 @@ public class Debriefing extends BasicGameState {
             has_initialized_once = true;
             //this.gameContainer = gameContainer;
             //this.stateBasedGame = stateBasedGame;
-            Font awtFont = new java.awt.Font("DialogInput", java.awt.Font.PLAIN, 14);
-            ttf_info_string = new TrueTypeFont(awtFont, false);
+            text_drawer = FontManager.getConsoleInputFont();
             MESSAGE_Y_START = gameContainer.getHeight() / 8.f;
             this.confirm_message = "Press a key to confirm orders.";
             this.debriefing_header = "ZULU TEAM - DEBRIEFING";
-            MESSAGE_HEIGHT = ttf_info_string.getHeight(debriefing_header);
+            MESSAGE_HEIGHT = text_drawer.getHeight(debriefing_header);
             debriefing_music = new Sound("audio/music/debriefing.ogg");
             debriefing_screen_image = new Image("assets/menus/debriefing.png");
         }
@@ -89,31 +88,31 @@ public class Debriefing extends BasicGameState {
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         debriefing_screen_image.draw();
 
-        ttf_info_string.drawString(
+        text_drawer.drawString(
                 TEXT_MARGIN,
                 MESSAGE_Y_START,
                 debriefing_header);
 
-        ttf_info_string.drawString(
+        text_drawer.drawString(
                 TEXT_MARGIN,
                 MESSAGE_Y_START + MESSAGE_HEIGHT,
                 debriefing_mission_header);
 
         for (int idx = 0; idx < debriefing_message.size(); ++idx) {
-            ttf_info_string.drawString(
+            text_drawer.drawString(
                     TEXT_MARGIN,
                     MESSAGE_Y_START + MESSAGE_HEIGHT * (3 + idx),
                     debriefing_message.get(idx));
         }
 
-        ttf_info_string.drawString(
+        text_drawer.drawString(
                 TEXT_MARGIN,
-                gameContainer.getHeight() - ttf_info_string.getHeight(mission_name) - TEXT_MARGIN,
+                gameContainer.getHeight() - text_drawer.getHeight(mission_name) - TEXT_MARGIN,
                 mission_name);
 
-        ttf_info_string.drawString(
-                gameContainer.getWidth() / 2.f - ttf_info_string.getWidth(confirm_message) / 2.f,
-                gameContainer.getHeight() - ttf_info_string.getHeight(confirm_message) - TEXT_MARGIN,
+        text_drawer.drawString(
+                gameContainer.getWidth() / 2.f - text_drawer.getWidth(confirm_message) / 2.f,
+                gameContainer.getHeight() - text_drawer.getHeight(confirm_message) - TEXT_MARGIN,
                 confirm_message);
     }
 

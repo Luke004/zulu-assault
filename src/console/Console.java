@@ -1,5 +1,6 @@
 package console;
 
+import graphics.fonts.FontManager;
 import org.newdawn.slick.*;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
@@ -45,8 +46,8 @@ public class Console {
         gameContainer = gc;
         CONSOLE_WIDTH = gc.getWidth() / 2;
         graphics = gc.getGraphics();
-        inputFont = new TrueTypeFont(new java.awt.Font("DialogInput", java.awt.Font.PLAIN, 14), false);
-        outputFont = new TrueTypeFont(new java.awt.Font("DialogInput", java.awt.Font.PLAIN, 11), false);
+        inputFont = FontManager.getConsoleInputFont();
+        outputFont = FontManager.getConsoleOutputFont();
         s_input = DEFAULT_TEXT;
         memory = new ArrayList<>();
         memory.add(DEFAULT_TEXT);

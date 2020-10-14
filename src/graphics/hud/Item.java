@@ -1,26 +1,26 @@
 package graphics.hud;
 
+import graphics.fonts.FontManager;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
 import player.Player;
 
-import java.awt.Font;
-
 import static graphics.hud.HUD.GAME_HEIGHT;
 
 class Item {
     private Image item_image;
-    private TrueTypeFont amount_number_text;
-    private int ITEM_WIDTH, ITEM_HEIGHT;
+    private TrueTypeFont item_amount_drawer;
+    private static int ITEM_WIDTH;
     private float xPos, yPos, test_x_pos, text_y_pos;
     protected boolean isActive, isFadingIn, isFadingOut;
     protected int amount;
 
-    private final int ITEM_START_Y = GAME_HEIGHT / (60 / 13);
-    private final float FADE_SPEED = 0.05f; // how fast the item banner moves in and back out of the screen
+    private static final int ITEM_START_Y = GAME_HEIGHT / (60 / 13);
+    private static final float FADE_SPEED = 0.05f; // how fast the item banner moves in and back out of the screen
 
     Item(Player.Item_e item) {
+        int ITEM_HEIGHT;
         try {
             switch (item) {
                 case INVINCIBILITY:
@@ -57,14 +57,13 @@ class Item {
         } catch (SlickException e) {
             e.printStackTrace();
         }
-        Font awtFont = new Font("Century Gothic", Font.PLAIN, 11);
-        amount_number_text = new TrueTypeFont(awtFont, false);
+        item_amount_drawer = FontManager.getItemFont();
     }
 
     public void draw() {
         if (!isActive) return;
         item_image.draw(xPos, yPos);
-        amount_number_text.drawString(test_x_pos, text_y_pos, Integer.toString(amount), org.newdawn.slick.Color.white);
+        item_amount_drawer.drawString(test_x_pos, text_y_pos, Integer.toString(amount), org.newdawn.slick.Color.white);
     }
 
     public void update(int deltaTime) {

@@ -93,7 +93,7 @@ public class Buttons {
         public void draw() {
             if (isActive) base_image.draw(base_position.x, base_position.y);
             else inactive_button_image.draw(base_position.x, base_position.y);
-            ttf_string.drawString(
+            text_drawer.drawString(
                     base_position.x + ELEMENT_WIDTH + 30,
                     base_position.y + 5.f,
                     description);

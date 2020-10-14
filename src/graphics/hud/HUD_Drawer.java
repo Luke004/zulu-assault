@@ -1,5 +1,6 @@
 package graphics.hud;
 
+import graphics.fonts.FontManager;
 import levels.LevelHandler;
 import logic.TimeManager;
 import org.newdawn.slick.Image;
@@ -8,7 +9,6 @@ import org.newdawn.slick.TrueTypeFont;
 import player.Player;
 import settings.UserSettings;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -29,8 +29,8 @@ public class HUD_Drawer {
     HUD_Drawer(Player player) {
         this.player = player;
 
-        this.time_text = new TrueTypeFont(new Font("Stencil", Font.PLAIN, 11), true);
-        this.time_text_header = new TrueTypeFont(new Font("Stencil", Font.PLAIN, 12), true);
+        this.time_text = FontManager.getStencilSmaller();
+        this.time_text_header = FontManager.getStencilSmall();
 
         number_images = new ArrayList<>();
         final int NUM_AMOUNT = 10;  // 10 numbers (0-9)

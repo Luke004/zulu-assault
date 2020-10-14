@@ -1,11 +1,10 @@
 package menus.menu_elements;
 
+import graphics.fonts.FontManager;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
-
-import java.awt.*;
 
 public abstract class AbstractMenuElement {
 
@@ -14,7 +13,7 @@ public abstract class AbstractMenuElement {
     protected Image base_image;
     protected Vector2f base_position;
     protected String description;
-    protected static TrueTypeFont ttf_string;
+    protected static TrueTypeFont text_drawer;
 
     AbstractMenuElement(Texture base_image_texture, Vector2f base_position, String description) {
         this.base_position = base_position;
@@ -24,14 +23,13 @@ public abstract class AbstractMenuElement {
     }
 
     static {
-        Font awtFont = new Font("DialogInput", Font.PLAIN, 12);
-        ttf_string = new TrueTypeFont(awtFont, false);
+        text_drawer = FontManager.getConsoleOutputFont();
     }
 
     public void draw() {
         base_image.draw(base_position.x, base_position.y);
 
-        ttf_string.drawString(
+        text_drawer.drawString(
                 base_position.x + ELEMENT_WIDTH + 30,
                 base_position.y + 10.f,
                 description);
