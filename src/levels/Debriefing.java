@@ -124,7 +124,7 @@ public class Debriefing extends BasicGameState {
             final int NEXT_LEVEL_ID = finished_level_ID + 1;
 
             // TODO: remove this, this is temporary for the alpha version
-            if (NEXT_LEVEL_ID == 7) {
+            if (NEXT_LEVEL_ID == ZuluAssault.MAX_LEVEL) {
                 LevelHandler.goToMainMenu();
                 return;
             }

@@ -3,14 +3,9 @@ package levels;
 import logic.WayPointManager;
 import main.ZuluAssault;
 import models.entities.MovableEntity;
-import models.entities.aircraft.hostile.WhiteEnemyJet;
-import models.entities.robots.PlasmaRobot;
-import models.entities.robots.RocketRobot;
-import models.entities.tanks.CannonTank;
-import models.entities.tanks.NapalmTank;
-import models.entities.tanks.RocketTank;
-import models.entities.tanks.ShellTank;
-import models.interaction_circles.HealthCircle;
+import models.entities.robots.RocketRobot2;
+import models.entities.robots.ShellRobot;
+import models.entities.tanks.*;
 import models.interaction_circles.TeleportCircle;
 import models.items.*;
 import org.newdawn.slick.GameContainer;
@@ -24,18 +19,19 @@ import org.newdawn.slick.tiled.TiledMap;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Level_7 extends AbstractLevel implements GameState {
+public class Level_8 extends AbstractLevel implements GameState {
 
-    public Level_7() {
+    public Level_8() {
         super();
     }
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         if (!calledOnce) {
-            mission_title = "X-Roads";
-            briefing_message = "A complex transporter setup has allowed the enemy units to do a switchback on us. " +
-                    "Your job is to find a way through the crossroads and destroy the enemy.";
+            mission_title = "X-Tank";
+            briefing_message = "We've caught up with the retreating units and found out why they're moving so slow. " +
+                    "Their secret weapon, named the X-Tank by our intelligence, moves about 5 mph but is armed to the " +
+                    "teeth. Your job is to destroy this weapon.";
             debriefing_message = "";
             calledOnce = true;
             return;
@@ -46,325 +42,173 @@ public class Level_7 extends AbstractLevel implements GameState {
         /* ---------- SETUP ITEMS ---------- */
 
         // silver wrenches
-        Item silver_wrench_1 = new SilverWrenchItem(new Vector2f(0, 2520));
+        Item silver_wrench_1 = new SilverWrenchItem(new Vector2f(475, 3845));
         items.add(silver_wrench_1);
 
-        Item silver_wrench_2 = new SilverWrenchItem(new Vector2f(75, 2522));
+        Item silver_wrench_2 = new SilverWrenchItem(new Vector2f(475, 3930));
         items.add(silver_wrench_2);
 
-        Item silver_wrench_3 = new SilverWrenchItem(new Vector2f(158, 2522));
+        Item silver_wrench_3 = new SilverWrenchItem(new Vector2f(590, 3930));
         items.add(silver_wrench_3);
 
-        Item silver_wrench_4 = new SilverWrenchItem(new Vector2f(402, 2518));
+        Item silver_wrench_4 = new SilverWrenchItem(new Vector2f(740, 3930));
         items.add(silver_wrench_4);
 
-        Item silver_wrench_5 = new SilverWrenchItem(new Vector2f(485, 2517));
+        Item silver_wrench_5 = new SilverWrenchItem(new Vector2f(55, 3400));
         items.add(silver_wrench_5);
 
-        Item silver_wrench_6 = new SilverWrenchItem(new Vector2f(1358, 3910));
+        Item silver_wrench_6 = new SilverWrenchItem(new Vector2f(50, 3255));
         items.add(silver_wrench_6);
 
-        Item silver_wrench_7 = new SilverWrenchItem(new Vector2f(1458, 3912));
+        Item silver_wrench_7 = new SilverWrenchItem(new Vector2f(55, 3130));
         items.add(silver_wrench_7);
 
-        Item silver_wrench_8 = new SilverWrenchItem(new Vector2f(1534, 3910));
+        Item silver_wrench_8 = new SilverWrenchItem(new Vector2f(99, 2766));
         items.add(silver_wrench_8);
 
-        Item silver_wrench_9 = new SilverWrenchItem(new Vector2f(1730, 3925));
+        Item silver_wrench_9 = new SilverWrenchItem(new Vector2f(86, 2669));
         items.add(silver_wrench_9);
 
-        Item silver_wrench_10 = new SilverWrenchItem(new Vector2f(1730, 3838));
+        Item silver_wrench_10 = new SilverWrenchItem(new Vector2f(96, 476));
         items.add(silver_wrench_10);
 
-        Item silver_wrench_11 = new SilverWrenchItem(new Vector2f(1729, 3729));
+        Item silver_wrench_11 = new SilverWrenchItem(new Vector2f(93, 662));
         items.add(silver_wrench_11);
 
-        Item silver_wrench_12 = new SilverWrenchItem(new Vector2f(2150, 3715));
+        Item silver_wrench_12 = new SilverWrenchItem(new Vector2f(558, 31));
         items.add(silver_wrench_12);
 
-        Item silver_wrench_13 = new SilverWrenchItem(new Vector2f(2150, 3833));
+        Item silver_wrench_13 = new SilverWrenchItem(new Vector2f(687, 31));
         items.add(silver_wrench_13);
 
-        Item silver_wrench_14 = new SilverWrenchItem(new Vector2f(2152, 3932));
+        Item silver_wrench_14 = new SilverWrenchItem(new Vector2f(856, 26));
         items.add(silver_wrench_14);
+
+        Item silver_wrench_15 = new SilverWrenchItem(new Vector2f(1469, 20));
+        items.add(silver_wrench_15);
+
+        Item silver_wrench_16 = new SilverWrenchItem(new Vector2f(1883, 384));
+        items.add(silver_wrench_16);
+
+        Item silver_wrench_17 = new SilverWrenchItem(new Vector2f(1894, 453));
+        items.add(silver_wrench_17);
+
+        Item silver_wrench_18 = new SilverWrenchItem(new Vector2f(1888, 573));
+        items.add(silver_wrench_18);
+
+        Item silver_wrench_19 = new SilverWrenchItem(new Vector2f(1888, 695));
+        items.add(silver_wrench_19);
+
 
         // golden wrenches
         /* --- none --- */
 
         // mega pulse
-        Item mega_pulse_1 = new MegaPulseItem(new Vector2f(45, 2655));
-        items.add(mega_pulse_1);
-
-        Item mega_pulse_2 = new MegaPulseItem(new Vector2f(3887, 1745));
-        items.add(mega_pulse_2);
-
-        Item mega_pulse_3 = new MegaPulseItem(new Vector2f(1940, 40));
-        items.add(mega_pulse_3);
+        /* --- none --- */
 
         // invincibility
-        Item invincibility_1 = new InvincibilityItem(new Vector2f(2588, 3854));
-        items.add(invincibility_1);
+        /* --- none --- */
 
         // EMP
-        Item emp_1 = new EMPItem(new Vector2f(1940, 3887));
-        items.add(emp_1);
-
-        // expand
         /* --- none --- */
 
 
         /* ---------- SETUP TELEPORT CIRCLES ---------- */
-        TeleportCircle teleport_circle_1 = new TeleportCircle(new Vector2f(2760, 765));
+        TeleportCircle teleport_circle_1 = new TeleportCircle(new Vector2f(90, 90));
         teleport_circles.add(teleport_circle_1);
 
-        TeleportCircle teleport_circle_2 = new TeleportCircle(new Vector2f(3820, 3832));
+        TeleportCircle teleport_circle_2 = new TeleportCircle(new Vector2f(1892, 84));
         teleport_circles.add(teleport_circle_2);
 
-        TeleportCircle teleport_circle_3 = new TeleportCircle(new Vector2f(2280, 2080));
+        TeleportCircle teleport_circle_3 = new TeleportCircle(new Vector2f(1814, 3867));
         teleport_circles.add(teleport_circle_3);
-
-        TeleportCircle teleport_circle_4 = new TeleportCircle(new Vector2f(180, 172));
-        teleport_circles.add(teleport_circle_4);
 
 
         /* ---------- SETUP HEALTH CIRCLES ---------- */
-        HealthCircle health_circle_1 = new HealthCircle(new Vector2f(3795, 160));
-        health_circles.add(health_circle_1);
+        /* --- none --- */
 
 
         /* ---------- SETUP ENEMY ENTITIES NOT MOVING ---------- */
-        MovableEntity enemy_cannon_tank_1 = new CannonTank(new Vector2f(1760, 2050), true, false);
-        enemy_cannon_tank_1.setRotation(225);
-        enemy_cannon_tank_1.setAsMandatory();
-        hostile_movable_entities.add(enemy_cannon_tank_1);
+        MovableEntity enemy_shell_tank = new ShellTank(new Vector2f(1085, 153), true, false);
+        enemy_shell_tank.setAsMandatory();
+        hostile_movable_entities.add(enemy_shell_tank);
 
-        MovableEntity enemy_cannon_tank_2 = new CannonTank(new Vector2f(1710, 2000), true, false);
-        enemy_cannon_tank_2.setRotation(225);
-        enemy_cannon_tank_2.setAsMandatory();
-        hostile_movable_entities.add(enemy_cannon_tank_2);
-
-        MovableEntity enemy_rocket_tank_1 = new RocketTank(new Vector2f(2585, 1991), true, false);
-        hostile_movable_entities.add(enemy_rocket_tank_1);
-
-        MovableEntity enemy_rocket_robot_1 = new RocketRobot(new Vector2f(2694, 557), true, false);
-        enemy_rocket_robot_1.setRotation(110);
-        enemy_rocket_robot_1.setAsMandatory();
-        hostile_movable_entities.add(enemy_rocket_robot_1);
-
-        MovableEntity enemy_rocket_robot_2 = new RocketRobot(new Vector2f(2805, 550), true, false);
-        enemy_rocket_robot_2.setRotation(30);
-        enemy_rocket_robot_2.setAsMandatory();
-        hostile_movable_entities.add(enemy_rocket_robot_2);
+        // the "boss"
+        MovableEntity enemy_x_tank = new XTank(new Vector2f(903, 2044), true, false);
+        enemy_x_tank.setAsMandatory();
+        hostile_movable_entities.add(enemy_x_tank);
 
 
         /* ---------- SETUP ENEMY ENTITIES THAT ARE MOVING ---------- */
 
-        // moving rocket tanks
+        // moving napalm tanks way point list
+        final List<Vector2f> wayPoints_napalm_tanks = new ArrayList<>();
+        wayPoints_napalm_tanks.add(new Vector2f(1317, 3206));
+        wayPoints_napalm_tanks.add(new Vector2f(1832, 2619));
+        wayPoints_napalm_tanks.add(new Vector2f(1832, 1214));
+        wayPoints_napalm_tanks.add(new Vector2f(1232, 672));
+        wayPoints_napalm_tanks.add(new Vector2f(1004, 663));
+        wayPoints_napalm_tanks.add(new Vector2f(569, 915));
+        wayPoints_napalm_tanks.add(new Vector2f(243, 1678));
+        wayPoints_napalm_tanks.add(new Vector2f(410, 3330));
 
-        // TOP LEFT
-        // create the waypoint list for the 2 rocket tanks that move counter-clockwise
-        final List<Vector2f> wayPoints_rocket_tank_counter_clockwise = new ArrayList<>();
-        wayPoints_rocket_tank_counter_clockwise.add(new Vector2f(407, 328));
-        wayPoints_rocket_tank_counter_clockwise.add(new Vector2f(269, 579));
-        wayPoints_rocket_tank_counter_clockwise.add(new Vector2f(269, 1008));
-        wayPoints_rocket_tank_counter_clockwise.add(new Vector2f(283, 1346));
-        wayPoints_rocket_tank_counter_clockwise.add(new Vector2f(850, 1346));
-        wayPoints_rocket_tank_counter_clockwise.add(new Vector2f(1298, 1170));
-        wayPoints_rocket_tank_counter_clockwise.add(new Vector2f(1550, 973));
-        wayPoints_rocket_tank_counter_clockwise.add(new Vector2f(1500, 345));
-        wayPoints_rocket_tank_counter_clockwise.add(new Vector2f(1362, 180));
-        wayPoints_rocket_tank_counter_clockwise.add(new Vector2f(688, 180));
 
-        MovableEntity enemy_moving_rocket_tank_1 = new RocketTank(new Vector2f(600, 200), true, false);
-        enemy_moving_rocket_tank_1.setRotation(270);
-        enemy_moving_rocket_tank_1.addWayPoints(new WayPointManager(enemy_moving_rocket_tank_1.getPosition(),
-                enemy_moving_rocket_tank_1.getRotation(),
-                wayPoints_rocket_tank_counter_clockwise,
+        MovableEntity enemy_napalm_tank_1 = new NapalmTank(new Vector2f(410, 3330), true, false);
+        enemy_napalm_tank_1.setRotation(90);
+        enemy_napalm_tank_1.addWayPoints(new WayPointManager(enemy_napalm_tank_1.getPosition(),
+                enemy_napalm_tank_1.getRotation(),
+                wayPoints_napalm_tanks,
                 0));
-        enemy_moving_rocket_tank_1.setAsMandatory();
-        hostile_movable_entities.add(enemy_moving_rocket_tank_1);
+        enemy_napalm_tank_1.setAsMandatory();
+        hostile_movable_entities.add(enemy_napalm_tank_1);
 
-        MovableEntity enemy_moving_rocket_tank_2 = new RocketTank(new Vector2f(283, 1326), true, false);
-        enemy_moving_rocket_tank_2.setRotation(180);
-        enemy_moving_rocket_tank_2.addWayPoints(new WayPointManager(enemy_moving_rocket_tank_2.getPosition(),
-                enemy_moving_rocket_tank_2.getRotation(),
-                wayPoints_rocket_tank_counter_clockwise,
-                3));
-        enemy_moving_rocket_tank_2.setAsMandatory();
-        hostile_movable_entities.add(enemy_moving_rocket_tank_2);
+        MovableEntity enemy_napalm_tank_2 = new NapalmTank(new Vector2f(1317, 3206), true, false);
+        enemy_napalm_tank_2.setRotation(90);
+        enemy_napalm_tank_2.addWayPoints(new WayPointManager(enemy_napalm_tank_2.getPosition(),
+                enemy_napalm_tank_2.getRotation(),
+                wayPoints_napalm_tanks,
+                1));
+        enemy_napalm_tank_2.setAsMandatory();
+        hostile_movable_entities.add(enemy_napalm_tank_2);
 
-        // create the waypoint list for the 4 rocket tanks that move clockwise
-        final List<Vector2f> wayPoints_rocket_tank_clockwise = new ArrayList<>();
-        wayPoints_rocket_tank_clockwise.add(new Vector2f(839, 372));
-        wayPoints_rocket_tank_clockwise.add(new Vector2f(1046, 448));
-        wayPoints_rocket_tank_clockwise.add(new Vector2f(1200, 695));
-        wayPoints_rocket_tank_clockwise.add(new Vector2f(1043, 978));
-        wayPoints_rocket_tank_clockwise.add(new Vector2f(694, 1059));
-        wayPoints_rocket_tank_clockwise.add(new Vector2f(483, 852));
-        wayPoints_rocket_tank_clockwise.add(new Vector2f(515, 487));
-
-        MovableEntity enemy_moving_rocket_tank_3 = new RocketTank(new Vector2f(710, 1059), true, false);
-        enemy_moving_rocket_tank_3.setRotation(270);
-        enemy_moving_rocket_tank_3.addWayPoints(new WayPointManager(enemy_moving_rocket_tank_3.getPosition(),
-                enemy_moving_rocket_tank_3.getRotation(),
-                wayPoints_rocket_tank_clockwise,
-                4));
-        enemy_moving_rocket_tank_3.setAsMandatory();
-        hostile_movable_entities.add(enemy_moving_rocket_tank_3);
-
-        MovableEntity enemy_moving_rocket_tank_4 = new RocketTank(new Vector2f(483, 865), true, false);
-        enemy_moving_rocket_tank_4.addWayPoints(new WayPointManager(enemy_moving_rocket_tank_4.getPosition(),
-                enemy_moving_rocket_tank_4.getRotation(),
-                wayPoints_rocket_tank_clockwise,
-                5));
-        enemy_moving_rocket_tank_4.setAsMandatory();
-        hostile_movable_entities.add(enemy_moving_rocket_tank_4);
-
-        MovableEntity enemy_moving_rocket_tank_5 = new RocketTank(new Vector2f(500, 487), true, false);
-        enemy_moving_rocket_tank_3.setRotation(90);
-        enemy_moving_rocket_tank_5.addWayPoints(new WayPointManager(enemy_moving_rocket_tank_5.getPosition(),
-                enemy_moving_rocket_tank_5.getRotation(),
-                wayPoints_rocket_tank_clockwise,
-                6));
-        enemy_moving_rocket_tank_5.setAsMandatory();
-        hostile_movable_entities.add(enemy_moving_rocket_tank_5);
-
-        MovableEntity enemy_moving_rocket_tank_6 = new RocketTank(new Vector2f(1200, 680), true, false);
-        enemy_moving_rocket_tank_6.setRotation(180);
-        enemy_moving_rocket_tank_6.addWayPoints(new WayPointManager(enemy_moving_rocket_tank_6.getPosition(),
-                enemy_moving_rocket_tank_6.getRotation(),
-                wayPoints_rocket_tank_clockwise,
+        MovableEntity enemy_napalm_tank_3 = new NapalmTank(new Vector2f(1832, 2619), true, false);
+        enemy_napalm_tank_3.addWayPoints(new WayPointManager(enemy_napalm_tank_3.getPosition(),
+                enemy_napalm_tank_3.getRotation(),
+                wayPoints_napalm_tanks,
                 2));
-        enemy_moving_rocket_tank_6.setAsMandatory();
-        hostile_movable_entities.add(enemy_moving_rocket_tank_6);
+        enemy_napalm_tank_3.setAsMandatory();
+        hostile_movable_entities.add(enemy_napalm_tank_3);
 
-        // TOP RIGHT
-        // create the waypoint list for the shell tank
-        final List<Vector2f> wayPoints_shell_tank = new ArrayList<>();
-        wayPoints_shell_tank.add(new Vector2f(3157, 559));
-        wayPoints_shell_tank.add(new Vector2f(3263, 764));
-        wayPoints_shell_tank.add(new Vector2f(3506, 810));
-        wayPoints_shell_tank.add(new Vector2f(3596, 934));
-        wayPoints_shell_tank.add(new Vector2f(3517, 1031));
-        wayPoints_shell_tank.add(new Vector2f(3439, 1107));
-        wayPoints_shell_tank.add(new Vector2f(2637, 1107));
-        wayPoints_shell_tank.add(new Vector2f(2456, 1039));
-        wayPoints_shell_tank.add(new Vector2f(2216, 653));
-        wayPoints_shell_tank.add(new Vector2f(2321, 487));
-        wayPoints_shell_tank.add(new Vector2f(2362, 374));
-        wayPoints_shell_tank.add(new Vector2f(2277, 259));
-        wayPoints_shell_tank.add(new Vector2f(2418, 135));
-        wayPoints_shell_tank.add(new Vector2f(2527, 161));
-        wayPoints_shell_tank.add(new Vector2f(2740, 313));
+        MovableEntity enemy_napalm_tank_4 = new NapalmTank(new Vector2f(1832, 1214), true, false);
+        enemy_napalm_tank_4.setRotation(270);
+        enemy_napalm_tank_4.addWayPoints(new WayPointManager(enemy_napalm_tank_4.getPosition(),
+                enemy_napalm_tank_4.getRotation(),
+                wayPoints_napalm_tanks,
+                3));
+        enemy_napalm_tank_4.setAsMandatory();
+        hostile_movable_entities.add(enemy_napalm_tank_4);
 
-
-        MovableEntity enemy_moving_shell_tank_1 = new ShellTank(new Vector2f(3130, 559), true, false);
-        enemy_moving_shell_tank_1.setRotation(90);
-        enemy_moving_shell_tank_1.addWayPoints(new WayPointManager(enemy_moving_shell_tank_1.getPosition(),
-                enemy_moving_shell_tank_1.getRotation(),
-                wayPoints_shell_tank,
-                0));
-        enemy_moving_shell_tank_1.setAsMandatory();
-        hostile_movable_entities.add(enemy_moving_shell_tank_1);
-
-        // BOTTOM LEFT
-        // create the waypoint list for the plasma robot
-        final List<Vector2f> wayPoints_plasma_robot = new ArrayList<>();
-        wayPoints_plasma_robot.add(new Vector2f(915, 2331));
-        wayPoints_plasma_robot.add(new Vector2f(1000, 3024));
-        wayPoints_plasma_robot.add(new Vector2f(1265, 3259));
-        wayPoints_plasma_robot.add(new Vector2f(1471, 3220));
-        wayPoints_plasma_robot.add(new Vector2f(1588, 3056));
-        wayPoints_plasma_robot.add(new Vector2f(1592, 2448));
-        wayPoints_plasma_robot.add(new Vector2f(1316, 2107));
-        wayPoints_plasma_robot.add(new Vector2f(1032, 2083));
-
-        MovableEntity enemy_moving_plasma_robot_1 = new PlasmaRobot(new Vector2f(1592, 2648), true, false);
-        enemy_moving_plasma_robot_1.addWayPoints(new WayPointManager(enemy_moving_plasma_robot_1.getPosition(),
-                enemy_moving_plasma_robot_1.getRotation(),
-                wayPoints_plasma_robot,
+        MovableEntity enemy_napalm_tank_5 = new NapalmTank(new Vector2f(1004, 663), true, false);
+        enemy_napalm_tank_5.setRotation(270);
+        enemy_napalm_tank_5.addWayPoints(new WayPointManager(enemy_napalm_tank_5.getPosition(),
+                enemy_napalm_tank_5.getRotation(),
+                wayPoints_napalm_tanks,
                 5));
-        enemy_moving_plasma_robot_1.setAsMandatory();
-        hostile_movable_entities.add(enemy_moving_plasma_robot_1);
+        enemy_napalm_tank_5.setAsMandatory();
+        hostile_movable_entities.add(enemy_napalm_tank_5);
+
+        MovableEntity enemy_napalm_tank_6 = new NapalmTank(new Vector2f(243, 1678), true, false);
+        enemy_napalm_tank_6.setRotation(180);
+        enemy_napalm_tank_6.addWayPoints(new WayPointManager(enemy_napalm_tank_6.getPosition(),
+                enemy_napalm_tank_6.getRotation(),
+                wayPoints_napalm_tanks,
+                7));
+        enemy_napalm_tank_6.setAsMandatory();
+        hostile_movable_entities.add(enemy_napalm_tank_6);
 
 
         /* ---------- SETUP ENEMY PLANES ---------- */
-
-        // covering top right
-        MovableEntity enemy_plane_1 = new WhiteEnemyJet(new Vector2f(2120, 250), true, false);
-        enemy_plane_1.setRotation(90);
-        enemy_plane_1.setAsMandatory();
-        List<Vector2f> wayPoints_1 = new ArrayList<>();
-        wayPoints_1.add(new Vector2f(2520, 250));
-        wayPoints_1.add(new Vector2f(3320, 250));
-        wayPoints_1.add(new Vector2f(3420, 350));
-        wayPoints_1.add(new Vector2f(3420, 1150));
-        wayPoints_1.add(new Vector2f(3320, 1250));
-        wayPoints_1.add(new Vector2f(2520, 1250));
-        wayPoints_1.add(new Vector2f(2420, 1150));
-        wayPoints_1.add(new Vector2f(2420, 350));
-
-        enemy_plane_1.addWayPoints(new WayPointManager(enemy_plane_1.getPosition(),
-                enemy_plane_1.getRotation(),
-                wayPoints_1));
-        hostile_movable_entities.add(enemy_plane_1);
-
-        // covering top left
-        MovableEntity enemy_plane_2 = new WhiteEnemyJet(new Vector2f(80, 50), true, false);
-        enemy_plane_2.setRotation(90);
-        enemy_plane_2.setAsMandatory();
-        List<Vector2f> wayPoints_2 = new ArrayList<>();
-        wayPoints_2.add(new Vector2f(380, 50));
-        wayPoints_2.add(new Vector2f(1180, 50));
-        wayPoints_2.add(new Vector2f(1280, 150));
-        wayPoints_2.add(new Vector2f(1280, 950));
-        wayPoints_2.add(new Vector2f(1180, 1050));
-        wayPoints_2.add(new Vector2f(380, 1050));
-        wayPoints_2.add(new Vector2f(280, 950));
-        wayPoints_2.add(new Vector2f(280, 150));
-
-        enemy_plane_2.addWayPoints(new WayPointManager(enemy_plane_2.getPosition(),
-                enemy_plane_2.getRotation(),
-                wayPoints_2));
-        hostile_movable_entities.add(enemy_plane_2);
-
-        // covering bottom left
-        MovableEntity enemy_plane_3 = new WhiteEnemyJet(new Vector2f(480, 2020), true, false);
-        enemy_plane_3.setRotation(90);
-        enemy_plane_3.setAsMandatory();
-        List<Vector2f> wayPoints_3 = new ArrayList<>();
-        wayPoints_3.add(new Vector2f(580, 2020));
-        wayPoints_3.add(new Vector2f(1380, 2020));
-        wayPoints_3.add(new Vector2f(1480, 2120));
-        wayPoints_3.add(new Vector2f(1480, 2920));
-        wayPoints_3.add(new Vector2f(1380, 3020));
-        wayPoints_3.add(new Vector2f(580, 3020));
-        wayPoints_3.add(new Vector2f(480, 2920));
-        wayPoints_3.add(new Vector2f(480, 2120));
-
-        enemy_plane_3.addWayPoints(new WayPointManager(enemy_plane_3.getPosition(),
-                enemy_plane_3.getRotation(),
-                wayPoints_3));
-        hostile_movable_entities.add(enemy_plane_3);
-
-        // covering bottom right
-        MovableEntity enemy_plane_4 = new WhiteEnemyJet(new Vector2f(2220, 2020), true, false);
-        enemy_plane_4.setRotation(90);
-        enemy_plane_4.setAsMandatory();
-        List<Vector2f> wayPoints_4 = new ArrayList<>();
-        wayPoints_4.add(new Vector2f(2520, 2020));
-        wayPoints_4.add(new Vector2f(3320, 2020));
-        wayPoints_4.add(new Vector2f(3420, 2120));
-        wayPoints_4.add(new Vector2f(3420, 2920));
-        wayPoints_4.add(new Vector2f(3320, 3020));
-        wayPoints_4.add(new Vector2f(2520, 3020));
-        wayPoints_4.add(new Vector2f(2420, 2920));
-        wayPoints_4.add(new Vector2f(2420, 2120));
-
-        enemy_plane_4.addWayPoints(new WayPointManager(enemy_plane_4.getPosition(),
-                enemy_plane_4.getRotation(),
-                wayPoints_4));
-        hostile_movable_entities.add(enemy_plane_4);
+        /* --- none --- */
 
 
         /* ---------- SETUP THE PLAYERS ALLIED ENTITIES ---------- */
@@ -372,19 +216,23 @@ public class Level_7 extends AbstractLevel implements GameState {
 
 
         /* ---------- SETUP THE PLAYERS DRIVABLE ENTITIES ---------- */
-        /* --- none --- */
+        RocketRobot2 drivable_rocket_robot = new RocketRobot2(new Vector2f(67, 259), false, true);
+        drivable_entities.add(drivable_rocket_robot);
+
+        ShellTank drivable_shell_tank = new ShellTank(new Vector2f(1778, 3688), false, true);
+        drivable_entities.add(drivable_shell_tank);
 
 
         /* ---------- SETUP THE PLAYER START POSITION AND ENTITY ---------- */
-        Vector2f playerStartPos = new Vector2f(130, 3860);
-        NapalmTank tank = new NapalmTank(playerStartPos, false, true);
+        Vector2f playerStartPos = new Vector2f(134, 3863);
+        ShellRobot shellRobot = new ShellRobot(playerStartPos, false, true);
 
 
         /* ---------- DEFINE THE MAP ---------- */
-        map = new TiledMap("assets/maps/level_7.tmx");
+        map = new TiledMap("assets/maps/level_8.tmx");
 
 
-        player.init(tank);
+        player.init(shellRobot);
         super.init(gameContainer, stateBasedGame);
     }
 
@@ -395,11 +243,11 @@ public class Level_7 extends AbstractLevel implements GameState {
 
     @Override
     public int getCombatMusicIdx() {
-        return 1;   // uses the same combat background music as level 2
+        return 2;   // uses the same combat background music as level 3
     }
 
     @Override
     public int getID() {
-        return ZuluAssault.LEVEL_7;
+        return ZuluAssault.LEVEL_8;
     }
 }

@@ -36,7 +36,7 @@ public class Level_7 extends AbstractLevel implements GameState {
             mission_title = "X-Roads";
             briefing_message = "A complex transporter setup has allowed the enemy units to do a switchback on us. " +
                     "Your job is to find a way through the crossroads and destroy the enemy.";
-            debriefing_message = "";
+            debriefing_message = "We're back on track. Keep it up and yu might get promoted to corporal.";
             calledOnce = true;
             return;
         }
@@ -108,9 +108,6 @@ public class Level_7 extends AbstractLevel implements GameState {
         // EMP
         Item emp_1 = new EMPItem(new Vector2f(1940, 3887));
         items.add(emp_1);
-
-        // expand
-        /* --- none --- */
 
 
         /* ---------- SETUP TELEPORT CIRCLES ---------- */
