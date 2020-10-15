@@ -103,14 +103,14 @@ public class CollisionHandler {
         boolean noIntersection = true;
         for (int idx = 0; idx < teleport_circles.size(); ++idx) {
             if (player_entity.getCollisionModel().intersects(teleport_circles.get(idx).getCollisionModel())) {
-                // teleport the player
-                if ((idx & 1) == 0) {
-                    // even idx -> teleport the player to the next teleport circle in the list
-                    player_entity.teleport(teleport_circles.get(idx + 1).getPosition());
-                } else {
-                    // odd idx -> teleport the player to the previous teleport circle in the list
-                    player_entity.teleport(teleport_circles.get(idx - 1).getPosition());
-                }
+                // teleport the player to any random teleport circle in the list
+                int idxToTeleportTo;
+                do {
+                    // if it's the same circle, get another random idx again
+                    idxToTeleportTo = random.nextInt(teleport_circles.size());
+                } while (idxToTeleportTo == idx);
+                // teleport
+                player_entity.teleport(teleport_circles.get(idxToTeleportTo).getPosition());
                 noIntersection = false;
                 break;
             }

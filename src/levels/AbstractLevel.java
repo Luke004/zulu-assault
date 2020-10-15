@@ -114,7 +114,6 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
             has_initialized_once = true;
             TileMapInfo.init();
             LevelHandler.init(stateBasedGame);
-            validateLevel();    // check that everything in the level is setup correctly
 
             randomItemDropper = new RandomItemDropper();
             collisionHandler = new CollisionHandler();
@@ -493,10 +492,6 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
         items.clear();
         Radar.hideRadar();
         hasWonTheLevel = false;
-    }
-
-    protected static void validateLevel() {
-        assert ((teleport_circles.size() & 1) == 0);     // the number of teleport circles must be even
     }
 
     public static void resetPlayerStats() {
