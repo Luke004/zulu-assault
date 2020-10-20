@@ -32,7 +32,7 @@ public class Level_8 extends AbstractLevel implements GameState {
             briefing_message = "We've caught up with the retreating units and found out why they're moving so slow. " +
                     "Their secret weapon, named the X-Tank by our intelligence, moves about 5 mph but is armed to the " +
                     "teeth. Your job is to destroy this weapon.";
-            debriefing_message = "";
+            debriefing_message = "The X-Tank is destroyed.";
             calledOnce = true;
             return;
         }

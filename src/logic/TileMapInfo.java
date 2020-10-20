@@ -56,14 +56,14 @@ public class TileMapInfo {
                 67, 76, 77, 78, 87   // the plane that's facing up in the tileset
         };
         collision_replace_indices = new int[]{
-                96, // DIRT
-                97, // CONCRETE
-                98 // GRASS
+                144,    // DIRT
+                145,    // CONCRETE
+                146     // GRASS
         };
-        destructible_tile_indices = new int[]{1, 2, 18, 19, 25, 65, 68, 83, 88, 89};
-        destructible_tile_replace_indices = new int[]{32, 33, 34, 35, 36, 37, 95, 94, 93, 91};
-        indestructible_tile_indices = new int[]{40, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 64, 66, 67,
-                68, 72, 73, 74, 75, 76, 77};
+        destructible_tile_indices = new int[]{1, 2, 26, 27, 37, 97, 100, 123, 132, 133};
+        destructible_tile_replace_indices = new int[]{48, 49, 50, 51, 52, 53, 139, 138, 137, 135};
+        indestructible_tile_indices = new int[]{60, 72, 73, 74, 75, 76, 77, 78, 79, 84, 85, 86, 87, 88, 89, 96, 98, 99,
+                101, 108, 109, 110, 111, 112, 113};
     }
 
     public static void init() {
@@ -91,7 +91,7 @@ public class TileMapInfo {
 
         // init tiles of grass for tile replacement
         int[] grass_indices = new int[]{
-                0, 3, 8, 20, 21, 22, 23
+                0, 3, 4, 5, 6, 12, 28, 29, 30, 31
         };
         CLASS_GRASS = new int[grass_indices.length];
         for (int i = 0; i < grass_indices.length; ++i) {
@@ -99,7 +99,7 @@ public class TileMapInfo {
         }
         // init tiles of concrete for tile replacement
         int[] concrete_indices = new int[]{
-                62, 63, 70, 71, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 90
+                62, 63, 64, 65, 66, 67, 90, 91, 102, 103, 114, 115, 120, 121, 122, 124, 125, 126, 127, 134, 151
         };
         CLASS_CONCRETE = new int[concrete_indices.length];
         for (int i = 0; i < concrete_indices.length; ++i) {
@@ -107,7 +107,7 @@ public class TileMapInfo {
         }
         // init tiles of dirt for tile replacement
         int[] dirt_indices = new int[]{
-                4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 27, 28, 29
+                13, 14, 15, 16, 17, 18, 19, 24, 25, 39, 40, 41, 42
         };
         CLASS_DIRT = new int[dirt_indices.length];
         for (int i = 0; i < dirt_indices.length; ++i) {
