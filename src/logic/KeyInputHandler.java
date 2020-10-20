@@ -5,7 +5,7 @@ import settings.UserSettings;
 import graphics.hud.Radar;
 import models.entities.MovableEntity;
 import models.entities.aircraft.friendly.Helicopter;
-import models.entities.aircraft.friendly.Plane;
+import models.entities.aircraft.friendly.Aircraft;
 import models.entities.robots.Robot;
 import models.entities.tanks.Tank;
 import player.Player;
@@ -266,25 +266,25 @@ public class KeyInputHandler {
                 break;
 
             case PLANE:     // player is in a plane
-                Plane plane = (Plane) playerEntity;
+                Aircraft aircraft = (Aircraft) playerEntity;
 
                 if (input.isKeyDown(Input.KEY_UP)) {
-                    plane.increaseSpeed(deltaTime);
+                    aircraft.increaseSpeed(deltaTime);
                 }
 
                 if (input.isKeyDown(Input.KEY_DOWN)) {
-                    plane.decreaseSpeed(deltaTime);
+                    aircraft.decreaseSpeed(deltaTime);
                 }
 
                 // get out of plane
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
-                    plane.initLanding();
+                    aircraft.initLanding();
                 }
-                if (plane.hasLanded()) {
-                    plane.showAccessibleAnimation(true);
-                    drivable_entities.add(plane);
-                    all_movable_entities.add(plane);
-                    player.setEntity(plane, Player.EnterAction.LEAVING);
+                if (aircraft.hasLanded()) {
+                    aircraft.showAccessibleAnimation(true);
+                    drivable_entities.add(aircraft);
+                    all_movable_entities.add(aircraft);
+                    player.setEntity(aircraft, Player.EnterAction.LEAVING);
                 }
                 break;
 

@@ -9,7 +9,7 @@ import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 
-public class Jet extends Plane {
+public class Jet extends Aircraft {
 
     private static Sound jet_sound;
     private static final int JET_ENGINE_SOUND_MILLIS_TO_WAIT = 110;
@@ -19,7 +19,6 @@ public class Jet extends Plane {
     private static Texture jet_texture;
 
     private static final float ARMOR = 30.f;
-    private static final int SCORE_VALUE = 500;
     private static final float ROTATE_SPEED_PLAYER = 0.15f, ROTATE_SPEED_BOT = 0.15f;
     private static final float MAX_SPEED_PLAYER = 0.5f, MAX_SPEED_BOT = 0.2f;
     private static final float MIN_SPEED_PLAYER = 0.1f, MIN_SPEED_BOT = 0.2f;
@@ -116,8 +115,4 @@ public class Jet extends Plane {
         super.changeHealth(amount, ARMOR);
     }
 
-    @Override
-    public int getScoreValue() {
-        return SCORE_VALUE;
-    }
 }

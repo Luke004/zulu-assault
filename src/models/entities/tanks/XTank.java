@@ -75,6 +75,11 @@ public class XTank extends Tank {
     }
 
     @Override
+    public int getScoreValue() {
+        return 5000;
+    }
+
+    @Override
     protected float getBaseRotateSpeed() {
         return isDrivable ? ROTATE_SPEED_PLAYER : ROTATE_SPEED_BOT;
     }

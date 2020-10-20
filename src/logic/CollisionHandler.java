@@ -12,7 +12,7 @@ import graphics.animations.smoke.SmokeAnimation;
 import models.interaction_circles.HealthCircle;
 import models.entities.MovableEntity;
 import models.entities.Entity;
-import models.entities.aircraft.friendly.Plane;
+import models.entities.aircraft.friendly.Aircraft;
 import models.entities.soldiers.Soldier;
 import models.weapons.*;
 import models.weapons.projectiles.AirProjectile;
@@ -154,7 +154,7 @@ public class CollisionHandler {
 
     private void handleMovableEntityCollisions(MovableEntity current_movableEntity) {
         if (!current_movableEntity.isMoving()) return;
-        if (current_movableEntity instanceof Plane) return;
+        if (current_movableEntity instanceof Aircraft) return;
 
         CollisionModel.Point[] playerCorners = current_movableEntity.getCollisionModel().getPoints();
         int idx, landscape_layer_tile_ID, enemy_layer_tile_ID, x, y;

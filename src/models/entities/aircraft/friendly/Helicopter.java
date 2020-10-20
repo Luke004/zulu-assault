@@ -12,7 +12,7 @@ import org.newdawn.slick.opengl.Texture;
 import static logic.TileMapInfo.*;
 import static logic.TileMapInfo.LANDSCAPE_TILES_LAYER_IDX;
 
-public class Helicopter extends Plane {
+public class Helicopter extends Aircraft {
 
     private static Texture helicopter_texture;
     private static Texture helicopter_wings_moving_texture, helicopter_wings_idle_texture;
@@ -32,7 +32,6 @@ public class Helicopter extends Plane {
     Direction decelerateDirection;
 
     private static final float ARMOR = 25.f;
-    private static final int SCORE_VALUE = 500;
     private static final float ROTATE_SPEED_PLAYER = 0.15f, ROTATE_SPEED_BOT = 0.15f;
     private static final float MAX_SPEED_PLAYER = 0.25f, MAX_SPEED_BOT = 0.25f;
     private static final float ACCELERATION_FACTOR = 0.002f, DECELERATION_FACTOR = 0.0005f;
@@ -216,8 +215,4 @@ public class Helicopter extends Plane {
         super.changeHealth(amount, ARMOR);
     }
 
-    @Override
-    public int getScoreValue() {
-        return SCORE_VALUE;
-    }
 }

@@ -6,7 +6,7 @@ import logic.WayPointManager;
 import settings.UserSettings;
 import models.CollisionModel;
 import models.interaction_circles.TeleportCircle;
-import models.entities.aircraft.friendly.Plane;
+import models.entities.aircraft.friendly.Aircraft;
 import models.weapons.MegaPulse;
 import models.weapons.Weapon;
 import models.weapons.projectiles.Projectile;
@@ -272,7 +272,7 @@ public abstract class MovableEntity extends Entity {
                 emp_use_sound.play(1.f, UserSettings.soundVolume);
                 for (int idx = 0; idx < hostile_movable_entities.size(); ++idx) {
                     MovableEntity hostileEntity = hostile_movable_entities.get(idx);
-                    if (hostileEntity instanceof Plane) {
+                    if (hostileEntity instanceof Aircraft) {
                         if (WayPointManager.dist(hostileEntity.getPosition(), this.getPosition()) < 300) {
                             hostileEntity.isDestroyed = true;
                         }

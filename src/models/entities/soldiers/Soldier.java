@@ -5,7 +5,7 @@ import logic.WayPointManager;
 import models.CollisionModel;
 import models.entities.MovableEntity;
 import models.entities.Entity;
-import models.entities.aircraft.friendly.Plane;
+import models.entities.aircraft.friendly.Aircraft;
 import models.entities.robots.Robot;
 import models.entities.tanks.Tank;
 import org.newdawn.slick.Animation;
@@ -124,7 +124,7 @@ public abstract class Soldier extends MovableEntity {
     @Override
     public void onCollision(MovableEntity movableEntity) {
         if (movableEntity.isDrivable()) blockMovement();
-        else if (!(movableEntity instanceof Plane)) {
+        else if (!(movableEntity instanceof Aircraft)) {
             blockMovement();
         }
     }

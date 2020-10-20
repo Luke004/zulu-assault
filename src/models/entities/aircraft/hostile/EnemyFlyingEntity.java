@@ -4,14 +4,14 @@ import graphics.animations.other.AnimatedCrosshair;
 import logic.WayPointManager;
 import models.entities.MovableEntity;
 import models.entities.Entity;
-import models.entities.aircraft.friendly.Plane;
+import models.entities.aircraft.friendly.Aircraft;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.List;
 
-public abstract class EnemyFlyingEntity extends Plane {
+public abstract class EnemyFlyingEntity extends Aircraft {
 
     private AnimatedCrosshair animatedCrosshair;
 

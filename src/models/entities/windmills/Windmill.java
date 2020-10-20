@@ -20,8 +20,8 @@ public abstract class Windmill extends StaticEntity {
     private int smoke_animation_timer;
     private Random random;
 
-    private static final float ARMOR = 10.f;
-    private static final int SCORE_VALUE = 200;
+    private static final float WINDMILL_DEFAULT_ARMOR = 10.f;
+    private static final int WINDMILL_DEFAULT_SCORE_VALUE = 200;
     private static final float TURRET_ROTATE_SPEED = 0.07f;
 
 
@@ -92,11 +92,11 @@ public abstract class Windmill extends StaticEntity {
 
     @Override
     public void changeHealth(float amount) {
-        super.changeHealth(amount, ARMOR);
+        super.changeHealth(amount, WINDMILL_DEFAULT_ARMOR);
     }
 
     @Override
     public int getScoreValue() {
-        return SCORE_VALUE;
+        return WINDMILL_DEFAULT_SCORE_VALUE;
     }
 }

@@ -24,8 +24,8 @@ public abstract class Tank extends MovableEntity {
     Direction decelerateDirection;
 
     // default tank attributes
-    private static final float ARMOR = 50.f;
-    private static final int SCORE_VALUE = 1000;
+    private static final float TANK_DEFAULT_ARMOR = 50.f;
+    private static final int TANK_DEFAULT_SCORE_VALUE = 1000;
 
     private DestructionAnimation destructionAnimation;
 
@@ -179,7 +179,7 @@ public abstract class Tank extends MovableEntity {
 
     @Override
     public int getScoreValue() {
-        return SCORE_VALUE;
+        return TANK_DEFAULT_SCORE_VALUE;
     }
 
     @Override
@@ -270,7 +270,7 @@ public abstract class Tank extends MovableEntity {
 
     @Override
     public void changeHealth(float amount) {
-        super.changeHealth(amount, ARMOR);
+        super.changeHealth(amount, TANK_DEFAULT_ARMOR);
     }
 
     private class DestructionAnimation {

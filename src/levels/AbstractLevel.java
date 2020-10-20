@@ -17,7 +17,7 @@ import models.interaction_circles.TeleportCircle;
 import models.items.Item;
 import models.entities.MovableEntity;
 import models.entities.Entity;
-import models.entities.aircraft.friendly.Plane;
+import models.entities.aircraft.friendly.Aircraft;
 import models.entities.static_multitile_constructions.StaticEnemyPlane;
 import models.entities.robots.Robot;
 import models.entities.soldiers.Soldier;
@@ -141,9 +141,9 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
 
         // put planes at the end of the list so they get rendered LAST
         renderList.sort((o1, o2) -> {
-            if (o1 instanceof Plane && o2 instanceof Plane) return 0;
-            else if (o1 instanceof Plane) return 1;
-            else if (o2 instanceof Plane) return -1;
+            if (o1 instanceof Aircraft && o2 instanceof Aircraft) return 0;
+            else if (o1 instanceof Aircraft) return 1;
+            else if (o2 instanceof Aircraft) return -1;
             else return 0;
         });
 
@@ -384,7 +384,7 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
             drivableEntity.draw(graphics);
         }
 
-        if (!(player.getEntity() instanceof Plane)) player.getEntity().draw(graphics);
+        if (!(player.getEntity() instanceof Aircraft)) player.getEntity().draw(graphics);
 
         for (StaticEntity staticEnemy : static_enemy_entities) {
             staticEnemy.draw(graphics);
@@ -397,7 +397,7 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
         bigExplosionAnimation.draw();
         collisionHandler.draw();
 
-        if (player.getEntity() instanceof Plane) player.getEntity().draw(graphics);
+        if (player.getEntity() instanceof Aircraft) player.getEntity().draw(graphics);
 
         // un-translate graphics to draw the HUD-items
         camera.untranslateGraphics();

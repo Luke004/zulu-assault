@@ -3,10 +3,8 @@ package levels;
 import logic.WayPointManager;
 import main.ZuluAssault;
 import models.entities.MovableEntity;
-import models.entities.aircraft.friendly.Helicopter;
 import models.entities.robots.PlasmaRobot;
 import models.entities.robots.RocketRobot;
-import models.entities.robots.RocketRobot2;
 import models.entities.robots.ShellRobot;
 import models.entities.tanks.*;
 import models.interaction_circles.HealthCircle;
@@ -15,7 +13,6 @@ import models.items.GoldenWrenchItem;
 import models.items.InvincibilityItem;
 import models.items.Item;
 import models.items.SilverWrenchItem;
-import models.weapons.Shell;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -38,7 +35,7 @@ public class Level_9 extends AbstractLevel implements GameState {
         if (!calledOnce) {
             mission_title = "Time to kill";
             briefing_message = "Intelligence reports some units are dug in at an orchard a few clicks away. You know" +
-                    " what to do,";
+                    " what to do.";
             debriefing_message = "";
             calledOnce = true;
             return;

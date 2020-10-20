@@ -13,12 +13,14 @@ import org.newdawn.slick.geom.Vector2f;
 
 import static logic.TileMapInfo.*;
 
-public abstract class Plane extends MovableEntity {
+public abstract class Aircraft extends MovableEntity {
 
     protected boolean landing, starting, hasLanded, hasStarted;
     protected PlaneShadow planeShadow;
 
-    public Plane(Vector2f startPos, boolean isHostile, boolean isDrivable) {
+    private static final int AIRCRAFT_DEFAULT_SCORE_VALUE = 500;
+
+    public Aircraft(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
     }
 
@@ -286,6 +288,11 @@ public abstract class Plane extends MovableEntity {
         landing = false;
         hasStarted = true;
         setMoving(true);
+    }
+
+    @Override
+    public int getScoreValue() {
+        return AIRCRAFT_DEFAULT_SCORE_VALUE;
     }
 
     protected class PlaneShadow {

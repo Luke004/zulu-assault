@@ -12,7 +12,6 @@ public class WhiteEnemyJet extends EnemyFlyingEntity {
     private static Texture white_enemy_jet_texture;
 
     private static final float ARMOR = 50.f;
-    private static final int SCORE_VALUE = 500;
     private static final float ROTATE_SPEED_PLAYER = 0.15f, ROTATE_SPEED_BOT = 0.15f;
     private static final float MAX_SPEED_PLAYER = 0.15f, MAX_SPEED_BOT = 0.15f;
 
@@ -53,8 +52,4 @@ public class WhiteEnemyJet extends EnemyFlyingEntity {
         super.changeHealth(amount, ARMOR);
     }
 
-    @Override
-    public int getScoreValue() {
-        return SCORE_VALUE;
-    }
 }
