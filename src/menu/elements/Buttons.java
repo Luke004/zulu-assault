@@ -1,4 +1,4 @@
-package menus.menu_elements;
+package menu.elements;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;

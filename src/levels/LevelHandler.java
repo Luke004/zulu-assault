@@ -2,8 +2,7 @@ package levels;
 
 import logic.TimeManager;
 import main.ZuluAssault;
-import menus.MainMenu;
-import org.newdawn.slick.GameContainer;
+import menu.Menu;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
@@ -29,7 +28,7 @@ public class LevelHandler {
     }
 
     public static void goToMainMenu() {
-        MainMenu.goToMenu(MainMenu.STATE_MAIN_MENU);
+        Menu.goToMenu(Menu.STATE_MAIN_MENU);
         stateBasedGame.enterState(ZuluAssault.MAIN_MENU,
                 new FadeOutTransition(), new FadeInTransition()
         );
@@ -42,7 +41,7 @@ public class LevelHandler {
     }
 
     public static void gameOver(BasicGameState bgs) {
-        MainMenu.goToMenu(MainMenu.STATE_DEATH_MENU);
+        Menu.goToMenu(Menu.STATE_DEATH_MENU);
         stateBasedGame.enterState(ZuluAssault.MAIN_MENU,
                 new FadeOutTransition(), new FadeInTransition()
         );

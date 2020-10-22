@@ -1,4 +1,4 @@
-package menus.menu_elements;
+package menu.elements;
 
 import graphics.fonts.FontManager;
 import org.newdawn.slick.Image;

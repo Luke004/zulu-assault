@@ -5,7 +5,7 @@ import logic.WayPointManager;
 import models.CollisionModel;
 import models.entities.MovableEntity;
 import models.entities.Entity;
-import models.entities.aircraft.friendly.Aircraft;
+import models.entities.aircraft.Aircraft;
 import models.entities.robots.Robot;
 import models.entities.tanks.Tank;
 import org.newdawn.slick.Animation;

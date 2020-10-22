@@ -5,7 +5,7 @@ import main.ZuluAssault;
 import models.interaction_circles.HealthCircle;
 import models.items.*;
 import models.entities.MovableEntity;
-import models.entities.aircraft.hostile.GreenEnemyPlane;
+import models.entities.aircraft.WarPlane;
 import models.entities.robots.PlasmaRobot;
 import models.entities.soldiers.EnemySoldier;
 import models.entities.tanks.*;
@@ -239,7 +239,7 @@ public class Level_1 extends AbstractLevel implements GameState {
 
 
         /* ---------- SETUP ENEMY PLANES ---------- */
-        MovableEntity enemy_plane_1 = new GreenEnemyPlane(new Vector2f(2700, 3500), true, false);
+        MovableEntity enemy_plane_1 = new WarPlane(new Vector2f(2700, 3500), true, false);
         wayPoints = new ArrayList<>();
         wayPoints.add(new Vector2f(2700, 3367));
         wayPoints.add(new Vector2f(2700, 3034));
@@ -254,7 +254,7 @@ public class Level_1 extends AbstractLevel implements GameState {
                 wayPoints));
         hostile_movable_entities.add(enemy_plane_1);
 
-        MovableEntity enemy_plane_2 = new GreenEnemyPlane(new Vector2f(2700, 1900), true, false);
+        MovableEntity enemy_plane_2 = new WarPlane(new Vector2f(2700, 1900), true, false);
         wayPoints = new ArrayList<>();
         wayPoints.add(new Vector2f(2700, 1767));
         wayPoints.add(new Vector2f(2700, 1434));
@@ -269,7 +269,7 @@ public class Level_1 extends AbstractLevel implements GameState {
                 wayPoints));
         hostile_movable_entities.add(enemy_plane_2);
 
-        MovableEntity enemy_plane_3 = new GreenEnemyPlane(new Vector2f(3260, 200), true, false);
+        MovableEntity enemy_plane_3 = new WarPlane(new Vector2f(3260, 200), true, false);
         enemy_plane_3.setRotation(180);
         wayPoints = new ArrayList<>();
         wayPoints.add(new Vector2f(3260, 613));

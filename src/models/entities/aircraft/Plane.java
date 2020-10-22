@@ -1,40 +1,21 @@
-package models.entities.aircraft.hostile;
+package models.entities.aircraft;
 
-import graphics.animations.other.AnimatedCrosshair;
 import logic.WayPointManager;
-import models.entities.MovableEntity;
 import models.entities.Entity;
-import models.entities.aircraft.friendly.Aircraft;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
+import models.entities.MovableEntity;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.List;
 
-public abstract class EnemyFlyingEntity extends Aircraft {
+public abstract class Plane extends Aircraft {
 
-    private AnimatedCrosshair animatedCrosshair;
+    private static final float PLANE_DEFAULT_ARMOR = 40.f;
+    private static final float ROTATE_SPEED_PLAYER = 0.15f, ROTATE_SPEED_BOT = 0.15f;
+    private static final float MAX_SPEED_PLAYER = 0.25f, MAX_SPEED_BOT = 0.2f;
 
-    public EnemyFlyingEntity(Vector2f startPos, boolean isHostile, boolean isDrivable) {
+    public Plane(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
-
-        if (isDrivable) animatedCrosshair = new AnimatedCrosshair();
-
-        current_speed = getMaxSpeed();  // speed is always the same
-    }
-
-    @Override
-    public void update(GameContainer gc, int deltaTime) {
-        super.update(gc, deltaTime);
-        if (isDrivable)
-            animatedCrosshair.update(deltaTime, position, getRotation());
-    }
-
-    @Override
-    public void draw(Graphics graphics) {
-        super.draw(graphics);
-        // draw the plane's crosshair
-        if (isDrivable && !hasLanded) animatedCrosshair.draw();
+        current_speed = getMaxSpeed();  // the speed of planes is always the same
     }
 
     /* don't use following 2 methods, enemy planes always fly at the same speed */
@@ -87,6 +68,21 @@ public abstract class EnemyFlyingEntity extends Aircraft {
         } else {
             isEnemyNear = false;
         }
+    }
+
+    @Override
+    protected float getBaseRotateSpeed() {
+        return isDrivable ? ROTATE_SPEED_PLAYER : ROTATE_SPEED_BOT;
+    }
+
+    @Override
+    protected float getMaxSpeed() {
+        return isDrivable ? MAX_SPEED_PLAYER : MAX_SPEED_BOT;
+    }
+
+    @Override
+    public void changeHealth(float amount) {
+        super.changeHealth(amount, PLANE_DEFAULT_ARMOR);
     }
 
 }

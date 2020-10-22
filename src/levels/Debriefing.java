@@ -11,7 +11,7 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import static menus.MainMenu.TEXT_MARGIN;
+import static menu.Menu.TEXT_MARGIN;
 
 
 public class Debriefing extends BasicGameState {

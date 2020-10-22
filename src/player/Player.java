@@ -4,8 +4,8 @@ import logic.level_listeners.ChangeVehicleListener;
 import logic.level_listeners.ItemChangeListener;
 import graphics.hud.HUD;
 import models.entities.MovableEntity;
-import models.entities.aircraft.friendly.Helicopter;
-import models.entities.aircraft.friendly.Aircraft;
+import models.entities.aircraft.AttackHelicopter;
+import models.entities.aircraft.Aircraft;
 import models.entities.robots.Robot;
 import models.entities.soldiers.PlayerSoldier;
 import models.entities.soldiers.Soldier;
@@ -58,7 +58,7 @@ public class Player {
         if (current_entity instanceof Soldier) return EntityType.SOLDIER;
         if (current_entity instanceof Tank) return EntityType.TANK;
         if (current_entity instanceof Robot) return EntityType.ROBOT;
-        if (current_entity instanceof Helicopter) return EntityType.HELICOPTER;
+        if (current_entity instanceof AttackHelicopter) return EntityType.HELICOPTER;
         if (current_entity instanceof Aircraft) return EntityType.PLANE;
         else throw new IllegalStateException("Not a valid entity type!");
     }

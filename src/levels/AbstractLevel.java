@@ -5,7 +5,7 @@ import logic.*;
 import logic.level_listeners.GroundTileDamageListener;
 import logic.level_listeners.EntityDeleteListener;
 import main.ZuluAssault;
-import menus.MainMenu;
+import menu.Menu;
 import settings.UserSettings;
 import models.StaticEntity;
 import graphics.animations.explosion.BigExplosionAnimation;
@@ -17,7 +17,7 @@ import models.interaction_circles.TeleportCircle;
 import models.items.Item;
 import models.entities.MovableEntity;
 import models.entities.Entity;
-import models.entities.aircraft.friendly.Aircraft;
+import models.entities.aircraft.Aircraft;
 import models.entities.static_multitile_constructions.StaticEnemyPlane;
 import models.entities.robots.Robot;
 import models.entities.soldiers.Soldier;
@@ -341,7 +341,7 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
         TimeManager.update(deltaTime);
 
         if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {  // paused the game
-            MainMenu.goToMenu(MainMenu.STATE_IN_GAME_MENU);
+            Menu.goToMenu(Menu.STATE_IN_GAME_MENU);
             stateBasedGame.enterState(ZuluAssault.MAIN_MENU,
                     new FadeOutTransition(), new FadeInTransition());
             ZuluAssault.prevState = this;

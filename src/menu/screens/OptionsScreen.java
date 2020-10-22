@@ -1,10 +1,10 @@
-package menus.screens;
+package menu.screens;
 
 import audio.MenuSounds;
 import logic.SettingsManager;
-import menus.MainMenu;
-import menus.menu_elements.Arrow;
-import menus.menu_elements.Slider;
+import menu.Menu;
+import menu.elements.Arrow;
+import menu.elements.Slider;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
@@ -12,7 +12,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import settings.UserSettings;
 
-import static menus.MainMenu.*;
+import static menu.Menu.*;
 import static settings.UserSettings.VOLUME_MAX_LEVEL;
 
 
@@ -57,7 +57,7 @@ public class OptionsScreen extends AbstractMenuScreen {
         sound_volume_slider.draw();
         music_volume_slider.draw();
         arrow.draw();
-        MainMenu.drawInfoStrings(gameContainer);
+        Menu.drawInfoStrings(gameContainer);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class OptionsScreen extends AbstractMenuScreen {
     private void handleMenuItemChoice(int idx) {
         switch (idx) {
             case 0: // BACK
-                MainMenu.returnToPreviousMenu();
+                Menu.returnToPreviousMenu();
                 // store the settings from user in the file 'config.properties'
                 SettingsManager.Property[] properties = new SettingsManager.Property[2];
                 properties[0] = new SettingsManager.Property("sound_volume_level",
@@ -123,7 +123,7 @@ public class OptionsScreen extends AbstractMenuScreen {
             arrow.currIdx = 2;
             MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             UserSettings.setMusicVolume(music_volume_slider.getValue());
-            MainMenu.updateMainMenuMusicVolume();
+            Menu.updateMainMenuMusicVolume();
         }
     }
 
@@ -136,7 +136,7 @@ public class OptionsScreen extends AbstractMenuScreen {
             case 2: // MUSIC VOLUME
                 music_volume_slider.decreaseValue();
                 UserSettings.setMusicVolume(music_volume_slider.getValue());
-                MainMenu.updateMainMenuMusicVolume();
+                Menu.updateMainMenuMusicVolume();
                 break;
         }
     }
@@ -150,7 +150,7 @@ public class OptionsScreen extends AbstractMenuScreen {
             case 2: // MUSIC VOLUME
                 music_volume_slider.increaseValue();
                 UserSettings.setMusicVolume(music_volume_slider.getValue());
-                MainMenu.updateMainMenuMusicVolume();
+                Menu.updateMainMenuMusicVolume();
                 break;
         }
     }

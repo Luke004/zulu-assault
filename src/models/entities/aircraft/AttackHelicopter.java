@@ -1,6 +1,7 @@
-package models.entities.aircraft.friendly;
+package models.entities.aircraft;
 
 import logic.TileMapInfo;
+import models.entities.aircraft.Aircraft;
 import settings.UserSettings;
 import graphics.animations.other.AnimatedCrosshair;
 import models.weapons.AGM;
@@ -12,7 +13,7 @@ import org.newdawn.slick.opengl.Texture;
 import static logic.TileMapInfo.*;
 import static logic.TileMapInfo.LANDSCAPE_TILES_LAYER_IDX;
 
-public class Helicopter extends Aircraft {
+public class AttackHelicopter extends Aircraft {
 
     private static Texture helicopter_texture;
     private static Texture helicopter_wings_moving_texture, helicopter_wings_idle_texture;
@@ -37,7 +38,7 @@ public class Helicopter extends Aircraft {
     private static final float ACCELERATION_FACTOR = 0.002f, DECELERATION_FACTOR = 0.0005f;
 
 
-    public Helicopter(Vector2f startPos, boolean isHostile, boolean isDrivable) {
+    public AttackHelicopter(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
 
         if (isDrivable) animatedCrosshair = new AnimatedCrosshair();
@@ -47,11 +48,11 @@ public class Helicopter extends Aircraft {
         // LOAD TEXTURES
         try {
             if (helicopter_texture == null) {
-                helicopter_texture = new Image("assets/entities/planes/helicopter.png")
+                helicopter_texture = new Image("assets/entities/aircraft/attack_helicopter.png")
                         .getTexture();
-                helicopter_wings_moving_texture = new Image("assets/entities/planes/helicopter_wings_moving.png")
+                helicopter_wings_moving_texture = new Image("assets/entities/aircraft/attack_helicopter_wings_moving.png")
                         .getTexture();
-                helicopter_wings_idle_texture = new Image("assets/entities/planes/helicopter_wings_idle.png")
+                helicopter_wings_idle_texture = new Image("assets/entities/aircraft/attack_helicopter_wings_idle.png")
                         .getTexture();
             }
             base_image = new Image(helicopter_texture);

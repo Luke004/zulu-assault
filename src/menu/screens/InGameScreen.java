@@ -1,20 +1,25 @@
-package menus.screens;
+package menu.screens;
 
 import audio.MenuSounds;
 import graphics.fonts.FontManager;
 import levels.LevelHandler;
 import main.ZuluAssault;
-import menus.MainMenu;
-import menus.menu_elements.Arrow;
+import menu.Menu;
+import menu.elements.Arrow;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 import settings.UserSettings;
 
-import static menus.MainMenu.*;
+import static menu.Menu.*;
 
-public class MainScreen extends AbstractMenuScreen {
+
+public class InGameScreen extends AbstractMenuScreen {
+
+    private BasicGameState gameState;
 
     // menu options
     private static final String[] menu_options;
@@ -28,19 +33,21 @@ public class MainScreen extends AbstractMenuScreen {
 
     static {
         menu_drawer = FontManager.getStencilBigFont();
-        menu_options = new String[]{"NEW", "LOAD", "SAVE", "OPTIONS", "QUIT"};
+        menu_options = new String[]{"RESUME", "NEW", "LOAD", "SAVE", "OPTIONS", "QUIT"};
     }
 
-    public MainScreen(BasicGameState gameState, GameContainer gameContainer) {
+    public InGameScreen(BasicGameState gameState, GameContainer gameContainer) {
         super(gameState);
+        this.gameState = gameState;
         final int menu_y_offset = 40;
         final int MENU_ITEM_SIZE = menu_options.length;
+
         menu_options_width = menu_drawer.getWidth(menu_options[3]);
         menu_options_height = menu_y_offset * MENU_ITEM_SIZE;
 
         menu_options_position = new Vector2f(
                 gameContainer.getWidth() / 2.f - menu_drawer.getWidth(menu_options[3]) / 2.f,
-                gameContainer.getHeight() / 2.f);
+                gameContainer.getHeight() / 2.f - menu_y_offset);
 
         arrow = new Arrow(gameContainer, MENU_ITEM_SIZE, (int) menu_options_position.y);
 
@@ -61,9 +68,9 @@ public class MainScreen extends AbstractMenuScreen {
                     menu_options_position.y + (i * (menu_drawer.getHeight("A") - 5)),
                     menu_options[i], Color.lightGray);
         }
-        MainMenu.drawGameTitle();
+        Menu.drawGameTitle();
         arrow.draw();
-        MainMenu.drawInfoStrings(gameContainer);
+        Menu.drawInfoStrings(gameContainer);
     }
 
     @Override
@@ -79,10 +86,9 @@ public class MainScreen extends AbstractMenuScreen {
             handleMenuItemChoice(gameContainer, stateBasedGame, arrow.currIdx);
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
             MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
-            arrow.currIdx = 4;
+            arrow.currIdx = 5;
         }
     }
-
 
     @Override
     public void onMouseClick(GameContainer gameContainer, StateBasedGame stateBasedGame, int mouseX, int mouseY) {
@@ -102,20 +108,21 @@ public class MainScreen extends AbstractMenuScreen {
     private void handleMenuItemChoice(GameContainer gameContainer, StateBasedGame stateBasedGame, int idx) {
         arrow.currIdx = idx;
         switch (idx) {
-            case 0: // NEW
-                // START NEW GAME
-                // init a new game starting with level 1
-                LevelHandler.startNewGame(ZuluAssault.LEVEL_9, basicGameState);
-                break;  // TODO: LOAD AND SAVE
-            case 1: // LOAD
-            case 2: // SAVE
+            case 0: // RESUME CURRENT GAME
+                stateBasedGame.enterState(ZuluAssault.prevState.getID(),
+                        new FadeOutTransition(), new FadeInTransition());
+                break;
+            case 1: // START NEW GAME
+                LevelHandler.startNewGame(ZuluAssault.LEVEL_1, gameState);
+                break;
+            case 2: // LOAD
+            case 3: // SAVE
                 MenuSounds.ERROR_SOUND.play(1.f, UserSettings.soundVolume);
                 break;
-            case 3: // OPTIONS
-                MainMenu.goToMenu(MainMenu.STATE_OPTIONS_MENU);
-
+            case 4: // OPTIONS
+                goToMenu(Menu.STATE_OPTIONS_MENU);
                 break;
-            case 4: // EXIT
+            case 5: // EXIT
                 goToMenu(STATE_CONFIRM_EXIT_MENU);
                 break;
         }
@@ -130,6 +137,6 @@ public class MainScreen extends AbstractMenuScreen {
     public void onLeaveState(GameContainer gameContainer) {
         main_menu_intro_sound.stop();
         main_menu_music.stop();
+        gameContainer.setMouseGrabbed(true);
     }
-
 }

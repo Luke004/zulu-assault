@@ -1,4 +1,4 @@
-package menus.screens;
+package menu.screens;
 
 import console.Console;
 import org.newdawn.slick.GameContainer;
@@ -7,8 +7,8 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import settings.UserSettings;
 
-import static menus.MainMenu.main_menu_intro_sound;
-import static menus.MainMenu.main_menu_music;
+import static menu.Menu.main_menu_intro_sound;
+import static menu.Menu.main_menu_music;
 
 public abstract class AbstractMenuScreen implements iMenuScreen {
 

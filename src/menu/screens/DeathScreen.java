@@ -1,10 +1,10 @@
-package menus.screens;
+package menu.screens;
 
 import audio.MenuSounds;
 import levels.LevelHandler;
 import main.ZuluAssault;
-import menus.MainMenu;
-import menus.menu_elements.Buttons;
+import menu.Menu;
+import menu.elements.Buttons;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
@@ -95,7 +95,7 @@ public class DeathScreen extends AbstractMenuScreen {
                 break;
             case 2: // MAIN MENU
                 you_are_dead_sound.stop();
-                MainMenu.goToMenu(MainMenu.STATE_MAIN_MENU);
+                Menu.goToMenu(Menu.STATE_MAIN_MENU);
                 break;
         }
     }

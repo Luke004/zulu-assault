@@ -6,7 +6,7 @@ import logic.WayPointManager;
 import settings.UserSettings;
 import models.CollisionModel;
 import models.interaction_circles.TeleportCircle;
-import models.entities.aircraft.friendly.Aircraft;
+import models.entities.aircraft.Aircraft;
 import models.weapons.MegaPulse;
 import models.weapons.Weapon;
 import models.weapons.projectiles.Projectile;

@@ -4,8 +4,8 @@ import audio.MenuSounds;
 import settings.UserSettings;
 import graphics.hud.Radar;
 import models.entities.MovableEntity;
-import models.entities.aircraft.friendly.Helicopter;
-import models.entities.aircraft.friendly.Aircraft;
+import models.entities.aircraft.AttackHelicopter;
+import models.entities.aircraft.Aircraft;
 import models.entities.robots.Robot;
 import models.entities.tanks.Tank;
 import player.Player;
@@ -289,64 +289,64 @@ public class KeyInputHandler {
                 break;
 
             case HELICOPTER:     // player is in a helicopter
-                Helicopter helicopter = (Helicopter) playerEntity;
+                AttackHelicopter attackHelicopter = (AttackHelicopter) playerEntity;
 
                 // forward movement
                 if (input.isKeyPressed(Input.KEY_UP)) {
                     if (KEY_DOWN_PRESSED) return;
                     KEY_UP_PRESSED = true;
-                    if (helicopter.isMovingForward()) {
-                        helicopter.cancelDeceleration();
+                    if (attackHelicopter.isMovingForward()) {
+                        attackHelicopter.cancelDeceleration();
                     }
                 } else if (KEY_UP_RELEASED) {
-                    helicopter.startDeceleration(MovableEntity.Direction.FORWARD);
+                    attackHelicopter.startDeceleration(MovableEntity.Direction.FORWARD);
                     KEY_UP_RELEASED = false;
                     KEY_UP_PRESSED = false;
                 }
 
                 if (KEY_UP_PRESSED) {
                     if (KEY_DOWN_PRESSED) return;
-                    if (helicopter.isDecelerating()) {
+                    if (attackHelicopter.isDecelerating()) {
                         return;
                     }
-                    helicopter.setMovingForward(true);
-                    helicopter.setMoving(true);
-                    helicopter.increaseSpeed(deltaTime);
+                    attackHelicopter.setMovingForward(true);
+                    attackHelicopter.setMoving(true);
+                    attackHelicopter.increaseSpeed(deltaTime);
                 }
 
                 // backwards movement
                 if (input.isKeyPressed(Input.KEY_DOWN)) {
                     if (KEY_UP_PRESSED) return;
                     KEY_DOWN_PRESSED = true;
-                    if (!helicopter.isMovingForward()) {
-                        helicopter.cancelDeceleration();
+                    if (!attackHelicopter.isMovingForward()) {
+                        attackHelicopter.cancelDeceleration();
                     }
                 } else if (KEY_DOWN_RELEASED) {
-                    if (!helicopter.isMovingForward())
-                        helicopter.startDeceleration(MovableEntity.Direction.BACKWARDS);
+                    if (!attackHelicopter.isMovingForward())
+                        attackHelicopter.startDeceleration(MovableEntity.Direction.BACKWARDS);
                     KEY_DOWN_RELEASED = false;
                     KEY_DOWN_PRESSED = false;
                 }
 
                 if (KEY_DOWN_PRESSED) {
                     if (KEY_UP_PRESSED) return;
-                    if (helicopter.isDecelerating()) {
+                    if (attackHelicopter.isDecelerating()) {
                         return;
                     }
-                    helicopter.setMovingForward(false);
-                    helicopter.setMoving(true);
-                    helicopter.decreaseSpeed(deltaTime);
+                    attackHelicopter.setMovingForward(false);
+                    attackHelicopter.setMoving(true);
+                    attackHelicopter.decreaseSpeed(deltaTime);
                 }
 
                 // get out of helicopter
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
-                    helicopter.initLanding();
+                    attackHelicopter.initLanding();
                 }
-                if (helicopter.hasLanded()) {
-                    helicopter.showAccessibleAnimation(true);
-                    drivable_entities.add(helicopter);
-                    all_movable_entities.add(helicopter);
-                    player.setEntity(helicopter, Player.EnterAction.LEAVING);
+                if (attackHelicopter.hasLanded()) {
+                    attackHelicopter.showAccessibleAnimation(true);
+                    drivable_entities.add(attackHelicopter);
+                    all_movable_entities.add(attackHelicopter);
+                    player.setEntity(attackHelicopter, Player.EnterAction.LEAVING);
                 }
                 break;
         }

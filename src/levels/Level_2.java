@@ -8,7 +8,7 @@ import models.items.InvincibilityItem;
 import models.items.Item;
 import models.items.SilverWrenchItem;
 import models.entities.MovableEntity;
-import models.entities.aircraft.hostile.GreenEnemyPlane;
+import models.entities.aircraft.WarPlane;
 import models.entities.robots.PlasmaRobot;
 import models.entities.robots.ShellRobot;
 import models.entities.soldiers.EnemySoldier;
@@ -280,7 +280,7 @@ public class Level_2 extends AbstractLevel implements GameState {
 
 
         /* ---------- SETUP ENEMY PLANES ---------- */
-        MovableEntity enemy_plane_1 = new GreenEnemyPlane(new Vector2f(1900, 960), true, false);
+        MovableEntity enemy_plane_1 = new WarPlane(new Vector2f(1900, 960), true, false);
         enemy_plane_1.setRotation(90);
         wayPoints = new ArrayList<>();
         wayPoints.add(new Vector2f(2060, 960));
@@ -296,7 +296,7 @@ public class Level_2 extends AbstractLevel implements GameState {
                 wayPoints));
         hostile_movable_entities.add(enemy_plane_1);
 
-        MovableEntity enemy_plane_2 = new GreenEnemyPlane(new Vector2f(3700, 680), true, false);
+        MovableEntity enemy_plane_2 = new WarPlane(new Vector2f(3700, 680), true, false);
         enemy_plane_2.setRotation(90);
         wayPoints = new ArrayList<>();
         wayPoints.add(new Vector2f(3820, 680));
@@ -312,7 +312,7 @@ public class Level_2 extends AbstractLevel implements GameState {
                 wayPoints));
         hostile_movable_entities.add(enemy_plane_2);
 
-        MovableEntity enemy_plane_3 = new GreenEnemyPlane(new Vector2f(1600, 1250), true, false);
+        MovableEntity enemy_plane_3 = new WarPlane(new Vector2f(1600, 1250), true, false);
         enemy_plane_3.setRotation(270);
         wayPoints = new ArrayList<>();
         wayPoints.add(new Vector2f(1510, 1250));

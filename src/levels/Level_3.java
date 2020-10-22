@@ -7,8 +7,8 @@ import models.items.InvincibilityItem;
 import models.items.Item;
 import models.items.SilverWrenchItem;
 import models.entities.MovableEntity;
-import models.entities.aircraft.hostile.GreenEnemyPlane;
-import models.entities.aircraft.friendly.Jet;
+import models.entities.aircraft.WarPlane;
+import models.entities.aircraft.WarJet;
 import models.entities.robots.RocketRobot;
 import models.entities.soldiers.RocketSoldier;
 import models.entities.tanks.*;
@@ -124,7 +124,7 @@ public class Level_3 extends AbstractLevel implements GameState {
 
 
         /* ---------- SETUP ENEMY PLANES ---------- */
-        MovableEntity enemy_plane_1 = new GreenEnemyPlane(new Vector2f(1368, 913), true, false);
+        MovableEntity enemy_plane_1 = new WarPlane(new Vector2f(1368, 913), true, false);
         enemy_plane_1.setRotation(90);
 
         final List<Vector2f> enemy_plane_wayPoints = new ArrayList<>();
@@ -165,10 +165,10 @@ public class Level_3 extends AbstractLevel implements GameState {
 
 
         /* ---------- SETUP THE PLAYERS DRIVABLE ENTITIES ---------- */
-        MovableEntity player_drivable_jet_1 = new Jet(new Vector2f(278, 2360), false, true);
+        MovableEntity player_drivable_jet_1 = new WarJet(new Vector2f(278, 2360), false, true);
         drivable_entities.add(player_drivable_jet_1);
 
-        MovableEntity player_drivable_jet_2 = new Jet(new Vector2f(372, 2360), false, true);
+        MovableEntity player_drivable_jet_2 = new WarJet(new Vector2f(372, 2360), false, true);
         drivable_entities.add(player_drivable_jet_2);
 
 

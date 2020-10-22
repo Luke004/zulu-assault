@@ -1,4 +1,4 @@
-package models.entities.aircraft.friendly;
+package models.entities.aircraft;
 
 import logic.TileMapInfo;
 import logic.WayPointManager;

@@ -1,16 +1,16 @@
-package menus;
+package menu;
 
 import console.Console;
 import graphics.fonts.FontManager;
 import main.ZuluAssault;
-import menus.screens.*;
+import menu.screens.*;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import settings.UserSettings;
 
-public class MainMenu extends BasicGameState {
+public class Menu extends BasicGameState {
 
     // ALL MENUS
     public static final int STATE_MAIN_MENU = 0,
@@ -38,7 +38,7 @@ public class MainMenu extends BasicGameState {
     private static TrueTypeFont info_string_drawer;
     public final static int TEXT_MARGIN = 5;
 
-    public MainMenu() {
+    public Menu() {
         try {
             main_menu_intro_sound = new Sound("audio/music/main_menu_intro.ogg");
             main_menu_music = new Music("audio/music/main_menu.ogg");

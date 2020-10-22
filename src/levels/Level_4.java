@@ -6,7 +6,7 @@ import models.interaction_circles.HealthCircle;
 import models.interaction_circles.TeleportCircle;
 import models.items.*;
 import models.entities.MovableEntity;
-import models.entities.aircraft.friendly.Helicopter;
+import models.entities.aircraft.AttackHelicopter;
 import models.entities.soldiers.EnemySoldier;
 import models.entities.soldiers.RocketSoldier;
 import models.entities.tanks.*;
@@ -302,15 +302,15 @@ public class Level_4 extends AbstractLevel implements GameState {
 
         /* ---------- SETUP THE PLAYER START POSITION AND ENTITY ---------- */
         Vector2f playerStartPos = new Vector2f(3830, 3850);
-        Helicopter helicopter = new Helicopter(playerStartPos, false, true);
-        helicopter.setStarting();
+        AttackHelicopter attackHelicopter = new AttackHelicopter(playerStartPos, false, true);
+        attackHelicopter.setStarting();
 
 
         /* ---------- DEFINE THE MAP ---------- */
         map = new TiledMap("assets/maps/level_4.tmx");
 
 
-        player.init(helicopter);
+        player.init(attackHelicopter);
         super.init(gameContainer, stateBasedGame);
     }
 

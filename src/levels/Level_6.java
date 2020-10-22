@@ -6,8 +6,8 @@ import models.interaction_circles.HealthCircle;
 import models.interaction_circles.TeleportCircle;
 import models.items.*;
 import models.entities.MovableEntity;
-import models.entities.aircraft.hostile.GreenEnemyPlane;
-import models.entities.aircraft.friendly.Helicopter;
+import models.entities.aircraft.WarPlane;
+import models.entities.aircraft.AttackHelicopter;
 import models.entities.tanks.CannonTank;
 import models.entities.tanks.ShellTank;
 import org.newdawn.slick.*;
@@ -251,7 +251,7 @@ public class Level_6 extends AbstractLevel implements GameState {
 
         /* ---------- SETUP ENEMY PLANES ---------- */
         // covering top right of the fortress
-        MovableEntity enemy_plane_1 = new GreenEnemyPlane(new Vector2f(2100, 1200), true, false);
+        MovableEntity enemy_plane_1 = new WarPlane(new Vector2f(2100, 1200), true, false);
         enemy_plane_1.setAsMandatory();
         List<Vector2f> wayPoints = new ArrayList<>();
         wayPoints.add(new Vector2f(2100, 1100));
@@ -268,7 +268,7 @@ public class Level_6 extends AbstractLevel implements GameState {
         hostile_movable_entities.add(enemy_plane_1);
 
         // covering top left of the fortress
-        MovableEntity enemy_plane_2 = new GreenEnemyPlane(new Vector2f(1250, 750), true, false);
+        MovableEntity enemy_plane_2 = new WarPlane(new Vector2f(1250, 750), true, false);
         enemy_plane_2.setRotation(90);
         enemy_plane_2.setAsMandatory();
         List<Vector2f> wayPoints_2 = new ArrayList<>();
@@ -286,7 +286,7 @@ public class Level_6 extends AbstractLevel implements GameState {
         hostile_movable_entities.add(enemy_plane_2);
 
         // covering bottom left of the fortress
-        MovableEntity enemy_plane_3 = new GreenEnemyPlane(new Vector2f(1450, 2200), true, false);
+        MovableEntity enemy_plane_3 = new WarPlane(new Vector2f(1450, 2200), true, false);
         enemy_plane_3.setRotation(90);
         enemy_plane_3.setAsMandatory();
         List<Vector2f> wayPoints_3 = new ArrayList<>();
@@ -304,7 +304,7 @@ public class Level_6 extends AbstractLevel implements GameState {
         hostile_movable_entities.add(enemy_plane_3);
 
         // covering bottom right of the fortress
-        MovableEntity enemy_plane_4 = new GreenEnemyPlane(new Vector2f(2650, 2100), true, false);
+        MovableEntity enemy_plane_4 = new WarPlane(new Vector2f(2650, 2100), true, false);
         enemy_plane_4.setRotation(90);
         enemy_plane_4.setAsMandatory();
         List<Vector2f> wayPoints_4 = new ArrayList<>();
@@ -327,7 +327,7 @@ public class Level_6 extends AbstractLevel implements GameState {
 
 
         /* ---------- SETUP THE PLAYERS DRIVABLE ENTITIES ---------- */
-        MovableEntity player_drivable_helicopter_1 = new Helicopter(new Vector2f(3697, 182), false, true);
+        MovableEntity player_drivable_helicopter_1 = new AttackHelicopter(new Vector2f(3697, 182), false, true);
         drivable_entities.add(player_drivable_helicopter_1);
 
 

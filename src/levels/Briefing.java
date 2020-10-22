@@ -16,7 +16,7 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 import java.util.ArrayList;
 import java.util.List;
 
-import static menus.MainMenu.*;
+import static menu.Menu.*;
 
 
 public class Briefing extends BasicGameState {

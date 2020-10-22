@@ -3,7 +3,7 @@ package levels;
 import logic.WayPointManager;
 import main.ZuluAssault;
 import models.entities.MovableEntity;
-import models.entities.aircraft.hostile.WhiteEnemyJet;
+import models.entities.aircraft.ScoutJet;
 import models.entities.robots.PlasmaRobot;
 import models.entities.robots.RocketRobot;
 import models.entities.tanks.CannonTank;
@@ -288,7 +288,7 @@ public class Level_7 extends AbstractLevel implements GameState {
         /* ---------- SETUP ENEMY PLANES ---------- */
 
         // covering top right
-        MovableEntity enemy_plane_1 = new WhiteEnemyJet(new Vector2f(2120, 250), true, false);
+        MovableEntity enemy_plane_1 = new ScoutJet(new Vector2f(2120, 250), true, false);
         enemy_plane_1.setRotation(90);
         enemy_plane_1.setAsMandatory();
         List<Vector2f> wayPoints_1 = new ArrayList<>();
@@ -307,7 +307,7 @@ public class Level_7 extends AbstractLevel implements GameState {
         hostile_movable_entities.add(enemy_plane_1);
 
         // covering top left
-        MovableEntity enemy_plane_2 = new WhiteEnemyJet(new Vector2f(80, 50), true, false);
+        MovableEntity enemy_plane_2 = new ScoutJet(new Vector2f(80, 50), true, false);
         enemy_plane_2.setRotation(90);
         enemy_plane_2.setAsMandatory();
         List<Vector2f> wayPoints_2 = new ArrayList<>();
@@ -326,7 +326,7 @@ public class Level_7 extends AbstractLevel implements GameState {
         hostile_movable_entities.add(enemy_plane_2);
 
         // covering bottom left
-        MovableEntity enemy_plane_3 = new WhiteEnemyJet(new Vector2f(480, 2020), true, false);
+        MovableEntity enemy_plane_3 = new ScoutJet(new Vector2f(480, 2020), true, false);
         enemy_plane_3.setRotation(90);
         enemy_plane_3.setAsMandatory();
         List<Vector2f> wayPoints_3 = new ArrayList<>();
@@ -345,7 +345,7 @@ public class Level_7 extends AbstractLevel implements GameState {
         hostile_movable_entities.add(enemy_plane_3);
 
         // covering bottom right
-        MovableEntity enemy_plane_4 = new WhiteEnemyJet(new Vector2f(2220, 2020), true, false);
+        MovableEntity enemy_plane_4 = new ScoutJet(new Vector2f(2220, 2020), true, false);
         enemy_plane_4.setRotation(90);
         enemy_plane_4.setAsMandatory();
         List<Vector2f> wayPoints_4 = new ArrayList<>();

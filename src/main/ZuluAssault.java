@@ -2,7 +2,7 @@ package main;
 
 import levels.*;
 import logic.SettingsManager;
-import menus.MainMenu;
+import menu.Menu;
 import org.lwjgl.LWJGLUtil;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
@@ -37,7 +37,7 @@ public class ZuluAssault extends StateBasedGame {
 
     public ZuluAssault(String name) {
         super(name);
-        this.addState(new MainMenu());
+        this.addState(new Menu());
         this.addState(new Level_1());
         this.addState(new Level_2());
         this.addState(new Level_3());

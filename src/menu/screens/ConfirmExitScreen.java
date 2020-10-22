@@ -1,7 +1,7 @@
-package menus.screens;
+package menu.screens;
 
 import audio.MenuSounds;
-import menus.MainMenu;
+import menu.Menu;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
@@ -12,8 +12,8 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import settings.UserSettings;
 
-import static menus.MainMenu.main_menu_intro_sound;
-import static menus.MainMenu.main_menu_music;
+import static menu.Menu.main_menu_intro_sound;
+import static menu.Menu.main_menu_music;
 
 public class ConfirmExitScreen extends AbstractMenuScreen {
 
@@ -66,7 +66,7 @@ public class ConfirmExitScreen extends AbstractMenuScreen {
     @Override
     public void render(GameContainer gameContainer) {
         confirm_exit_image.draw(confirm_exit_image_position.x, confirm_exit_image_position.y);
-        MainMenu.drawInfoStrings(gameContainer);
+        Menu.drawInfoStrings(gameContainer);
     }
 
     @Override
@@ -76,14 +76,14 @@ public class ConfirmExitScreen extends AbstractMenuScreen {
             System.exit(0);
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
             MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
-            MainMenu.returnToPreviousMenu();
+            Menu.returnToPreviousMenu();
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_Y)
                 || gameContainer.getInput().isKeyPressed(Input.KEY_J)) {
             MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             System.exit(0);
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_N)) {
             MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
-            MainMenu.returnToPreviousMenu();
+            Menu.returnToPreviousMenu();
         }
     }
 
@@ -91,12 +91,12 @@ public class ConfirmExitScreen extends AbstractMenuScreen {
     public void onMouseClick(GameContainer gameContainer, StateBasedGame stateBasedGame, int mouseX, int mouseY) {
         if (mouseX < confirm_exit_image_position.x || mouseX > confirm_exit_image_position.x + confirm_exit_image.getWidth()) {
             MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
-            MainMenu.returnToPreviousMenu();
+            Menu.returnToPreviousMenu();
             return;
         }
         if (mouseY < confirm_exit_image_position.y || mouseY > confirm_exit_image_position.y + confirm_exit_image.getHeight()) {
             MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
-            MainMenu.returnToPreviousMenu();
+            Menu.returnToPreviousMenu();
             return;
         }
         if (confirmRect.contains(mouseX, mouseY)) {
@@ -104,7 +104,7 @@ public class ConfirmExitScreen extends AbstractMenuScreen {
             System.exit(0);
         } else if (cancelRect.contains(mouseX, mouseY)) {
             MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
-            MainMenu.returnToPreviousMenu();
+            Menu.returnToPreviousMenu();
         }
     }
 
