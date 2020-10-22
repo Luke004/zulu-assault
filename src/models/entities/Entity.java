@@ -19,7 +19,7 @@ public abstract class Entity {
     protected static final float MAX_HEALTH = 100;
     protected float current_health;
     public boolean isHostile, isDestroyed;
-    protected Vector2f position;
+    public Vector2f position;
     private boolean isMandatory;
     protected boolean isEnemyNear;
     // graphics related
@@ -29,7 +29,7 @@ public abstract class Entity {
         this.isHostile = isHostile;
         this.position = startPos;
         weapons = new ArrayList<>();    // 3 weapons -> WEAPON_1, WEAPON_2 and MEGA_PULSE
-        health_bar_position = new Vector2f();
+        health_bar_position = new Vector2f(startPos);
         current_health = MAX_HEALTH;
 
         // LOAD TEXTURES

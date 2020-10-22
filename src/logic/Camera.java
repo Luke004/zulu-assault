@@ -104,6 +104,23 @@ public class Camera {
         if (cameraY + gc.getHeight() > mapHeight) cameraY = mapHeight - gc.getHeight();
     }
 
+    /**
+     * same as centerOn() but show a little bit of the black bar (for the map editor)
+     */
+    public void centerOn(float x, float y, int borderTolerance) {
+        cameraX = x - gc.getWidth() / 2.f;
+        cameraY = y - gc.getHeight() / 2.f;
+
+        if (cameraX < 0) cameraX = 0;
+        if (cameraX + gc.getWidth() - borderTolerance > mapWidth) {
+            cameraX = mapWidth - gc.getWidth() + borderTolerance;
+        }
+
+        if (cameraY < 0) cameraY = 0;
+        if (cameraY + gc.getHeight() - borderTolerance > mapHeight)
+            cameraY = mapHeight - gc.getHeight() + borderTolerance;
+    }
+
     public void update(int deltaTime) {
         if (shake) {
             shake(deltaTime);
@@ -118,11 +135,11 @@ public class Camera {
      * @param height the height (in pixel) of the rectangle
      * @param width the width (in pixel) of the rectangle
      */
-    /*
-    public void centerOn(float x, float y, float height, float width) {
-        this.centerOn(x + width / 2, y + height / 2);
+
+    public void centerOn(float x, float y, float height, float width, int borderTolerance) {
+        this.centerOn(x + width / 2, y + height / 2, borderTolerance);
     }
-     */
+
 
     /**
      * "locks the camera on the center of the given Shape. The camera tries to keep the location in it's center.
@@ -142,7 +159,7 @@ public class Camera {
     }
 
     /**
-     * draws the part of the map which is currently focussed by the camera on the screen.<br>
+     * draws the part of the map which is currently focused by the camera on the screen.<br>
      * You need to draw something over the offset, to prevent the edge of the map to be displayed below it<br>
      * Has to be called before Camera.translateGraphics() !
      *

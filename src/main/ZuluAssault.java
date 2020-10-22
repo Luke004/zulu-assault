@@ -1,5 +1,6 @@
 package main;
 
+import level_editor.LevelEditor;
 import levels.*;
 import logic.SettingsManager;
 import menu.Menu;
@@ -29,6 +30,7 @@ public class ZuluAssault extends StateBasedGame {
     public static final int LEVEL_9 = 9;
     public static final int BRIEFING = -1;
     public static final int DEBRIEFING = -2;
+    public static final int LEVEL_EDITOR = -3;
 
     public static final int MAX_LEVEL = LEVEL_9;
 
@@ -49,6 +51,7 @@ public class ZuluAssault extends StateBasedGame {
         this.addState(new Level_9());
         this.addState(new Debriefing());
         this.addState(new Briefing());
+        this.addState(new LevelEditor());
     }
 
     public static void main(String[] args) {
@@ -75,7 +78,7 @@ public class ZuluAssault extends StateBasedGame {
     public void initStatesList(GameContainer gameContainer) throws SlickException {
         //this.getState(MAIN_MENU).init(gameContainer, this);
         this.getState(LEVEL_1).init(gameContainer, this);   // pre-load the first level at the start
-        this.enterState(MAIN_MENU);
+        this.enterState(LEVEL_EDITOR);
     }
 
     public static boolean existsLevel(int id) {
