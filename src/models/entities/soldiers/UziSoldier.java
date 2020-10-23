@@ -6,11 +6,11 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 
-public class EnemySoldier extends Soldier {
+public class UziSoldier extends Soldier {
 
     private static Texture enemy_soldier_animation_texture;
 
-    public EnemySoldier(Vector2f startPos, boolean isHostile) {
+    public UziSoldier(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
 
         weapons.add(new Uzi(false));

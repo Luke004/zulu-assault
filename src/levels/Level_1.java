@@ -7,7 +7,7 @@ import models.items.*;
 import models.entities.MovableEntity;
 import models.entities.aircraft.WarPlane;
 import models.entities.robots.PlasmaRobot;
-import models.entities.soldiers.EnemySoldier;
+import models.entities.soldiers.UziSoldier;
 import models.entities.tanks.*;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
@@ -170,13 +170,13 @@ public class Level_1 extends AbstractLevel implements GameState {
         enemy_meme_car.setRotation(15);
         hostile_movable_entities.add(enemy_meme_car);
 
-        MovableEntity enemy_soldier_1 = new EnemySoldier(new Vector2f(1370.f, 3150.f), true);
+        MovableEntity enemy_soldier_1 = new UziSoldier(new Vector2f(1370.f, 3150.f), true);
         hostile_movable_entities.add(enemy_soldier_1);
 
-        MovableEntity enemy_soldier_2 = new EnemySoldier(new Vector2f(1473.f, 3198.f), true);
+        MovableEntity enemy_soldier_2 = new UziSoldier(new Vector2f(1473.f, 3198.f), true);
         hostile_movable_entities.add(enemy_soldier_2);
 
-        MovableEntity enemy_soldier_3 = new EnemySoldier(new Vector2f(1266.f, 3206.f), true);
+        MovableEntity enemy_soldier_3 = new UziSoldier(new Vector2f(1266.f, 3206.f), true);
         hostile_movable_entities.add(enemy_soldier_3);
 
         MovableEntity enemy_tank_3_rocket = new RocketTank(new Vector2f(2970.f, 130.f), true, false);
@@ -191,19 +191,19 @@ public class Level_1 extends AbstractLevel implements GameState {
         enemy_tank_5_rocket.setRotation(225);
         hostile_movable_entities.add(enemy_tank_5_rocket);
 
-        MovableEntity enemy_soldier_4 = new EnemySoldier(new Vector2f(2565.f, 160.f), true);
+        MovableEntity enemy_soldier_4 = new UziSoldier(new Vector2f(2565.f, 160.f), true);
         hostile_movable_entities.add(enemy_soldier_4);
 
-        MovableEntity enemy_soldier_5 = new EnemySoldier(new Vector2f(2500.f, 240.f), true);
+        MovableEntity enemy_soldier_5 = new UziSoldier(new Vector2f(2500.f, 240.f), true);
         hostile_movable_entities.add(enemy_soldier_5);
 
-        MovableEntity enemy_soldier_6 = new EnemySoldier(new Vector2f(2460.f, 60.f), true);
+        MovableEntity enemy_soldier_6 = new UziSoldier(new Vector2f(2460.f, 60.f), true);
         hostile_movable_entities.add(enemy_soldier_6);
 
-        MovableEntity enemy_soldier_7 = new EnemySoldier(new Vector2f(2350.f, 100.f), true);
+        MovableEntity enemy_soldier_7 = new UziSoldier(new Vector2f(2350.f, 100.f), true);
         hostile_movable_entities.add(enemy_soldier_7);
 
-        MovableEntity enemy_soldier_8 = new EnemySoldier(new Vector2f(2340.f, 160.f), true);
+        MovableEntity enemy_soldier_8 = new UziSoldier(new Vector2f(2340.f, 160.f), true);
         hostile_movable_entities.add(enemy_soldier_8);
 
 

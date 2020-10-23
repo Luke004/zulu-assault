@@ -7,7 +7,7 @@ import models.interaction_circles.TeleportCircle;
 import models.items.*;
 import models.entities.MovableEntity;
 import models.entities.aircraft.AttackHelicopter;
-import models.entities.soldiers.EnemySoldier;
+import models.entities.soldiers.UziSoldier;
 import models.entities.soldiers.RocketSoldier;
 import models.entities.tanks.*;
 import org.newdawn.slick.*;
@@ -219,15 +219,15 @@ public class Level_4 extends AbstractLevel implements GameState {
         enemy_soldier_1.setAsMandatory();
         hostile_movable_entities.add(enemy_soldier_1);
 
-        MovableEntity enemy_soldier_2 = new EnemySoldier(new Vector2f(488, 342), true);
+        MovableEntity enemy_soldier_2 = new UziSoldier(new Vector2f(488, 342), true);
         enemy_soldier_2.setAsMandatory();
         hostile_movable_entities.add(enemy_soldier_2);
 
-        MovableEntity enemy_soldier_3 = new EnemySoldier(new Vector2f(477, 373), true);
+        MovableEntity enemy_soldier_3 = new UziSoldier(new Vector2f(477, 373), true);
         enemy_soldier_3.setAsMandatory();
         hostile_movable_entities.add(enemy_soldier_3);
 
-        MovableEntity enemy_soldier_4 = new EnemySoldier(new Vector2f(482, 404), true);
+        MovableEntity enemy_soldier_4 = new UziSoldier(new Vector2f(482, 404), true);
         enemy_soldier_4.setAsMandatory();
         hostile_movable_entities.add(enemy_soldier_4);
 

@@ -11,7 +11,7 @@ import models.entities.MovableEntity;
 import models.entities.aircraft.WarPlane;
 import models.entities.robots.PlasmaRobot;
 import models.entities.robots.ShellRobot;
-import models.entities.soldiers.EnemySoldier;
+import models.entities.soldiers.UziSoldier;
 import models.entities.soldiers.RocketSoldier;
 import models.entities.tanks.CannonTank;
 import models.entities.tanks.ShellTank;
@@ -200,16 +200,16 @@ public class Level_2 extends AbstractLevel implements GameState {
         hostile_movable_entities.add(enemy_soldier_4);
 
         // near spawn
-        MovableEntity enemy_soldier_5 = new EnemySoldier(new Vector2f(3620, 2690), true);
+        MovableEntity enemy_soldier_5 = new UziSoldier(new Vector2f(3620, 2690), true);
         hostile_movable_entities.add(enemy_soldier_5);
 
-        MovableEntity enemy_soldier_6 = new EnemySoldier(new Vector2f(3658, 2703), true);
+        MovableEntity enemy_soldier_6 = new UziSoldier(new Vector2f(3658, 2703), true);
         hostile_movable_entities.add(enemy_soldier_6);
 
-        MovableEntity enemy_soldier_7 = new EnemySoldier(new Vector2f(3830, 2215), true);
+        MovableEntity enemy_soldier_7 = new UziSoldier(new Vector2f(3830, 2215), true);
         hostile_movable_entities.add(enemy_soldier_7);
 
-        MovableEntity enemy_soldier_8 = new EnemySoldier(new Vector2f(3420, 2200), true);
+        MovableEntity enemy_soldier_8 = new UziSoldier(new Vector2f(3420, 2200), true);
         hostile_movable_entities.add(enemy_soldier_8);
 
         // top left
@@ -230,7 +230,7 @@ public class Level_2 extends AbstractLevel implements GameState {
         enemy_tank_4.setRotation(-45);
         hostile_movable_entities.add(enemy_tank_4);
 
-        MovableEntity enemy_soldier_9 = new EnemySoldier(new Vector2f(100, 1060), true);
+        MovableEntity enemy_soldier_9 = new UziSoldier(new Vector2f(100, 1060), true);
         hostile_movable_entities.add(enemy_soldier_9);
 
 
