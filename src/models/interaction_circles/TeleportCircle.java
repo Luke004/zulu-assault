@@ -7,7 +7,6 @@ import org.newdawn.slick.geom.Vector2f;
 public class TeleportCircle extends InteractionCircle {
 
     private static Sound teleport_sound;
-    private final Vector2f position;
 
     static {
         try {
@@ -37,10 +36,6 @@ public class TeleportCircle extends InteractionCircle {
     public void draw(Graphics graphics) {
         super.draw(graphics);
         outerCircle.drawCentered(position.x, position.y);
-    }
-
-    public Vector2f getPosition() {
-        return position;
     }
 
     public static void playTeleportSound() {

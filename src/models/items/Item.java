@@ -41,6 +41,11 @@ public abstract class Item extends Element {
     }
 
     @Override
+    public void drawPreview(Graphics graphics) {
+        this.animation.getImage(0).draw(position.x, position.y, 0.6f);
+    }
+
+    @Override
     public void update(GameContainer gc, int deltaTime) {
         this.animation.update(deltaTime);
     }

@@ -6,6 +6,7 @@ import models.entities.MovableEntity;
 import models.weapons.Cannon;
 import models.weapons.DoubleRocketLauncher;
 import models.weapons.Weapon;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
@@ -59,6 +60,11 @@ public class XTank extends Tank {
 
         // follow the player
         accelerate(deltaTime, Direction.FORWARD);
+    }
+
+    @Override
+    public void drawPreview(Graphics graphics) {
+        this.base_image.draw(position.x, position.y, 0.3f);
     }
 
     @Override

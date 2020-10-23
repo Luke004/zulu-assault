@@ -5,10 +5,12 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class ElementModifier extends ElementScreen implements iToolbarState {
+public class ElementModifier extends ToolbarScreen {
+
+    private static final String title = "MODIFY ELEMENT";
 
     public ElementModifier(Toolbar toolbar) {
-        super(toolbar);
+        super(toolbar, title);
     }
 
     @Override
@@ -22,7 +24,8 @@ public class ElementModifier extends ElementScreen implements iToolbarState {
     }
 
     @Override
-    public void onMouseClick(GameContainer gameContainer, StateBasedGame stateBasedGame, int mouseX, int mouseY) {
+    public void onMouseClick(GameContainer gc, StateBasedGame sbg, int mouseX, int mouseY) {
+
 
     }
 }

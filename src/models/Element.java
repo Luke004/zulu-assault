@@ -13,7 +13,13 @@ public abstract class Element {
 
     abstract public void draw(Graphics graphics);
 
+    abstract public void drawPreview(Graphics graphics);
+
     abstract public void update(GameContainer gc, int deltaTime);
+
+    public void setPosition(Vector2f position) {
+        this.position = position;
+    }
 
     public Vector2f getPosition() {
         return this.position;

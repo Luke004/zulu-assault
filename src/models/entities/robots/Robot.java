@@ -102,6 +102,11 @@ public abstract class Robot extends MovableEntity {
         //collisionModel.draw(graphics);
     }
 
+    @Override
+    public void drawPreview(Graphics graphics) {
+        base_image.draw(position.x, position.y, 0.4f);
+    }
+
     public void startAnimation() {
         walking_animation.start();
     }

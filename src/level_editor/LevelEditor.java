@@ -1,27 +1,31 @@
 package level_editor;
 
+import audio.MenuSounds;
 import graphics.fonts.FontManager;
 import level_editor.toolbar.Toolbar;
+import level_editor.util.Elements;
 import logic.Camera;
 import main.ZuluAssault;
 import models.Element;
 import models.entities.Entity;
+import models.entities.MovableEntity;
 import models.entities.tanks.CannonTank;
 import models.interaction_circles.HealthCircle;
+import models.items.Item;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
+import settings.UserSettings;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class LevelEditor extends BasicGameState {
 
-    List<Element> elements;
-
-    Element selectedElement;
+    private List<Element> elements;
+    private Element selectedElement;
 
     private static final String title_string;
     private static TrueTypeFont title_string_drawer;
@@ -46,6 +50,18 @@ public class LevelEditor extends BasicGameState {
         elements = new ArrayList<>();
     }
 
+    @Override
+    public void mouseWheelMoved(int change) {
+        change /= 20.f;
+        if (selectedElement != null) {
+            if (selectedElement instanceof MovableEntity) {
+                MovableEntity movableEntity = (MovableEntity) selectedElement;
+                movableEntity.setRotation(movableEntity.getRotation() + change);
+            } else {
+                selectedElement.base_image.rotate(change);
+            }
+        }
+    }
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -62,16 +78,31 @@ public class LevelEditor extends BasicGameState {
         mapX = mapWidth / 2.f;
         mapY = mapHeight / 2.f;
         //camera.centerOn(mapX, mapY);
-
-        //entities.add(new CannonTank(new Vector2f(100, 100), false, true));
-
-        selectedElement = new CannonTank(new Vector2f(0, 0), false, false);
-        selectedElement.base_image.setAlpha(0.7f);
     }
 
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int dt) {
         camera.centerOn(mapX, mapY, gc.getHeight(), gc.getWidth(), toolbar.getWidth());
+
+        if (isMouseInEditor(gc)) {
+            if (gc.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+                if (selectedElement != null) {
+                    Element copy = Elements.getCopyByName(selectedElement.getClass().getSimpleName());
+                    if (copy != null) {
+                        MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
+                        // deep copy the selected element
+                        copy.setPosition(new Vector2f(selectedElement.getPosition().x + mapX,
+                                selectedElement.getPosition().y + mapY));
+                        // add rotation
+                        if (copy instanceof MovableEntity) {
+                            ((MovableEntity) copy).setRotation(selectedElement.base_image.getRotation());
+                        }
+                        elements.add(copy);
+                    }
+                }
+            }
+        }
+
 
         toolbar.update(gc, sbg, dt);
 
@@ -94,16 +125,10 @@ public class LevelEditor extends BasicGameState {
                 mapX = mapWidth - gc.getWidth() + toolbar.getWidth();
         }
 
-        if (gc.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-            if (selectedElement != null) {
-                selectedElement.base_image.setAlpha(1.f);
-                //entities.add((Entity) Entity.deepCopy(currentEntity));
-
-            }
-        }
-
         if (selectedElement != null) {
-            selectedElement.update(gc, dt);
+            if (!(selectedElement instanceof Item)) {
+                selectedElement.update(gc, dt);
+            }
             selectedElement.getPosition().x = gc.getInput().getMouseX();
             selectedElement.getPosition().y = gc.getInput().getMouseY();
         }

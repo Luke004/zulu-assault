@@ -1,48 +1,46 @@
 package level_editor.toolbar.screens;
 
+import audio.MenuSounds;
 import level_editor.LevelEditor;
 import level_editor.toolbar.Toolbar;
 import level_editor.util.Elements;
 import models.Element;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
+import settings.UserSettings;
 
-import javax.swing.*;
+import javax.tools.Tool;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ElementSelector extends ElementScreen implements iToolbarState {
+public class ElementSelector extends ToolbarScreen {
+
+    private static final String title = "SELECT ELEMENT";
 
     private LevelEditor levelEditor;
 
-    private int selector_squares_row_count;
+    private static final int SELECTOR_SQUARES_PER_ROW = 4;
+
     private List<SelectorSquare> selectorSquareList;
 
     public ElementSelector(Toolbar toolbar, LevelEditor levelEditor) {
-        super(toolbar);
+        super(toolbar, title);
         this.levelEditor = levelEditor;
         selectorSquareList = new ArrayList<>();
 
-        selector_squares_row_count = (toolbar.getWidth() - SelectorSquare.SIZE) / (SelectorSquare.SIZE_AND_MARGIN);
-        System.out.println("row count:" + selector_squares_row_count);
+        SelectorSquare.calcSize(toolbar.getWidth());
+
+        System.out.println("square size:" + SelectorSquare.size);
+
+        startX += SelectorSquare.margin;
+        startY += SelectorSquare.margin;
 
         // init the selector square list with all elements
-        int rowIdx = 0;
-        int colIdx = 0;
         String[] allElements = Elements.getAllElements();
-
-        for (int i = 0; i < allElements.length; ++i) {
-            selectorSquareList.add(new SelectorSquare(Elements.getCopyByName(allElements[i]),
-                    (int) toolbar.getX() + SelectorSquare.MARGIN + rowIdx * SelectorSquare.SIZE_AND_MARGIN,
-                    (int) toolbar.getY() + SelectorSquare.MARGIN + colIdx * SelectorSquare.SIZE_AND_MARGIN));
-
-            if (rowIdx < selector_squares_row_count) {
-                rowIdx++;
-            } else {
-                rowIdx = 0;
-                colIdx++;
-            }
+        for (String allElement : allElements) {
+            selectorSquareList.add(new SelectorSquare(Elements.getCopyByName(allElement), startX, startY));
         }
 
     }
@@ -53,16 +51,18 @@ public class ElementSelector extends ElementScreen implements iToolbarState {
     }
 
     @Override
-    public void render(GameContainer gameContainer, Graphics graphics) {
+    public void render(GameContainer gc, Graphics graphics) {
+        super.render(gc, graphics);
         for (SelectorSquare selectorSquare : selectorSquareList) {
             selectorSquare.draw(graphics);
         }
     }
 
     @Override
-    public void onMouseClick(GameContainer gameContainer, StateBasedGame stateBasedGame, int mouseX, int mouseY) {
+    public void onMouseClick(GameContainer gc, StateBasedGame sbg, int mouseX, int mouseY) {
         for (SelectorSquare selectorSquare : selectorSquareList) {
             if (selectorSquare.clicked(mouseX, mouseY)) {
+                MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
                 levelEditor.setSelectedElement(selectorSquare.getElement());
                 break;
             }
@@ -72,29 +72,49 @@ public class ElementSelector extends ElementScreen implements iToolbarState {
 
     private static class SelectorSquare {
 
-        private static final int SIZE = 35;
-        private static final int MARGIN = 5;
-        private static final int SIZE_AND_MARGIN = SIZE + MARGIN;
+        private static int size;
+        private static int margin;
+        private static final float RELATIVE_MARGIN = 0.2f;
+        private static int sizeAndMargin;
 
         private Element element;
         private int xPos, yPos;
 
-        SelectorSquare(Element element, int xPos, int yPos) {
+        private static int rowIdx = 0;
+        private static int colIdx = 0;
+
+        SelectorSquare(Element element, int startX, int startY) {
             this.element = element;
-            this.xPos = xPos;
-            this.yPos = yPos;
+            this.xPos = startX + rowIdx * sizeAndMargin;
+            this.yPos = startY + margin + colIdx * sizeAndMargin;
+
+            this.element.setPosition(new Vector2f(xPos, yPos));
+
+            if (rowIdx < SELECTOR_SQUARES_PER_ROW - 1) {
+                rowIdx++;
+            } else {
+                rowIdx = 0;
+                colIdx++;
+            }
+        }
+
+        public static void calcSize(int toolbarWidth) {
+            margin = (int) (toolbarWidth / (SELECTOR_SQUARES_PER_ROW + 1) * RELATIVE_MARGIN);
+            size = (toolbarWidth - (SELECTOR_SQUARES_PER_ROW + 1) * margin) / 4;
+            sizeAndMargin = margin + size;
         }
 
         void draw(Graphics graphics) {
-            graphics.drawRect(xPos, yPos, SIZE, SIZE);
+            graphics.drawRect(xPos, yPos, size, size);
+            element.drawPreview(graphics);
         }
 
         boolean clicked(int mouseX, int mouseY) {
-            return (mouseX > xPos && mouseX < xPos + SIZE && mouseY > yPos && mouseY < yPos + SIZE);
+            return (mouseX > xPos && mouseX < xPos + size && mouseY > yPos && mouseY < yPos + size);
         }
 
         Element getElement() {
-            return element;
+            return Elements.getCopyByName(element.getClass().getSimpleName());
         }
 
     }

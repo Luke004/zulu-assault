@@ -36,4 +36,10 @@ public abstract class InteractionCircle extends Element {
     public void draw(Graphics graphics) {
         base_image.drawCentered(position.x, position.y);
     }
+
+    @Override
+    public void drawPreview(Graphics graphics) {
+        base_image.draw(position.x, position.y, 0.4f);
+    }
+
 }

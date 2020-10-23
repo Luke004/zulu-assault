@@ -91,6 +91,11 @@ public abstract class Soldier extends MovableEntity {
         //collisionModel.draw(graphics);
     }
 
+    @Override
+    public void drawPreview(Graphics graphics) {
+        animation.getImage(0).draw(position.x, position.y, 1.2f);
+    }
+
     public void startAnimation() {
         animation.start();
     }

@@ -104,6 +104,12 @@ public abstract class Tank extends MovableEntity {
         super.draw(graphics);
     }
 
+    @Override
+    public void drawPreview(Graphics graphics) {
+        base_image.draw(position.x, position.y, 0.4f);
+        turret.draw(position.x, position.y, 0.4f);
+    }
+
     public void accelerate(int deltaTime, Direction direction) {
         if (isDestroyed) return;
         if (current_speed < getMaxSpeed()) {

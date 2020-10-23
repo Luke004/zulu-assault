@@ -1,6 +1,7 @@
 package models.entities.static_multitile_constructions;
 
 import models.StaticEntity;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
 public class StaticEnemyPlane extends StaticEntity {
@@ -35,5 +36,10 @@ public class StaticEnemyPlane extends StaticEntity {
     @Override
     public int getScoreValue() {
         return SCORE_VALUE;
+    }
+
+    @Override
+    public void drawPreview(Graphics graphics) {
+
     }
 }

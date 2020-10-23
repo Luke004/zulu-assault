@@ -231,6 +231,11 @@ public abstract class Aircraft extends MovableEntity {
     }
 
     @Override
+    public void drawPreview(Graphics graphics) {
+        base_image.draw(position.x, position.y, 0.4f);
+    }
+
+    @Override
     public void showAccessibleAnimation(boolean activate) {
         super.showAccessibleAnimation(activate);
         // stop the plane when player leaves it, start it again when player enters it back

@@ -59,6 +59,11 @@ public abstract class Windmill extends StaticEntity {
     }
 
     @Override
+    public void drawPreview(Graphics graphics) {
+        // TODO:
+    }
+
+    @Override
     public void fireWeapon(MovableEntity.WeaponType weaponType) {
         Weapon weapon = null;
         switch (weaponType) {
