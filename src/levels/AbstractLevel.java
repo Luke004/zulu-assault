@@ -147,8 +147,6 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
             else return 0;
         });
 
-        createStaticEntitiesFromTiles();
-
         all_hostile_entities.addAll(hostile_movable_entities);
         all_hostile_entities.addAll(static_enemy_entities);
 
@@ -169,117 +167,6 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
         player.getBaseSoldier().addListeners(this);
     }
 
-    /*
-    this method creates additional java-objects from special tiles that act as entities (can shoot, have health etc.)
-     */
-    private void createStaticEntitiesFromTiles() {
-        // SETUP WINDMILLS USING MAP DATA
-        for (int x = 0; x < map.getWidth(); ++x) {
-            for (int y = 0; y < map.getHeight(); ++y) {
-                for (int idx = 0; idx < windmill_indices.length; ++idx) {
-                    if (map.getTileId(x, y, ENEMY_TILES_LAYER_IDX) == windmill_indices[idx]) {
-                        Windmill windmill = null;
-                        Vector2f[] collision_tiles = new Vector2f[1];
-                        // add all tile positions of this entity to its object
-                        collision_tiles[0] = new Vector2f(x, y);
-                        // position is at middle of the tile
-                        Vector2f pos_windmill = new Vector2f(
-                                x * TILE_WIDTH + TILE_WIDTH / 2.f,
-                                y * TILE_HEIGHT + TILE_HEIGHT / 2.f
-                        );
-                        boolean setAsMandatory = false;
-                        switch (idx) {
-                            case 3: // mandatory green windmill
-                                setAsMandatory = true;
-                                // no break
-                            case 0: // green windmill
-                                windmill = new WindmillGreen(pos_windmill, true, collision_tiles);
-                                break;
-                            case 4: // mandatory grey windmill
-                                setAsMandatory = true;
-                                // no break
-                            case 1: // grey windmill
-                                windmill = new WindmillGrey(pos_windmill, true, collision_tiles);
-                                break;
-                            case 5: // mandatory yellow windmill
-                                setAsMandatory = true;
-                                // no break
-                            case 2: // yellow windmill
-                                windmill = new WindmillYellow(pos_windmill, true, collision_tiles);
-                                break;
-                        }
-                        if (setAsMandatory) windmill.setAsMandatory();
-                        static_enemy_entities.add(windmill);
-                    }
-                }
-            }
-        }
-
-        // SETUP PLANES USING MAP DATA
-        for (int x = 0; x < map.getWidth(); ++x) {
-            for (int y = 0; y < map.getHeight(); ++y) {
-                for (int idx = 0; idx < static_plane_creation_indices.length; ++idx) {
-                    if (map.getTileId(x, y, ENEMY_TILES_LAYER_IDX) == static_plane_creation_indices[idx]) {
-                        Vector2f[] collision_tiles = new Vector2f[5];
-                        // add all collision tiles of this entity to its object
-                        collision_tiles[0] = new Vector2f(x, y - 1);
-                        collision_tiles[1] = new Vector2f(x - 1, y);
-                        collision_tiles[2] = new Vector2f(x, y);
-                        collision_tiles[3] = new Vector2f(x + 1, y);
-                        collision_tiles[4] = new Vector2f(x, y + 1);
-                        // add more tile positions for later tile replacement on destruction
-                        // these tiles do not have collisions
-                        Vector2f[] replacement_tiles = new Vector2f[6];
-                        switch (idx) {
-                            case 0: // the plane that's facing right in the tileset
-                                replacement_tiles[0] = new Vector2f(x, y - 2);
-                                replacement_tiles[1] = new Vector2f(x - 2, y - 1);
-                                replacement_tiles[2] = new Vector2f(x - 2, y);
-                                replacement_tiles[3] = new Vector2f(x - 2, y + 1);
-                                replacement_tiles[4] = new Vector2f(x + 2, y);
-                                replacement_tiles[5] = new Vector2f(x, y + 2);
-                                break;
-                            case 1: // the plane that's facing down in the tileset
-                                replacement_tiles[0] = new Vector2f(x - 1, y - 2);
-                                replacement_tiles[1] = new Vector2f(x, y - 2);
-                                replacement_tiles[2] = new Vector2f(x + 1, y - 2);
-                                replacement_tiles[3] = new Vector2f(x - 2, y);
-                                replacement_tiles[4] = new Vector2f(x + 2, y);
-                                replacement_tiles[5] = new Vector2f(x, y + 2);
-                                break;
-                            case 2: // the plane that's facing left in the tileset
-                                replacement_tiles[0] = new Vector2f(x, y - 2);
-                                replacement_tiles[1] = new Vector2f(x - 2, y);
-                                replacement_tiles[2] = new Vector2f(x + 2, y - 1);
-                                replacement_tiles[3] = new Vector2f(x + 2, y);
-                                replacement_tiles[4] = new Vector2f(x + 2, y + 1);
-                                replacement_tiles[5] = new Vector2f(x, y + 2);
-                                break;
-                            case 3:  // the plane that's facing up in the tileset
-                                replacement_tiles[0] = new Vector2f(x, y - 2);
-                                replacement_tiles[1] = new Vector2f(x - 2, y);
-                                replacement_tiles[2] = new Vector2f(x + 2, y);
-                                replacement_tiles[3] = new Vector2f(x - 1, y + 2);
-                                replacement_tiles[4] = new Vector2f(x, y + 2);
-                                replacement_tiles[5] = new Vector2f(x + 1, y + 2);
-                                break;
-                        }
-                        // position is at middle of the tile
-                        Vector2f pos_staticEnemyPlane = new Vector2f(
-                                x * TILE_WIDTH + TILE_WIDTH / 2.f,
-                                y * TILE_HEIGHT + TILE_HEIGHT / 2.f
-                        );
-                        // PLANES ARE ALWAYS MANDATORY (FOR NOW!)
-                        StaticEnemyPlane staticEnemyPlane = new StaticEnemyPlane(pos_staticEnemyPlane, true,
-                                collision_tiles, replacement_tiles);
-                        staticEnemyPlane.setAsMandatory();
-                        static_enemy_entities.add(staticEnemyPlane);
-                    }
-                }
-            }
-        }
-
-    }
 
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) {
@@ -303,7 +190,7 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
     }
 
     @Override
-    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int deltaTime) {
+    public void update(GameContainer gc, StateBasedGame stateBasedGame, int deltaTime) {
         if (hasWonTheLevel) {
             // notify TimeManager that the level is finished
             TimeManager.finishLevel();
@@ -312,25 +199,25 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
                     new FadeOutTransition(), new FadeInTransition());
             return;
         }
-        player.update(gameContainer, deltaTime);
+        player.update(gc, deltaTime);
         for (int idx = 0; idx < all_movable_entities.size(); ++idx) {
-            all_movable_entities.get(idx).update(gameContainer, deltaTime);
+            all_movable_entities.get(idx).update(gc, deltaTime);
         }
 
         for (int idx = 0; idx < static_enemy_entities.size(); ++idx) {
-            static_enemy_entities.get(idx).update(gameContainer, deltaTime);
+            static_enemy_entities.get(idx).update(gc, deltaTime);
         }
 
         for (InteractionCircle health_circle : health_circles) {
-            health_circle.update(deltaTime);
+            health_circle.update(gc, deltaTime);
         }
         for (InteractionCircle teleport_circle : teleport_circles) {
-            teleport_circle.update(deltaTime);
+            teleport_circle.update(gc, deltaTime);
         }
         for (Item item : items) {
-            item.update(deltaTime);
+            item.update(gc, deltaTime);
         }
-        keyInputHandler.update(gameContainer, deltaTime);
+        keyInputHandler.update(gc, deltaTime);
         collisionHandler.update(deltaTime);
         hud.update(deltaTime);
         radar.update(deltaTime);
@@ -340,7 +227,7 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
         camera.update(deltaTime);
         TimeManager.update(deltaTime);
 
-        if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {  // paused the game
+        if (gc.getInput().isKeyPressed(Input.KEY_ESCAPE)) {  // paused the game
             Menu.goToMenu(Menu.STATE_IN_GAME_MENU);
             stateBasedGame.enterState(ZuluAssault.MAIN_MENU,
                     new FadeOutTransition(), new FadeInTransition());
@@ -367,13 +254,13 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
         camera.drawMap();
         camera.translateGraphics();
         for (InteractionCircle health_circle : health_circles) {
-            health_circle.draw();
+            health_circle.draw(graphics);
         }
         for (InteractionCircle teleport_circle : teleport_circles) {
-            teleport_circle.draw();
+            teleport_circle.draw(graphics);
         }
         for (Item item : items) {
-            item.draw();
+            item.draw(graphics);
         }
 
         screenDrawer.draw();    // draws dead bodies and score values

@@ -1,31 +1,39 @@
 package models.interaction_circles;
 
-import models.StaticCollisionEntity;
+import models.CollisionModel;
+import models.Element;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
-public abstract class InteractionCircle extends StaticCollisionEntity {
+public abstract class InteractionCircle extends Element {
 
     protected Image outerCircle;
 
     public InteractionCircle(Vector2f position) {
-        super(position);
+        this.position = position;
         try {
             this.base_image = new Image("assets/interaction_circles/inner_circle.png");
         } catch (SlickException e) {
             e.printStackTrace();
         }
-        initCollisionModel(base_image.getWidth() / 3, base_image.getHeight() / 3);
+        // init the collision model and center its position
+        int width = base_image.getWidth() / 3;
+        int height = base_image.getHeight() / 3;
+        Vector2f centeredPosition = new Vector2f(position.x + width / 2.f, position.y + height / 2.f);
+        collisionModel = new CollisionModel(centeredPosition, width, height);
+        collisionModel.update(0);
     }
 
     @Override
-    public void update(int deltaTime) {
+    public void update(GameContainer gc, int deltaTime) {
         base_image.rotate(-0.1f * deltaTime);
     }
 
     @Override
-    public void draw() {
+    public void draw(Graphics graphics) {
         base_image.drawCentered(position.x, position.y);
     }
 }

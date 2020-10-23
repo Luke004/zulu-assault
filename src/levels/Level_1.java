@@ -415,12 +415,12 @@ public class Level_1 extends AbstractLevel implements GameState {
     }
 
     @Override
-    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) {
-        super.update(gameContainer, stateBasedGame, i);
+    public void update(GameContainer gc, StateBasedGame stateBasedGame, int i) {
+        super.update(gc, stateBasedGame, i);
 
-        if (gameContainer.getInput().isKeyPressed(Input.KEY_BACK)) {
+        if (gc.getInput().isKeyPressed(Input.KEY_BACK)) {
             try {
-                stateBasedGame.getState(ZuluAssault.LEVEL_2).init(gameContainer, stateBasedGame);
+                stateBasedGame.getState(ZuluAssault.LEVEL_2).init(gc, stateBasedGame);
                 stateBasedGame.enterState(ZuluAssault.LEVEL_2,
                         new FadeOutTransition(), new FadeInTransition());
             } catch (SlickException e) {

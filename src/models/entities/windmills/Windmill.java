@@ -35,10 +35,6 @@ public abstract class Windmill extends StaticEntity {
         health_bar_position.y = position.y - 35.f;
     }
 
-    public void init() {
-        super.init();
-    }
-
     @Override
     public void update(GameContainer gc, int deltaTime) {
         super.update(gc, deltaTime);

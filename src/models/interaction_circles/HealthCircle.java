@@ -1,5 +1,7 @@
 package models.interaction_circles;
 
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
@@ -18,14 +20,14 @@ public class HealthCircle extends InteractionCircle {
     }
 
     @Override
-    public void update(int deltaTime) {
-        super.update(deltaTime);
+    public void update(GameContainer gc, int deltaTime) {
+        super.update(gc, deltaTime);
         outerCircle.rotate(0.2f * deltaTime);
     }
 
     @Override
-    public void draw() {
-        super.draw();
+    public void draw(Graphics graphics) {
+        super.draw(graphics);
         outerCircle.drawCentered(position.x, position.y);
     }
 

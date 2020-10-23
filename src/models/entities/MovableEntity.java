@@ -21,13 +21,6 @@ import static levels.AbstractLevel.all_movable_entities;
 import static levels.AbstractLevel.hostile_movable_entities;
 
 public abstract class MovableEntity extends Entity {
-    // listener
-    protected EntityDeleteListener level_delete_listener;
-    // model related
-    public Image base_image;
-    public CollisionModel collisionModel;
-    public int WIDTH_HALF, HEIGHT_HALF;
-    private Vector2f health_bar_offset;
 
     // drivable related
     public Animation drivable_animation;
@@ -36,18 +29,17 @@ public abstract class MovableEntity extends Entity {
 
     // math related
     public Vector2f dir;
+    public float current_speed;
 
     // way-points related
     public WayPointManager waypointManager;
 
     // specs related
     public static final float DAMAGE_TO_DESTRUCTIBLE_TILE = 5.f;
-    public float current_speed;
     private static final float TURRET_ROTATE_SPEED_PLAYER = 0.2f, TURRET_ROTATE_SPEED_BOT = 0.07f;
 
     // booleans
     protected boolean isMoving, isMovingForward, isDrivable, canTeleport;
-
 
     // invincibility item related
     public boolean isInvincible, invincibility_animation_switch;
@@ -86,7 +78,6 @@ public abstract class MovableEntity extends Entity {
             initAccessibleAnimation();
             weapons.add(new MegaPulse(isDrivable));  // add the MEGA_PULSE (special item)
         }
-        health_bar_offset = new Vector2f(30.f, base_image.getHeight() / 2.f + 20.f);
         super.init();
     }
 
@@ -94,15 +85,10 @@ public abstract class MovableEntity extends Entity {
     public void update(GameContainer gc, int deltaTime) {
         super.update(gc, deltaTime);
 
-        //System.out.println("canTeleport: " +canTeleport);
-
         // GRAPHICS RELATED STUFF
         if (show_drivable_animation) {
             drivable_animation.update(deltaTime);
         }
-
-        health_bar_position.x = position.x - health_bar_offset.x;
-        health_bar_position.y = position.y - health_bar_offset.y;
 
         // COLLISION RELATED STUFF
         collisionModel.update(base_image.getRotation());
@@ -204,10 +190,6 @@ public abstract class MovableEntity extends Entity {
         float yVal = (float) (Math.sin(((base_image.getRotation()) * Math.PI) / 180) * SPAWN_X
                 + Math.cos(((base_image.getRotation()) * Math.PI) / 180) * SPAWN_Y);
         return new Vector2f(xVal + position.x, yVal + position.y);
-    }
-
-    public CollisionModel getCollisionModel() {
-        return collisionModel;
     }
 
     public boolean isHostile() {
@@ -322,4 +304,5 @@ public abstract class MovableEntity extends Entity {
     public enum Direction {
         FORWARD, BACKWARDS
     }
+
 }

@@ -1,13 +1,14 @@
 package level_editor;
 
 import graphics.fonts.FontManager;
+import level_editor.toolbar.Toolbar;
 import logic.Camera;
 import main.ZuluAssault;
+import models.Element;
 import models.entities.Entity;
 import models.entities.tanks.CannonTank;
-import models.items.Item;
+import models.interaction_circles.HealthCircle;
 import org.newdawn.slick.*;
-import org.newdawn.slick.font.effects.ShadowEffect;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -18,20 +19,15 @@ import java.util.List;
 
 public class LevelEditor extends BasicGameState {
 
-    List<Entity> entities;
-    List<Item> items;
+    List<Element> elements;
 
-    Entity currentEntity;
-
-    private static final float TOOLBAR_WIDTH_PERCENTAGE = 0.2f;
+    Element selectedElement;
 
     private static final String title_string;
     private static TrueTypeFont title_string_drawer;
 
     // helper vars
     private int titleHeight;    // absolute width of the title
-    private float toolbarX;     // starting value of the toolbar's X coordinate
-    private int toolbarWidth;     // absolute width of the toolbar
 
     // map coords
     private float mapX, mapY;
@@ -39,6 +35,7 @@ public class LevelEditor extends BasicGameState {
 
     private static final float MOVE_SPEED = 0.3f;
 
+    private Toolbar toolbar;
     private Camera camera;
 
     static {
@@ -46,18 +43,16 @@ public class LevelEditor extends BasicGameState {
     }
 
     public LevelEditor() {
-        entities = new ArrayList<>();
-        items = new ArrayList<>();
+        elements = new ArrayList<>();
     }
 
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         title_string_drawer = FontManager.getStencilBigFont();
-
         titleHeight = title_string_drawer.getHeight(title_string) - 7;
-        toolbarX = gc.getWidth() - gc.getWidth() * TOOLBAR_WIDTH_PERCENTAGE;
-        toolbarWidth = (int) (gc.getWidth() * TOOLBAR_WIDTH_PERCENTAGE);
+
+        toolbar = new Toolbar(titleHeight + 1, gc);
 
         TiledMap map = new TiledMap("assets/maps/level_1.tmx");
 
@@ -68,10 +63,10 @@ public class LevelEditor extends BasicGameState {
         mapY = mapHeight / 2.f;
         //camera.centerOn(mapX, mapY);
 
-        entities.add(new CannonTank(new Vector2f(100, 100), false, true));
+        //entities.add(new CannonTank(new Vector2f(100, 100), false, true));
 
-        currentEntity = new CannonTank(new Vector2f(0, 0), false, false);
-        currentEntity.base_image.setAlpha(0.7f);
+        selectedElement = new CannonTank(new Vector2f(0, 0), false, false);
+        selectedElement.base_image.setAlpha(0.7f);
     }
 
     @Override
@@ -80,10 +75,12 @@ public class LevelEditor extends BasicGameState {
         camera.translateGraphics();
         // draw all instances that are moving with the map (ENTITIES, ITEMS, CIRCLES etc..) below
 
-        // draw entities
-        for (Entity entity : entities) {
-            entity.draw(graphics);
+        // draw placed elements
+
+        for (Element element : elements) {
+            element.draw(graphics);
         }
+
 
         camera.untranslateGraphics();
         // draw all instances that are static above the map (HUD) below
@@ -104,20 +101,19 @@ public class LevelEditor extends BasicGameState {
                 Color.lightGray
         );
 
-        // element toolbar
-        graphics.setColor(Color.black);
-        graphics.fillRect(toolbarX, titleHeight + 1, toolbarWidth, gc.getHeight());
-        graphics.setColor(Color.lightGray);
-        graphics.drawLine(toolbarX, titleHeight + 1, gc.getWidth() - toolbarWidth, gc.getHeight());
+        toolbar.draw(gc, graphics);
 
+        if (isMouseInEditor(gc)) {
+            if (selectedElement != null)
+                selectedElement.draw(graphics);
+        }
 
-        currentEntity.draw(graphics);
 
     }
 
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int dt) {
-        camera.centerOn(mapX, mapY, gc.getHeight(), gc.getWidth(), toolbarWidth);
+        camera.centerOn(mapX, mapY, gc.getHeight(), gc.getWidth(), toolbar.getWidth());
 
         // move the map using keys
         if (gc.getInput().isKeyDown(Input.KEY_UP) || gc.getInput().isKeyDown(Input.KEY_W)) {
@@ -134,20 +130,29 @@ public class LevelEditor extends BasicGameState {
         }
         if (gc.getInput().isKeyDown(Input.KEY_RIGHT) || gc.getInput().isKeyDown(Input.KEY_D)) {
             mapX += MOVE_SPEED * dt;
-            if (mapX > mapWidth - gc.getWidth() + toolbarWidth) mapX = mapWidth - gc.getWidth() + toolbarWidth;
+            if (mapX > mapWidth - gc.getWidth() + toolbar.getWidth())
+                mapX = mapWidth - gc.getWidth() + toolbar.getWidth();
         }
 
         if (gc.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-            System.out.println(gc.getInput().getMouseX());
-            entities.add(new CannonTank(new Vector2f(mapX + gc.getInput().getMouseX(), mapY + gc.getInput().getMouseY()),
-                    true, false));
+            if (selectedElement != null) {
+                selectedElement.base_image.setAlpha(1.f);
+                //entities.add((Entity) Entity.deepCopy(currentEntity));
 
+            }
         }
 
-        currentEntity.position.x = gc.getInput().getMouseX();
-        currentEntity.position.y = gc.getInput().getMouseY();
+        if (selectedElement != null) {
+            selectedElement.update(gc, dt);
+            selectedElement.getPosition().x = gc.getInput().getMouseX();
+            selectedElement.getPosition().y = gc.getInput().getMouseY();
+        }
 
 
+    }
+
+    private boolean isMouseInEditor(GameContainer gc) {
+        return (gc.getInput().getMouseX() < toolbar.getX() && gc.getInput().getMouseY() > titleHeight);
     }
 
     @Override

@@ -1,6 +1,9 @@
 package models.entities;
 
 import logic.WayPointManager;
+import logic.level_listeners.EntityDeleteListener;
+import models.CollisionModel;
+import models.Element;
 import models.entities.robots.RocketRobot;
 import models.entities.tanks.XTank;
 import models.weapons.Weapon;
@@ -8,22 +11,32 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Entity {
+public abstract class Entity extends Element {
+
     protected List<Weapon> weapons;
     private Image health_bar_image;
     protected Vector2f health_bar_position;
+
     // specs related
     protected static final float MAX_HEALTH = 100;
     protected float current_health;
     public boolean isHostile, isDestroyed;
-    public Vector2f position;
     private boolean isMandatory;
     protected boolean isEnemyNear;
+
     // graphics related
     private static Texture health_bar_texture_enemy, health_bar_texture_friendly;
+
+    // model related
+    public int WIDTH_HALF, HEIGHT_HALF;
+    private Vector2f health_bar_offset;
+
+    // listener
+    protected EntityDeleteListener level_delete_listener;
 
     public Entity(Vector2f startPos, boolean isHostile) {
         this.isHostile = isHostile;
@@ -53,16 +66,23 @@ public abstract class Entity {
     }
 
     public void init() {
-
+        health_bar_offset = new Vector2f(base_image.getWidth() - 5.f, base_image.getHeight() / 2.f + 10.f);
+        health_bar_position.x = position.x - health_bar_offset.x;
+        health_bar_position.y = position.y - health_bar_offset.y;
     }
 
+    @Override
     public void update(GameContainer gc, int deltaTime) {
         // BULLETS
         for (Weapon weapon : weapons) {
             weapon.update(deltaTime);
         }
+
+        health_bar_position.x = position.x - health_bar_offset.x;
+        health_bar_position.y = position.y - health_bar_offset.y;
     }
 
+    @Override
     public void draw(Graphics graphics) {
         // BULLETS
         for (Weapon weapon : weapons) {
@@ -171,10 +191,6 @@ public abstract class Entity {
         return weapons;
     }
 
-    public Vector2f getPosition() {
-        return position;
-    }
-
     protected void changeHealth(float amount, float armor) {
         if (amount < 0) {
             // damage
@@ -212,4 +228,5 @@ public abstract class Entity {
     public boolean isMandatory() {
         return this.isMandatory;
     }
+
 }

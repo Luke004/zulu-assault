@@ -1,16 +1,20 @@
 package models.items;
 
-import models.StaticCollisionEntity;
+import models.CollisionModel;
+import models.Element;
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
 
-public abstract class Item extends StaticCollisionEntity {
+public abstract class Item extends Element {
 
-    protected Animation animation;
+    public Animation animation;
     private final static int IMAGE_WIDTH_AND_HEIGHT = 40;
 
     public Item(Vector2f position) {
-        super(position);
+        this.position = position;
     }
 
     protected void init(final int IMAGE_COUNT) {
@@ -22,17 +26,28 @@ public abstract class Item extends StaticCollisionEntity {
             x += IMAGE_WIDTH_AND_HEIGHT;
         }
         animation.setLooping(true);
-        initCollisionModel(IMAGE_WIDTH_AND_HEIGHT / 2, IMAGE_WIDTH_AND_HEIGHT / 2);
+
+        // init the collision model and center its position
+        int width = IMAGE_WIDTH_AND_HEIGHT / 2;
+        int height = IMAGE_WIDTH_AND_HEIGHT / 2;
+        Vector2f centeredPosition = new Vector2f(position.x + width / 2.f, position.y + height / 2.f);
+        collisionModel = new CollisionModel(centeredPosition, width, height);
+        collisionModel.update(0);
     }
 
     @Override
-    public void draw() {
+    public void draw(Graphics graphics) {
         this.animation.draw(position.x, position.y);
     }
 
     @Override
-    public void update(int deltaTime) {
+    public void update(GameContainer gc, int deltaTime) {
         this.animation.update(deltaTime);
+    }
+
+    @Override
+    public Image getBaseImage() {
+        return this.animation.getImage(0);
     }
 
     abstract public String getName();
