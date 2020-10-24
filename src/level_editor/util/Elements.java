@@ -35,9 +35,9 @@ public class Elements {
                 "ExpandItem",
                 "HealthCircle",             // CIRCLES (2)
                 "TeleportCircle",
-              //  "WindmillGreen",            // ENTITIES (20)
-              //  "WindmillGrey",
-           //     "WindmillYellow",
+                //  "WindmillGreen",            // ENTITIES (20)
+                //  "WindmillGrey",
+                //     "WindmillYellow",
                 "MemeCar",
                 "CannonTank",
                 "RocketTank",
@@ -63,6 +63,46 @@ public class Elements {
         return allElements;
     }
 
+    public static String[] getAllItems() {
+        return new String[]{
+                allElements[0],
+                allElements[1],
+                allElements[2],
+                allElements[3],
+                allElements[4],
+                allElements[5],
+        };
+    }
+
+    public static String[] getAllCircles() {
+        return new String[]{
+                allElements[6],
+                allElements[7]
+        };
+    }
+
+    public static String[] getAllEntities() {
+        return new String[]{
+                allElements[8],
+                allElements[9],
+                allElements[10],
+                allElements[11],
+                allElements[12],
+                allElements[13],
+                allElements[14],
+                allElements[15],
+                allElements[16],
+                allElements[17],
+                allElements[18],
+                allElements[19],
+                allElements[20],
+                allElements[21],
+                allElements[22],
+                allElements[23],
+                allElements[24],
+        };
+    }
+
     public static Element getCopyByName(String name) {
         Vector2f pos = new Vector2f(0, 0);
         switch (name) {
@@ -82,12 +122,12 @@ public class Elements {
                 return new HealthCircle(pos);
             case "TeleportCircle":
                 return new TeleportCircle(pos);
-       //     case "WindmillGreen":
-       //        return new WindmillGreen(pos, true, null);
-      //      case "WindmillGrey":
-      //          return new WindmillGrey(pos, true, null);
-    //        case "WindmillYellow":
-      //          return new WindmillYellow(pos, true, null);
+            //     case "WindmillGreen":
+            //        return new WindmillGreen(pos, true, null);
+            //      case "WindmillGrey":
+            //          return new WindmillGrey(pos, true, null);
+            //        case "WindmillYellow":
+            //          return new WindmillYellow(pos, true, null);
             case "MemeCar":
                 return new MemeCar(pos, false, false);
             case "CannonTank":

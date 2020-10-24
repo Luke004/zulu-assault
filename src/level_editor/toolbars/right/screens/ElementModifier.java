@@ -3,7 +3,6 @@ package level_editor.toolbars.right.screens;
 import level_editor.toolbars.right.RightToolbar;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.state.StateBasedGame;
 
 public class ElementModifier extends ToolbarScreen {
 
@@ -19,7 +18,7 @@ public class ElementModifier extends ToolbarScreen {
     }
 
     @Override
-    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+    public void update(GameContainer gameContainer) {
 
     }
 

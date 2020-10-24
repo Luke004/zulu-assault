@@ -2,6 +2,7 @@ package level_editor;
 
 import audio.MenuSounds;
 import graphics.fonts.FontManager;
+import level_editor.toolbars.Toolbar;
 import level_editor.toolbars.bottom.BottomToolbar;
 import level_editor.toolbars.right.RightToolbar;
 import level_editor.util.Elements;
@@ -56,9 +57,11 @@ public class LevelEditor extends BasicGameState {
             if (selectedElement instanceof MovableEntity) {
                 MovableEntity movableEntity = (MovableEntity) selectedElement;
                 movableEntity.setRotation(movableEntity.getRotation() + change);
-            } else {
+            }
+            /* else {   // should not allow: rotation of items and circles
                 selectedElement.getBaseImage().rotate(change);
             }
+             */
         }
     }
 
@@ -96,8 +99,9 @@ public class LevelEditor extends BasicGameState {
         title_string_drawer = FontManager.getStencilBigFont();
         //titleHeight = title_string_drawer.getHeight(title_string) - 7;
 
+        Toolbar.Props.initMargin(gc.getWidth());
         rightToolbar = new RightToolbar(this, TITLE_RECT_HEIGHT + 1, gc);
-        bottomToolbar = new BottomToolbar(gc);
+        bottomToolbar = new BottomToolbar(rightToolbar, gc);
 
         TiledMap map = new TiledMap("assets/maps/level_1.tmx");
 
@@ -112,6 +116,9 @@ public class LevelEditor extends BasicGameState {
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int dt) {
         camera.centerOn(mapX, mapY, gc.getHeight(), gc.getWidth(), rightToolbar.getWidth(), TITLE_RECT_HEIGHT, bottomToolbar.getHeight());
+
+        rightToolbar.update(gc);
+        bottomToolbar.update(gc);
 
         // move the map using keys
         if (gc.getInput().isKeyDown(Input.KEY_UP) || gc.getInput().isKeyDown(Input.KEY_W)) {

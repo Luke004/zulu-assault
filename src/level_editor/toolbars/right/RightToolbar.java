@@ -2,9 +2,7 @@ package level_editor.toolbars.right;
 
 import level_editor.LevelEditor;
 import level_editor.toolbars.Toolbar;
-import level_editor.toolbars.right.screens.ElementModifier;
-import level_editor.toolbars.right.screens.ElementSelector;
-import level_editor.toolbars.right.screens.iToolbarScreens;
+import level_editor.toolbars.right.screens.*;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -18,8 +16,11 @@ public class RightToolbar extends Toolbar {
     // ALL DIFFERENT SCREENS OF THE TOOLBAR
     private iToolbarScreens[] screens;
 
-    public static final int SCREEN_SELECT_ELEMENT = 0,
-            SCREEN_MODIFY_ELEMENT = 1;
+    public static final int SCREEN_ADD_ELEMENT = 0,
+            SCREEN_SELECT_ITEM = 1,
+            SCREEN_SELECT_ENTITY = 2,
+            SCREEN_SELECT_CIRCLE = 3,
+            SCREEN_MODIFY_ELEMENT = 4;
 
     private int current_screen, prev_screen;
 
@@ -30,11 +31,14 @@ public class RightToolbar extends Toolbar {
         toolbarHeight = gc.getHeight();
 
         // init all toolbar screens
-        screens = new iToolbarScreens[2];
-        screens[SCREEN_SELECT_ELEMENT] = new ElementSelector(this, levelEditor);
+        screens = new iToolbarScreens[5];
+        screens[SCREEN_ADD_ELEMENT] = new SpecifyElement(this);
+        screens[SCREEN_SELECT_ITEM] = new ItemSelector(this, levelEditor);
+        screens[SCREEN_SELECT_ENTITY] = new EntitySelector(this, levelEditor);
+        screens[SCREEN_SELECT_CIRCLE] = new CircleSelector(this, levelEditor);
         screens[SCREEN_MODIFY_ELEMENT] = new ElementModifier(this);
 
-        setState(SCREEN_SELECT_ELEMENT);
+        setScreen(SCREEN_ADD_ELEMENT);
     }
 
     @Override
@@ -44,6 +48,7 @@ public class RightToolbar extends Toolbar {
         }
     }
 
+    @Override
     public void draw(GameContainer gc, Graphics graphics) {
         super.draw(gc, graphics);
         graphics.setColor(Color.lightGray);
@@ -52,9 +57,18 @@ public class RightToolbar extends Toolbar {
         screens[current_screen].render(gc, graphics);
     }
 
-    private void setState(int stateID) {
+    @Override
+    public void update(GameContainer gc) {
+        screens[current_screen].update(gc);
+    }
+
+    public void setScreen(int stateID) {
         prev_screen = current_screen;
         current_screen = stateID;
+    }
+
+    public void goToLastScreen() {
+        current_screen = prev_screen;
     }
 
 }

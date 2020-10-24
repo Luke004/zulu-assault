@@ -1,0 +1,91 @@
+package level_editor.toolbars.right.screens;
+
+import audio.MenuSounds;
+import level_editor.toolbars.Toolbar;
+import level_editor.toolbars.elements.Button;
+import level_editor.toolbars.right.RightToolbar;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.state.StateBasedGame;
+import settings.UserSettings;
+
+public class SpecifyElement extends ToolbarScreen {
+
+    private static final String title = "SPECIFY ELEMENT";
+
+    private Button[] buttons;
+
+    public SpecifyElement(RightToolbar rightToolbar) {
+        super(rightToolbar, title);
+
+        final int BUTTON_AMOUNT = 4;
+        // define the area that the buttons can spread on the y-axis
+        final int BUTTON_AREA_HEIGHT = rightToolbar.getHeight() / 4;
+
+        int button_width_margin = Toolbar.Props.calcMargin(rightToolbar.getWidth(), 0.2f, 1);
+        int button_width = Toolbar.Props.calcRectSize(rightToolbar.getWidth(), 0.2f, 1);
+        int button_height_margin = Toolbar.Props.calcMargin(BUTTON_AREA_HEIGHT, 0.4f, BUTTON_AMOUNT);
+        int button_height = Toolbar.Props.calcRectSize(BUTTON_AREA_HEIGHT, 0.4f, BUTTON_AMOUNT);
+
+        buttons = new Button[BUTTON_AMOUNT];
+        buttons[0] = new Button("ITEM",
+                startX + button_width_margin,
+                startY,
+                button_width,
+                button_height);
+        buttons[1] = new Button("ENTITY",
+                startX + button_width_margin,
+                startY + button_height + button_height_margin,
+                button_width,
+                button_height);
+        buttons[2] = new Button("CIRCLE",
+                startX + button_width_margin,
+                startY + (button_height + button_height_margin) * 2,
+                button_width,
+                button_height);
+        buttons[3] = new Button("WAYPOINT",
+                startX + button_width_margin,
+                startY + (button_height + button_height_margin) * 3,
+                button_width,
+                button_height);
+    }
+
+    @Override
+    public void render(GameContainer gc, Graphics graphics) {
+        super.render(gc, graphics);
+        for (Button b : buttons) {
+            b.draw(graphics);
+        }
+    }
+
+    @Override
+    public void update(GameContainer gc) {
+        for (Button b : buttons) {
+            b.update(gc);
+        }
+    }
+
+    @Override
+    public void onMouseClick(int mouseX, int mouseY) {
+        for (Button b : buttons) {
+            if (b.isMouseOver(mouseX, mouseY)) {
+                MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
+                switch (b.getName()) {
+                    case "ITEM":
+                        rightToolbar.setScreen(RightToolbar.SCREEN_SELECT_ITEM);
+                        break;
+                    case "ENTITY":
+                        rightToolbar.setScreen(RightToolbar.SCREEN_SELECT_ENTITY);
+                        break;
+                    case "CIRCLE":
+                        rightToolbar.setScreen(RightToolbar.SCREEN_SELECT_CIRCLE);
+                        break;
+                    case "WAYPOINT":
+                        //rightToolbar.setScreen(RightToolbar.SCREEN_SELECT_ITEM);
+                        break;
+                }
+                break;
+            }
+        }
+    }
+}

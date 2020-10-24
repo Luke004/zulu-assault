@@ -2,6 +2,8 @@ package level_editor.toolbars.right.screens;
 
 import audio.MenuSounds;
 import level_editor.LevelEditor;
+import level_editor.toolbars.Toolbar;
+import level_editor.toolbars.elements.Button;
 import level_editor.toolbars.right.RightToolbar;
 import level_editor.util.Elements;
 import models.Element;
@@ -14,37 +16,59 @@ import settings.UserSettings;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ElementSelector extends ToolbarScreen {
-
-    private static final String title = "SELECT ELEMENT";
+public abstract class ElementSelector extends ToolbarScreen {
 
     private LevelEditor levelEditor;
 
-    private static final int SELECTOR_SQUARES_PER_ROW = 4;
+    protected List<SelectorSquare> selectorSquareList;
 
-    private List<SelectorSquare> selectorSquareList;
+    // "back" - button
+    private Button backButton;
+    private int backButtonStartY;
 
-    public ElementSelector(RightToolbar rightToolbar, LevelEditor levelEditor) {
+    public ElementSelector(RightToolbar rightToolbar, LevelEditor levelEditor, String title) {
         super(rightToolbar, title);
         this.levelEditor = levelEditor;
         selectorSquareList = new ArrayList<>();
-
-        SelectorSquare.calcSize(rightToolbar.getWidth());
-
-        startX += SelectorSquare.margin;
-        startY += SelectorSquare.margin;
-
-        // init the selector square list with all elements
-        String[] allElements = Elements.getAllElements();
-        for (String allElement : allElements) {
-            selectorSquareList.add(new SelectorSquare(Elements.getCopyByName(allElement), startX, startY));
-        }
-
+        initSelectorSquareList(getElementNames());
+        backButton = new Button("BACK",
+                startX + Toolbar.Props.calcMargin(rightToolbar.getWidth(), 0.5f, 1),
+                backButtonStartY + Toolbar.Props.DEFAULT_MARGIN,
+                Toolbar.Props.calcRectSize(rightToolbar.getWidth(), 0.5f, 1),
+                Toolbar.Props.calcRectSize(rightToolbar.getHeight() / 14, 0.5f, 1)
+        );
     }
 
-    @Override
-    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+    protected abstract String[] getElementNames();
 
+    protected void initSelectorSquareList(String[] elementNames) {
+        final int SELECTOR_SQUARES_PER_ROW = 4;
+        int rowIdx = 0;
+
+        int marginX = Toolbar.Props.calcMargin(rightToolbar.getWidth(), 0.3f, SELECTOR_SQUARES_PER_ROW);
+        int size = Toolbar.Props.calcRectSize(rightToolbar.getWidth(), 0.3f, SELECTOR_SQUARES_PER_ROW);
+
+        int currentX = rightToolbar.getX() + marginX;
+        int currentY = startY;
+        backButtonStartY = startY;
+
+        for (String s_element : elementNames) {
+            selectorSquareList.add(new SelectorSquare(Elements.getCopyByName(s_element),
+                    currentX,
+                    currentY,
+                    size
+            ));
+            if (rowIdx < SELECTOR_SQUARES_PER_ROW - 1) {
+                currentX += size + marginX;
+                rowIdx++;
+            } else {
+                currentX = rightToolbar.getX() + marginX;
+                currentY += size + marginX;
+                rowIdx = 0;
+            }
+        }
+        // tell the back button on which y coordinate the last selector square was drawn, so it can go below it
+        backButtonStartY = selectorSquareList.get(selectorSquareList.size() - 1).yPos + size + marginX;
     }
 
     @Override
@@ -53,6 +77,12 @@ public class ElementSelector extends ToolbarScreen {
         for (SelectorSquare selectorSquare : selectorSquareList) {
             selectorSquare.draw(graphics);
         }
+        backButton.draw(graphics);
+    }
+
+    @Override
+    public void update(GameContainer gc) {
+        backButton.update(gc);
     }
 
     @Override
@@ -61,44 +91,30 @@ public class ElementSelector extends ToolbarScreen {
             if (selectorSquare.clicked(mouseX, mouseY)) {
                 MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
                 levelEditor.setSelectedElement(selectorSquare.getElement());
-                break;
+                return;
             }
+        }
+
+        if (backButton.isMouseOver(mouseX, mouseY)) {
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
+            rightToolbar.goToLastScreen();
+            // return;  // activate, if new code is added below
         }
     }
 
+    protected static class SelectorSquare {
 
-    private static class SelectorSquare {
-
-        private static int size;
-        private static int margin;
-        private static final float RELATIVE_MARGIN = 0.2f;
-        private static int sizeAndMargin;
-
+        private int size;
         private Element element;
         private int xPos, yPos;
 
-        private static int rowIdx = 0;
-        private static int colIdx = 0;
-
-        SelectorSquare(Element element, int startX, int startY) {
+        SelectorSquare(Element element, int startX, int startY, int size) {
             this.element = element;
-            this.xPos = startX + rowIdx * sizeAndMargin;
-            this.yPos = startY + margin + colIdx * sizeAndMargin;
+            this.xPos = startX;
+            this.yPos = startY;
+            this.size = size;
 
             this.element.setPosition(new Vector2f(xPos, yPos));
-
-            if (rowIdx < SELECTOR_SQUARES_PER_ROW - 1) {
-                rowIdx++;
-            } else {
-                rowIdx = 0;
-                colIdx++;
-            }
-        }
-
-        public static void calcSize(int toolbarWidth) {
-            margin = (int) (toolbarWidth / (SELECTOR_SQUARES_PER_ROW + 1) * RELATIVE_MARGIN);
-            size = (toolbarWidth - (SELECTOR_SQUARES_PER_ROW + 1) * margin) / SELECTOR_SQUARES_PER_ROW;
-            sizeAndMargin = margin + size;
         }
 
         void draw(Graphics graphics) {
@@ -115,6 +131,5 @@ public class ElementSelector extends ToolbarScreen {
         }
 
     }
-
 
 }

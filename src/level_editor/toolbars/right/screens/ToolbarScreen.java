@@ -1,22 +1,23 @@
 package level_editor.toolbars.right.screens;
 
 import graphics.fonts.FontManager;
+import level_editor.toolbars.Toolbar;
 import level_editor.toolbars.right.RightToolbar;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.TrueTypeFont;
 
+
 public abstract class ToolbarScreen implements iToolbarScreens {
 
-    private static final int MARGIN = 5;
-
     private String title_string;
-    private static TrueTypeFont title_string_drawer;
+    protected static TrueTypeFont title_string_drawer;
 
     protected int startX, startY;
 
-    private int titleStringX;
+    private int titleStringX, titleStringY;
+    private int lineY;
 
     protected RightToolbar rightToolbar;
 
@@ -28,15 +29,19 @@ public abstract class ToolbarScreen implements iToolbarScreens {
         this.rightToolbar = rightToolbar;
         this.title_string = title;
 
-        startX = (int) rightToolbar.getX();
-        startY = (int) rightToolbar.getY() + title_string_drawer.getHeight(title_string);
+        lineY = rightToolbar.getY() + title_string_drawer.getHeight(title_string) + Toolbar.Props.DEFAULT_MARGIN;
+
+        startX = rightToolbar.getX();
+        startY = lineY + Toolbar.Props.DEFAULT_MARGIN * 2;
 
         titleStringX = startX + rightToolbar.getWidth() / 2 - title_string_drawer.getWidth(title_string) / 2;
+        titleStringY = (rightToolbar.getY() + (lineY - rightToolbar.getY()) / 2 - title_string_drawer.getHeight(title_string) / 2);
     }
 
     @Override
     public void render(GameContainer gameContainer, Graphics graphics) {
-        title_string_drawer.drawString(titleStringX, rightToolbar.getY() + MARGIN, title_string, Color.lightGray);
+        title_string_drawer.drawString(titleStringX, titleStringY, title_string, Color.lightGray);
+        graphics.drawLine(startX, lineY, gameContainer.getWidth(), lineY);
     }
 
 }
