@@ -35,8 +35,9 @@ public class LevelEditor extends BasicGameState {
     // map coords
     private float mapX, mapY;
     private int mapWidth, mapHeight;
+    private int prevMouseX, prevMouseY, mouseSlideX, mouseSlideY;   // to slide the map using mouse's right key
 
-    private static final float MOVE_SPEED = 0.3f;
+    private static final float MOVE_SPEED = 0.3f, SCROLL_SPEED = 0.8f;
 
     private RightToolbar rightToolbar;
     private BottomToolbar bottomToolbar;
@@ -62,6 +63,24 @@ public class LevelEditor extends BasicGameState {
                 selectedElement.getBaseImage().rotate(change);
             }
              */
+        }
+    }
+
+    @Override
+    public void mousePressed(int button, int mouseX, int mouseY) {
+        if (button == Input.MOUSE_RIGHT_BUTTON) {
+            prevMouseX = mouseX;
+            prevMouseY = mouseY;
+        }
+    }
+
+    @Override
+    public void mouseReleased(int button, int mouseX, int mouseY) {
+        if (button == Input.MOUSE_RIGHT_BUTTON) {
+            mapX = mapX - mouseSlideX;
+            mapY = mapY - mouseSlideY;
+            mouseSlideX = 0;
+            mouseSlideY = 0;
         }
     }
 
@@ -115,7 +134,9 @@ public class LevelEditor extends BasicGameState {
 
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int dt) {
-        camera.centerOn(mapX, mapY, gc.getHeight(), gc.getWidth(), rightToolbar.getWidth(), TITLE_RECT_HEIGHT, bottomToolbar.getHeight());
+        camera.centerOn(mapX - mouseSlideX,
+                mapY - mouseSlideY,
+                gc.getHeight(), gc.getWidth(), rightToolbar.getWidth(), TITLE_RECT_HEIGHT, bottomToolbar.getHeight());
 
         rightToolbar.update(gc);
         bottomToolbar.update(gc);
@@ -140,6 +161,12 @@ public class LevelEditor extends BasicGameState {
             if (mapX > mapWidth - gc.getWidth() + rightToolbar.getWidth()) {
                 mapX = mapWidth - gc.getWidth() + rightToolbar.getWidth();
             }
+        }
+
+        // slide the map while right mouse key is pressed
+        if (gc.getInput().isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON)) {
+            mouseSlideX = gc.getInput().getMouseX() - prevMouseX;
+            mouseSlideY = gc.getInput().getMouseY() - prevMouseY;
         }
 
         if (selectedElement != null) {
