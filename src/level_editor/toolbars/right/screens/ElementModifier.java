@@ -1,6 +1,6 @@
-package level_editor.toolbar.screens;
+package level_editor.toolbars.right.screens;
 
-import level_editor.toolbar.Toolbar;
+import level_editor.toolbars.right.RightToolbar;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
@@ -9,8 +9,8 @@ public class ElementModifier extends ToolbarScreen {
 
     private static final String title = "MODIFY ELEMENT";
 
-    public ElementModifier(Toolbar toolbar) {
-        super(toolbar, title);
+    public ElementModifier(RightToolbar rightToolbar) {
+        super(rightToolbar, title);
     }
 
     @Override
@@ -24,7 +24,7 @@ public class ElementModifier extends ToolbarScreen {
     }
 
     @Override
-    public void onMouseClick(GameContainer gc, StateBasedGame sbg, int mouseX, int mouseY) {
+    public void onMouseClick(int mouseX, int mouseY) {
 
 
     }

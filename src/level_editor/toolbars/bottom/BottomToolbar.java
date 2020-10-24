@@ -1,78 +1,79 @@
-package level_editor.toolbars.right;
+package level_editor.toolbars.bottom;
 
-import level_editor.LevelEditor;
-import level_editor.toolbars.right.screens.ElementModifier;
-import level_editor.toolbars.right.screens.ElementSelector;
-import level_editor.toolbars.right.screens.iToolbarState;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.state.StateBasedGame;
+import level_editor.toolbars.Toolbar;
+import level_editor.toolbars.elements.Button;
+import org.newdawn.slick.*;
 
 
-public class RightToolbar {
+public class BottomToolbar extends Toolbar {
 
-    private static final float TOOLBAR_WIDTH_PERCENTAGE = 0.2f;     // size in % of screen width
+    // buttons
+    private Button[] buttons;
 
-    private float toolbarX;     // starting value of the toolbar's X coordinate
-    private float toolbarY;
-    private int toolbarWidth;     // absolute width of the toolbar
+    public BottomToolbar(GameContainer gc) {
+        toolbarHeight = gc.getHeight() / 17;
+        toolbarWidth = gc.getWidth();
+        toolbarX = 0;
+        toolbarY = gc.getHeight() - toolbarHeight;
 
-    // ALL DIFFERENT STATES OF THE TOOLBAR
-    private iToolbarState[] toolbars;
+        // create the four buttons
+        final int BUTTON_SIZE = 4;
 
-    public static final int STATE_SELECT_ELEMENT = 0,
-            STATE_MODIFY_ELEMENT = 1;
+        buttons = new Button[BUTTON_SIZE];
+        int button_margin_x = (int) (toolbarWidth / (BUTTON_SIZE + 1) * Button.RELATIVE_MARGIN_X);
+        int button_margin_y = (int) (toolbarHeight * Button.RELATIVE_MARGIN_Y);
+        int button_width = (toolbarWidth - (BUTTON_SIZE + 1) * button_margin_x) / BUTTON_SIZE;
+        int button_height = toolbarHeight - button_margin_y * 2;
+        int buttonY = toolbarY + button_margin_y;
 
-    private int current_state, prev_state;
+        buttons[0] = new Button("ADD",
+                button_margin_x,
+                buttonY,
+                button_width,
+                button_height);
 
-    public RightToolbar(LevelEditor levelEditor, int startingY, GameContainer gc) {
-        toolbarY = startingY;
-        toolbarX = gc.getWidth() - gc.getWidth() * TOOLBAR_WIDTH_PERCENTAGE;
-        toolbarWidth = (int) (gc.getWidth() * TOOLBAR_WIDTH_PERCENTAGE);
+        buttons[1] = new Button("SELECT",
+                button_width + button_margin_x * 2,
+                buttonY,
+                button_width,
+                button_height);
 
-        // init all toolbar screens
-        toolbars = new iToolbarState[2];
-        toolbars[STATE_SELECT_ELEMENT] = new ElementSelector(this, levelEditor);
-        toolbars[STATE_MODIFY_ELEMENT] = new ElementModifier(this);
+        buttons[2] = new Button("SAVE",
+                2 * button_width + button_margin_x * 3,
+                buttonY,
+                button_width,
+                button_height);
 
-        setState(STATE_SELECT_ELEMENT);
-    }
-
-    public void update(GameContainer gc, StateBasedGame sbg, int dt) {
-        if (gc.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-            toolbars[current_state].onMouseClick(gc, sbg, gc.getInput().getMouseX(), gc.getInput().getMouseY());
-        }
+        buttons[3] = new Button("EXIT",
+                3 * button_width + button_margin_x * 4,
+                buttonY,
+                button_width,
+                button_height);
     }
 
     public void draw(GameContainer gc, Graphics graphics) {
-        // background
-        graphics.setColor(Color.black);
-        graphics.fillRect(toolbarX, toolbarY, toolbarWidth, gc.getHeight());
+        super.draw(gc, graphics);
         graphics.setColor(Color.lightGray);
-        graphics.drawLine(toolbarX, toolbarY, gc.getWidth() - toolbarWidth, gc.getHeight());
+        graphics.drawLine(toolbarX, toolbarY, gc.getWidth(), toolbarY);
 
-        toolbars[current_state].render(gc, graphics);
-
+        for (Button b : buttons) {
+            b.draw(graphics);
+        }
     }
 
-    private void setState(int stateID) {
-        prev_state = current_state;
-        current_state = stateID;
+    @Override
+    public void onMouseClick(int button, int mouseX, int mouseY) {
+        for (Button b : buttons) {
+            if (b.clicked(mouseX, mouseY)) {
+                System.out.println("clicked " + b.getName());
+                break;
+            }
+        }
     }
 
 
-    public int getWidth() {
-        return toolbarWidth;
-    }
-
-    public float getX() {
-        return toolbarX;
-    }
-
-    public float getY() {
-        return toolbarY;
+    public int getHeight() {
+        return toolbarHeight;
     }
 
 }

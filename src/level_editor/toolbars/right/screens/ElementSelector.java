@@ -1,8 +1,8 @@
-package level_editor.toolbar.screens;
+package level_editor.toolbars.right.screens;
 
 import audio.MenuSounds;
 import level_editor.LevelEditor;
-import level_editor.toolbar.Toolbar;
+import level_editor.toolbars.right.RightToolbar;
 import level_editor.util.Elements;
 import models.Element;
 import org.newdawn.slick.GameContainer;
@@ -11,7 +11,6 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import settings.UserSettings;
 
-import javax.tools.Tool;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,14 +24,12 @@ public class ElementSelector extends ToolbarScreen {
 
     private List<SelectorSquare> selectorSquareList;
 
-    public ElementSelector(Toolbar toolbar, LevelEditor levelEditor) {
-        super(toolbar, title);
+    public ElementSelector(RightToolbar rightToolbar, LevelEditor levelEditor) {
+        super(rightToolbar, title);
         this.levelEditor = levelEditor;
         selectorSquareList = new ArrayList<>();
 
-        SelectorSquare.calcSize(toolbar.getWidth());
-
-        System.out.println("square size:" + SelectorSquare.size);
+        SelectorSquare.calcSize(rightToolbar.getWidth());
 
         startX += SelectorSquare.margin;
         startY += SelectorSquare.margin;
@@ -59,7 +56,7 @@ public class ElementSelector extends ToolbarScreen {
     }
 
     @Override
-    public void onMouseClick(GameContainer gc, StateBasedGame sbg, int mouseX, int mouseY) {
+    public void onMouseClick(int mouseX, int mouseY) {
         for (SelectorSquare selectorSquare : selectorSquareList) {
             if (selectorSquare.clicked(mouseX, mouseY)) {
                 MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
@@ -100,7 +97,7 @@ public class ElementSelector extends ToolbarScreen {
 
         public static void calcSize(int toolbarWidth) {
             margin = (int) (toolbarWidth / (SELECTOR_SQUARES_PER_ROW + 1) * RELATIVE_MARGIN);
-            size = (toolbarWidth - (SELECTOR_SQUARES_PER_ROW + 1) * margin) / 4;
+            size = (toolbarWidth - (SELECTOR_SQUARES_PER_ROW + 1) * margin) / SELECTOR_SQUARES_PER_ROW;
             sizeAndMargin = margin + size;
         }
 

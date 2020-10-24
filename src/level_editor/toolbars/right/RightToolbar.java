@@ -1,79 +1,60 @@
-package level_editor.toolbar;
+package level_editor.toolbars.right;
 
 import level_editor.LevelEditor;
-import level_editor.toolbar.screens.ElementModifier;
-import level_editor.toolbar.screens.ElementSelector;
-import level_editor.toolbar.screens.iToolbarState;
-import menu.screens.*;
+import level_editor.toolbars.Toolbar;
+import level_editor.toolbars.right.screens.ElementModifier;
+import level_editor.toolbars.right.screens.ElementSelector;
+import level_editor.toolbars.right.screens.iToolbarScreens;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.state.StateBasedGame;
 
 
-public class Toolbar {
+public class RightToolbar extends Toolbar {
 
     private static final float TOOLBAR_WIDTH_PERCENTAGE = 0.2f;     // size in % of screen width
 
-    private float toolbarX;     // starting value of the toolbar's X coordinate
-    private float toolbarY;
-    private int toolbarWidth;     // absolute width of the toolbar
+    // ALL DIFFERENT SCREENS OF THE TOOLBAR
+    private iToolbarScreens[] screens;
 
-    // ALL DIFFERENT STATES OF THE TOOLBAR
-    private iToolbarState[] toolbars;
+    public static final int SCREEN_SELECT_ELEMENT = 0,
+            SCREEN_MODIFY_ELEMENT = 1;
 
-    public static final int STATE_SELECT_ELEMENT = 0,
-            STATE_MODIFY_ELEMENT = 1;
+    private int current_screen, prev_screen;
 
-    private int current_state, prev_state;
-
-    public Toolbar(LevelEditor levelEditor, int startingY, GameContainer gc) {
+    public RightToolbar(LevelEditor levelEditor, int startingY, GameContainer gc) {
         toolbarY = startingY;
-        toolbarX = gc.getWidth() - gc.getWidth() * TOOLBAR_WIDTH_PERCENTAGE;
+        toolbarX = (int) (gc.getWidth() - gc.getWidth() * TOOLBAR_WIDTH_PERCENTAGE);
         toolbarWidth = (int) (gc.getWidth() * TOOLBAR_WIDTH_PERCENTAGE);
+        toolbarHeight = gc.getHeight();
 
         // init all toolbar screens
-        toolbars = new iToolbarState[2];
-        toolbars[STATE_SELECT_ELEMENT] = new ElementSelector(this, levelEditor);
-        toolbars[STATE_MODIFY_ELEMENT] = new ElementModifier(this);
+        screens = new iToolbarScreens[2];
+        screens[SCREEN_SELECT_ELEMENT] = new ElementSelector(this, levelEditor);
+        screens[SCREEN_MODIFY_ELEMENT] = new ElementModifier(this);
 
-        setState(STATE_SELECT_ELEMENT);
+        setState(SCREEN_SELECT_ELEMENT);
     }
 
-    public void update(GameContainer gc, StateBasedGame sbg, int dt) {
-        if (gc.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-            toolbars[current_state].onMouseClick(gc, sbg, gc.getInput().getMouseX(), gc.getInput().getMouseY());
+    @Override
+    public void onMouseClick(int button, int mouseX, int mouseY) {
+        if (button == Input.MOUSE_LEFT_BUTTON) {
+            screens[current_screen].onMouseClick(mouseX, mouseY);
         }
     }
 
     public void draw(GameContainer gc, Graphics graphics) {
-        // background
-        graphics.setColor(Color.black);
-        graphics.fillRect(toolbarX, toolbarY, toolbarWidth, gc.getHeight());
+        super.draw(gc, graphics);
         graphics.setColor(Color.lightGray);
-        graphics.drawLine(toolbarX, toolbarY, gc.getWidth() - toolbarWidth, gc.getHeight());
+        graphics.drawLine(toolbarX, toolbarY, gc.getWidth() - toolbarWidth, toolbarHeight);
 
-        toolbars[current_state].render(gc, graphics);
-
+        screens[current_screen].render(gc, graphics);
     }
 
     private void setState(int stateID) {
-        prev_state = current_state;
-        current_state = stateID;
-    }
-
-
-    public int getWidth() {
-        return toolbarWidth;
-    }
-
-    public float getX() {
-        return toolbarX;
-    }
-
-    public float getY() {
-        return toolbarY;
+        prev_screen = current_screen;
+        current_screen = stateID;
     }
 
 }

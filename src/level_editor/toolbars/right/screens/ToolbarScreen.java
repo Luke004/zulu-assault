@@ -1,16 +1,13 @@
-package level_editor.toolbar.screens;
+package level_editor.toolbars.right.screens;
 
-import audio.MenuSounds;
 import graphics.fonts.FontManager;
-import level_editor.toolbar.Toolbar;
+import level_editor.toolbars.right.RightToolbar;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.TrueTypeFont;
-import org.newdawn.slick.state.StateBasedGame;
-import settings.UserSettings;
 
-public abstract class ToolbarScreen implements iToolbarState {
+public abstract class ToolbarScreen implements iToolbarScreens {
 
     private static final int MARGIN = 5;
 
@@ -21,25 +18,25 @@ public abstract class ToolbarScreen implements iToolbarState {
 
     private int titleStringX;
 
-    protected Toolbar toolbar;
+    protected RightToolbar rightToolbar;
 
     static {
-        title_string_drawer = FontManager.getConsoleOutputFont();
+        title_string_drawer = FontManager.getConsoleOutputFont(false);
     }
 
-    public ToolbarScreen(Toolbar toolbar, String title) {
-        this.toolbar = toolbar;
+    public ToolbarScreen(RightToolbar rightToolbar, String title) {
+        this.rightToolbar = rightToolbar;
         this.title_string = title;
 
-        startX = (int) toolbar.getX();
-        startY = (int) toolbar.getY() + title_string_drawer.getHeight(title_string);
+        startX = (int) rightToolbar.getX();
+        startY = (int) rightToolbar.getY() + title_string_drawer.getHeight(title_string);
 
-        titleStringX = startX + toolbar.getWidth() / 2 - title_string_drawer.getWidth(title_string) / 2;
+        titleStringX = startX + rightToolbar.getWidth() / 2 - title_string_drawer.getWidth(title_string) / 2;
     }
 
     @Override
     public void render(GameContainer gameContainer, Graphics graphics) {
-        title_string_drawer.drawString(titleStringX, toolbar.getY() + MARGIN, title_string, Color.lightGray);
+        title_string_drawer.drawString(titleStringX, rightToolbar.getY() + MARGIN, title_string, Color.lightGray);
     }
 
 }
