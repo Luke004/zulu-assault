@@ -60,7 +60,7 @@ public class Menu extends BasicGameState {
                 gameContainer.getWidth() / 2.f - title_string_drawer.getWidth(title_string) / 2.f,
                 gameContainer.getHeight() / 4.f - title_string_drawer.getHeight(title_string) / 2.f
         );
-        info_string_drawer = FontManager.getConsoleOutputFont();
+        info_string_drawer = FontManager.getConsoleOutputFont(false);
         info_strings = new String[3];
         info_strings[0] = "(C) 1998 Dallas Nutsch";
         info_strings[1] = "Rebuild by Lukas Hilfrich";

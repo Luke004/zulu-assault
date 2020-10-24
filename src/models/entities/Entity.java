@@ -67,8 +67,6 @@ public abstract class Entity extends Element {
 
     public void init() {
         health_bar_offset = new Vector2f(base_image.getWidth() - 5.f, base_image.getHeight() / 2.f + 10.f);
-        health_bar_position.x = position.x - health_bar_offset.x;
-        health_bar_position.y = position.y - health_bar_offset.y;
     }
 
     @Override
@@ -189,6 +187,12 @@ public abstract class Entity extends Element {
 
     public List<Weapon> getWeapons() {
         return weapons;
+    }
+
+    public void setPosition(Vector2f position) {
+        super.setPosition(position);
+        health_bar_position.x = position.x - health_bar_offset.x;
+        health_bar_position.y = position.y - health_bar_offset.y;
     }
 
     protected void changeHealth(float amount, float armor) {

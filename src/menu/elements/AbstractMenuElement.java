@@ -23,7 +23,7 @@ public abstract class AbstractMenuElement {
     }
 
     static {
-        text_drawer = FontManager.getConsoleOutputFont();
+        text_drawer = FontManager.getConsoleOutputFont(false);
     }
 
     public void draw() {

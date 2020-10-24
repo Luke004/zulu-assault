@@ -56,6 +56,7 @@ public class ZuluAssault extends StateBasedGame {
 
     public static void main(String[] args) {
         boolean fullscreen = false;
+        boolean alterRes = false;
 
         // this looks for the 'natives' folder and uses the right dll according to the operating system
         System.setProperty("org.lwjgl.librarypath", new File(
@@ -65,7 +66,7 @@ public class ZuluAssault extends StateBasedGame {
         SettingsManager.createSettingsFile();
         try {
             AppGameContainer app = new AppGameContainer(new ZuluAssault(gameName));
-            app.setDisplayMode(640, 480, fullscreen);
+            app.setDisplayMode(alterRes ? 1920 : 640, alterRes ? 1080 : 480, fullscreen);
             app.setTargetFrameRate(120);
             app.setShowFPS(false);
             app.start();

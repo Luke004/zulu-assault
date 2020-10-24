@@ -39,7 +39,7 @@ public abstract class InteractionCircle extends Element {
 
     @Override
     public void drawPreview(Graphics graphics) {
-        base_image.draw(position.x, position.y, 0.4f);
+        base_image.draw(position.x, position.y, 0.2f);
     }
 
 }

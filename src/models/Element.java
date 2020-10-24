@@ -8,7 +8,7 @@ import org.newdawn.slick.geom.Vector2f;
 public abstract class Element {
 
     protected Vector2f position;
-    public Image base_image;
+    protected Image base_image;
     protected CollisionModel collisionModel;
 
     abstract public void draw(Graphics graphics);

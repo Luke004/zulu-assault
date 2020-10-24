@@ -47,7 +47,7 @@ public class Console {
         CONSOLE_WIDTH = gc.getWidth() / 2;
         graphics = gc.getGraphics();
         inputFont = FontManager.getConsoleInputFont();
-        outputFont = FontManager.getConsoleOutputFont();
+        outputFont = FontManager.getConsoleOutputFont(false);
         s_input = DEFAULT_TEXT;
         memory = new ArrayList<>();
         memory.add(DEFAULT_TEXT);

@@ -214,7 +214,7 @@ public class Level_1 extends AbstractLevel implements GameState {
         MovableEntity enemy_shell_tank_1 = new ShellTank(new Vector2f(2100.f, 2050.f), true, false);
         enemy_shell_tank_1.setAsMandatory();
         enemy_shell_tank_1.setMoving(true);
-        enemy_shell_tank_1.base_image.setRotation(180);
+        enemy_shell_tank_1.getBaseImage().setRotation(180);
         wayPoints = new ArrayList<>();
         wayPoints.add(new Vector2f(2100.f, 2100.f));
         wayPoints.add(new Vector2f(2100.f, 2500.f));

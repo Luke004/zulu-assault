@@ -252,14 +252,14 @@ public class Level_2 extends AbstractLevel implements GameState {
         List<Vector2f> wayPoints;
         MovableEntity enemy_tank_5 = new CannonTank(new Vector2f(2454, 140), true, false);
         enemy_tank_5.setMoving(true);
-        enemy_tank_5.base_image.setRotation(180);
+        enemy_tank_5.getBaseImage().setRotation(180);
         enemy_tank_5.addWayPoints(new WayPointManager(enemy_tank_5.getPosition(), enemy_tank_5.getRotation(),
                 wayPoints_cannon_tanks));
         hostile_movable_entities.add(enemy_tank_5);
 
         MovableEntity enemy_tank_6 = new CannonTank(new Vector2f(2713, 271), true, false);
         enemy_tank_6.setMoving(true);
-        enemy_tank_6.base_image.setRotation(310);
+        enemy_tank_6.getBaseImage().setRotation(310);
         // has same way points as 'enemy_tank_5'
         enemy_tank_6.addWayPoints(new WayPointManager(enemy_tank_6.getPosition(), enemy_tank_6.getRotation(),
                 wayPoints_cannon_tanks));
@@ -267,7 +267,7 @@ public class Level_2 extends AbstractLevel implements GameState {
 
         MovableEntity enemy_tank_7 = new CannonTank(new Vector2f(2400, 1692), true, false);
         enemy_tank_7.setMoving(true);
-        enemy_tank_7.base_image.setRotation(90);
+        enemy_tank_7.getBaseImage().setRotation(90);
         enemy_tank_7.addWayPoints(new WayPointManager(enemy_tank_7.getPosition(), enemy_tank_7.getRotation(),
                 wayPoints_cannon_tanks,
                 5));

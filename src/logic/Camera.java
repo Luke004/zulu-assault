@@ -107,18 +107,19 @@ public class Camera {
     /**
      * same as centerOn() but show a little bit of the black bar (for the map editor)
      */
-    public void centerOn(float x, float y, int borderTolerance) {
+    public void centerOn(float x, float y, int btRight, int btTop, int btBottom) {
         cameraX = x - gc.getWidth() / 2.f;
         cameraY = y - gc.getHeight() / 2.f;
 
         if (cameraX < 0) cameraX = 0;
-        if (cameraX + gc.getWidth() - borderTolerance > mapWidth) {
-            cameraX = mapWidth - gc.getWidth() + borderTolerance;
+        if (cameraX + gc.getWidth() - btRight > mapWidth) {
+            cameraX = mapWidth - gc.getWidth() + btRight;
         }
 
-        if (cameraY < 0) cameraY = 0;
-        if (cameraY + gc.getHeight() - borderTolerance > mapHeight)
-            cameraY = mapHeight - gc.getHeight() + borderTolerance;
+        if (cameraY < -btTop) cameraY = -btTop;
+        if (cameraY + gc.getHeight() - btBottom > mapHeight) {
+            cameraY = mapHeight - gc.getHeight() + btBottom;
+        }
     }
 
     public void update(int deltaTime) {
@@ -130,14 +131,14 @@ public class Camera {
     /**
      * "locks" the camera on the center of the given Rectangle. The camera tries to keep the location in it's center.
      *
-     * @param x the x-coordinate (in pixel) of the top-left corner of the rectangle
-     * @param y the y-coordinate (in pixel) of the top-left corner of the rectangle
+     * @param x      the x-coordinate (in pixel) of the top-left corner of the rectangle
+     * @param y      the y-coordinate (in pixel) of the top-left corner of the rectangle
      * @param height the height (in pixel) of the rectangle
-     * @param width the width (in pixel) of the rectangle
+     * @param width  the width (in pixel) of the rectangle
      */
 
-    public void centerOn(float x, float y, float height, float width, int borderTolerance) {
-        this.centerOn(x + width / 2, y + height / 2, borderTolerance);
+    public void centerOn(float x, float y, float height, float width, int btRight, int btTop, int btBottom) {
+        this.centerOn(x + width / 2, y + height / 2, btRight, btTop, btBottom);
     }
 
 

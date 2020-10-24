@@ -38,6 +38,12 @@ public class TeleportCircle extends InteractionCircle {
         outerCircle.drawCentered(position.x, position.y);
     }
 
+    @Override
+    public void drawPreview(Graphics graphics) {
+        super.drawPreview(graphics);
+        outerCircle.draw(position.x, position.y, 0.2f);
+    }
+
     public static void playTeleportSound() {
         teleport_sound.play(1.f, UserSettings.soundVolume);
     }

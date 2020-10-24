@@ -31,4 +31,10 @@ public class HealthCircle extends InteractionCircle {
         outerCircle.drawCentered(position.x, position.y);
     }
 
+    @Override
+    public void drawPreview(Graphics graphics) {
+        super.drawPreview(graphics);
+        outerCircle.draw(position.x, position.y, 0.2f);
+    }
+
 }

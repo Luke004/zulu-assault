@@ -31,7 +31,7 @@ public class HUD_Drawer {
 
         this.time_text = FontManager.getStencilSmallerFont();
         this.time_text_header = FontManager.getStencilSmallFont();
-        this.fps_drawer = FontManager.getConsoleOutputFont();
+        this.fps_drawer = FontManager.getConsoleOutputFont(false);
 
         fps_drawer_x = gc.getWidth() - fps_drawer.getWidth("FPS: 000") - 2;
         fps_drawer_y = gc.getHeight() - fps_drawer.getHeight("F") - 2;
