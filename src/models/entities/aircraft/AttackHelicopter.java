@@ -1,7 +1,6 @@
 package models.entities.aircraft;
 
 import logic.TileMapInfo;
-import models.entities.aircraft.Aircraft;
 import settings.UserSettings;
 import graphics.animations.other.AnimatedCrosshair;
 import models.weapons.AGM;
@@ -81,7 +80,7 @@ public class AttackHelicopter extends Aircraft {
     @Override
     public void fly(int deltaTime) {
         position.add(dir);
-        collisionModel.update(base_image.getRotation());
+        //collisionModel.update(base_image.getRotation());
     }
 
     @Override

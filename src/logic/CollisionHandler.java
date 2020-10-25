@@ -3,7 +3,6 @@ package logic;
 import logic.level_listeners.EntityDeleteListener;
 import settings.UserSettings;
 import models.CollisionModel;
-import models.StaticEntity;
 import graphics.animations.damage.PlasmaDamageAnimation;
 import graphics.animations.damage.UziDamageAnimation;
 import graphics.animations.explosion.BigExplosionAnimation;
@@ -19,7 +18,6 @@ import models.weapons.projectiles.AirProjectile;
 import models.weapons.projectiles.Projectile;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
-import org.newdawn.slick.geom.Vector2f;
 import player.Player;
 
 import static levels.AbstractLevel.*;
@@ -29,7 +27,9 @@ import java.util.*;
 
 
 public class CollisionHandler {
+
     private Player player;
+    private MovableEntity playerEntity;
 
     // tile specs TODO: create own tile helper class
     private static final float TILE_HEALTH = 100.f;
@@ -85,16 +85,23 @@ public class CollisionHandler {
         bigExplosionAnimation.update(deltaTime);
         plasmaDamageAnimation.update(deltaTime);
 
-        MovableEntity player_entity = player.getEntity();
-        handleMovableEntityCollisions(player_entity);
-        handleBulletCollisions(player_entity);
-        handleHostileCollisions(player_entity, friendly_movable_entities, deltaTime);
+        // movement collisions for the player entity
+        handleMovableEntityCollisions(playerEntity);
+
+        // bullet collisions for the player entity
+        handleBulletCollisions(playerEntity);
+
+        // movement and bullet collisions for all other entities
+        handleAllEntityCollisions(playerEntity, all_friendly_entities, deltaTime);
+
+
+        // ----- individual player collisions -----
 
         // PLAYER COLLIDES WITH HEALTH CIRCLE
         for (HealthCircle health_circle : health_circles) {
-            if (player_entity.getCollisionModel().intersects(health_circle.getCollisionModel())) {
-                if (player_entity.isMaxHealth()) return;
-                player_entity.changeHealth(HealthCircle.HEAL_SPEED);
+            if (playerEntity.getCollisionModel().intersects(health_circle.getCollisionModel())) {
+                if (playerEntity.isMaxHealth()) return;
+                playerEntity.changeHealth(HealthCircle.HEAL_SPEED);
                 break;
             }
         }
@@ -102,7 +109,7 @@ public class CollisionHandler {
         // PLAYER COLLIDES WITH TELEPORT CIRCLE
         boolean noIntersection = true;
         for (int idx = 0; idx < teleport_circles.size(); ++idx) {
-            if (player_entity.getCollisionModel().intersects(teleport_circles.get(idx).getCollisionModel())) {
+            if (playerEntity.getCollisionModel().intersects(teleport_circles.get(idx).getCollisionModel())) {
                 // teleport the player to any random teleport circle in the list
                 int idxToTeleportTo;
                 do {
@@ -110,19 +117,19 @@ public class CollisionHandler {
                     idxToTeleportTo = random.nextInt(teleport_circles.size());
                 } while (idxToTeleportTo == idx);
                 // teleport
-                player_entity.teleport(teleport_circles.get(idxToTeleportTo).getPosition());
+                playerEntity.teleport(teleport_circles.get(idxToTeleportTo).getPosition());
                 noIntersection = false;
                 break;
             }
         }
         if (noIntersection) {
             // allow the player to teleport again as soon as he is not in any teleport circle anymore
-            player_entity.allowTeleport();
+            playerEntity.allowTeleport();
         }
 
         // PLAYER COLLIDES WITH ITEMS
         for (int idx = 0; idx < items.size(); ++idx) {
-            if (player_entity.getCollisionModel().intersects(items.get(idx).getCollisionModel())) {
+            if (playerEntity.getCollisionModel().intersects(items.get(idx).getCollisionModel())) {
                 switch (items.get(idx).getName()) {
                     case "MEGA_PULSE":
                         player.addItem(Player.Item_e.MEGA_PULSE);
@@ -152,12 +159,14 @@ public class CollisionHandler {
         }
     }
 
-    private void handleMovableEntityCollisions(MovableEntity current_movableEntity) {
-        if (!current_movableEntity.isMoving()) return;
-        if (current_movableEntity instanceof Aircraft) return;
+    private void handleMovableEntityCollisions(Entity entity) {
+        if (!(entity instanceof MovableEntity)) return;
+        MovableEntity movableEntity = (MovableEntity) entity;
+        if (!movableEntity.isMoving()) return;
+        if (movableEntity instanceof Aircraft) return;
 
-        CollisionModel.Point[] playerCorners = current_movableEntity.getCollisionModel().getPoints();
-        int idx, landscape_layer_tile_ID, enemy_layer_tile_ID, x, y;
+        CollisionModel.Point[] playerCorners = movableEntity.getCollisionModel().getPoints();
+        int idx, landscape_layer_tile_ID, x, y;
 
         for (CollisionModel.Point p : playerCorners) {
             x = (int) p.x / TILE_WIDTH;
@@ -167,22 +176,23 @@ public class CollisionHandler {
             if (x < 0 || x >= map.getWidth() || y < 0 || y >= map.getHeight()) return;
 
             landscape_layer_tile_ID = map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
-            enemy_layer_tile_ID = map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
+            //enemy_layer_tile_ID = map.getTileId(x, y, ENEMY_TILES_LAYER_IDX);
 
-            // COLLISION BETWEEN ENTITY ITSELF AND DESTRUCTIBLE TILES
+            // COLLISION BETWEEN ENTITY ITSELF AND DESTRUCTIBLE MAP TILES
             for (idx = 0; idx < destructible_tile_indices.length; ++idx) {
                 if (landscape_layer_tile_ID == destructible_tile_indices[idx]) {
                     // block movement as long as tile exists and damage the destructible tile
-                    current_movableEntity.blockMovement();
+                    movableEntity.blockMovement();
 
                     // damage ONLY when we are not a solider
-                    if (current_movableEntity instanceof Soldier) return;
+                    if (movableEntity instanceof Soldier) return;
 
-                    damageTile(x, y, null, destructible_tile_replace_indices[idx], current_movableEntity);
+                    damageTile(x, y, null, destructible_tile_replace_indices[idx], movableEntity);
                     return;
                 }
             }
 
+            /*
             if (!current_movableEntity.isHostile) {
                 // COLLISION BETWEEN FRIENDLY ENTITY AND STATIC ENTITIES
                 for (idx = 0; idx < static_entity_indices.length; ++idx) {
@@ -198,20 +208,22 @@ public class CollisionHandler {
                     }
                 }
             }
+
+             */
         }
 
         // COLLISION BETWEEN ENTITY ITSELF AND OTHER ENTITIES
-        for (MovableEntity movableEntity : all_movable_entities) {
-            if (movableEntity.getPosition() == current_movableEntity.getPosition()) continue;    // its himself
-            if (current_movableEntity.getCollisionModel().intersects(movableEntity.getCollisionModel())) {
-                current_movableEntity.onCollision(movableEntity);
+        for (Entity otherEntity : all_entities) {
+            if (movableEntity.getPosition() == otherEntity.getPosition()) continue;    // its himself
+            if (movableEntity.getCollisionModel().intersects(otherEntity.getCollisionModel())) {
+                movableEntity.onCollision(otherEntity);
             }
         }
 
         // COLLISION BETWEEN ENTITY ITSELF AND THE PLAYER
-        if (current_movableEntity.getCollisionModel().intersects(player.getEntity().getCollisionModel())) {
-            if (player.getEntity().getPosition() == current_movableEntity.getPosition()) return;    // its himself
-            current_movableEntity.onCollision(player.getEntity());
+        if (movableEntity.getCollisionModel().intersects(player.getEntity().getCollisionModel())) {
+            if (player.getEntity().getPosition() == movableEntity.getPosition()) return;    // its himself
+            movableEntity.onCollision(player.getEntity());
         }
     }
 
@@ -265,7 +277,7 @@ public class CollisionHandler {
                     if (canContinue) continue;
 
                     // PLAYER GROUND PROJECTILE COLLISION WITH STATIC ENTITIES
-                    handleGroundProjectileStaticEntityCollision(projectile, weapon, projectile_iterator);
+                    //handleGroundProjectileStaticEntityCollision(projectile, weapon, projectile_iterator);
                 } else {    // AIR PROJECTILE
                     if (!((AirProjectile) projectile).hasHitGround()) {
                         continue;    // wait, since the projectile has not hit the ground yet
@@ -278,14 +290,14 @@ public class CollisionHandler {
                     handleAirProjectileTileCollision(projectile, weapon);
 
                     // PLAYER AIR PROJECTILE COLLISION WITH STATIC ENTITIES
-                    handleAirProjectileStaticEntityCollision(projectile, weapon);
+                    //handleAirProjectileStaticEntityCollision(projectile, weapon);
                 }
             }
         }
     }
 
     private boolean handleGroundProjectileEntityCollision(Projectile projectile, Weapon weapon, Iterator<Projectile> projectile_iterator) {
-        for (MovableEntity hostileEntity : hostile_movable_entities) {
+        for (Entity hostileEntity : all_hostile_entities) {
             if (projectile.getCollisionModel().intersects(hostileEntity.getCollisionModel())) {
                 if (weapon instanceof PiercingWeapon) {
                     if (!((PiercingWeapon) weapon).hasAlreadyHit(hostileEntity)) {
@@ -361,6 +373,7 @@ public class CollisionHandler {
         return false;
     }
 
+    /*
     private void handleGroundProjectileStaticEntityCollision(Projectile projectile, Weapon weapon, Iterator<Projectile> bullet_iterator) {
         int x = (int) projectile.projectile_pos.x / TILE_WIDTH;
         int y = (int) projectile.projectile_pos.y / TILE_HEIGHT;
@@ -379,12 +392,13 @@ public class CollisionHandler {
             }
         }
     }
+     */
 
     private void handleAirProjectileEntityCollision(Projectile projectile, Weapon weapon) {
         if (((AirProjectile) projectile).hasChecked(AirProjectile.Target.Entities)) return;
-        for (int idx = 0; idx < hostile_movable_entities.size(); ++idx) {
-            if (projectile.getCollisionModel().intersects(hostile_movable_entities.get(idx).getCollisionModel())) {
-                hostile_movable_entities.get(idx).changeHealth(-weapon.getBulletDamage());
+        for (int idx = 0; idx < all_hostile_entities.size(); ++idx) {
+            if (projectile.getCollisionModel().intersects(all_hostile_entities.get(idx).getCollisionModel())) {
+                all_hostile_entities.get(idx).changeHealth(-weapon.getBulletDamage());
             }
         }
         ((AirProjectile) projectile).setChecked(AirProjectile.Target.Entities);
@@ -412,6 +426,7 @@ public class CollisionHandler {
         ((AirProjectile) projectile).setChecked(AirProjectile.Target.Tiles);
     }
 
+    /*
     private void handleAirProjectileStaticEntityCollision(Projectile projectile, Weapon weapon) {
         if (((AirProjectile) projectile).hasChecked(AirProjectile.Target.StaticEntities)) return;
         CollisionModel.Point[] collision_points = projectile.getCollisionModel().collision_points;
@@ -430,36 +445,9 @@ public class CollisionHandler {
         ((AirProjectile) projectile).setChecked(AirProjectile.Target.StaticEntities);
     }
 
-    private void damageStaticEntity(int xPos, int yPos, Weapon weapon) {
-        for (int idx = 0; idx < static_enemy_entities.size(); ++idx) {
-            StaticEntity staticEntity = static_enemy_entities.get(idx);
-            if (!staticEntity.containsTilePosition(xPos, yPos)) continue;
-            if (weapon instanceof PiercingWeapon) {
-                if (!((PiercingWeapon) weapon).hasAlreadyHit(staticEntity)) {
-                    staticEntity.changeHealth(-weapon.getBulletDamage()); //drain health of hit tank
-                    break;
-                }
-            } else {
-                staticEntity.changeHealth(-weapon.getBulletDamage());
-            }
-            if (staticEntity.isDestroyed) {
-                replaceStaticEntityTile(idx);
-            }
-        }
-    }
+     */
 
-    private void damageStaticEntity(int xPos, int yPos) {
-        for (int idx = 0; idx < static_enemy_entities.size(); ++idx) {
-            if (static_enemy_entities.get(idx).containsTilePosition(xPos, yPos)) {   // find the windmill by its tile position
-                static_enemy_entities.get(idx).changeHealth(-MovableEntity.DAMAGE_TO_DESTRUCTIBLE_TILE);
-                if (static_enemy_entities.get(idx).isDestroyed) {
-                    replaceStaticEntityTile(idx);
-                }
-                break;
-            }
-        }
-    }
-
+    /*
     private void replaceStaticEntityTile(int idx) {
         StaticEntity staticEntity = static_enemy_entities.get(idx);
         level_delete_listener.notifyForEntityDestruction(staticEntity);
@@ -485,6 +473,7 @@ public class CollisionHandler {
             map.setTileId((int) replacement_tile.x, (int) replacement_tile.y, ENEMY_TILES_LAYER_IDX, 0);
         }
     }
+     */
 
     private static void damageTile(int xPos, int yPos, Weapon weapon, int replaceTileIndex, MovableEntity movableEntity) {
         // if weapon is null, the tile was damaged by contact
@@ -519,19 +508,22 @@ public class CollisionHandler {
         }
     }
 
-    private void handleHostileCollisions(MovableEntity player_entity, List<MovableEntity> friendly_entities, int deltaTime) {
-        for (MovableEntity hostile_entity : hostile_movable_entities) {
+    private void handleAllEntityCollisions(MovableEntity player_entity, List<Entity> friendly_entities, int deltaTime) {
+        for (Entity hostile_entity : all_hostile_entities) {
             hostile_entity.shootAtEnemies(player_entity, friendly_entities, deltaTime);
             handleShotCollisions(hostile_entity, player_entity);
             handleMovableEntityCollisions(hostile_entity);
         }
 
+        /*
         for (StaticEntity enemy_staticEntity : static_enemy_entities) {
             enemy_staticEntity.shootAtEnemies(player_entity, friendly_entities, deltaTime);
             handleShotCollisions(enemy_staticEntity, player_entity);
         }
 
-        for (MovableEntity friendly_entity : friendly_entities) {
+         */
+
+        for (Entity friendly_entity : friendly_entities) {
             friendly_entity.shootAtEnemies(null, all_hostile_entities, deltaTime);
             handleMovableEntityCollisions(friendly_entity);
             handleShotCollisions(friendly_entity, null);
@@ -574,7 +566,7 @@ public class CollisionHandler {
 
                 if (player == null) {
                     // FRIENDLY SHOT COLLISION WITH HOSTILE ENTITIES
-                    for (MovableEntity hostile_entity : hostile_movable_entities) {
+                    for (Entity hostile_entity : all_hostile_entities) {
                         if (projectile.getCollisionModel().intersects(hostile_entity.getCollisionModel())) {
                             showBulletHitAnimation(weapon, projectile);
                             projectile_iterator.remove();   // TODO: FIX CRASH BUG ON REMOVE
@@ -584,10 +576,10 @@ public class CollisionHandler {
                     }
                     if (canContinue) continue;
                     // FRIENDLY SHOT COLLISION WITH STATIC ENTITIES
-                    handleGroundProjectileStaticEntityCollision(projectile, weapon, projectile_iterator);
+                    //handleGroundProjectileStaticEntityCollision(projectile, weapon, projectile_iterator);
                 } else {
                     // HOSTILE SHOT COLLISION WITH FRIENDLY ENTITIES
-                    for (MovableEntity friendly_entity : friendly_movable_entities) {
+                    for (Entity friendly_entity : all_friendly_entities) {
                         if (projectile.getCollisionModel().intersects(friendly_entity.getCollisionModel())) {
                             showBulletHitAnimation(weapon, projectile);
                             projectile_iterator.remove();
@@ -639,5 +631,6 @@ public class CollisionHandler {
 
     public void setPlayer(Player player) {
         this.player = player;
+        this.playerEntity = player.getEntity();
     }
 }

@@ -163,89 +163,89 @@ public class Level_4 extends AbstractLevel implements GameState {
         MovableEntity enemy_tank_1 = new NapalmTank(new Vector2f(2360, 2430), true, false);
         enemy_tank_1.setRotation(315);
         enemy_tank_1.setAsMandatory();
-        hostile_movable_entities.add(enemy_tank_1);
+        all_hostile_entities.add(enemy_tank_1);
 
         MovableEntity enemy_tank_2 = new NapalmTank(new Vector2f(2525, 2265), true, false);
         enemy_tank_2.setRotation(135);
         enemy_tank_2.setAsMandatory();
-        hostile_movable_entities.add(enemy_tank_2);
+        all_hostile_entities.add(enemy_tank_2);
 
         MovableEntity enemy_tank_3 = new RocketTank(new Vector2f(2520, 2394), true, false);
         enemy_tank_3.setRotation(225);
         enemy_tank_3.setAsMandatory();
-        hostile_movable_entities.add(enemy_tank_3);
+        all_hostile_entities.add(enemy_tank_3);
         // top right
         MovableEntity enemy_tank_4 = new ShellTank(new Vector2f(3550, 481), true, false);
         enemy_tank_4.setRotation(225);
         enemy_tank_4.setAsMandatory();
-        hostile_movable_entities.add(enemy_tank_4);
+        all_hostile_entities.add(enemy_tank_4);
 
         MovableEntity enemy_tank_5 = new ShellTank(new Vector2f(3640, 600), true, false);
         enemy_tank_5.setRotation(255);
         enemy_tank_5.setAsMandatory();
-        hostile_movable_entities.add(enemy_tank_5);
+        all_hostile_entities.add(enemy_tank_5);
 
         MovableEntity enemy_tank_6 = new ShellTank(new Vector2f(3776, 536), true, false);
         enemy_tank_6.setRotation(105);
         enemy_tank_6.setAsMandatory();
-        hostile_movable_entities.add(enemy_tank_6);
+        all_hostile_entities.add(enemy_tank_6);
 
         MovableEntity enemy_tank_7 = new ShellTank(new Vector2f(3822, 770), true, false);
         enemy_tank_7.setRotation(290);
         enemy_tank_7.setAsMandatory();
-        hostile_movable_entities.add(enemy_tank_7);
+        all_hostile_entities.add(enemy_tank_7);
         // top left
         MovableEntity enemy_tank_8 = new NapalmTank(new Vector2f(400, 689), true, false);
         enemy_tank_8.setRotation(115);
         enemy_tank_8.setAsMandatory();
-        hostile_movable_entities.add(enemy_tank_8);
+        all_hostile_entities.add(enemy_tank_8);
 
         MovableEntity enemy_tank_9 = new NapalmTank(new Vector2f(712, 535), true, false);
         enemy_tank_9.setRotation(165);
         enemy_tank_9.setAsMandatory();
-        hostile_movable_entities.add(enemy_tank_9);
+        all_hostile_entities.add(enemy_tank_9);
 
         MovableEntity enemy_tank_10 = new MegaPulseTank(new Vector2f(928, 216), true, false);
         enemy_tank_10.setRotation(295);
         enemy_tank_10.setAsMandatory();
-        hostile_movable_entities.add(enemy_tank_10);
+        all_hostile_entities.add(enemy_tank_10);
 
         MovableEntity enemy_tank_11 = new ShellTank(new Vector2f(908, 300), true, false);
         enemy_tank_11.setRotation(245);
         enemy_tank_11.setAsMandatory();
-        hostile_movable_entities.add(enemy_tank_11);
+        all_hostile_entities.add(enemy_tank_11);
 
         MovableEntity enemy_soldier_1 = new RocketSoldier(new Vector2f(304, 484), true);
         enemy_soldier_1.setAsMandatory();
-        hostile_movable_entities.add(enemy_soldier_1);
+        all_hostile_entities.add(enemy_soldier_1);
 
         MovableEntity enemy_soldier_2 = new UziSoldier(new Vector2f(488, 342), true);
         enemy_soldier_2.setAsMandatory();
-        hostile_movable_entities.add(enemy_soldier_2);
+        all_hostile_entities.add(enemy_soldier_2);
 
         MovableEntity enemy_soldier_3 = new UziSoldier(new Vector2f(477, 373), true);
         enemy_soldier_3.setAsMandatory();
-        hostile_movable_entities.add(enemy_soldier_3);
+        all_hostile_entities.add(enemy_soldier_3);
 
         MovableEntity enemy_soldier_4 = new UziSoldier(new Vector2f(482, 404), true);
         enemy_soldier_4.setAsMandatory();
-        hostile_movable_entities.add(enemy_soldier_4);
+        all_hostile_entities.add(enemy_soldier_4);
 
         MovableEntity enemy_soldier_5 = new RocketSoldier(new Vector2f(548, 220), true);
         enemy_soldier_5.setAsMandatory();
-        hostile_movable_entities.add(enemy_soldier_5);
+        all_hostile_entities.add(enemy_soldier_5);
 
         MovableEntity enemy_soldier_6 = new RocketSoldier(new Vector2f(468, 164), true);
         enemy_soldier_6.setAsMandatory();
-        hostile_movable_entities.add(enemy_soldier_6);
+        all_hostile_entities.add(enemy_soldier_6);
 
         MovableEntity enemy_soldier_7 = new RocketSoldier(new Vector2f(558, 115), true);
         enemy_soldier_7.setAsMandatory();
-        hostile_movable_entities.add(enemy_soldier_7);
+        all_hostile_entities.add(enemy_soldier_7);
 
         MovableEntity enemy_soldier_8 = new RocketSoldier(new Vector2f(495, 77), true);
         enemy_soldier_8.setAsMandatory();
-        hostile_movable_entities.add(enemy_soldier_8);
+        all_hostile_entities.add(enemy_soldier_8);
 
 
         /* ---------- SETUP ENEMY ENTITIES THAT ARE MOVING ---------- */
@@ -274,7 +274,7 @@ public class Level_4 extends AbstractLevel implements GameState {
                 enemy_tank_12.getRotation(),
                 wayPoints_enemy_cannon_tanks,
                 0));
-        hostile_movable_entities.add(enemy_tank_12);
+        all_hostile_entities.add(enemy_tank_12);
 
         MovableEntity enemy_tank_13 = new CannonTank(new Vector2f(314, 1152), true, false);
         enemy_tank_13.setRotation(45);
@@ -283,7 +283,7 @@ public class Level_4 extends AbstractLevel implements GameState {
                 enemy_tank_13.getRotation(),
                 wayPoints_enemy_cannon_tanks,
                 9));
-        hostile_movable_entities.add(enemy_tank_13);
+        all_hostile_entities.add(enemy_tank_13);
 
 
         /* ---------- SETUP ENEMY PLANES ---------- */

@@ -13,7 +13,7 @@ import models.entities.soldiers.Soldier;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
-import static levels.AbstractLevel.all_movable_entities;
+import static levels.AbstractLevel.all_entities;
 import static levels.AbstractLevel.drivable_entities;
 
 public class KeyInputHandler {
@@ -125,7 +125,7 @@ public class KeyInputHandler {
                             movableEntity.showAccessibleAnimation(false);
                             player.setEntity(movableEntity, Player.EnterAction.ENTERING);
                             drivable_entities.remove(movableEntity);
-                            all_movable_entities.remove(movableEntity);
+                            all_entities.remove(movableEntity);
                             break;
                         }
                     }
@@ -196,7 +196,7 @@ public class KeyInputHandler {
                     if (!tank.isMoving()) {
                         tank.showAccessibleAnimation(true);
                         drivable_entities.add(tank);
-                        all_movable_entities.add(tank);
+                        all_entities.add(tank);
                         player.setEntity(tank, Player.EnterAction.LEAVING);
                     } else {
                         // tank is moving, can't get out of it
@@ -253,7 +253,7 @@ public class KeyInputHandler {
                     if (!robot.isMoving()) {
                         robot.showAccessibleAnimation(true);
                         drivable_entities.add(robot);
-                        all_movable_entities.add(robot);
+                        all_entities.add(robot);
                         player.setEntity(robot, Player.EnterAction.LEAVING);
                     }
                 }
@@ -283,7 +283,7 @@ public class KeyInputHandler {
                 if (aircraft.hasLanded()) {
                     aircraft.showAccessibleAnimation(true);
                     drivable_entities.add(aircraft);
-                    all_movable_entities.add(aircraft);
+                    all_entities.add(aircraft);
                     player.setEntity(aircraft, Player.EnterAction.LEAVING);
                 }
                 break;
@@ -345,7 +345,7 @@ public class KeyInputHandler {
                 if (attackHelicopter.hasLanded()) {
                     attackHelicopter.showAccessibleAnimation(true);
                     drivable_entities.add(attackHelicopter);
-                    all_movable_entities.add(attackHelicopter);
+                    all_entities.add(attackHelicopter);
                     player.setEntity(attackHelicopter, Player.EnterAction.LEAVING);
                 }
                 break;

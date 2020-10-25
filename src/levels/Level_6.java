@@ -149,39 +149,39 @@ public class Level_6 extends AbstractLevel implements GameState {
         /* ---------- SETUP ENEMY ENTITIES NOT MOVING ---------- */
         MovableEntity enemy_cannon_tank_1 = new CannonTank(new Vector2f(1660, 1171), true, false);
         enemy_cannon_tank_1.setAsMandatory();
-        hostile_movable_entities.add(enemy_cannon_tank_1);
+        all_hostile_entities.add(enemy_cannon_tank_1);
 
         MovableEntity enemy_cannon_tank_2 = new CannonTank(new Vector2f(2521, 1112), true, false);
         enemy_cannon_tank_2.setAsMandatory();
-        hostile_movable_entities.add(enemy_cannon_tank_2);
+        all_hostile_entities.add(enemy_cannon_tank_2);
 
         MovableEntity enemy_cannon_tank_3 = new CannonTank(new Vector2f(1260, 1665), true, false);
         enemy_cannon_tank_3.setAsMandatory();
-        hostile_movable_entities.add(enemy_cannon_tank_3);
+        all_hostile_entities.add(enemy_cannon_tank_3);
 
         MovableEntity enemy_cannon_tank_4 = new CannonTank(new Vector2f(1318, 2370), true, false);
         enemy_cannon_tank_4.setAsMandatory();
-        hostile_movable_entities.add(enemy_cannon_tank_4);
+        all_hostile_entities.add(enemy_cannon_tank_4);
 
         MovableEntity enemy_cannon_tank_5 = new CannonTank(new Vector2f(1588, 2858), true, false);
         enemy_cannon_tank_5.setAsMandatory();
-        hostile_movable_entities.add(enemy_cannon_tank_5);
+        all_hostile_entities.add(enemy_cannon_tank_5);
 
         MovableEntity enemy_cannon_tank_6 = new CannonTank(new Vector2f(2140, 2825), true, false);
         enemy_cannon_tank_6.setAsMandatory();
-        hostile_movable_entities.add(enemy_cannon_tank_6);
+        all_hostile_entities.add(enemy_cannon_tank_6);
 
         MovableEntity enemy_cannon_tank_7 = new CannonTank(new Vector2f(2863, 2076), true, false);
         enemy_cannon_tank_7.setAsMandatory();
-        hostile_movable_entities.add(enemy_cannon_tank_7);
+        all_hostile_entities.add(enemy_cannon_tank_7);
 
         // SETUP FRIENDLY ENTITIES
         MovableEntity player_friendly_tank_1 = new ShellTank(new Vector2f(3490, 345), false, false);
         player_friendly_tank_1.setRotation(225);
-        friendly_movable_entities.add(player_friendly_tank_1);
+        all_friendly_entities.add(player_friendly_tank_1);
 
         MovableEntity player_friendly_tank_2 = new ShellTank(new Vector2f(3883, 413), false, false);
-        friendly_movable_entities.add(player_friendly_tank_2);
+        all_friendly_entities.add(player_friendly_tank_2);
 
 
         /* ---------- SETUP ENEMY ENTITIES THAT ARE MOVING ---------- */
@@ -219,7 +219,7 @@ public class Level_6 extends AbstractLevel implements GameState {
                 wayPoints_cannon_tanks,
                 0));
         enemy_moving_tank_1.setAsMandatory();
-        hostile_movable_entities.add(enemy_moving_tank_1);
+        all_hostile_entities.add(enemy_moving_tank_1);
 
         MovableEntity enemy_moving_tank_2 = new CannonTank(new Vector2f(2341, 585), true, false);
         enemy_moving_tank_2.setRotation(90);
@@ -228,7 +228,7 @@ public class Level_6 extends AbstractLevel implements GameState {
                 wayPoints_cannon_tanks,
                 3));
         enemy_moving_tank_2.setAsMandatory();
-        hostile_movable_entities.add(enemy_moving_tank_2);
+        all_hostile_entities.add(enemy_moving_tank_2);
 
         MovableEntity enemy_moving_tank_3 = new CannonTank(new Vector2f(3183, 900), true, false);
         enemy_moving_tank_3.setRotation(180);
@@ -237,7 +237,7 @@ public class Level_6 extends AbstractLevel implements GameState {
                 wayPoints_cannon_tanks,
                 5));
         enemy_moving_tank_3.setAsMandatory();
-        hostile_movable_entities.add(enemy_moving_tank_3);
+        all_hostile_entities.add(enemy_moving_tank_3);
 
         MovableEntity enemy_moving_tank_4 = new CannonTank(new Vector2f(1180, 3134), true, false);
         enemy_moving_tank_4.setRotation(270);
@@ -246,7 +246,7 @@ public class Level_6 extends AbstractLevel implements GameState {
                 wayPoints_cannon_tanks,
                 15));
         enemy_moving_tank_4.setAsMandatory();
-        hostile_movable_entities.add(enemy_moving_tank_4);
+        all_hostile_entities.add(enemy_moving_tank_4);
 
 
         /* ---------- SETUP ENEMY PLANES ---------- */
@@ -265,7 +265,7 @@ public class Level_6 extends AbstractLevel implements GameState {
         enemy_plane_1.addWayPoints(new WayPointManager(enemy_plane_1.getPosition(),
                 enemy_plane_1.getRotation(),
                 wayPoints));
-        hostile_movable_entities.add(enemy_plane_1);
+        all_hostile_entities.add(enemy_plane_1);
 
         // covering top left of the fortress
         MovableEntity enemy_plane_2 = new WarPlane(new Vector2f(1250, 750), true, false);
@@ -283,7 +283,7 @@ public class Level_6 extends AbstractLevel implements GameState {
         enemy_plane_2.addWayPoints(new WayPointManager(enemy_plane_2.getPosition(),
                 enemy_plane_2.getRotation(),
                 wayPoints_2));
-        hostile_movable_entities.add(enemy_plane_2);
+        all_hostile_entities.add(enemy_plane_2);
 
         // covering bottom left of the fortress
         MovableEntity enemy_plane_3 = new WarPlane(new Vector2f(1450, 2200), true, false);
@@ -301,7 +301,7 @@ public class Level_6 extends AbstractLevel implements GameState {
         enemy_plane_3.addWayPoints(new WayPointManager(enemy_plane_3.getPosition(),
                 enemy_plane_3.getRotation(),
                 wayPoints_3));
-        hostile_movable_entities.add(enemy_plane_3);
+        all_hostile_entities.add(enemy_plane_3);
 
         // covering bottom right of the fortress
         MovableEntity enemy_plane_4 = new WarPlane(new Vector2f(2650, 2100), true, false);
@@ -319,7 +319,7 @@ public class Level_6 extends AbstractLevel implements GameState {
         enemy_plane_4.addWayPoints(new WayPointManager(enemy_plane_4.getPosition(),
                 enemy_plane_4.getRotation(),
                 wayPoints_4));
-        hostile_movable_entities.add(enemy_plane_4);
+        all_hostile_entities.add(enemy_plane_4);
 
 
         /* ---------- SETUP THE PLAYERS ALLIED ENTITIES ---------- */

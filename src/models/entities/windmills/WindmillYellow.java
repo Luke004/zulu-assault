@@ -8,10 +8,10 @@ import org.newdawn.slick.opengl.Texture;
 
 public class WindmillYellow extends Windmill {
 
-    private static Texture windmill_yellow_turret_texture;
+    private static Texture windmill_yellow_texture, windmill_yellow_turret_texture;
 
-    public WindmillYellow(Vector2f startPos, boolean isHostile, Vector2f[] tile_positions) {
-        super(startPos, isHostile, tile_positions);
+    public WindmillYellow(Vector2f startPos, boolean isHostile) {
+        super(startPos, isHostile);
 
         // individual WindmillYellow attributes
         //turret_rotate_speed = 0.45f;
@@ -21,6 +21,11 @@ public class WindmillYellow extends Windmill {
 
         // LOAD TEXTURES
         try {
+            if (windmill_yellow_texture == null) {
+                windmill_yellow_texture = new Image("assets/entities/windmills/yellow_windmill.png")
+                        .getTexture();
+            }
+            base_image = new Image(windmill_yellow_texture);
             if (windmill_yellow_turret_texture == null) {
                 windmill_yellow_turret_texture = new Image("assets/entities/windmills/yellow_windmill_turret.png")
                         .getTexture();

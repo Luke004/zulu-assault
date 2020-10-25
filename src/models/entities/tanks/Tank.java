@@ -2,7 +2,10 @@ package models.entities.tanks;
 
 import logic.CollisionHandler;
 import logic.WayPointManager;
+import models.CollisionModel;
+import models.entities.Entity;
 import models.entities.MovableEntity;
+import models.entities.aircraft.Aircraft;
 import models.entities.robots.Robot;
 import models.entities.soldiers.Soldier;
 import models.weapons.Weapon;
@@ -40,6 +43,8 @@ public abstract class Tank extends MovableEntity {
         TURRET_WIDTH_HALF = turret.getWidth() / 2;
         TURRET_HEIGHT_HALF = turret.getHeight() / 2;
         destructionAnimation = new DestructionAnimation();
+        collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
+        collisionModel.update(getRotation());   // init it by updating it once, needed for inner class "MyLine"
         super.init();
     }
 
@@ -213,22 +218,6 @@ public abstract class Tank extends MovableEntity {
     }
 
     @Override
-    public void onCollision(MovableEntity movableEntity) {
-        if (movableEntity instanceof Tank || movableEntity instanceof Robot) {
-            blockMovement();
-            if (!isHostile && movableEntity.isHostile) {
-                movableEntity.changeHealth(-10.f);
-            }
-        } else if (movableEntity instanceof Soldier) {   // enemy is a soldier (bad for him)
-            if (movableEntity.isDestroyed) return;
-            if (!isHostile && movableEntity.isHostile) {
-                movableEntity.changeHealth(-150.f);
-            }
-            blockMovement();
-        }
-    }
-
-    @Override
     public void changeAimingDirection(float angle, int deltaTime) {
         float rotation = WayPointManager.getShortestSignedAngle(turret.getRotation(), angle);
 
@@ -341,7 +330,7 @@ public abstract class Tank extends MovableEntity {
                 mid_point_2 = new Vector2f();
                 mid_point_2_oscillation = new Vector2f();
                 line_end = new Vector2f();
-                collisionModel.update(getRotation());
+                //collisionModel.update(getRotation());
                 //defineNewLine();
             }
 

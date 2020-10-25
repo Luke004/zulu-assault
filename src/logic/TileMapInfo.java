@@ -18,43 +18,24 @@ public class TileMapInfo {
             LEVEL_HEIGHT_PIXELS;
 
     // tilesets
-    public static final int ENEMY_TILES_TILESET_IDX = 0;
     public static final int LANDSCAPE_TILES_TILESET_IDX = 1;
-    public static final int PLANE_TILES_TILESET_IDX = 2;
 
     // layers
     public static final int LANDSCAPE_TILES_LAYER_IDX = 0;
-    public static final int ENEMY_TILES_LAYER_IDX = 1;
-    public static final int DESTRUCTION_TILES_LAYER_IDX = 2;
+    public static final int DESTRUCTION_TILES_LAYER_IDX = 1;
 
     public static int[] CLASS_GRASS, CLASS_CONCRETE, CLASS_DIRT;
 
-    public static int[] static_entity_indices;
-
-    public static final int[] windmill_indices;
-    public static final int[] static_plane_creation_indices;
-    public static final int[] static_plane_collision_indices;
     public static final int[] collision_replace_indices;
     public static final int[] destructible_tile_indices;
     public static final int[] destructible_tile_replace_indices;
     public static final int[] indestructible_tile_indices;
 
+    private static final float CHANCE_FOR_TILE_DESTRUCTION = 0.1f;  // 10% chance for another tile to be destroyed
+
     public static Map<Integer, Float> destructible_tiles_health_info;
 
     static {
-        windmill_indices = new int[]{0, 1, 2, 4, 5, 6}; // 0, 1, 2 -> OPTIONAL  |   4, 5, 6 -> MANDATORY
-        static_plane_creation_indices = new int[]{  // indices for creation of big static plane
-                22, // the plane that's facing right in the tileset
-                27, // the plane that's facing down in the tileset
-                72, // the plane that's facing left in the tileset
-                77  // the plane that's facing up in the tileset
-        };
-        static_plane_collision_indices = new int[]{ // indices for collision with big static plane
-                12, 21, 22, 23, 32,  // the plane that's facing right in the tileset
-                17, 26, 27, 28, 37,  // the plane that's facing down in the tileset
-                62, 71, 72, 73, 82,  // the plane that's facing left in the tileset
-                67, 76, 77, 78, 87   // the plane that's facing up in the tileset
-        };
         collision_replace_indices = new int[]{
                 144,    // DIRT
                 145,    // CONCRETE
@@ -114,6 +95,7 @@ public class TileMapInfo {
             CLASS_DIRT[i] = landscape_tiles.firstGID + dirt_indices[i];
         }
 
+        /*
         // create TileInfo for 'enemy_tiles' TileSet
         TileSet enemy_tiles = map.getTileSet(ENEMY_TILES_TILESET_IDX);
         if (!enemy_tiles.name.equals("enemy_tiles"))
@@ -123,7 +105,9 @@ public class TileMapInfo {
                 windmill_indices[idx] += enemy_tiles.firstGID;
             }
         }
+         */
 
+        /*
         // create TileInfo for 'plane_tiles' TileSet
         TileSet plane_tiles = map.getTileSet(PLANE_TILES_TILESET_IDX);
         if (!plane_tiles.name.equals("plane_tiles"))
@@ -136,13 +120,13 @@ public class TileMapInfo {
                 static_plane_collision_indices[idx] += plane_tiles.firstGID;
             }
         }
-
         static_entity_indices = new int[static_plane_collision_indices.length + windmill_indices.length];
         for (int i = 0; i < static_entity_indices.length; ++i) {
             if (i < static_plane_collision_indices.length)
                 static_entity_indices[i] = static_plane_collision_indices[i];
             else static_entity_indices[i] = windmill_indices[i - static_plane_collision_indices.length];
         }
+ */
 
         destructible_tiles_health_info = new HashMap<>();
     }
@@ -207,12 +191,12 @@ public class TileMapInfo {
         }
 
         for (Tile tile : tiles) {
-            double d = Math.random();   // 20% chance of tile getting destroyed
+            double d = Math.random();
             boolean isDestructibleTile = false;
             for (int idx2 = 0; idx2 < destructible_tile_indices.length; ++idx2) {
                 if (tile.tileID == destructible_tile_indices[idx2]) {
                     isDestructibleTile = true;
-                    if (d < 0.2) {
+                    if (d < CHANCE_FOR_TILE_DESTRUCTION) {  // look for chance for it to be destroyed
                         map.setTileId(tile.xVal, tile.yVal, LANDSCAPE_TILES_LAYER_IDX, destructible_tile_replace_indices[idx2]);
                         destructible_tiles_health_info.remove(tile.key);
                     }
@@ -220,7 +204,7 @@ public class TileMapInfo {
                 }
             }
             if (!isDestructibleTile) {
-                if (d < 0.2) {
+                if (d < CHANCE_FOR_TILE_DESTRUCTION) {
                     int replacement_tile_id = TileMapInfo.getReplacementTileID(tile.tileID);
                     if (replacement_tile_id != -1)
                         map.setTileId(tile.xVal, tile.yVal, DESTRUCTION_TILES_LAYER_IDX, replacement_tile_id);

@@ -1,17 +1,17 @@
 package models.entities;
 
+import levels.AbstractLevel;
 import logic.WayPointManager;
 import logic.level_listeners.EntityDeleteListener;
-import models.CollisionModel;
 import models.Element;
 import models.entities.robots.RocketRobot;
 import models.entities.tanks.XTank;
 import models.weapons.Weapon;
+import models.weapons.projectiles.iGroundTileDamageWeapon;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -231,6 +231,15 @@ public abstract class Entity extends Element {
 
     public boolean isMandatory() {
         return this.isMandatory;
+    }
+
+    public void addListeners(AbstractLevel abstractLevel) {
+        this.level_delete_listener = abstractLevel;
+        for (Weapon weapon : weapons) {
+            if (weapon instanceof iGroundTileDamageWeapon) {
+                ((iGroundTileDamageWeapon) weapon).addListener(abstractLevel);
+            }
+        }
     }
 
 }

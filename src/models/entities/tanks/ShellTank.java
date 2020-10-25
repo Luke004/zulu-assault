@@ -55,8 +55,6 @@ public class ShellTank extends Tank {
         } catch (SlickException e) {
             e.printStackTrace();
         }
-
-        collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
         super.init();
     }
 

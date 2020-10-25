@@ -1,9 +1,8 @@
 package graphics.hud;
 
 import logic.TileMapInfo;
-import models.StaticEntity;
+import models.entities.Entity;
 import models.entities.MovableEntity;
-import models.entities.static_multitile_constructions.StaticEnemyPlane;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -80,7 +79,7 @@ public class Radar {
 
         // draw the friendly entities
         graphics.setColor(Color.green);
-        for (MovableEntity friendly_entity : friendly_movable_entities) {
+        for (Entity friendly_entity : all_friendly_entities) {
             float friend_x = friendly_entity.getPosition().x * ((float) RADAR_WIDTH / TileMapInfo.LEVEL_WIDTH_PIXELS);
             float friend_y = friendly_entity.getPosition().y * ((float) RADAR_HEIGHT / TileMapInfo.LEVEL_HEIGHT_PIXELS);
             graphics.fillRect(radar_origin.x + friend_x, radar_origin.y + friend_y, 2, 2);
@@ -97,13 +96,14 @@ public class Radar {
         // draw the enemy entities
         graphics.setColor(Color.red);
         // movable entities
-        for (MovableEntity enemy_entity : hostile_movable_entities) {
+        for (Entity enemy_entity : all_hostile_entities) {
             if (enemy_entity.isMandatory() && mandatoryBlinker) continue;
             float enemy_x = enemy_entity.getPosition().x * ((float) RADAR_WIDTH / TileMapInfo.LEVEL_WIDTH_PIXELS);
             float enemy_y = enemy_entity.getPosition().y * ((float) RADAR_HEIGHT / TileMapInfo.LEVEL_HEIGHT_PIXELS);
             graphics.fillRect(radar_origin.x + enemy_x, radar_origin.y + enemy_y, 2, 2);
         }
-        // static enemy entities
+        // special red color for enemy windmills
+        /*
         for (StaticEntity staticEnemyEntity : static_enemy_entities) {
             if (staticEnemyEntity.isMandatory() && mandatoryBlinker) continue;
             float enemy_x = staticEnemyEntity.getPosition().x * ((float) RADAR_WIDTH / TileMapInfo.LEVEL_WIDTH_PIXELS);
@@ -116,6 +116,8 @@ public class Radar {
                 graphics.fillRect(radar_origin.x + enemy_x, radar_origin.y + enemy_y, 2, 2);
             }
         }
+
+         */
 
         // draw the radar decoration outline image
         radar_image.draw(radar_image_position.x, radar_image_position.y);

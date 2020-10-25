@@ -105,31 +105,31 @@ public class Level_5 extends AbstractLevel implements GameState {
         /* ---------- SETUP ENEMY ENTITIES NOT MOVING ---------- */
         MovableEntity enemy_tank_1 = new NapalmTank(new Vector2f(1286, 1090), true, false);
         enemy_tank_1.setRotation(205);
-        hostile_movable_entities.add(enemy_tank_1);
+        all_hostile_entities.add(enemy_tank_1);
 
         MovableEntity enemy_tank_2 = new RocketTank(new Vector2f(402, 1389), true, false);
         enemy_tank_2.setRotation(110);
-        hostile_movable_entities.add(enemy_tank_2);
+        all_hostile_entities.add(enemy_tank_2);
 
         MovableEntity enemy_tank_3 = new RocketTank(new Vector2f(1375, 410), true, false);
         enemy_tank_3.setRotation(120);
         enemy_tank_3.setAsMandatory();
-        hostile_movable_entities.add(enemy_tank_3);
+        all_hostile_entities.add(enemy_tank_3);
 
         MovableEntity enemy_tank_4 = new RocketTank(new Vector2f(1390, 665), true, false);
         enemy_tank_4.setRotation(45);
         enemy_tank_4.setAsMandatory();
-        hostile_movable_entities.add(enemy_tank_4);
+        all_hostile_entities.add(enemy_tank_4);
         // top left
         MovableEntity enemy_tank_5 = new CannonTank(new Vector2f(565, 330), true, false);
         enemy_tank_5.setRotation(305);
         enemy_tank_5.setAsMandatory();
-        hostile_movable_entities.add(enemy_tank_5);
+        all_hostile_entities.add(enemy_tank_5);
 
         MovableEntity enemy_tank_6 = new RocketTank(new Vector2f(315, 342), true, false);
         enemy_tank_6.setRotation(45);
         enemy_tank_6.setAsMandatory();
-        hostile_movable_entities.add(enemy_tank_6);
+        all_hostile_entities.add(enemy_tank_6);
 
 
         /* ---------- SETUP ENEMY ENTITIES THAT ARE MOVING ---------- */
@@ -154,7 +154,7 @@ public class Level_5 extends AbstractLevel implements GameState {
                 enemy_tank_7.getRotation(),
                 wayPoints_rocket_tanks,
                 0));
-        hostile_movable_entities.add(enemy_tank_7);
+        all_hostile_entities.add(enemy_tank_7);
 
         MovableEntity enemy_tank_8 = new RocketTank(new Vector2f(315, 2255), true, false);
         enemy_tank_8.setRotation(90);
@@ -162,7 +162,7 @@ public class Level_5 extends AbstractLevel implements GameState {
                 enemy_tank_8.getRotation(),
                 wayPoints_rocket_tanks,
                 3));
-        hostile_movable_entities.add(enemy_tank_8);
+        all_hostile_entities.add(enemy_tank_8);
 
         MovableEntity enemy_tank_9 = new RocketTank(new Vector2f(830, 2270), true, false);
         enemy_tank_9.setRotation(90);
@@ -170,7 +170,7 @@ public class Level_5 extends AbstractLevel implements GameState {
                 enemy_tank_9.getRotation(),
                 wayPoints_rocket_tanks,
                 4));
-        hostile_movable_entities.add(enemy_tank_9);
+        all_hostile_entities.add(enemy_tank_9);
 
 
         /* ---------- SETUP ENEMY PLANES ---------- */
@@ -188,7 +188,7 @@ public class Level_5 extends AbstractLevel implements GameState {
         enemy_plane_1.addWayPoints(new WayPointManager(enemy_plane_1.getPosition(),
                 enemy_plane_1.getRotation(),
                 wayPoints));
-        hostile_movable_entities.add(enemy_plane_1);
+        all_hostile_entities.add(enemy_plane_1);
 
         MovableEntity enemy_plane_2 = new WarPlane(new Vector2f(950, 10), true, false);
         enemy_plane_2.setRotation(90);
@@ -204,7 +204,7 @@ public class Level_5 extends AbstractLevel implements GameState {
         enemy_plane_2.addWayPoints(new WayPointManager(enemy_plane_2.getPosition(),
                 enemy_plane_2.getRotation(),
                 wayPoints));
-        hostile_movable_entities.add(enemy_plane_2);
+        all_hostile_entities.add(enemy_plane_2);
 
         MovableEntity enemy_plane_3 = new WarPlane(new Vector2f(1400, 1170), true, false);
         enemy_plane_3.setRotation(90);
@@ -220,7 +220,7 @@ public class Level_5 extends AbstractLevel implements GameState {
         enemy_plane_3.addWayPoints(new WayPointManager(enemy_plane_3.getPosition(),
                 enemy_plane_3.getRotation(),
                 wayPoints));
-        hostile_movable_entities.add(enemy_plane_3);
+        all_hostile_entities.add(enemy_plane_3);
 
         MovableEntity enemy_plane_4 = new WarPlane(new Vector2f(530, 1260), true, false);
         enemy_plane_4.setRotation(90);
@@ -236,7 +236,7 @@ public class Level_5 extends AbstractLevel implements GameState {
         enemy_plane_4.addWayPoints(new WayPointManager(enemy_plane_4.getPosition(),
                 enemy_plane_4.getRotation(),
                 wayPoints));
-        hostile_movable_entities.add(enemy_plane_4);
+        all_hostile_entities.add(enemy_plane_4);
 
         MovableEntity enemy_plane_5 = new WarPlane(new Vector2f(1376, 2590), true, false);
         enemy_plane_5.setRotation(90);
@@ -252,13 +252,13 @@ public class Level_5 extends AbstractLevel implements GameState {
         enemy_plane_5.addWayPoints(new WayPointManager(enemy_plane_5.getPosition(),
                 enemy_plane_5.getRotation(),
                 wayPoints));
-        hostile_movable_entities.add(enemy_plane_5);
+        all_hostile_entities.add(enemy_plane_5);
 
 
         /* ---------- SETUP THE PLAYERS ALLIED ENTITIES ---------- */
         MovableEntity player_friendly_tank_1 = new RocketTank(new Vector2f(1405, 2339), false, false);
         player_friendly_tank_1.setRotation(195);
-        friendly_movable_entities.add(player_friendly_tank_1);
+        all_friendly_entities.add(player_friendly_tank_1);
 
 
         /* ---------- SETUP THE PLAYERS DRIVABLE ENTITIES ---------- */

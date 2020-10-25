@@ -3,6 +3,7 @@ package models.entities.aircraft;
 import logic.TileMapInfo;
 import logic.WayPointManager;
 import audio.MenuSounds;
+import models.entities.Entity;
 import settings.UserSettings;
 import models.CollisionModel;
 import models.entities.MovableEntity;
@@ -71,7 +72,7 @@ public abstract class Aircraft extends MovableEntity {
     }
 
     @Override
-    public void onCollision(MovableEntity enemy) {
+    public void onCollision(Entity enemy) {
         // a plane doesn't have collision
     }
 
@@ -150,7 +151,7 @@ public abstract class Aircraft extends MovableEntity {
     public void fly(int deltaTime) {
         calculateMovementVector(deltaTime, Direction.FORWARD);
         position.add(dir);
-        collisionModel.update(base_image.getRotation());
+        //collisionModel.update(base_image.getRotation());
     }
 
     public abstract void increaseSpeed(int deltaTime);

@@ -5,6 +5,6 @@ this interface notifies the map about when having to place a burnt texture indic
 on a GROUND TILE (-> ground tile != barracks, trees etc.)
  */
 
-public interface GroundTileDamageListener {
-    void notifyForGroundTileDamage(float xPos, float yPos);
+public interface GroundTileDamager {
+    void damageGroundTile(float xPos, float yPos);
 }

@@ -97,26 +97,26 @@ public class Level_3 extends AbstractLevel implements GameState {
         MovableEntity enemy_tank_1 = new NapalmTank(new Vector2f(1703, 103), true, false);
         enemy_tank_1.setRotation(90);
         enemy_tank_1.setAsMandatory();
-        hostile_movable_entities.add(enemy_tank_1);
+        all_hostile_entities.add(enemy_tank_1);
 
         MovableEntity enemy_tank_2 = new NapalmTank(new Vector2f(1850, 103), true, false);
         enemy_tank_2.setRotation(90);
         enemy_tank_2.setAsMandatory();
-        hostile_movable_entities.add(enemy_tank_2);
+        all_hostile_entities.add(enemy_tank_2);
 
         MovableEntity enemy_tank_3 = new NapalmTank(new Vector2f(1965, 108), true, false);
         enemy_tank_3.setRotation(90);
         enemy_tank_3.setAsMandatory();
-        hostile_movable_entities.add(enemy_tank_3);
+        all_hostile_entities.add(enemy_tank_3);
 
         MovableEntity enemy_robot_1 = new RocketRobot(new Vector2f(1850, 300), true, false);
         enemy_robot_1.setRotation(270);
         enemy_robot_1.setAsMandatory();
-        hostile_movable_entities.add(enemy_robot_1);
+        all_hostile_entities.add(enemy_robot_1);
 
         MovableEntity enemy_soldier_1 = new RocketSoldier(new Vector2f(2200, 147), true);
         enemy_soldier_1.setAsMandatory();
-        hostile_movable_entities.add(enemy_soldier_1);
+        all_hostile_entities.add(enemy_soldier_1);
 
 
         /* ---------- SETUP ENEMY ENTITIES THAT ARE MOVING ---------- */
@@ -139,29 +139,29 @@ public class Level_3 extends AbstractLevel implements GameState {
         enemy_plane_1.addWayPoints(new WayPointManager(enemy_plane_1.getPosition(),
                 enemy_plane_1.getRotation(),
                 enemy_plane_wayPoints));
-        hostile_movable_entities.add(enemy_plane_1);
+        all_hostile_entities.add(enemy_plane_1);
 
 
         /* ---------- SETUP THE PLAYERS ALLIED ENTITIES ---------- */
         MovableEntity player_friendly_tank_1 = new NapalmTank(new Vector2f(3521, 3694), false, false);
         player_friendly_tank_1.setRotation(295);
-        friendly_movable_entities.add(player_friendly_tank_1);
+        all_friendly_entities.add(player_friendly_tank_1);
 
         MovableEntity player_friendly_tank_2 = new NapalmTank(new Vector2f(3653, 3541), false, false);
-        friendly_movable_entities.add(player_friendly_tank_2);
+        all_friendly_entities.add(player_friendly_tank_2);
 
         // top of map
         MovableEntity player_friendly_tank_3 = new RocketTank(new Vector2f(900, 40), false, false);
         player_friendly_tank_3.setRotation(110);
-        friendly_movable_entities.add(player_friendly_tank_3);
+        all_friendly_entities.add(player_friendly_tank_3);
 
         MovableEntity player_friendly_tank_4 = new RocketTank(new Vector2f(1000, 210), false, false);
         player_friendly_tank_4.setRotation(45);
-        friendly_movable_entities.add(player_friendly_tank_4);
+        all_friendly_entities.add(player_friendly_tank_4);
 
         MovableEntity player_friendly_tank_5 = new RocketTank(new Vector2f(2975, 200), false, false);
         player_friendly_tank_5.setRotation(300);
-        friendly_movable_entities.add(player_friendly_tank_5);
+        all_friendly_entities.add(player_friendly_tank_5);
 
 
         /* ---------- SETUP THE PLAYERS DRIVABLE ENTITIES ---------- */

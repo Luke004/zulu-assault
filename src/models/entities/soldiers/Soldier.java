@@ -127,9 +127,9 @@ public abstract class Soldier extends MovableEntity {
     }
 
     @Override
-    public void onCollision(MovableEntity movableEntity) {
-        if (movableEntity.isDrivable()) blockMovement();
-        else if (!(movableEntity instanceof Aircraft)) {
+    public void onCollision(Entity entity) {
+        //if (movableEntity.isDrivable()) blockMovement();
+        if (!(entity instanceof Aircraft)) {
             blockMovement();
         }
     }

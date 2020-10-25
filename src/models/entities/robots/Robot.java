@@ -3,7 +3,9 @@ package models.entities.robots;
 import logic.CollisionHandler;
 import logic.WayPointManager;
 import models.CollisionModel;
+import models.entities.Entity;
 import models.entities.MovableEntity;
+import models.entities.aircraft.Aircraft;
 import models.entities.soldiers.Soldier;
 import models.entities.tanks.Tank;
 import org.newdawn.slick.*;
@@ -145,22 +147,6 @@ public abstract class Robot extends MovableEntity {
         this.setMovingForward(true);
         this.startAnimation();
         this.setMoving(true);
-    }
-
-    @Override
-    public void onCollision(MovableEntity movableEntity) {
-        if (movableEntity instanceof Tank || movableEntity instanceof Robot) {
-            blockMovement();
-            if (!isHostile && movableEntity.isHostile) {
-                movableEntity.changeHealth(-10.f);
-            }
-        } else if (movableEntity instanceof Soldier) {   // enemy is a soldier (bad for him)
-            if (movableEntity.isDestroyed) return;
-            if (!isHostile && movableEntity.isHostile) {
-                movableEntity.changeHealth(-150.f);
-            }
-            blockMovement();
-        }
     }
 
     @Override

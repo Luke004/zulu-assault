@@ -1,7 +1,7 @@
 package models.weapons.projectiles;
 
-import logic.level_listeners.GroundTileDamageListener;
+import logic.level_listeners.GroundTileDamager;
 
 public interface iGroundTileDamageWeapon {
-    void addListener(GroundTileDamageListener groundTileDamageListener);
+    void addListener(GroundTileDamager groundTileDamager);
 }

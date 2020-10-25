@@ -2,6 +2,8 @@ package levels;
 
 import logic.WayPointManager;
 import main.ZuluAssault;
+import models.entities.windmills.Windmill;
+import models.entities.windmills.WindmillGreen;
 import models.interaction_circles.HealthCircle;
 import models.items.*;
 import models.entities.MovableEntity;
@@ -164,47 +166,51 @@ public class Level_1 extends AbstractLevel implements GameState {
 
         /* ---------- SETUP ENEMY ENTITIES NOT MOVING ---------- */
         MovableEntity enemy_cannon_tank = new CannonTank(new Vector2f(3055, 3110), true, false);
-        hostile_movable_entities.add(enemy_cannon_tank);
+        all_hostile_entities.add(enemy_cannon_tank);
 
         MovableEntity enemy_meme_car = new MemeCar(new Vector2f(2110, 1960), true, false);
         enemy_meme_car.setRotation(15);
-        hostile_movable_entities.add(enemy_meme_car);
+        all_hostile_entities.add(enemy_meme_car);
 
         MovableEntity enemy_soldier_1 = new UziSoldier(new Vector2f(1370.f, 3150.f), true);
-        hostile_movable_entities.add(enemy_soldier_1);
+        all_hostile_entities.add(enemy_soldier_1);
 
         MovableEntity enemy_soldier_2 = new UziSoldier(new Vector2f(1473.f, 3198.f), true);
-        hostile_movable_entities.add(enemy_soldier_2);
+        all_hostile_entities.add(enemy_soldier_2);
 
         MovableEntity enemy_soldier_3 = new UziSoldier(new Vector2f(1266.f, 3206.f), true);
-        hostile_movable_entities.add(enemy_soldier_3);
+        all_hostile_entities.add(enemy_soldier_3);
 
         MovableEntity enemy_tank_3_rocket = new RocketTank(new Vector2f(2970.f, 130.f), true, false);
         enemy_tank_3_rocket.setRotation(100);
-        hostile_movable_entities.add(enemy_tank_3_rocket);
+        all_hostile_entities.add(enemy_tank_3_rocket);
 
         MovableEntity enemy_tank_4_rocket = new RocketTank(new Vector2f(3250.f, 140.f), true, false);
         enemy_tank_4_rocket.setRotation(160);
-        hostile_movable_entities.add(enemy_tank_4_rocket);
+        all_hostile_entities.add(enemy_tank_4_rocket);
 
         MovableEntity enemy_tank_5_rocket = new RocketTank(new Vector2f(3460.f, 70.f), true, false);
         enemy_tank_5_rocket.setRotation(225);
-        hostile_movable_entities.add(enemy_tank_5_rocket);
+        all_hostile_entities.add(enemy_tank_5_rocket);
 
         MovableEntity enemy_soldier_4 = new UziSoldier(new Vector2f(2565.f, 160.f), true);
-        hostile_movable_entities.add(enemy_soldier_4);
+        all_hostile_entities.add(enemy_soldier_4);
 
         MovableEntity enemy_soldier_5 = new UziSoldier(new Vector2f(2500.f, 240.f), true);
-        hostile_movable_entities.add(enemy_soldier_5);
+        all_hostile_entities.add(enemy_soldier_5);
 
         MovableEntity enemy_soldier_6 = new UziSoldier(new Vector2f(2460.f, 60.f), true);
-        hostile_movable_entities.add(enemy_soldier_6);
+        all_hostile_entities.add(enemy_soldier_6);
 
         MovableEntity enemy_soldier_7 = new UziSoldier(new Vector2f(2350.f, 100.f), true);
-        hostile_movable_entities.add(enemy_soldier_7);
+        all_hostile_entities.add(enemy_soldier_7);
 
         MovableEntity enemy_soldier_8 = new UziSoldier(new Vector2f(2340.f, 160.f), true);
-        hostile_movable_entities.add(enemy_soldier_8);
+        all_hostile_entities.add(enemy_soldier_8);
+
+        // TODO: 25.10.2020  remove this windmill
+        Windmill enemy_windmill = new WindmillGreen(new Vector2f(850, 800), true);
+        all_hostile_entities.add(enemy_windmill);
 
 
         /* ---------- SETUP ENEMY ENTITIES THAT ARE MOVING ---------- */
@@ -222,7 +228,7 @@ public class Level_1 extends AbstractLevel implements GameState {
         wayPoints.add(new Vector2f(1600.f, 2100.f));
         enemy_shell_tank_1.addWayPoints(new WayPointManager(enemy_shell_tank_1.getPosition(), enemy_shell_tank_1.getRotation(),
                 wayPoints));
-        hostile_movable_entities.add(enemy_shell_tank_1);
+        all_hostile_entities.add(enemy_shell_tank_1);
 
         MovableEntity enemy_shell_tank_2 = new ShellTank(new Vector2f(1600.f, 2600.f), true, false);
         enemy_shell_tank_2.setAsMandatory();
@@ -235,7 +241,7 @@ public class Level_1 extends AbstractLevel implements GameState {
         enemy_shell_tank_2.addWayPoints(new WayPointManager(enemy_shell_tank_2.getPosition(),
                 enemy_shell_tank_2.getRotation(),
                 wayPoints));
-        hostile_movable_entities.add(enemy_shell_tank_2);
+        all_hostile_entities.add(enemy_shell_tank_2);
 
 
         /* ---------- SETUP ENEMY PLANES ---------- */
@@ -252,7 +258,7 @@ public class Level_1 extends AbstractLevel implements GameState {
         enemy_plane_1.addWayPoints(new WayPointManager(enemy_plane_1.getPosition(),
                 enemy_plane_1.getRotation(),
                 wayPoints));
-        hostile_movable_entities.add(enemy_plane_1);
+        all_hostile_entities.add(enemy_plane_1);
 
         MovableEntity enemy_plane_2 = new WarPlane(new Vector2f(2700, 1900), true, false);
         wayPoints = new ArrayList<>();
@@ -267,7 +273,7 @@ public class Level_1 extends AbstractLevel implements GameState {
         enemy_plane_2.addWayPoints(new WayPointManager(enemy_plane_2.getPosition(),
                 enemy_plane_2.getRotation(),
                 wayPoints));
-        hostile_movable_entities.add(enemy_plane_2);
+        all_hostile_entities.add(enemy_plane_2);
 
         MovableEntity enemy_plane_3 = new WarPlane(new Vector2f(3260, 200), true, false);
         enemy_plane_3.setRotation(180);
@@ -283,7 +289,7 @@ public class Level_1 extends AbstractLevel implements GameState {
         enemy_plane_3.addWayPoints(new WayPointManager(enemy_plane_3.getPosition(),
                 enemy_plane_3.getRotation(),
                 wayPoints));
-        hostile_movable_entities.add(enemy_plane_3);
+        all_hostile_entities.add(enemy_plane_3);
 
 
         /* ---------- SETUP THE PLAYERS ALLIED ENTITIES ---------- */
@@ -295,7 +301,7 @@ public class Level_1 extends AbstractLevel implements GameState {
         player_ally_1.addWayPoints(new WayPointManager(tankWayPointLists,
                 player_ally_1.getPosition(),
                 player_ally_1.getRotation()));
-        friendly_movable_entities.add(player_ally_1);
+        all_friendly_entities.add(player_ally_1);
 
         MovableEntity player_ally_2 = new NapalmTank(new Vector2f(900, -2200), false, false);
         player_ally_2.setRotation(180);
@@ -303,7 +309,7 @@ public class Level_1 extends AbstractLevel implements GameState {
         player_ally_2.addWayPoints(new WayPointManager(tankWayPointLists,
                 player_ally_2.getPosition(),
                 player_ally_2.getRotation()));
-        friendly_movable_entities.add(player_ally_2);
+        all_friendly_entities.add(player_ally_2);
 
         MovableEntity player_ally_3 = new NapalmTank(new Vector2f(910, -600), false, false);
         player_ally_3.setRotation(180);
@@ -311,7 +317,7 @@ public class Level_1 extends AbstractLevel implements GameState {
         player_ally_3.addWayPoints(new WayPointManager(tankWayPointLists,
                 player_ally_3.getPosition(),
                 player_ally_3.getRotation()));
-        friendly_movable_entities.add(player_ally_3);
+        all_friendly_entities.add(player_ally_3);
 
 
         /* ---------- SETUP THE PLAYERS DRIVABLE ENTITIES ---------- */
@@ -412,21 +418,6 @@ public class Level_1 extends AbstractLevel implements GameState {
         tempList.clear();
 
         return wayPointLists;
-    }
-
-    @Override
-    public void update(GameContainer gc, StateBasedGame stateBasedGame, int i) {
-        super.update(gc, stateBasedGame, i);
-
-        if (gc.getInput().isKeyPressed(Input.KEY_BACK)) {
-            try {
-                stateBasedGame.getState(ZuluAssault.LEVEL_2).init(gc, stateBasedGame);
-                stateBasedGame.enterState(ZuluAssault.LEVEL_2,
-                        new FadeOutTransition(), new FadeInTransition());
-            } catch (SlickException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     @Override

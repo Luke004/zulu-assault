@@ -2,12 +2,11 @@ package levels;
 
 import audio.CombatBackgroundMusic;
 import logic.*;
-import logic.level_listeners.GroundTileDamageListener;
+import logic.level_listeners.GroundTileDamager;
 import logic.level_listeners.EntityDeleteListener;
 import main.ZuluAssault;
 import menu.Menu;
 import settings.UserSettings;
-import models.StaticEntity;
 import graphics.animations.explosion.BigExplosionAnimation;
 import graphics.hud.HUD;
 import graphics.hud.Radar;
@@ -18,15 +17,9 @@ import models.items.Item;
 import models.entities.MovableEntity;
 import models.entities.Entity;
 import models.entities.aircraft.Aircraft;
-import models.entities.static_multitile_constructions.StaticEnemyPlane;
 import models.entities.robots.Robot;
 import models.entities.soldiers.Soldier;
-import models.entities.windmills.Windmill;
-import models.entities.windmills.WindmillGreen;
-import models.entities.windmills.WindmillGrey;
-import models.entities.windmills.WindmillYellow;
 import org.newdawn.slick.*;
-import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
@@ -40,7 +33,7 @@ import java.util.List;
 
 import static logic.TileMapInfo.*;
 
-public abstract class AbstractLevel extends BasicGameState implements EntityDeleteListener, GroundTileDamageListener {
+public abstract class AbstractLevel extends BasicGameState implements EntityDeleteListener, GroundTileDamager {
 
     private GameContainer gameContainer;
 
@@ -55,16 +48,15 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
 
     public static Player player;
     public TiledMap map;
-    public static List<StaticEntity> static_enemy_entities;
     public static List<TeleportCircle> teleport_circles;
     public static List<HealthCircle> health_circles;
     public static List<Item> items;
-    public static List<MovableEntity> friendly_movable_entities, hostile_movable_entities, drivable_entities,
-            all_movable_entities;
-    public static List<Entity> all_hostile_entities;
+    public static List<Entity> all_friendly_entities, all_hostile_entities,
+            all_entities;
+    public static List<MovableEntity> drivable_entities;
 
     // list for rendering -> respects the render hierarchy
-    private static List<MovableEntity> renderList;
+    private static List<Entity> renderList;
 
     private static KeyInputHandler keyInputHandler;
     private static CollisionHandler collisionHandler;
@@ -85,13 +77,11 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
         has_initialized_once = false;
         player = new Player();
         combatBackgroundMusic = new CombatBackgroundMusic();
-        hostile_movable_entities = new ArrayList<>();
-        friendly_movable_entities = new ArrayList<>();
-        drivable_entities = new ArrayList<>();
-        all_movable_entities = new ArrayList<>();
         all_hostile_entities = new ArrayList<>();
+        all_friendly_entities = new ArrayList<>();
+        drivable_entities = new ArrayList<>();
+        all_entities = new ArrayList<>();
         renderList = new ArrayList<>();
-        static_enemy_entities = new ArrayList<>();
         health_circles = new ArrayList<>();
         teleport_circles = new ArrayList<>();
         items = new ArrayList<>();
@@ -134,10 +124,10 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
         TimeManager.init();
 
         // create a global movable entity list for collisions between them
-        all_movable_entities.addAll(friendly_movable_entities);
-        all_movable_entities.addAll(hostile_movable_entities);
-        renderList.addAll(all_movable_entities);
-        all_movable_entities.addAll(drivable_entities);
+        all_entities.addAll(all_friendly_entities);
+        all_entities.addAll(all_hostile_entities);
+        renderList.addAll(all_entities);    // TODO: 25.10.2020 why are drivable_entities not in render list?
+        all_entities.addAll(drivable_entities);
 
         // put planes at the end of the list so they get rendered LAST
         renderList.sort((o1, o2) -> {
@@ -147,21 +137,21 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
             else return 0;
         });
 
-        all_hostile_entities.addAll(hostile_movable_entities);
-        all_hostile_entities.addAll(static_enemy_entities);
+        //all_hostile_entities.addAll(all_hostile_entities);
+        //all_hostile_entities.addAll(static_enemy_entities);
 
         camera = new Camera(gameContainer, map);
         camera.centerOn(player.getEntity().getPosition().x, player.getEntity().getPosition().y);
 
         // add listeners for destruction of entities
-        for (MovableEntity movableEntity : friendly_movable_entities) {
-            movableEntity.addListeners(this);
+        for (Entity entity : all_friendly_entities) {
+            entity.addListeners(this);
         }
-        for (MovableEntity movableEntity : hostile_movable_entities) {
-            movableEntity.addListeners(this);
+        for (Entity entity : all_hostile_entities) {
+            entity.addListeners(this);
         }
-        for (MovableEntity movableEntity : drivable_entities) {
-            movableEntity.addListeners(this);
+        for (Entity entity : drivable_entities) {
+            entity.addListeners(this);
         }
         player.getEntity().addListeners(this);
         player.getBaseSoldier().addListeners(this);
@@ -200,13 +190,16 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
             return;
         }
         player.update(gc, deltaTime);
-        for (int idx = 0; idx < all_movable_entities.size(); ++idx) {
-            all_movable_entities.get(idx).update(gc, deltaTime);
+        for (int idx = 0; idx < all_entities.size(); ++idx) {
+            all_entities.get(idx).update(gc, deltaTime);
         }
 
+        /*
         for (int idx = 0; idx < static_enemy_entities.size(); ++idx) {
             static_enemy_entities.get(idx).update(gc, deltaTime);
         }
+
+         */
 
         for (InteractionCircle health_circle : health_circles) {
             health_circle.update(gc, deltaTime);
@@ -235,18 +228,15 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
         }
 
         combatBackgroundMusic.update();
-        checkWon();
+        hasWonTheLevel = checkWon();
     }
 
-    private void checkWon() {
-        int mandatoryCounter = 0;
-        for (MovableEntity movable_war_attender : all_movable_entities) {
-            if (movable_war_attender.isMandatory()) mandatoryCounter++;
+    // TODO: 25.10.2020 add windmills to check won
+    private boolean checkWon() {
+        for (Entity entity : all_entities) {
+            if (entity.isMandatory()) return false;
         }
-        for (StaticEntity static_enemy : static_enemy_entities) {
-            if (static_enemy.isMandatory()) mandatoryCounter++;
-        }
-        if (mandatoryCounter == 0) hasWonTheLevel = true;
+        return true;
     }
 
     @Override
@@ -273,11 +263,13 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
 
         if (!(player.getEntity() instanceof Aircraft)) player.getEntity().draw(graphics);
 
+        /*
         for (StaticEntity staticEnemy : static_enemy_entities) {
             staticEnemy.draw(graphics);
         }
+         */
 
-        for (MovableEntity renderInstance : renderList) {
+        for (Entity renderInstance : renderList) {
             renderInstance.draw(graphics);
         }
 
@@ -296,59 +288,42 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
     public void notifyForEntityDestruction(Entity entity) {
         if (entity.isHostile) {
             all_hostile_entities.remove(entity);
-            if (entity instanceof MovableEntity) {
-                hostile_movable_entities.remove(entity);
-                if (entity instanceof Robot) camera.shake();
-            } else if (entity instanceof StaticEntity) {
-                static_enemy_entities.remove(entity);
-            }
             player.addPoints(entity.getScoreValue());  // add points
             screenDrawer.drawScoreValue(5, entity);    // draw the score on the screen
-
-            if (entity instanceof Windmill) {
-                bigExplosionAnimation.playTenTimes(entity.getPosition().x + 20,
-                        entity.getPosition().y + 20, 0);
-                explosion_sound.play(1.f, UserSettings.soundVolume);
-            } else {
-                if (entity instanceof Soldier) screenDrawer.drawDeadSoldierBody(10, entity);
-                else {
-                    bigExplosionAnimation.playTenTimes(entity.getPosition().x, entity.getPosition().y, 0);
-                    explosion_sound.play(1.f, UserSettings.soundVolume);
-                }
-            }
         } else {
             if (entity instanceof MovableEntity) {
-                if (entity instanceof Robot) camera.shake();
                 if (entity == player.getEntity()) {
                     // THE PLAYER DIED
                     LevelHandler.gameOver(this);
                 } else {
-                    friendly_movable_entities.remove(entity);
-                    if (((MovableEntity) entity).isDrivable())
+                    all_friendly_entities.remove(entity);
+                    if (((MovableEntity) entity).isDrivable()) {
                         drivable_entities.remove(entity);
+                    }
                 }
             }
-            if (entity instanceof Soldier) screenDrawer.drawDeadSoldierBody(10, entity);
-            else {
-                bigExplosionAnimation.playTenTimes(entity.getPosition().x, entity.getPosition().y, 0);
-                explosion_sound.play(1.f, UserSettings.soundVolume);
-            }
         }
+        if (entity instanceof Robot) camera.shake();
+        if (entity instanceof Soldier) screenDrawer.drawDeadSoldierBody(10, entity);
+        else {
+            this.damageGroundTile(entity.getPosition().x, entity.getPosition().y);
+            bigExplosionAnimation.playTenTimes(entity.getPosition().x, entity.getPosition().y, 0);
+            explosion_sound.play(1.f, UserSettings.soundVolume);
+        }
+
         // maybe drop an item
         Item drop_item = randomItemDropper.dropItem(entity.getPosition());
         if (drop_item != null) {
             items.add(drop_item);
         }
-        // remove entity from relevant lists
-        if (entity instanceof MovableEntity) {
-            renderList.remove(entity);
-            all_movable_entities.remove(entity);
-        }
+        // remove entity from other relevant lists
+        renderList.remove(entity);
+        all_entities.remove(entity);
     }
 
     @Override
-    public void notifyForGroundTileDamage(float xPos, float yPos) {
-        // a ground tile was damaged by an iGroundTileDamageWeapon
+    public void damageGroundTile(float xPos, float yPos) {
+        // damage a ground tile
         int mapX = (int) (xPos / TILE_WIDTH);
         int mapY = (int) (yPos / TILE_HEIGHT);
         int tileID = map.getTileId(mapX, mapY, LANDSCAPE_TILES_LAYER_IDX);
@@ -357,6 +332,7 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
         if (replacement_tile_id != -1) {
             map.setTileId(mapX, mapY, DESTRUCTION_TILES_LAYER_IDX, replacement_tile_id);
         }
+        // maybe damage other ground tiles that are around, too
         doCollateralTileDamage(mapX, mapY);
     }
 
@@ -367,13 +343,11 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
 
     protected static void resetLevel() {
         if (player.getEntity() == null) return;
-        hostile_movable_entities.clear();
-        friendly_movable_entities.clear();
-        drivable_entities.clear();
-        all_movable_entities.clear();
         all_hostile_entities.clear();
+        all_friendly_entities.clear();
+        drivable_entities.clear();
+        all_entities.clear();
         renderList.clear();
-        static_enemy_entities.clear();
         health_circles.clear();
         teleport_circles.clear();
         items.clear();

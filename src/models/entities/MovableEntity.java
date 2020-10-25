@@ -1,10 +1,9 @@
 package models.entities;
 
 import levels.AbstractLevel;
-import logic.level_listeners.EntityDeleteListener;
 import logic.WayPointManager;
+import models.entities.soldiers.Soldier;
 import settings.UserSettings;
-import models.CollisionModel;
 import models.interaction_circles.TeleportCircle;
 import models.entities.aircraft.Aircraft;
 import models.weapons.MegaPulse;
@@ -17,8 +16,8 @@ import player.Player;
 
 import java.util.Iterator;
 
-import static levels.AbstractLevel.all_movable_entities;
-import static levels.AbstractLevel.hostile_movable_entities;
+import static levels.AbstractLevel.all_entities;
+import static levels.AbstractLevel.all_hostile_entities;
 
 public abstract class MovableEntity extends Entity {
 
@@ -134,15 +133,6 @@ public abstract class MovableEntity extends Entity {
         }
     }
 
-    public void addListeners(AbstractLevel abstractLevel) {
-        this.level_delete_listener = abstractLevel;
-        for (Weapon weapon : weapons) {
-            if (weapon instanceof iGroundTileDamageWeapon) {
-                ((iGroundTileDamageWeapon) weapon).addListener(abstractLevel);
-            }
-        }
-    }
-
     public void addWayPoints(WayPointManager waypointManager) {
         this.waypointManager = waypointManager;
     }
@@ -228,7 +218,21 @@ public abstract class MovableEntity extends Entity {
         return isDrivable;
     }
 
-    public abstract void onCollision(MovableEntity enemy);
+    /* Default implementation of 'onCollision': Like if it was a big war machine */
+    public void onCollision(Entity entity) {
+        if (entity instanceof Soldier) {   // enemy is a soldier (bad for him)
+            if (entity.isDestroyed) return;
+            if (!isHostile && entity.isHostile) {
+                entity.changeHealth(-150.f);
+            }
+            blockMovement();
+        } else if (!(entity instanceof Aircraft)) {
+            blockMovement();
+            if (!isHostile && entity.isHostile) {
+                entity.changeHealth(-10.f);
+            }
+        }
+    }
 
     public void blockMovement() {
         if (isDestroyed) return;
@@ -252,8 +256,8 @@ public abstract class MovableEntity extends Entity {
                 break;
             case EMP:   // destroy all nearby planes
                 emp_use_sound.play(1.f, UserSettings.soundVolume);
-                for (int idx = 0; idx < hostile_movable_entities.size(); ++idx) {
-                    MovableEntity hostileEntity = hostile_movable_entities.get(idx);
+                for (int idx = 0; idx < all_hostile_entities.size(); ++idx) {
+                    Entity hostileEntity = all_hostile_entities.get(idx);
                     if (hostileEntity instanceof Aircraft) {
                         if (WayPointManager.dist(hostileEntity.getPosition(), this.getPosition()) < 300) {
                             hostileEntity.isDestroyed = true;
@@ -267,10 +271,10 @@ public abstract class MovableEntity extends Entity {
                 break;
             case EXPAND:
                 expand_use_sound.play(1.f, UserSettings.soundVolume);
-                for (int idx = 0; idx < all_movable_entities.size(); ++idx) {
-                    MovableEntity movableEntity = all_movable_entities.get(idx);
-                    if (WayPointManager.dist(movableEntity.getPosition(), this.getPosition()) < 500) {
-                        for (Weapon weapon : movableEntity.getWeapons()) {
+                for (int idx = 0; idx < all_entities.size(); ++idx) {
+                    Entity entity = all_entities.get(idx);
+                    if (WayPointManager.dist(entity.getPosition(), this.getPosition()) < 500) {
+                        for (Weapon weapon : entity.getWeapons()) {
                             Iterator<Projectile> projectile_iterator = weapon.getProjectiles();
                             while (projectile_iterator.hasNext()) {
                                 Projectile projectile = projectile_iterator.next();

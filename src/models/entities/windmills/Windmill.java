@@ -1,8 +1,9 @@
 package models.entities.windmills;
 
 import logic.WayPointManager;
-import models.StaticEntity;
 import graphics.animations.smoke.SmokeAnimation;
+import models.CollisionModel;
+import models.entities.Entity;
 import models.entities.MovableEntity;
 import models.weapons.Weapon;
 import org.newdawn.slick.GameContainer;
@@ -12,7 +13,8 @@ import org.newdawn.slick.geom.Vector2f;
 
 import java.util.Random;
 
-public abstract class Windmill extends StaticEntity {
+public abstract class Windmill extends Entity {
+
     protected Image turret;
     protected Vector2f turret_position;
     private SmokeAnimation smokeAnimation;
@@ -20,13 +22,14 @@ public abstract class Windmill extends StaticEntity {
     private int smoke_animation_timer;
     private Random random;
 
-    private static final float WINDMILL_DEFAULT_ARMOR = 10.f;
+    private static final float WINDMILL_DEFAULT_ARMOR = 30.f;
     private static final int WINDMILL_DEFAULT_SCORE_VALUE = 200;
     private static final float TURRET_ROTATE_SPEED = 0.07f;
 
 
-    public Windmill(Vector2f startPos, boolean isHostile, Vector2f[] tile_positions) {
-        super(startPos, isHostile, tile_positions);
+    public Windmill(Vector2f startPos, boolean isHostile) {
+        super(startPos, isHostile);
+
         random = new Random();
 
         smokeAnimation = new SmokeAnimation(3);
@@ -36,9 +39,19 @@ public abstract class Windmill extends StaticEntity {
     }
 
     @Override
+    public void init() {
+        collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
+        collisionModel.update(0);
+        WIDTH_HALF = base_image.getWidth() / 2;
+        HEIGHT_HALF = base_image.getHeight() / 2;
+        super.init();
+    }
+
+    @Override
     public void update(GameContainer gc, int deltaTime) {
         super.update(gc, deltaTime);
         smokeAnimation.update(deltaTime);
+        // draw smoke animation when below half health
         if (current_health < MAX_HEALTH / 2) {
             smoke_animation_timer += deltaTime;
             if (smoke_animation_timer > SMOKE_ANIMATION_FREQUENCY) {
@@ -49,18 +62,23 @@ public abstract class Windmill extends StaticEntity {
                 smokeAnimation.play(xVal, yVal, rotation);
             }
         }
+
+        if (isDestroyed) {
+            level_delete_listener.notifyForEntityDestruction(this);
+        }
     }
 
     @Override
     public void draw(Graphics graphics) {
         super.draw(graphics);
+        base_image.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
         turret.draw(turret_position.x, turret_position.y);
         smokeAnimation.draw();
     }
 
     @Override
     public void drawPreview(Graphics graphics) {
-        // TODO:
+        base_image.draw(position.x, position.y, 0.6f);
     }
 
     @Override

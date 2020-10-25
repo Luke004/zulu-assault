@@ -131,12 +131,12 @@ public class Level_8 extends AbstractLevel implements GameState {
         /* ---------- SETUP ENEMY ENTITIES NOT MOVING ---------- */
         MovableEntity enemy_shell_tank = new ShellTank(new Vector2f(1085, 153), true, false);
         enemy_shell_tank.setAsMandatory();
-        hostile_movable_entities.add(enemy_shell_tank);
+        all_hostile_entities.add(enemy_shell_tank);
 
         // the "boss"
         MovableEntity enemy_x_tank = new XTank(new Vector2f(903, 2044), true, false);
         enemy_x_tank.setAsMandatory();
-        hostile_movable_entities.add(enemy_x_tank);
+        all_hostile_entities.add(enemy_x_tank);
 
 
         /* ---------- SETUP ENEMY ENTITIES THAT ARE MOVING ---------- */
@@ -160,7 +160,7 @@ public class Level_8 extends AbstractLevel implements GameState {
                 wayPoints_napalm_tanks,
                 0));
         enemy_napalm_tank_1.setAsMandatory();
-        hostile_movable_entities.add(enemy_napalm_tank_1);
+        all_hostile_entities.add(enemy_napalm_tank_1);
 
         MovableEntity enemy_napalm_tank_2 = new NapalmTank(new Vector2f(1317, 3206), true, false);
         enemy_napalm_tank_2.setRotation(90);
@@ -169,7 +169,7 @@ public class Level_8 extends AbstractLevel implements GameState {
                 wayPoints_napalm_tanks,
                 1));
         enemy_napalm_tank_2.setAsMandatory();
-        hostile_movable_entities.add(enemy_napalm_tank_2);
+        all_hostile_entities.add(enemy_napalm_tank_2);
 
         MovableEntity enemy_napalm_tank_3 = new NapalmTank(new Vector2f(1832, 2619), true, false);
         enemy_napalm_tank_3.addWayPoints(new WayPointManager(enemy_napalm_tank_3.getPosition(),
@@ -177,7 +177,7 @@ public class Level_8 extends AbstractLevel implements GameState {
                 wayPoints_napalm_tanks,
                 2));
         enemy_napalm_tank_3.setAsMandatory();
-        hostile_movable_entities.add(enemy_napalm_tank_3);
+        all_hostile_entities.add(enemy_napalm_tank_3);
 
         MovableEntity enemy_napalm_tank_4 = new NapalmTank(new Vector2f(1832, 1214), true, false);
         enemy_napalm_tank_4.setRotation(270);
@@ -186,7 +186,7 @@ public class Level_8 extends AbstractLevel implements GameState {
                 wayPoints_napalm_tanks,
                 3));
         enemy_napalm_tank_4.setAsMandatory();
-        hostile_movable_entities.add(enemy_napalm_tank_4);
+        all_hostile_entities.add(enemy_napalm_tank_4);
 
         MovableEntity enemy_napalm_tank_5 = new NapalmTank(new Vector2f(1004, 663), true, false);
         enemy_napalm_tank_5.setRotation(270);
@@ -195,7 +195,7 @@ public class Level_8 extends AbstractLevel implements GameState {
                 wayPoints_napalm_tanks,
                 5));
         enemy_napalm_tank_5.setAsMandatory();
-        hostile_movable_entities.add(enemy_napalm_tank_5);
+        all_hostile_entities.add(enemy_napalm_tank_5);
 
         MovableEntity enemy_napalm_tank_6 = new NapalmTank(new Vector2f(243, 1678), true, false);
         enemy_napalm_tank_6.setRotation(180);
@@ -204,7 +204,7 @@ public class Level_8 extends AbstractLevel implements GameState {
                 wayPoints_napalm_tanks,
                 7));
         enemy_napalm_tank_6.setAsMandatory();
-        hostile_movable_entities.add(enemy_napalm_tank_6);
+        all_hostile_entities.add(enemy_napalm_tank_6);
 
 
         /* ---------- SETUP ENEMY PLANES ---------- */

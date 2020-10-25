@@ -1,6 +1,6 @@
 package models.weapons;
 
-import logic.level_listeners.GroundTileDamageListener;
+import logic.level_listeners.GroundTileDamager;
 import settings.UserSettings;
 import graphics.animations.explosion.BigExplosionAnimation;
 import models.weapons.projectiles.AirRocket;
@@ -18,7 +18,7 @@ public class AGM extends RocketLauncher implements iGroundTileDamageWeapon {
     private static Texture agm_hud_texture;
 
     private BigExplosionAnimation bigExplosionAnimation;
-    public GroundTileDamageListener groundTileDamageListener;
+    public GroundTileDamager groundTileDamager;
 
     public AGM(boolean isDrivable) {
         super(isDrivable);
@@ -93,7 +93,7 @@ public class AGM extends RocketLauncher implements iGroundTileDamageWeapon {
     @Override
     protected void onProjectileRemove(Projectile projectile) {
         // check if a ground tile is damaged
-        groundTileDamageListener.notifyForGroundTileDamage(projectile.projectile_pos.x,
+        groundTileDamager.damageGroundTile(projectile.projectile_pos.x,
                 projectile.projectile_pos.y);
         bigExplosionAnimation.playTenTimes(projectile.projectile_pos.x, projectile.projectile_pos.y, 90);
     }
@@ -114,7 +114,7 @@ public class AGM extends RocketLauncher implements iGroundTileDamageWeapon {
     }
 
     @Override
-    public void addListener(GroundTileDamageListener groundTileDamageListener) {
-        this.groundTileDamageListener = groundTileDamageListener;
+    public void addListener(GroundTileDamager groundTileDamager) {
+        this.groundTileDamager = groundTileDamager;
     }
 }

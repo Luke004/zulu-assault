@@ -35,9 +35,9 @@ public class Elements {
                 "ExpandItem",
                 "HealthCircle",             // CIRCLES (2)
                 "TeleportCircle",
-                //  "WindmillGreen",            // ENTITIES (20)
-                //  "WindmillGrey",
-                //     "WindmillYellow",
+                "WindmillGreen",            // ENTITIES (20)
+                "WindmillGrey",
+                "WindmillYellow",
                 "MemeCar",
                 "CannonTank",
                 "RocketTank",
@@ -100,6 +100,9 @@ public class Elements {
                 allElements[22],
                 allElements[23],
                 allElements[24],
+                allElements[25],
+                allElements[26],
+                allElements[27]
         };
     }
 
@@ -122,12 +125,12 @@ public class Elements {
                 return new HealthCircle(pos);
             case "TeleportCircle":
                 return new TeleportCircle(pos);
-            //     case "WindmillGreen":
-            //        return new WindmillGreen(pos, true, null);
-            //      case "WindmillGrey":
-            //          return new WindmillGrey(pos, true, null);
-            //        case "WindmillYellow":
-            //          return new WindmillYellow(pos, true, null);
+            case "WindmillGreen":
+                return new WindmillGreen(pos, true);
+            case "WindmillGrey":
+                return new WindmillGrey(pos, true);
+            case "WindmillYellow":
+                return new WindmillYellow(pos, true);
             case "MemeCar":
                 return new MemeCar(pos, isHostile, isDrivable);
             case "CannonTank":

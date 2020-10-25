@@ -193,47 +193,47 @@ public class Level_9 extends AbstractLevel implements GameState {
         MovableEntity enemy_mega_pulse_tank_1 = new MegaPulseTank(new Vector2f(494, 432), true, false);
         enemy_mega_pulse_tank_1.setRotation(144);
         enemy_mega_pulse_tank_1.setAsMandatory();
-        hostile_movable_entities.add(enemy_mega_pulse_tank_1);
+        all_hostile_entities.add(enemy_mega_pulse_tank_1);
 
         MovableEntity enemy_mega_pulse_tank_2 = new MegaPulseTank(new Vector2f(1181, 720), true, false);
         enemy_mega_pulse_tank_2.setRotation(73);
         enemy_mega_pulse_tank_2.setAsMandatory();
-        hostile_movable_entities.add(enemy_mega_pulse_tank_2);
+        all_hostile_entities.add(enemy_mega_pulse_tank_2);
 
         MovableEntity enemy_mega_pulse_tank_3 = new MegaPulseTank(new Vector2f(663, 1006), true, false);
         enemy_mega_pulse_tank_3.setRotation(25);
         enemy_mega_pulse_tank_3.setAsMandatory();
-        hostile_movable_entities.add(enemy_mega_pulse_tank_3);
+        all_hostile_entities.add(enemy_mega_pulse_tank_3);
 
         MovableEntity enemy_mega_pulse_tank_4 = new MegaPulseTank(new Vector2f(415, 1280), true, false);
         enemy_mega_pulse_tank_4.setAsMandatory();
-        hostile_movable_entities.add(enemy_mega_pulse_tank_4);
+        all_hostile_entities.add(enemy_mega_pulse_tank_4);
 
 
         MovableEntity enemy_shell_tank_1 = new ShellTank(new Vector2f(1288, 1278), true, false);
         enemy_shell_tank_1.setRotation(90);
         enemy_shell_tank_1.setAsMandatory();
-        hostile_movable_entities.add(enemy_shell_tank_1);
+        all_hostile_entities.add(enemy_shell_tank_1);
 
         MovableEntity enemy_shell_tank_2 = new ShellTank(new Vector2f(654, 1560), true, false);
         enemy_shell_tank_2.setRotation(90);
         enemy_shell_tank_2.setAsMandatory();
-        hostile_movable_entities.add(enemy_shell_tank_2);
+        all_hostile_entities.add(enemy_shell_tank_2);
 
         MovableEntity enemy_rocket_tank_1 = new RocketTank(new Vector2f(3000, 3551), true, false);
         enemy_rocket_tank_1.setRotation(170);
         enemy_rocket_tank_1.setAsMandatory();
-        hostile_movable_entities.add(enemy_rocket_tank_1);
+        all_hostile_entities.add(enemy_rocket_tank_1);
 
         MovableEntity enemy_rocket_tank_2 = new RocketTank(new Vector2f(3555, 3565), true, false);
         enemy_rocket_tank_2.setRotation(45);
         enemy_rocket_tank_2.setAsMandatory();
-        hostile_movable_entities.add(enemy_rocket_tank_2);
+        all_hostile_entities.add(enemy_rocket_tank_2);
 
         MovableEntity enemy_rocket_tank_3 = new RocketTank(new Vector2f(3285, 3012), true, false);
         enemy_rocket_tank_3.setRotation(325);
         enemy_rocket_tank_3.setAsMandatory();
-        hostile_movable_entities.add(enemy_rocket_tank_3);
+        all_hostile_entities.add(enemy_rocket_tank_3);
 
 
         /* ---------- SETUP ENEMY ENTITIES THAT ARE MOVING ---------- */
@@ -260,7 +260,7 @@ public class Level_9 extends AbstractLevel implements GameState {
                 wayPoints_shell_tanks,
                 3));
         enemy_moving_shell_tank_1.setAsMandatory();
-        hostile_movable_entities.add(enemy_moving_shell_tank_1);
+        all_hostile_entities.add(enemy_moving_shell_tank_1);
 
         // starting bottom left
         MovableEntity enemy_moving_shell_tank_2 = new ShellTank(new Vector2f(157, 2209), true, false);
@@ -270,7 +270,7 @@ public class Level_9 extends AbstractLevel implements GameState {
                 wayPoints_shell_tanks,
                 6));
         enemy_moving_shell_tank_2.setAsMandatory();
-        hostile_movable_entities.add(enemy_moving_shell_tank_2);
+        all_hostile_entities.add(enemy_moving_shell_tank_2);
 
 
         // rocket robot bottom middle
@@ -295,7 +295,7 @@ public class Level_9 extends AbstractLevel implements GameState {
                 wayPoints_rocket_robot,
                 6));
         enemy_moving_rocket_robot_1.setAsMandatory();
-        hostile_movable_entities.add(enemy_moving_rocket_robot_1);
+        all_hostile_entities.add(enemy_moving_rocket_robot_1);
 
 
         /* ---------- SETUP ENEMY PLANES ---------- */
