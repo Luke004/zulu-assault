@@ -115,6 +115,16 @@ public abstract class Windmill extends Entity {
     }
 
     @Override
+    public void setRotation(float degree) {
+        // can't rotate a windmill
+    }
+
+    @Override
+    public float getRotation() {
+        return 0;
+    }
+
+    @Override
     public int getScoreValue() {
         return WINDMILL_DEFAULT_SCORE_VALUE;
     }

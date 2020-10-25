@@ -1,6 +1,5 @@
 package logic;
 
-import logic.level_listeners.EntityDeleteListener;
 import settings.UserSettings;
 import models.CollisionModel;
 import graphics.animations.damage.PlasmaDamageAnimation;
@@ -37,7 +36,6 @@ public class CollisionHandler {
     private static final float DESTRUCTIBLE_TILE_LOW_ARMOR = 1.f;
 
     // animations
-    private static EntityDeleteListener level_delete_listener;
     private static SmokeAnimation smokeAnimation;
     private static UziHitExplosionAnimation uziHitExplosionAnimation;
     private static UziDamageAnimation uziDamageAnimation;
@@ -64,10 +62,6 @@ public class CollisionHandler {
         bigExplosionAnimation = new BigExplosionAnimation(100);
         plasmaDamageAnimation = new PlasmaDamageAnimation(20);
         random = new Random();
-    }
-
-    public void addListener(EntityDeleteListener delete_listener) {
-        level_delete_listener = delete_listener;
     }
 
     public void draw() {

@@ -161,7 +161,6 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) {
         collisionHandler.setPlayer(player);
-        collisionHandler.addListener(this);
         keyInputHandler.setPlayer(player);
         combatBackgroundMusic.start();
 

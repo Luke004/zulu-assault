@@ -4,6 +4,8 @@ import logic.WayPointManager;
 import main.ZuluAssault;
 import models.entities.windmills.Windmill;
 import models.entities.windmills.WindmillGreen;
+import models.entities.windmills.WindmillGrey;
+import models.entities.windmills.WindmillYellow;
 import models.interaction_circles.HealthCircle;
 import models.items.*;
 import models.entities.MovableEntity;
@@ -209,7 +211,7 @@ public class Level_1 extends AbstractLevel implements GameState {
         all_hostile_entities.add(enemy_soldier_8);
 
         // TODO: 25.10.2020  remove this windmill
-        Windmill enemy_windmill = new WindmillGreen(new Vector2f(850, 800), true);
+        Windmill enemy_windmill = new WindmillGrey(new Vector2f(850, 800), true);
         all_hostile_entities.add(enemy_windmill);
 
 

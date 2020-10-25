@@ -10,6 +10,7 @@ import level_editor.util.Elements;
 import logic.Camera;
 import main.ZuluAssault;
 import models.Element;
+import models.entities.Entity;
 import models.entities.MovableEntity;
 import models.items.Item;
 import org.newdawn.slick.*;
@@ -57,9 +58,9 @@ public class LevelEditor extends BasicGameState {
     public void mouseWheelMoved(int change) {
         change /= 20.f;
         if (selectedElement != null) {
-            if (selectedElement instanceof MovableEntity) {
-                MovableEntity movableEntity = (MovableEntity) selectedElement;
-                movableEntity.setRotation(movableEntity.getRotation() + change);
+            if (selectedElement instanceof Entity) {
+                Entity entity = (Entity) selectedElement;
+                entity.setRotation(entity.getRotation() + change);
             }
             /* else {   // should not allow: rotation of items and circles
                 selectedElement.getBaseImage().rotate(change);
@@ -104,8 +105,8 @@ public class LevelEditor extends BasicGameState {
                         copy.setPosition(new Vector2f(selectedElement.getPosition().x + mapX,
                                 selectedElement.getPosition().y + mapY));
                         // add rotation
-                        if (copy instanceof MovableEntity) {
-                            ((MovableEntity) copy).setRotation(selectedElement.getBaseImage().getRotation());
+                        if (selectedElement instanceof Entity) {
+                            ((Entity) copy).setRotation(((Entity) selectedElement).getRotation());
                         }
                         elements.add(copy);
                     }

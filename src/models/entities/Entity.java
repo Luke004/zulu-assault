@@ -4,6 +4,7 @@ import levels.AbstractLevel;
 import logic.WayPointManager;
 import logic.level_listeners.EntityDeleteListener;
 import models.Element;
+import models.entities.other.PassengerPlane;
 import models.entities.robots.RocketRobot;
 import models.entities.tanks.XTank;
 import models.weapons.Weapon;
@@ -195,6 +196,8 @@ public abstract class Entity extends Element {
         health_bar_position.y = position.y - health_bar_offset.y;
     }
 
+    public abstract void setRotation(float degree);
+
     protected void changeHealth(float amount, float armor) {
         if (amount < 0) {
             // damage
@@ -220,6 +223,8 @@ public abstract class Entity extends Element {
     }
 
     public abstract int getScoreValue();
+
+    public abstract float getRotation();
 
     public enum WeaponType {
         WEAPON_1, WEAPON_2, MEGA_PULSE

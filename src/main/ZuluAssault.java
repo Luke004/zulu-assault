@@ -79,7 +79,7 @@ public class ZuluAssault extends StateBasedGame {
     public void initStatesList(GameContainer gameContainer) throws SlickException {
         //this.getState(MAIN_MENU).init(gameContainer, this);
         this.getState(LEVEL_1).init(gameContainer, this);   // pre-load the first level at the start
-        this.enterState(MAIN_MENU);
+        this.enterState(LEVEL_EDITOR);
     }
 
     public static boolean existsLevel(int id) {

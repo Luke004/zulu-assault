@@ -242,11 +242,7 @@ public abstract class MovableEntity extends Entity {
         //rotate_speed = 0.f;
     }
 
-    public abstract float getRotation();
-
     public abstract void rotate(RotateDirection r, int deltaTime);
-
-    public abstract void setRotation(float degree);
 
     public void activateItem(Player.Item_e item) {
         if (isDestroyed) return;

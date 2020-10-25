@@ -6,6 +6,7 @@ import models.entities.aircraft.AttackHelicopter;
 import models.entities.aircraft.ScoutJet;
 import models.entities.aircraft.WarJet;
 import models.entities.aircraft.WarPlane;
+import models.entities.other.PassengerPlane;
 import models.entities.robots.PlasmaRobot;
 import models.entities.robots.RocketRobot;
 import models.entities.robots.RocketRobot2;
@@ -54,7 +55,8 @@ public class Elements {
                 "WarPlane",
                 "ScoutJet",
                 "AttackHelicopter",
-                "WarJet"
+                "WarJet",
+                "PassengerPlane"
         };
 
     }
@@ -102,7 +104,8 @@ public class Elements {
                 allElements[24],
                 allElements[25],
                 allElements[26],
-                allElements[27]
+                allElements[27],
+                allElements[28]
         };
     }
 
@@ -126,11 +129,11 @@ public class Elements {
             case "TeleportCircle":
                 return new TeleportCircle(pos);
             case "WindmillGreen":
-                return new WindmillGreen(pos, true);
+                return new WindmillGreen(pos, isHostile);
             case "WindmillGrey":
-                return new WindmillGrey(pos, true);
+                return new WindmillGrey(pos, isHostile);
             case "WindmillYellow":
-                return new WindmillYellow(pos, true);
+                return new WindmillYellow(pos, isHostile);
             case "MemeCar":
                 return new MemeCar(pos, isHostile, isDrivable);
             case "CannonTank":
@@ -165,6 +168,8 @@ public class Elements {
                 return new AttackHelicopter(pos, isHostile, isDrivable);
             case "WarJet":
                 return new WarJet(pos, isHostile, isDrivable);
+            case "PassengerPlane":
+                return new PassengerPlane(pos, isHostile);
         }
         return null;
     }
