@@ -193,7 +193,7 @@ public class LevelEditor extends BasicGameState {
 
         if (selectedElement != null) {
             if (!(selectedElement instanceof Item)) {
-                selectedElement.update(gc, dt);
+                selectedElement.editorUpdate(gc, dt);
             }
             selectedElement.getPosition().x = gc.getInput().getMouseX();
             selectedElement.getPosition().y = gc.getInput().getMouseY();

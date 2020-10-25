@@ -5,6 +5,7 @@ import graphics.animations.smoke.SmokeAnimation;
 import models.CollisionModel;
 import models.entities.Entity;
 import models.entities.MovableEntity;
+import models.weapons.MegaPulse;
 import models.weapons.Weapon;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -29,22 +30,16 @@ public abstract class Windmill extends Entity {
 
     public Windmill(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
-
         random = new Random();
-
         smokeAnimation = new SmokeAnimation(3);
-
-        health_bar_position.x = position.x - 27.5f;
-        health_bar_position.y = position.y - 35.f;
     }
 
     @Override
     public void init() {
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
         collisionModel.update(0);
-        WIDTH_HALF = base_image.getWidth() / 2;
-        HEIGHT_HALF = base_image.getHeight() / 2;
-        super.init();
+        health_bar_offset = new Vector2f((health_bar_image.getWidth() + 12) / 2.f, base_image.getHeight() / 2.f + 15);
+        setHealthBarPosition(position);
     }
 
     @Override
@@ -71,9 +66,10 @@ public abstract class Windmill extends Entity {
     @Override
     public void draw(Graphics graphics) {
         super.draw(graphics);
-        base_image.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
+        base_image.drawCentered(position.x, position.y);
         turret.draw(turret_position.x, turret_position.y);
         smokeAnimation.draw();
+        drawHealthBar(graphics);
     }
 
     @Override

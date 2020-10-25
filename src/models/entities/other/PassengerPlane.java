@@ -28,15 +28,21 @@ public class PassengerPlane extends Entity {
         } catch (SlickException e) {
             e.printStackTrace();
         }
-        collisionModel = new CollisionModel(position, base_image.getWidth() / 3, base_image.getHeight());
+        this.init();
+    }
+
+    @Override
+    public void init() {
+        collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
         collisionModel.update(0);
-        super.init();
+        health_bar_offset = new Vector2f((health_bar_image.getWidth() + 12) / 2.f, base_image.getHeight() / 2.f + 15);
+        setHealthBarPosition(position);
     }
 
     @Override
     public void draw(Graphics graphics) {
-        super.draw(graphics);
-        base_image.drawCentered(position.x + WIDTH_HALF, position.y + HEIGHT_HALF);
+        base_image.drawCentered(position.x, position.y);
+        drawHealthBar(graphics);
     }
 
     @Override

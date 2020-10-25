@@ -27,6 +27,7 @@ public abstract class Robot extends MovableEntity {
         current_speed = getMaxSpeed();
     }
 
+    @Override
     public void init() {
         try {
             Image walking_animation_image = new Image("assets/entities/robots/robot_walking_animation.png");
@@ -49,6 +50,8 @@ public abstract class Robot extends MovableEntity {
         BASE_HEIGHT_HALF = base_image.getHeight() / 2.f;
         // just use index 0, all indices are same width and height
         collisionModel = new CollisionModel(position, WIDTH_HALF, HEIGHT_HALF);
+        health_bar_offset = new Vector2f((health_bar_image.getWidth() + 12) / 2.f, base_image.getHeight() / 2.f + 15);
+        setHealthBarPosition(position);
         super.init();
     }
 

@@ -4,7 +4,6 @@ import levels.AbstractLevel;
 import logic.WayPointManager;
 import logic.level_listeners.EntityDeleteListener;
 import models.Element;
-import models.entities.other.PassengerPlane;
 import models.entities.robots.RocketRobot;
 import models.entities.tanks.XTank;
 import models.weapons.Weapon;
@@ -19,7 +18,7 @@ import java.util.List;
 public abstract class Entity extends Element {
 
     protected List<Weapon> weapons;
-    private Image health_bar_image;
+    protected Image health_bar_image;
     protected Vector2f health_bar_position;
 
     // specs related
@@ -33,8 +32,7 @@ public abstract class Entity extends Element {
     private static Texture health_bar_texture_enemy, health_bar_texture_friendly;
 
     // model related
-    public int WIDTH_HALF, HEIGHT_HALF;
-    private Vector2f health_bar_offset;
+    protected Vector2f health_bar_offset;
 
     // listener
     protected EntityDeleteListener level_delete_listener;
@@ -42,8 +40,8 @@ public abstract class Entity extends Element {
     public Entity(Vector2f startPos, boolean isHostile) {
         this.isHostile = isHostile;
         this.position = startPos;
-        weapons = new ArrayList<>();    // 3 weapons -> WEAPON_1, WEAPON_2 and MEGA_PULSE
         health_bar_position = new Vector2f(startPos);
+        weapons = new ArrayList<>();    // 3 weapons -> WEAPON_1, WEAPON_2 and MEGA_PULSE
         current_health = MAX_HEALTH;
 
         // LOAD TEXTURES
@@ -66,9 +64,7 @@ public abstract class Entity extends Element {
         }
     }
 
-    public void init() {
-        health_bar_offset = new Vector2f(base_image.getWidth() - 5.f, base_image.getHeight() / 2.f + 10.f);
-    }
+    abstract public void init();
 
     @Override
     public void update(GameContainer gc, int deltaTime) {
@@ -76,9 +72,11 @@ public abstract class Entity extends Element {
         for (Weapon weapon : weapons) {
             weapon.update(deltaTime);
         }
+    }
 
-        health_bar_position.x = position.x - health_bar_offset.x;
-        health_bar_position.y = position.y - health_bar_offset.y;
+    @Override
+    public void editorUpdate(GameContainer gc, int deltaTime) {
+        setHealthBarPosition(this.position);
     }
 
     @Override
@@ -87,9 +85,6 @@ public abstract class Entity extends Element {
         for (Weapon weapon : weapons) {
             weapon.draw(graphics);
         }
-
-        if (!(this instanceof MovableEntity))
-            drawHealthBar(graphics);
     }
 
     protected void drawHealthBar(Graphics graphics) {
@@ -190,13 +185,18 @@ public abstract class Entity extends Element {
         return weapons;
     }
 
+    @Override
     public void setPosition(Vector2f position) {
         super.setPosition(position);
-        health_bar_position.x = position.x - health_bar_offset.x;
-        health_bar_position.y = position.y - health_bar_offset.y;
+        setHealthBarPosition(position);
     }
 
     public abstract void setRotation(float degree);
+
+    protected void setHealthBarPosition(Vector2f position) {
+        health_bar_position.x = position.x - health_bar_offset.x;
+        health_bar_position.y = position.y - health_bar_offset.y;
+    }
 
     protected void changeHealth(float amount, float armor) {
         if (amount < 0) {

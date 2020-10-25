@@ -1,6 +1,5 @@
 package models.entities;
 
-import levels.AbstractLevel;
 import logic.WayPointManager;
 import models.entities.soldiers.Soldier;
 import settings.UserSettings;
@@ -9,7 +8,6 @@ import models.entities.aircraft.Aircraft;
 import models.weapons.MegaPulse;
 import models.weapons.Weapon;
 import models.weapons.projectiles.Projectile;
-import models.weapons.projectiles.iGroundTileDamageWeapon;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import player.Player;
@@ -29,6 +27,7 @@ public abstract class MovableEntity extends Entity {
     // math related
     public Vector2f dir;
     public float current_speed;
+    protected int WIDTH_HALF, HEIGHT_HALF;
 
     // way-points related
     public WayPointManager waypointManager;
@@ -77,7 +76,6 @@ public abstract class MovableEntity extends Entity {
             initAccessibleAnimation();
             weapons.add(new MegaPulse(isDrivable));  // add the MEGA_PULSE (special item)
         }
-        super.init();
     }
 
     @Override
@@ -115,6 +113,16 @@ public abstract class MovableEntity extends Entity {
 
         if (isDestroyed) {
             blockMovement();
+        }
+
+        setHealthBarPosition(this.position);
+    }
+
+    @Override
+    public void editorUpdate(GameContainer gc, int deltaTime) {
+        super.editorUpdate(gc, deltaTime);
+        if (show_drivable_animation) {
+            drivable_animation.update(deltaTime);
         }
     }
 

@@ -38,9 +38,9 @@ public abstract class Aircraft extends MovableEntity {
         } else {
             landing = true;     // for the player - land the plane so he can get in eventually
         }
-
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
-
+        health_bar_offset = new Vector2f((health_bar_image.getWidth() + 12) / 2.f, base_image.getHeight() / 2.f + 15);
+        setHealthBarPosition(position);
         super.init();
     }
 

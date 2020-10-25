@@ -21,6 +21,10 @@ public abstract class Element {
         this.position = position;
     }
 
+    public void editorUpdate(GameContainer gc, int deltaTime) {
+        this.update(gc, deltaTime);
+    }
+
     public Vector2f getPosition() {
         return this.position;
     }

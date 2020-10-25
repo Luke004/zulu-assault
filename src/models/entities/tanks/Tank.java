@@ -45,6 +45,8 @@ public abstract class Tank extends MovableEntity {
         destructionAnimation = new DestructionAnimation();
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
         collisionModel.update(getRotation());   // init it by updating it once, needed for inner class "MyLine"
+        health_bar_offset = new Vector2f((health_bar_image.getWidth() + 12) / 2.f, base_image.getHeight() / 2.f + 15);
+        setHealthBarPosition(position);
         super.init();
     }
 
