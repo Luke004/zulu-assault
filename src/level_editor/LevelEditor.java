@@ -5,6 +5,7 @@ import graphics.fonts.FontManager;
 import level_editor.toolbars.Toolbar;
 import level_editor.toolbars.bottom.BottomToolbar;
 import level_editor.toolbars.right.RightToolbar;
+import level_editor.toolbars.right.screens.EntitySelector;
 import level_editor.util.Elements;
 import logic.Camera;
 import main.ZuluAssault;
@@ -36,6 +37,7 @@ public class LevelEditor extends BasicGameState {
     private float mapX, mapY;
     private int mapWidth, mapHeight;
     private int prevMouseX, prevMouseY, mouseSlideX, mouseSlideY;   // to slide the map using mouse's right key
+    private boolean allowMouseSlide;
 
     private static final float MOVE_SPEED = 0.3f, SCROLL_SPEED = 0.8f;
 
@@ -69,8 +71,13 @@ public class LevelEditor extends BasicGameState {
     @Override
     public void mousePressed(int button, int mouseX, int mouseY) {
         if (button == Input.MOUSE_RIGHT_BUTTON) {
-            prevMouseX = mouseX;
-            prevMouseY = mouseY;
+            if (isMouseInEditor(mouseX, mouseY)) {
+                allowMouseSlide = true;
+                prevMouseX = mouseX;
+                prevMouseY = mouseY;
+            } else {
+                allowMouseSlide = false;
+            }
         }
     }
 
@@ -89,7 +96,8 @@ public class LevelEditor extends BasicGameState {
         if (isMouseInEditor(mouseX, mouseY)) {
             if (button == Input.MOUSE_LEFT_BUTTON) {
                 if (selectedElement != null) {
-                    Element copy = Elements.getCopyByName(selectedElement.getClass().getSimpleName());
+                    Element copy = Elements.getCopyByName(selectedElement.getClass().getSimpleName(),
+                            EntitySelector.isHostile, EntitySelector.isDrivable);
                     if (copy != null) {
                         MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
                         // deep copy the selected element
@@ -165,9 +173,22 @@ public class LevelEditor extends BasicGameState {
 
         // slide the map while right mouse key is pressed
         if (gc.getInput().isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON)) {
-            mouseSlideX = gc.getInput().getMouseX() - prevMouseX;
-            mouseSlideY = gc.getInput().getMouseY() - prevMouseY;
+            if (allowMouseSlide) {
+                mouseSlideX = gc.getInput().getMouseX() - prevMouseX;
+                mouseSlideY = gc.getInput().getMouseY() - prevMouseY;
+
+                // make it unable to slide past the borders
+                if (mapY < -TITLE_RECT_HEIGHT) mapY = -TITLE_RECT_HEIGHT;
+                if (mapY > mapHeight + bottomToolbar.getHeight() - gc.getHeight()) {
+                    mapY = mapHeight + bottomToolbar.getHeight() - gc.getHeight();
+                }
+                if (mapX < 0) mapX = 0;
+                if (mapX > mapWidth - gc.getWidth() + rightToolbar.getWidth()) {
+                    mapX = mapWidth - gc.getWidth() + rightToolbar.getWidth();
+                }
+            }
         }
+
 
         if (selectedElement != null) {
             if (!(selectedElement instanceof Item)) {
@@ -177,6 +198,15 @@ public class LevelEditor extends BasicGameState {
             selectedElement.getPosition().y = gc.getInput().getMouseY();
         }
 
+        for (Element element : elements) {
+            // show the drivable animation for friendly drivable entities
+            if (element instanceof MovableEntity) {
+                MovableEntity movableEntity = (MovableEntity) element;
+                if (movableEntity.isDrivable() && !movableEntity.isHostile) {
+                    ((MovableEntity) element).drivable_animation.update(dt);
+                }
+            }
+        }
 
     }
 
@@ -195,6 +225,13 @@ public class LevelEditor extends BasicGameState {
 
         camera.untranslateGraphics();
         // draw all instances that are static above the map (HUD) below
+
+        // draw the selected element
+        if (isMouseInEditor(gc.getInput().getMouseX(), gc.getInput().getMouseY())) {
+            if (selectedElement != null) {
+                selectedElement.draw(graphics);
+            }
+        }
 
         // draw the title rect
         graphics.setColor(Color.black);
@@ -215,12 +252,6 @@ public class LevelEditor extends BasicGameState {
         rightToolbar.draw(gc, graphics);
         bottomToolbar.draw(gc, graphics);
 
-        if (isMouseInEditor(gc.getInput().getMouseX(), gc.getInput().getMouseY())) {
-            if (selectedElement != null) {
-                selectedElement.draw(graphics);
-            }
-        }
-
 
     }
 
@@ -229,6 +260,9 @@ public class LevelEditor extends BasicGameState {
         element.getBaseImage().setAlpha(0.7f);
     }
 
+    public Element getSelectedElement() {
+        return this.selectedElement;
+    }
 
     private boolean isMouseInEditor(int mouseX, int mouseY) {
         return (mouseX < rightToolbar.getX() && mouseY > TITLE_RECT_HEIGHT && mouseY < bottomToolbar.getY());

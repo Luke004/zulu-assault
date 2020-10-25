@@ -103,7 +103,7 @@ public class Elements {
         };
     }
 
-    public static Element getCopyByName(String name) {
+    public static Element getCopyByName(String name, boolean isHostile, boolean isDrivable) {
         Vector2f pos = new Vector2f(0, 0);
         switch (name) {
             case "SilverWrenchItem":
@@ -129,41 +129,45 @@ public class Elements {
             //        case "WindmillYellow":
             //          return new WindmillYellow(pos, true, null);
             case "MemeCar":
-                return new MemeCar(pos, false, false);
+                return new MemeCar(pos, isHostile, isDrivable);
             case "CannonTank":
-                return new CannonTank(pos, false, false);
+                return new CannonTank(pos, isHostile, isDrivable);
             case "RocketTank":
-                return new RocketTank(pos, false, false);
+                return new RocketTank(pos, isHostile, isDrivable);
             case "NapalmTank":
-                return new NapalmTank(pos, false, false);
+                return new NapalmTank(pos, isHostile, isDrivable);
             case "ShellTank":
-                return new ShellTank(pos, false, false);
+                return new ShellTank(pos, isHostile, isDrivable);
             case "MegaPulseTank":
-                return new MegaPulseTank(pos, false, false);
+                return new MegaPulseTank(pos, isHostile, isDrivable);
             case "XTank":
-                return new XTank(pos, false, false);
+                return new XTank(pos, isHostile, isDrivable);
             case "PlasmaRobot":
-                return new PlasmaRobot(pos, false, false);
+                return new PlasmaRobot(pos, isHostile, isDrivable);
             case "RocketRobot":
-                return new RocketRobot(pos, false, false);
+                return new RocketRobot(pos, isHostile, isDrivable);
             case "RocketRobot2":
-                return new RocketRobot2(pos, false, false);
+                return new RocketRobot2(pos, isHostile, isDrivable);
             case "ShellRobot":
-                return new ShellRobot(pos, false, false);
+                return new ShellRobot(pos, isHostile, isDrivable);
             case "UziSoldier":
-                return new UziSoldier(pos, false);
+                return new UziSoldier(pos, isHostile);
             case "RocketSoldier":
-                return new RocketSoldier(pos, false);
+                return new RocketSoldier(pos, isHostile);
             case "WarPlane":
-                return new WarPlane(pos, false, false);
+                return new WarPlane(pos, isHostile, isDrivable);
             case "ScoutJet":
-                return new ScoutJet(pos, false, false);
+                return new ScoutJet(pos, isHostile, isDrivable);
             case "AttackHelicopter":
-                return new AttackHelicopter(pos, false, false);
+                return new AttackHelicopter(pos, isHostile, isDrivable);
             case "WarJet":
-                return new WarJet(pos, false, false);
+                return new WarJet(pos, isHostile, isDrivable);
         }
         return null;
+    }
+
+    public static Element getCopyByName(String name) {
+        return getCopyByName(name, false, false);
     }
 
 }

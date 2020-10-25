@@ -24,8 +24,8 @@ public abstract class MovableEntity extends Entity {
 
     // drivable related
     public Animation drivable_animation;
-    public Image drivable_animation_image;
-    public boolean show_drivable_animation;
+    private Image drivable_animation_image;
+    private boolean show_drivable_animation;
 
     // math related
     public Vector2f dir;

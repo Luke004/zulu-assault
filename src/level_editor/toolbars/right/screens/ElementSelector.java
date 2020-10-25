@@ -10,7 +10,6 @@ import models.Element;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.state.StateBasedGame;
 import settings.UserSettings;
 
 import java.util.ArrayList;
@@ -22,15 +21,15 @@ public abstract class ElementSelector extends ToolbarScreen {
 
     protected List<SelectorSquare> selectorSquareList;
 
-    // "back" - button
     private Button backButton;
-    private int backButtonStartY;
 
     public ElementSelector(RightToolbar rightToolbar, LevelEditor levelEditor, String title) {
         super(rightToolbar, title);
         this.levelEditor = levelEditor;
         selectorSquareList = new ArrayList<>();
-        initSelectorSquareList(getElementNames());
+
+        int backButtonStartY = initSuperElements();
+
         backButton = new Button("BACK",
                 startX + Toolbar.Props.calcMargin(rightToolbar.getWidth(), 0.5f, 1),
                 backButtonStartY + Toolbar.Props.DEFAULT_MARGIN,
@@ -41,7 +40,11 @@ public abstract class ElementSelector extends ToolbarScreen {
 
     protected abstract String[] getElementNames();
 
-    protected void initSelectorSquareList(String[] elementNames) {
+    protected int initSuperElements() {
+        return initSelectorSquareList(getElementNames());
+    }
+
+    protected int initSelectorSquareList(String[] elementNames) {
         final int SELECTOR_SQUARES_PER_ROW = 4;
         int rowIdx = 0;
 
@@ -50,7 +53,6 @@ public abstract class ElementSelector extends ToolbarScreen {
 
         int currentX = rightToolbar.getX() + marginX;
         int currentY = startY;
-        backButtonStartY = startY;
 
         for (String s_element : elementNames) {
             selectorSquareList.add(new SelectorSquare(Elements.getCopyByName(s_element),
@@ -68,7 +70,8 @@ public abstract class ElementSelector extends ToolbarScreen {
             }
         }
         // tell the back button on which y coordinate the last selector square was drawn, so it can go below it
-        backButtonStartY = selectorSquareList.get(selectorSquareList.size() - 1).yPos + size + marginX;
+        SelectorSquare selectorSquare = selectorSquareList.get(selectorSquareList.size() - 1);
+        return selectorSquare.yPos + selectorSquare.size + Toolbar.Props.DEFAULT_MARGIN;
     }
 
     @Override
@@ -127,7 +130,7 @@ public abstract class ElementSelector extends ToolbarScreen {
         }
 
         Element getElement() {
-            return Elements.getCopyByName(element.getClass().getSimpleName());
+            return Elements.getCopyByName(element.getClass().getSimpleName(), EntitySelector.isHostile, EntitySelector.isDrivable);
         }
 
     }
