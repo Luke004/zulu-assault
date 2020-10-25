@@ -71,6 +71,7 @@ public abstract class MovableEntity extends Entity {
 
     @Override
     public void init() {
+        super.init();
         isMovingForward = true;
         if (isDrivable && !isHostile) {
             initAccessibleAnimation();

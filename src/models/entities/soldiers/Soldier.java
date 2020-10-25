@@ -51,8 +51,6 @@ public abstract class Soldier extends MovableEntity {
 
         // just use index 0, all indices are same width and height
         collisionModel = new CollisionModel(position, animation.getImage(0).getWidth(), animation.getImage(0).getHeight());
-        health_bar_offset = new Vector2f((health_bar_image.getWidth() + 12) / 2.f, base_image.getHeight() / 2.f + 15);
-        setHealthBarPosition(position);
         super.init();
     }
 

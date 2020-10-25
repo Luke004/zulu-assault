@@ -64,7 +64,10 @@ public abstract class Entity extends Element {
         }
     }
 
-    abstract public void init();
+    public void init(){
+        health_bar_offset = new Vector2f((health_bar_image.getWidth() + 12) / 2.f, base_image.getHeight() / 2.f + 15);
+        setHealthBarPosition(position);
+    }
 
     @Override
     public void update(GameContainer gc, int deltaTime) {
