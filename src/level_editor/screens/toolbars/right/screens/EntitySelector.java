@@ -1,15 +1,12 @@
-package level_editor.toolbars.right.screens;
+package level_editor.screens.toolbars.right.screens;
 
 import audio.MenuSounds;
 import level_editor.LevelEditor;
-import level_editor.toolbars.Toolbar;
-import level_editor.toolbars.elements.Checkbox;
-import level_editor.toolbars.right.RightToolbar;
+import level_editor.screens.Window;
+import level_editor.screens.elements.Checkbox;
+import level_editor.screens.toolbars.right.RightToolbar;
 import level_editor.util.Elements;
 import models.Element;
-import models.entities.Entity;
-import models.entities.MovableEntity;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import settings.UserSettings;
@@ -89,32 +86,32 @@ public class EntitySelector extends ElementSelector {
     protected int initSuperElements() {
         int checkboxStartY = super.initSuperElements();
 
-        int checkbox_x = startX + Toolbar.Props.calcMargin(rightToolbar.getWidth(), 0.1f, 1);
-        int checkbox_width = Toolbar.Props.calcRectSize(rightToolbar.getWidth(), 0.1f, 1);
-        int checkbox_height = Toolbar.Props.calcRectSize(rightToolbar.getHeight() / 14, 0.5f, 1);
+        int checkbox_x = startX + Window.Props.calcMargin(rightToolbar.getWidth(), 0.1f, 1);
+        int checkbox_width = Window.Props.calcRectSize(rightToolbar.getWidth(), 0.1f, 1);
+        int checkbox_height = Window.Props.calcRectSize(rightToolbar.getHeight() / 14, 0.5f, 1);
 
         checkboxes = new Checkbox[3];
         checkboxes[0] = new Checkbox("Hostile",
                 checkbox_x,
-                checkboxStartY + Toolbar.Props.DEFAULT_MARGIN,
+                checkboxStartY + Window.Props.DEFAULT_MARGIN,
                 checkbox_width,
                 checkbox_height
         );
         checkboxes[1] = new Checkbox("Drivable",
                 checkbox_x,
-                checkboxStartY + checkbox_height + Toolbar.Props.DEFAULT_MARGIN,
+                checkboxStartY + checkbox_height + Window.Props.DEFAULT_MARGIN,
                 checkbox_width,
                 checkbox_height
         );
         checkboxes[2] = new Checkbox("Mandatory",
                 checkbox_x,
-                checkboxStartY + checkbox_height * 2 + Toolbar.Props.DEFAULT_MARGIN,
+                checkboxStartY + checkbox_height * 2 + Window.Props.DEFAULT_MARGIN,
                 checkbox_width,
                 checkbox_height
         );
 
         // tell the back button on which y coordinate the last selector square was drawn, so it can go below it
-        return checkboxStartY + checkbox_height * 3 + Toolbar.Props.DEFAULT_MARGIN;
+        return checkboxStartY + checkbox_height * 3 + Window.Props.DEFAULT_MARGIN;
     }
 
     @Override

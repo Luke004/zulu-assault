@@ -1,8 +1,8 @@
-package level_editor.toolbars.right.screens;
+package level_editor.screens.toolbars.right.screens;
 
 import graphics.fonts.FontManager;
-import level_editor.toolbars.Toolbar;
-import level_editor.toolbars.right.RightToolbar;
+import level_editor.screens.Window;
+import level_editor.screens.toolbars.right.RightToolbar;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -29,10 +29,10 @@ public abstract class ToolbarScreen implements iToolbarScreens {
         this.rightToolbar = rightToolbar;
         this.title_string = title;
 
-        lineY = rightToolbar.getY() + title_string_drawer.getHeight(title_string) + Toolbar.Props.DEFAULT_MARGIN;
+        lineY = rightToolbar.getY() + title_string_drawer.getHeight(title_string) + Window.Props.DEFAULT_MARGIN;
 
         startX = rightToolbar.getX();
-        startY = lineY + Toolbar.Props.DEFAULT_MARGIN * 2;
+        startY = lineY + Window.Props.DEFAULT_MARGIN * 2;
 
         titleStringX = startX + rightToolbar.getWidth() / 2 - title_string_drawer.getWidth(title_string) / 2;
         titleStringY = (rightToolbar.getY() + (lineY - rightToolbar.getY()) / 2 - title_string_drawer.getHeight(title_string) / 2);

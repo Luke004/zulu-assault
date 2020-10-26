@@ -1,16 +1,16 @@
-package level_editor.toolbars.bottom;
+package level_editor.screens.toolbars.bottom;
 
 import audio.MenuSounds;
 import level_editor.LevelEditor;
-import level_editor.toolbars.Toolbar;
-import level_editor.toolbars.elements.Button;
-import level_editor.toolbars.right.RightToolbar;
+import level_editor.screens.Window;
+import level_editor.screens.elements.Button;
+import level_editor.screens.toolbars.right.RightToolbar;
 import org.newdawn.slick.*;
 import save_game.GameSaver;
 import settings.UserSettings;
 
 
-public class BottomToolbar extends Toolbar {
+public class BottomToolbar extends Window {
 
     private RightToolbar rightToolbar;
     private LevelEditor levelEditor;
@@ -19,22 +19,19 @@ public class BottomToolbar extends Toolbar {
     private Button[] buttons;
 
     public BottomToolbar(LevelEditor levelEditor, RightToolbar rightToolbar, GameContainer gc) {
+        super(0, gc.getHeight() - gc.getHeight() / 17, gc.getWidth(), gc.getHeight() / 17);
         this.levelEditor = levelEditor;
         this.rightToolbar = rightToolbar;
-        toolbarHeight = gc.getHeight() / 17;
-        toolbarWidth = gc.getWidth();
-        toolbarX = 0;
-        toolbarY = gc.getHeight() - toolbarHeight;
 
         // create the four buttons
         final int BUTTON_SIZE = 4;
 
         buttons = new Button[BUTTON_SIZE];
-        int button_margin_x = Toolbar.Props.calcMargin(toolbarWidth, Button.RELATIVE_MARGIN_X, BUTTON_SIZE);
-        int button_margin_y = Toolbar.Props.calcMargin(toolbarHeight, Button.RELATIVE_MARGIN_Y, 1);
-        int button_width = Toolbar.Props.calcRectSize(toolbarWidth, Button.RELATIVE_MARGIN_X, BUTTON_SIZE);
-        int button_height = Toolbar.Props.calcRectSize(toolbarHeight, Button.RELATIVE_MARGIN_Y, 1);
-        int buttonY = toolbarY + button_margin_y;
+        int button_margin_x = Window.Props.calcMargin(windowWidth, Button.RELATIVE_MARGIN_X, BUTTON_SIZE);
+        int button_margin_y = Window.Props.calcMargin(windowHeight, Button.RELATIVE_MARGIN_Y, 1);
+        int button_width = Window.Props.calcRectSize(windowWidth, Button.RELATIVE_MARGIN_X, BUTTON_SIZE);
+        int button_height = Window.Props.calcRectSize(windowHeight, Button.RELATIVE_MARGIN_Y, 1);
+        int buttonY = windowY + button_margin_y;
 
         buttons[0] = new Button("ADD",
                 button_margin_x,
@@ -65,7 +62,7 @@ public class BottomToolbar extends Toolbar {
     public void draw(GameContainer gc, Graphics graphics) {
         super.draw(gc, graphics);
         graphics.setColor(Color.lightGray);
-        graphics.drawLine(toolbarX, toolbarY, gc.getWidth(), toolbarY);
+        graphics.drawLine(windowX, windowY, gc.getWidth(), windowY);
 
         for (Button b : buttons) {
             b.draw(graphics);
@@ -92,7 +89,7 @@ public class BottomToolbar extends Toolbar {
                         rightToolbar.setScreen(RightToolbar.SCREEN_MODIFY_ELEMENT);
                         break;
                     case "SAVE":
-                        new GameSaver().saveLevel(levelEditor.getElements());
+                        new GameSaver().saveLevel(levelEditor.getMapName(), levelEditor.getElements());
                 }
                 break;
             }
@@ -101,7 +98,7 @@ public class BottomToolbar extends Toolbar {
 
 
     public int getHeight() {
-        return toolbarHeight;
+        return windowHeight;
     }
 
 }

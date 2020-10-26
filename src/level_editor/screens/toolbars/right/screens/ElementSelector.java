@@ -1,10 +1,10 @@
-package level_editor.toolbars.right.screens;
+package level_editor.screens.toolbars.right.screens;
 
 import audio.MenuSounds;
 import level_editor.LevelEditor;
-import level_editor.toolbars.Toolbar;
-import level_editor.toolbars.elements.Button;
-import level_editor.toolbars.right.RightToolbar;
+import level_editor.screens.Window;
+import level_editor.screens.elements.Button;
+import level_editor.screens.toolbars.right.RightToolbar;
 import level_editor.util.Elements;
 import models.Element;
 import org.newdawn.slick.GameContainer;
@@ -31,10 +31,10 @@ public abstract class ElementSelector extends ToolbarScreen {
         int backButtonStartY = initSuperElements();
 
         backButton = new Button("BACK",
-                startX + Toolbar.Props.calcMargin(rightToolbar.getWidth(), 0.5f, 1),
-                backButtonStartY + Toolbar.Props.DEFAULT_MARGIN,
-                Toolbar.Props.calcRectSize(rightToolbar.getWidth(), 0.5f, 1),
-                Toolbar.Props.calcRectSize(rightToolbar.getHeight() / 14, 0.5f, 1)
+                startX + Window.Props.calcMargin(rightToolbar.getWidth(), 0.5f, 1),
+                backButtonStartY + Window.Props.DEFAULT_MARGIN,
+                Window.Props.calcRectSize(rightToolbar.getWidth(), 0.5f, 1),
+                Window.Props.calcRectSize(rightToolbar.getHeight() / 14, 0.5f, 1)
         );
     }
 
@@ -48,8 +48,8 @@ public abstract class ElementSelector extends ToolbarScreen {
         final int SELECTOR_SQUARES_PER_ROW = 4;
         int rowIdx = 0;
 
-        int marginX = Toolbar.Props.calcMargin(rightToolbar.getWidth(), 0.3f, SELECTOR_SQUARES_PER_ROW);
-        int size = Toolbar.Props.calcRectSize(rightToolbar.getWidth(), 0.3f, SELECTOR_SQUARES_PER_ROW);
+        int marginX = Window.Props.calcMargin(rightToolbar.getWidth(), 0.3f, SELECTOR_SQUARES_PER_ROW);
+        int size = Window.Props.calcRectSize(rightToolbar.getWidth(), 0.3f, SELECTOR_SQUARES_PER_ROW);
 
         int currentX = rightToolbar.getX() + marginX;
         int currentY = startY;
@@ -71,7 +71,7 @@ public abstract class ElementSelector extends ToolbarScreen {
         }
         // tell the back button on which y coordinate the last selector square was drawn, so it can go below it
         SelectorSquare selectorSquare = selectorSquareList.get(selectorSquareList.size() - 1);
-        return selectorSquare.yPos + selectorSquare.size + Toolbar.Props.DEFAULT_MARGIN;
+        return selectorSquare.yPos + selectorSquare.size + Window.Props.DEFAULT_MARGIN;
     }
 
     @Override

@@ -1,6 +1,6 @@
-package level_editor.screens.toolbars.elements;
+package level_editor.screens.elements;
 
-import level_editor.screens.Screen;
+import level_editor.screens.Window;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -23,7 +23,7 @@ public class Checkbox extends ToolbarElement {
         this.innerCheckboxX = (int) (xPos + outerCheckboxSize / 2.f - innerCheckboxSize / 2.f) + 1; // +1 = line width
         this.innerCheckboxY = (int) (outerCheckboxY + outerCheckboxSize / 2.f - innerCheckboxSize / 2.f) + 1;
 
-        this.xNameString = (xPos + outerCheckboxSize + Screen.Props.DEFAULT_MARGIN);
+        this.xNameString = (xPos + outerCheckboxSize + Window.Props.DEFAULT_MARGIN);
         this.yNameString = (int) (yPos + height / 2.f - string_drawer.getHeight(name) / 2.f);
 
     }

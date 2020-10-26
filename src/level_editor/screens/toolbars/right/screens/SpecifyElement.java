@@ -1,12 +1,11 @@
-package level_editor.toolbars.right.screens;
+package level_editor.screens.toolbars.right.screens;
 
 import audio.MenuSounds;
-import level_editor.toolbars.Toolbar;
-import level_editor.toolbars.elements.Button;
-import level_editor.toolbars.right.RightToolbar;
+import level_editor.screens.Window;
+import level_editor.screens.elements.Button;
+import level_editor.screens.toolbars.right.RightToolbar;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.state.StateBasedGame;
 import settings.UserSettings;
 
 public class SpecifyElement extends ToolbarScreen {
@@ -22,10 +21,10 @@ public class SpecifyElement extends ToolbarScreen {
         // define the area that the buttons can spread on the y-axis
         final int BUTTON_AREA_HEIGHT = rightToolbar.getHeight() / 4;
 
-        int button_width_margin = Toolbar.Props.calcMargin(rightToolbar.getWidth(), 0.2f, 1);
-        int button_width = Toolbar.Props.calcRectSize(rightToolbar.getWidth(), 0.2f, 1);
-        int button_height_margin = Toolbar.Props.calcMargin(BUTTON_AREA_HEIGHT, 0.4f, BUTTON_AMOUNT);
-        int button_height = Toolbar.Props.calcRectSize(BUTTON_AREA_HEIGHT, 0.4f, BUTTON_AMOUNT);
+        int button_width_margin = Window.Props.calcMargin(rightToolbar.getWidth(), 0.2f, 1);
+        int button_width = Window.Props.calcRectSize(rightToolbar.getWidth(), 0.2f, 1);
+        int button_height_margin = Window.Props.calcMargin(BUTTON_AREA_HEIGHT, 0.4f, BUTTON_AMOUNT);
+        int button_height = Window.Props.calcRectSize(BUTTON_AREA_HEIGHT, 0.4f, BUTTON_AMOUNT);
 
         buttons = new Button[BUTTON_AMOUNT];
         buttons[0] = new Button("ITEM",

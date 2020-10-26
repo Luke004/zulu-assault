@@ -1,7 +1,7 @@
-package level_editor.toolbars.right.screens;
+package level_editor.screens.toolbars.right.screens;
 
 import level_editor.LevelEditor;
-import level_editor.toolbars.right.RightToolbar;
+import level_editor.screens.toolbars.right.RightToolbar;
 import level_editor.util.Elements;
 
 public class CircleSelector extends ElementSelector {

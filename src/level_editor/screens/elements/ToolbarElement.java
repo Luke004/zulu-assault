@@ -1,4 +1,4 @@
-package level_editor.screens.toolbars.elements;
+package level_editor.screens.elements;
 
 import graphics.fonts.FontManager;
 import org.newdawn.slick.GameContainer;
