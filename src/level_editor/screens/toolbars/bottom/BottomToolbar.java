@@ -5,8 +5,12 @@ import level_editor.LevelEditor;
 import level_editor.screens.Window;
 import level_editor.screens.elements.Button;
 import level_editor.screens.toolbars.right.RightToolbar;
+import main.ZuluAssault;
 import org.newdawn.slick.*;
 import level_editor.util.LevelDataStorage;
+import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 import settings.UserSettings;
 
 
@@ -18,10 +22,14 @@ public class BottomToolbar extends Window {
     // buttons
     private Button[] buttons;
 
-    public BottomToolbar(LevelEditor levelEditor, RightToolbar rightToolbar, GameContainer gc) {
+    // to go back to main menu
+    private StateBasedGame sbg;
+
+    public BottomToolbar(LevelEditor levelEditor, RightToolbar rightToolbar, GameContainer gc, StateBasedGame sbg) {
         super(0, gc.getHeight() - gc.getHeight() / 17, gc.getWidth(), gc.getHeight() / 17);
         this.levelEditor = levelEditor;
         this.rightToolbar = rightToolbar;
+        this.sbg = sbg;
 
         // create the four buttons
         final int BUTTON_SIZE = 4;
@@ -89,7 +97,11 @@ public class BottomToolbar extends Window {
                         rightToolbar.setScreen(RightToolbar.SCREEN_MODIFY_ELEMENT);
                         break;
                     case "SAVE":
-                        new LevelDataStorage().saveLevel(levelEditor.getMapName(), levelEditor.getElements());
+                        new LevelDataStorage().saveLevel(levelEditor.getSimpleMapName(), levelEditor.getElements());
+                        break;
+                    case "EXIT":
+                        sbg.enterState(ZuluAssault.MAIN_MENU, new FadeOutTransition(), new FadeInTransition());
+                        break;
                 }
                 break;
             }

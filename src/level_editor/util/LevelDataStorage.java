@@ -3,6 +3,7 @@ package level_editor.util;
 import game.models.Element;
 import game.models.entities.Entity;
 import game.models.entities.MovableEntity;
+import org.newdawn.slick.geom.Vector2f;
 
 import java.io.*;
 import java.util.LinkedList;
@@ -11,8 +12,10 @@ import java.util.List;
 /* This class stores all relevant data for loading and saving a level */
 public class LevelDataStorage implements Serializable {
 
-    private List<ElementData> allElements;
-    private List<EntityData> allEntities;
+    private static final String CUSTOM_MAPS_DATA_SAVE_FOLDER = "saves/custom_maps_data/";
+
+    public List<ElementData> allElements;
+    public List<EntityData> allEntities;
 
     public LevelDataStorage() {
         allElements = new LinkedList<>();
@@ -59,35 +62,56 @@ public class LevelDataStorage implements Serializable {
 
         try {
             FileOutputStream fileOutputStream
-                    = new FileOutputStream("saves/game.levels/" + name + ".ser");
+                    = new FileOutputStream(CUSTOM_MAPS_DATA_SAVE_FOLDER + name + ".data");
             ObjectOutputStream objectOutputStream
                     = new ObjectOutputStream(fileOutputStream);
             objectOutputStream.writeObject(this);
             objectOutputStream.flush();
             objectOutputStream.close();
-            System.out.println("successfully saved level");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
-    public void loadLevel(String name) {
-
+    public static LevelDataStorage loadLevel(String name) {
         try {
             FileInputStream fileInputStream
-                    = new FileInputStream("saves/game.levels/" + name + ".ser");
+                    = new FileInputStream(CUSTOM_MAPS_DATA_SAVE_FOLDER + name + ".data");
             ObjectInputStream objectInputStream
                     = new ObjectInputStream(fileInputStream);
-            LevelDataStorage p2 = (LevelDataStorage) objectInputStream.readObject();
+            LevelDataStorage lds = (LevelDataStorage) objectInputStream.readObject();
             objectInputStream.close();
-
-            System.out.println("successfully loaded map!");
-
+            return lds;
         } catch (IOException | ClassNotFoundException i) {
-            i.printStackTrace();
+            return null;
+            //i.printStackTrace();
         }
+    }
 
+    public List<Element> getAllElements() {
+        List<Element> elements = new LinkedList<>();
+        for (ElementData elementData : allElements) {
+            Element copy = Elements.getCopyByName(elementData.name);
+            copy.setPosition(new Vector2f(elementData.xPos, elementData.yPos));
+            elements.add(copy);
+        }
+        return elements;
+    }
+
+    public List<Element> getAllEntities() {
+        List<Element> entities = new LinkedList<>();
+        for (EntityData entityData : allEntities) {
+            Element copy = Elements.getCopyByName(entityData.name, entityData.isHostile, entityData.isDrivable);
+            if (copy == null) continue;
+            if (copy instanceof Entity) {
+                Entity casted_copy = (Entity) copy;
+                casted_copy.setPosition(new Vector2f(entityData.xPos, entityData.yPos));
+                casted_copy.setRotation(entityData.rotation);
+                entities.add(casted_copy);
+            }
+        }
+        return entities;
     }
 
 }

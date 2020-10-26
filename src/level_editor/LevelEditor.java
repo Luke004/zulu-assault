@@ -8,6 +8,7 @@ import level_editor.screens.toolbars.right.RightToolbar;
 import level_editor.screens.toolbars.right.screens.EntitySelector;
 import level_editor.util.Elements;
 import game.logic.Camera;
+import level_editor.util.LevelDataStorage;
 import settings.TileMapData;
 import main.ZuluAssault;
 import game.models.Element;
@@ -71,12 +72,13 @@ public class LevelEditor extends BasicGameState {
         Window.Props.initMargin(gc.getWidth());
         title_string_drawer = FontManager.getStencilBigFont();
         rightToolbar = new RightToolbar(this, TITLE_RECT_HEIGHT + 1, gc);
-        bottomToolbar = new BottomToolbar(this, rightToolbar, gc);
+        bottomToolbar = new BottomToolbar(this, rightToolbar, gc, sbg);
     }
 
     @Override
     public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
         gc.setFullscreen(false);
+        this.elements.clear();
         // prompt the user to select a map file
         JFileChooser fc = new JFileChooser();
         fc.setDialogTitle("Select Level File");
@@ -105,6 +107,14 @@ public class LevelEditor extends BasicGameState {
             mapHeight = map.getHeight() * map.getTileHeight();
             mapX = mapWidth / 2.f;
             mapY = mapHeight / 2.f;
+
+            // attempt to load already created map data
+            LevelDataStorage levelDataStorage = LevelDataStorage.loadLevel(getSimpleMapName());
+            if (levelDataStorage != null) {
+                this.elements.addAll(levelDataStorage.getAllElements());
+                this.elements.addAll(levelDataStorage.getAllEntities());
+            }
+
         } else {
             // USER CANCELLED
             sbg.enterState(ZuluAssault.MAIN_MENU, new FadeOutTransition(), new FadeInTransition());
@@ -313,8 +323,8 @@ public class LevelEditor extends BasicGameState {
         return (mouseX < rightToolbar.getX() && mouseY > TITLE_RECT_HEIGHT && mouseY < bottomToolbar.getY());
     }
 
-    public String getMapName() {
-        return this.mapName;
+    public String getSimpleMapName() {
+        return this.mapName.substring(0, this.mapName.length() - 4);
     }
 
     @Override
