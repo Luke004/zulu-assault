@@ -10,7 +10,7 @@ public class FontManager {
     private static final TrueTypeFont game_title;
 
     // stencil
-    private static final TrueTypeFont stencil_smaller, stencil_small, stencil_big;
+    private static final TrueTypeFont stencil_smaller, stencil_small, stencil_medium, stencil_big;
 
     // console fonts
     private static final TrueTypeFont console_input, console_output, console_output_bold;
@@ -25,6 +25,7 @@ public class FontManager {
         game_title = new TrueTypeFont(new java.awt.Font("Stencil", java.awt.Font.PLAIN, 69), false);
         stencil_small = new TrueTypeFont(new Font("Stencil", Font.PLAIN, 12), true);
         stencil_smaller = new TrueTypeFont(new Font("Stencil", Font.PLAIN, 11), true);
+        stencil_medium = new TrueTypeFont(new Font("Stencil", Font.PLAIN, 19), true);
         stencil_big = new TrueTypeFont(new Font("Stencil", Font.PLAIN, 45), true);
         item = new TrueTypeFont(new Font("Century Gothic", Font.PLAIN, 11), true);
     }
@@ -47,6 +48,10 @@ public class FontManager {
 
     public static TrueTypeFont getStencilSmallerFont() {
         return stencil_smaller;
+    }
+
+    public static TrueTypeFont getStencilMediumFont() {
+        return stencil_medium;
     }
 
     public static TrueTypeFont getStencilBigFont() {

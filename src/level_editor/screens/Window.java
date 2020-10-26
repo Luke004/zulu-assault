@@ -1,20 +1,27 @@
-package level_editor.toolbars;
+package level_editor.screens;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
-public abstract class Toolbar {
+public abstract class Window {
 
-    protected int toolbarX;     // starting value of the toolbar's X coordinate
-    protected int toolbarY;
-    protected int toolbarHeight;  // absolute height of the toolbar
-    protected int toolbarWidth;
+    protected int windowX;     // starting value of the window's X coordinate
+    protected int windowY;
+    protected int windowHeight;  // absolute height of the window
+    protected int windowWidth;
+
+    public Window(int windowX, int windowY, int windowWidth, int windowHeight) {
+        this.windowX = windowX;
+        this.windowY = windowY;
+        this.windowWidth = windowWidth;
+        this.windowHeight = windowHeight;
+    }
 
     protected void draw(GameContainer gc, Graphics graphics) {
         // background
         graphics.setColor(Color.black);
-        graphics.fillRect(toolbarX, toolbarY, toolbarWidth, toolbarHeight);
+        graphics.fillRect(windowX, windowY, windowWidth, windowHeight);
     }
 
     public abstract void update(GameContainer gc);
@@ -22,23 +29,23 @@ public abstract class Toolbar {
     public abstract void onMouseClick(int button, int mouseX, int mouseY);
 
     public int getWidth() {
-        return toolbarWidth;
+        return windowWidth;
     }
 
     public int getHeight() {
-        return toolbarHeight;
+        return windowHeight;
     }
 
     public int getX() {
-        return toolbarX;
+        return windowX;
     }
 
     public int getY() {
-        return toolbarY;
+        return windowY;
     }
 
 
-    //toolbar properties
+    // screen properties
     public static class Props {
 
         public static int DEFAULT_MARGIN;
@@ -52,7 +59,7 @@ public abstract class Toolbar {
             return (int) (size / (amount_of_rects + 1) * relative_margin);
         }
 
-        /* this procedure creates a responsive default margin for all toolbars */
+        /* this procedure creates a responsive default margin for all windows */
         public static void initMargin(int size) {
             DEFAULT_MARGIN = (int) (size * 0.01f);
         }

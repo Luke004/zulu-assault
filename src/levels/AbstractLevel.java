@@ -233,7 +233,7 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
     // TODO: 25.10.2020 add windmills to check won
     private boolean checkWon() {
         for (Entity entity : all_entities) {
-            if (entity.isMandatory()) return false;
+            if (entity.isMandatory) return false;
         }
         return true;
     }
@@ -296,7 +296,7 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
                     LevelHandler.gameOver(this);
                 } else {
                     all_friendly_entities.remove(entity);
-                    if (((MovableEntity) entity).isDrivable()) {
+                    if (((MovableEntity) entity).isDrivable) {
                         drivable_entities.remove(entity);
                     }
                 }

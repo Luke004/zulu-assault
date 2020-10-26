@@ -28,7 +28,7 @@ public class MainScreen extends AbstractMenuScreen {
 
     static {
         menu_drawer = FontManager.getStencilBigFont();
-        menu_options = new String[]{"NEW", "LOAD", "SAVE", "OPTIONS", "QUIT"};
+        menu_options = new String[]{"NEW", "LOAD", "EDITOR", "OPTIONS", "QUIT"};
     }
 
     public MainScreen(BasicGameState gameState, GameContainer gameContainer) {
@@ -99,7 +99,7 @@ public class MainScreen extends AbstractMenuScreen {
         }
     }
 
-    private void handleMenuItemChoice(GameContainer gameContainer, StateBasedGame stateBasedGame, int idx) {
+    private void handleMenuItemChoice(GameContainer gc, StateBasedGame sbg, int idx) {
         arrow.currIdx = idx;
         switch (idx) {
             case 0: // NEW
@@ -108,12 +108,13 @@ public class MainScreen extends AbstractMenuScreen {
                 LevelHandler.startNewGame(ZuluAssault.LEVEL_9, basicGameState);
                 break;  // TODO: LOAD AND SAVE
             case 1: // LOAD
-            case 2: // SAVE
                 MenuSounds.ERROR_SOUND.play(1.f, UserSettings.soundVolume);
+                break;
+            case 2: // EDITOR
+                sbg.enterState(ZuluAssault.LEVEL_EDITOR);
                 break;
             case 3: // OPTIONS
                 Menu.goToMenu(Menu.STATE_OPTIONS_MENU);
-
                 break;
             case 4: // EXIT
                 goToMenu(STATE_CONFIRM_EXIT_MENU);

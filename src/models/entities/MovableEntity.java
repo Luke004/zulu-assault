@@ -37,7 +37,8 @@ public abstract class MovableEntity extends Entity {
     private static final float TURRET_ROTATE_SPEED_PLAYER = 0.2f, TURRET_ROTATE_SPEED_BOT = 0.07f;
 
     // booleans
-    protected boolean isMoving, isMovingForward, isDrivable, canTeleport;
+    protected boolean isMoving, isMovingForward, canTeleport;
+    public boolean isDrivable;
 
     // invincibility item related
     public boolean isInvincible, invincibility_animation_switch;
@@ -222,10 +223,6 @@ public abstract class MovableEntity extends Entity {
     protected abstract float getBaseRotateSpeed();
 
     protected abstract float getMaxSpeed();
-
-    public boolean isDrivable() {
-        return isDrivable;
-    }
 
     /* Default implementation of 'onCollision': Like if it was a big war machine */
     public void onCollision(Entity entity) {

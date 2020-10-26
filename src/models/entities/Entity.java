@@ -25,7 +25,7 @@ public abstract class Entity extends Element {
     protected static final float MAX_HEALTH = 100;
     protected float current_health;
     public boolean isHostile, isDestroyed;
-    private boolean isMandatory;
+    public boolean isMandatory;
     protected boolean isEnemyNear;
 
     // graphics related
@@ -235,10 +235,6 @@ public abstract class Entity extends Element {
 
     public void setAsMandatory() {
         this.isMandatory = true;
-    }
-
-    public boolean isMandatory() {
-        return this.isMandatory;
     }
 
     public void addListeners(AbstractLevel abstractLevel) {

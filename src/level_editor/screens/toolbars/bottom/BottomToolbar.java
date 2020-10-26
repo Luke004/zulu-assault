@@ -1,21 +1,25 @@
 package level_editor.toolbars.bottom;
 
 import audio.MenuSounds;
+import level_editor.LevelEditor;
 import level_editor.toolbars.Toolbar;
 import level_editor.toolbars.elements.Button;
 import level_editor.toolbars.right.RightToolbar;
 import org.newdawn.slick.*;
+import save_game.GameSaver;
 import settings.UserSettings;
 
 
 public class BottomToolbar extends Toolbar {
 
     private RightToolbar rightToolbar;
+    private LevelEditor levelEditor;
 
     // buttons
     private Button[] buttons;
 
-    public BottomToolbar(RightToolbar rightToolbar, GameContainer gc) {
+    public BottomToolbar(LevelEditor levelEditor, RightToolbar rightToolbar, GameContainer gc) {
+        this.levelEditor = levelEditor;
         this.rightToolbar = rightToolbar;
         toolbarHeight = gc.getHeight() / 17;
         toolbarWidth = gc.getWidth();
@@ -87,6 +91,8 @@ public class BottomToolbar extends Toolbar {
                     case "SELECT":
                         rightToolbar.setScreen(RightToolbar.SCREEN_MODIFY_ELEMENT);
                         break;
+                    case "SAVE":
+                        new GameSaver().saveLevel(levelEditor.getElements());
                 }
                 break;
             }

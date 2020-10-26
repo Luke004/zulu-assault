@@ -19,6 +19,7 @@ public class TileMapInfo {
 
     // tilesets
     public static final int LANDSCAPE_TILES_TILESET_IDX = 1;
+    public static final String TILESETS_LOCATION = "assets/tilesets";
 
     // layers
     public static final int LANDSCAPE_TILES_LAYER_IDX = 0;

@@ -1,4 +1,4 @@
-package level_editor.toolbars.elements;
+package level_editor.screens.toolbars.elements;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;

@@ -97,7 +97,7 @@ public class Radar {
         graphics.setColor(Color.red);
         // movable entities
         for (Entity enemy_entity : all_hostile_entities) {
-            if (enemy_entity.isMandatory() && mandatoryBlinker) continue;
+            if (enemy_entity.isMandatory && mandatoryBlinker) continue;
             float enemy_x = enemy_entity.getPosition().x * ((float) RADAR_WIDTH / TileMapInfo.LEVEL_WIDTH_PIXELS);
             float enemy_y = enemy_entity.getPosition().y * ((float) RADAR_HEIGHT / TileMapInfo.LEVEL_HEIGHT_PIXELS);
             graphics.fillRect(radar_origin.x + enemy_x, radar_origin.y + enemy_y, 2, 2);

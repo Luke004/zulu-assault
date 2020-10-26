@@ -10,6 +10,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import save_game.GameSaver;
 
 import java.io.File;
 
@@ -79,7 +80,7 @@ public class ZuluAssault extends StateBasedGame {
     public void initStatesList(GameContainer gameContainer) throws SlickException {
         //this.getState(MAIN_MENU).init(gameContainer, this);
         this.getState(LEVEL_1).init(gameContainer, this);   // pre-load the first level at the start
-        this.enterState(LEVEL_EDITOR);
+        this.enterState(MAIN_MENU);
     }
 
     public static boolean existsLevel(int id) {
