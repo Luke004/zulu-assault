@@ -1,19 +1,19 @@
 package level_editor;
 
-import audio.MenuSounds;
-import graphics.fonts.FontManager;
+import game.audio.MenuSounds;
+import game.graphics.fonts.FontManager;
 import level_editor.screens.Window;
 import level_editor.screens.toolbars.bottom.BottomToolbar;
 import level_editor.screens.toolbars.right.RightToolbar;
 import level_editor.screens.toolbars.right.screens.EntitySelector;
 import level_editor.util.Elements;
-import logic.Camera;
+import game.logic.Camera;
 import settings.TileMapData;
 import main.ZuluAssault;
-import models.Element;
-import models.entities.Entity;
-import models.entities.MovableEntity;
-import models.items.Item;
+import game.models.Element;
+import game.models.entities.Entity;
+import game.models.entities.MovableEntity;
+import game.models.items.Item;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;

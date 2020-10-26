@@ -1,6 +1,6 @@
 package level_editor.screens.elements;
 
-import graphics.fonts.FontManager;
+import game.graphics.fonts.FontManager;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.TrueTypeFont;

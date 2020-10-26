@@ -1,6 +1,6 @@
 package level_editor.screens.toolbars.right.screens;
 
-import audio.MenuSounds;
+import game.audio.MenuSounds;
 import level_editor.screens.Window;
 import level_editor.screens.elements.Button;
 import level_editor.screens.toolbars.right.RightToolbar;

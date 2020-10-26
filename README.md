@@ -19,7 +19,7 @@ The game was originally published in July 1998 for Windows 95/98/NT platforms su
 |<kbd>R</kbd>|Toggle Radar|Yes|
 |<kbd>[</kbd>|Zoom Radar Out|Dismissed|
 |<kbd>]</kbd>|Zoom Radar In|Dismissed|
-|<kbd>Esc</kbd>|Go to menu|Yes|
+|<kbd>Esc</kbd>|Go to game.menu|Yes|
 |<kbd>1</kbd>|Use an invincibility  |Yes|
 |<kbd>2</kbd>|Use an emp|Yes|
 |<kbd>3</kbd>|Use a mega pulse|Yes|
@@ -47,7 +47,7 @@ https://www.dropbox.com/sh/dft4pes6qxbbuts/AAC3EQgJXdtmXwD29vViDMa4a?dl=0
 
 ## Console commands
 
-You can open the console in the menu by pressing <kbd>^</kbd> (German version - key to the left of 1)
+You can open the game.menu.console in the game.menu by pressing <kbd>^</kbd> (German version - key to the left of 1)
 
 |Command|Action|
 |-----|-----------|

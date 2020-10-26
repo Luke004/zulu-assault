@@ -1,9 +1,9 @@
 package main;
 
 import level_editor.LevelEditor;
-import levels.*;
+import game.levels.*;
 import settings.SettingStorage;
-import menu.Menu;
+import game.menu.Menu;
 import org.lwjgl.LWJGLUtil;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;

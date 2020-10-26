@@ -1,8 +1,8 @@
 package level_editor.util;
 
-import models.Element;
-import models.entities.Entity;
-import models.entities.MovableEntity;
+import game.models.Element;
+import game.models.entities.Entity;
+import game.models.entities.MovableEntity;
 
 import java.io.*;
 import java.util.LinkedList;
@@ -59,7 +59,7 @@ public class LevelDataStorage implements Serializable {
 
         try {
             FileOutputStream fileOutputStream
-                    = new FileOutputStream("saves/levels/" + name + ".ser");
+                    = new FileOutputStream("saves/game.levels/" + name + ".ser");
             ObjectOutputStream objectOutputStream
                     = new ObjectOutputStream(fileOutputStream);
             objectOutputStream.writeObject(this);
@@ -76,7 +76,7 @@ public class LevelDataStorage implements Serializable {
 
         try {
             FileInputStream fileInputStream
-                    = new FileInputStream("saves/levels/" + name + ".ser");
+                    = new FileInputStream("saves/game.levels/" + name + ".ser");
             ObjectInputStream objectInputStream
                     = new ObjectInputStream(fileInputStream);
             LevelDataStorage p2 = (LevelDataStorage) objectInputStream.readObject();

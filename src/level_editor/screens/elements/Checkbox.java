@@ -31,7 +31,7 @@ public class Checkbox extends ToolbarElement {
     @Override
     public void draw(Graphics graphics) {
         // draw outline
-        //graphics.drawRect(xPos, yPos, width, height);
+        //game.graphics.drawRect(xPos, yPos, width, height);
 
         // draw the check rect
         graphics.setColor(Color.lightGray);

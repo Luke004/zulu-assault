@@ -1,25 +1,25 @@
 package level_editor.util;
 
 
-import models.Element;
-import models.entities.aircraft.AttackHelicopter;
-import models.entities.aircraft.ScoutJet;
-import models.entities.aircraft.WarJet;
-import models.entities.aircraft.WarPlane;
-import models.entities.other.PassengerPlane;
-import models.entities.robots.PlasmaRobot;
-import models.entities.robots.RocketRobot;
-import models.entities.robots.RocketRobot2;
-import models.entities.robots.ShellRobot;
-import models.entities.soldiers.RocketSoldier;
-import models.entities.soldiers.UziSoldier;
-import models.entities.tanks.*;
-import models.entities.windmills.WindmillGreen;
-import models.entities.windmills.WindmillGrey;
-import models.entities.windmills.WindmillYellow;
-import models.interaction_circles.HealthCircle;
-import models.interaction_circles.TeleportCircle;
-import models.items.*;
+import game.models.Element;
+import game.models.entities.aircraft.AttackHelicopter;
+import game.models.entities.aircraft.ScoutJet;
+import game.models.entities.aircraft.WarJet;
+import game.models.entities.aircraft.WarPlane;
+import game.models.entities.other.PassengerPlane;
+import game.models.entities.robots.PlasmaRobot;
+import game.models.entities.robots.RocketRobot;
+import game.models.entities.robots.RocketRobot2;
+import game.models.entities.robots.ShellRobot;
+import game.models.entities.soldiers.RocketSoldier;
+import game.models.entities.soldiers.UziSoldier;
+import game.models.entities.tanks.*;
+import game.models.entities.windmills.WindmillGreen;
+import game.models.entities.windmills.WindmillGrey;
+import game.models.entities.windmills.WindmillYellow;
+import game.models.interaction_circles.HealthCircle;
+import game.models.interaction_circles.TeleportCircle;
+import game.models.items.*;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Elements {

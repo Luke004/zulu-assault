@@ -2,7 +2,7 @@ package settings;
 
 public class UserSettings {
 
-    // audio volume
+    // game.audio volume
     public static float soundVolume, musicVolume;
     public static final int VOLUME_MAX_LEVEL = 10;
     public static int soundVolumeLevel, musicVolumeLevel;

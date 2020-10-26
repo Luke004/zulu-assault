@@ -1,12 +1,12 @@
 package level_editor.screens.toolbars.right.screens;
 
-import audio.MenuSounds;
+import game.audio.MenuSounds;
 import level_editor.LevelEditor;
 import level_editor.screens.Window;
 import level_editor.screens.elements.Button;
 import level_editor.screens.toolbars.right.RightToolbar;
 import level_editor.util.Elements;
-import models.Element;
+import game.models.Element;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
