@@ -1,6 +1,6 @@
-package menu.elements;
+package game.menu.elements;
 
-import graphics.fonts.FontManager;
+import game.graphics.fonts.FontManager;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Vector2f;

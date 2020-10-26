@@ -1,10 +1,10 @@
-package models.entities.aircraft;
+package game.models.entities.aircraft;
 
 import settings.TileMapData;
 import settings.UserSettings;
-import graphics.animations.other.AnimatedCrosshair;
-import models.weapons.AGM;
-import models.weapons.RocketLauncher;
+import game.graphics.animations.other.AnimatedCrosshair;
+import game.models.weapons.AGM;
+import game.models.weapons.RocketLauncher;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
@@ -183,9 +183,9 @@ public class AttackHelicopter extends Aircraft {
 
         // check the tile below the helicopter, if it is a collision tile, the helicopter can't land
         int mapX = (int) (position.x / TILE_WIDTH);
-        if (mapX < 0 || mapX >= LEVEL_WIDTH_TILES) return false;  // player wants to land out of map
+        if (mapX < 0 || mapX >= LEVEL_WIDTH_TILES) return false;  // game.player wants to land out of map
         int mapY = (int) (position.y / TILE_HEIGHT);
-        if (mapY < 0 || mapY >= LEVEL_HEIGHT_TILES) return false;  // player wants to land out of map
+        if (mapY < 0 || mapY >= LEVEL_HEIGHT_TILES) return false;  // game.player wants to land out of map
         int tileID = map.getTileId(mapX, mapY, LANDSCAPE_TILES_LAYER_IDX);
         if (TileMapData.isCollisionTile(tileID)) return false;
         helicopter_sound.stop();

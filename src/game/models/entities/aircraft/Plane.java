@@ -1,8 +1,8 @@
-package models.entities.aircraft;
+package game.models.entities.aircraft;
 
-import level_editor.util.WayPointManager;
-import models.entities.Entity;
-import models.entities.MovableEntity;
+import game.util.WayPointManager;
+import game.models.entities.Entity;
+import game.models.entities.MovableEntity;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.List;
@@ -32,14 +32,14 @@ public abstract class Plane extends Aircraft {
         if (isDestroyed) return;
         float xPos, yPos, dist;
         if (player != null) {
-            // player not null means it's a hostile tank
-            // calculate dist between the player and the enemy
+            // game.player not null means it's a hostile tank
+            // calculate dist between the game.player and the enemy
             xPos = player.getPosition().x;
             yPos = player.getPosition().y;
             dist = (float) Math.sqrt((xPos - position.x) * (xPos - position.x)
                     + (yPos - position.y) * (yPos - position.y));
         } else {
-            // player null means it's a friendly tank
+            // game.player null means it's a friendly tank
             xPos = 0;
             yPos = 0;
             dist = Float.MAX_VALUE;

@@ -1,12 +1,12 @@
-package models.entities.aircraft;
+package game.models.entities.aircraft;
 
 import settings.TileMapData;
-import level_editor.util.WayPointManager;
-import audio.MenuSounds;
-import models.entities.Entity;
+import game.util.WayPointManager;
+import game.audio.MenuSounds;
+import game.models.entities.Entity;
 import settings.UserSettings;
-import models.CollisionModel;
-import models.entities.MovableEntity;
+import game.models.CollisionModel;
+import game.models.entities.MovableEntity;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -36,7 +36,7 @@ public abstract class Aircraft extends MovableEntity {
             setMoving(true);
             hasStarted = true;    // bot planes are already flying from the start
         } else {
-            landing = true;     // for the player - land the plane so he can get in eventually
+            landing = true;     // for the game.player - land the plane so he can get in eventually
         }
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
         super.init();
@@ -209,7 +209,7 @@ public abstract class Aircraft extends MovableEntity {
         // TODO: add destruction animation to plane crash
         /*
         if (isDestroyed) {
-            //destructionAnimation.draw(graphics);
+            //destructionAnimation.draw(game.graphics);
         }
          */
     }
@@ -237,7 +237,7 @@ public abstract class Aircraft extends MovableEntity {
     @Override
     public void showAccessibleAnimation(boolean activate) {
         super.showAccessibleAnimation(activate);
-        // stop the plane when player leaves it, start it again when player enters it back
+        // stop the plane when game.player leaves it, start it again when game.player enters it back
         if (!activate && hasLanded) {
             initStart();    // start the plane
         }
@@ -267,9 +267,9 @@ public abstract class Aircraft extends MovableEntity {
                     position.x + m_dir_x * (NEXT_TILE_OFFSET * tile_idx),
                     position.y + m_dir_y * (NEXT_TILE_OFFSET * tile_idx));
             int mapX = (int) (tile_before_plane.x / TILE_WIDTH);
-            if (mapX < 0 || mapX >= LEVEL_WIDTH_TILES) return false;  // player wants to land out of map
+            if (mapX < 0 || mapX >= LEVEL_WIDTH_TILES) return false;  // game.player wants to land out of map
             int mapY = (int) (tile_before_plane.y / TILE_HEIGHT);
-            if (mapY < 0 || mapY >= LEVEL_HEIGHT_TILES) return false;  // player wants to land out of map
+            if (mapY < 0 || mapY >= LEVEL_HEIGHT_TILES) return false;  // game.player wants to land out of map
             int tileID = map.getTileId(mapX, mapY, LANDSCAPE_TILES_LAYER_IDX);
             if (TileMapData.isCollisionTile(tileID)) return false;
         } while (tile_idx++ < 6);    // do it six times (6 tiles before the plane)
@@ -287,7 +287,7 @@ public abstract class Aircraft extends MovableEntity {
         return hasLanded;
     }
 
-    /* call this right after creating an instance of 'Plane' whenever a player is starting the level in this instance */
+    /* call this right after creating an instance of 'Plane' whenever a game.player is starting the level in this instance */
     public void setStarting() {
         landing = false;
         hasStarted = true;

@@ -1,6 +1,6 @@
-package models.weapons.projectiles;
+package game.models.weapons.projectiles;
 
-import models.weapons.AGM;
+import game.models.weapons.AGM;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -49,7 +49,7 @@ public class AirRocket extends AirProjectile {
     @Override
     public void draw(Graphics graphics) {
         super.draw(graphics);
-        //collision_model.draw(graphics);
+        //collision_model.draw(game.graphics);
         rocket_animation.draw(projectile_pos.x - ANIMATION_WIDTH_HALF - xVal, projectile_pos.y - ANIMATION_HEIGHT_HALF - yVal);
     }
 

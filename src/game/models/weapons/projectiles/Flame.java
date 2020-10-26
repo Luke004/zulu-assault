@@ -1,6 +1,6 @@
-package models.weapons.projectiles;
+package game.models.weapons.projectiles;
 
-import models.CollisionModel;
+import game.models.CollisionModel;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;

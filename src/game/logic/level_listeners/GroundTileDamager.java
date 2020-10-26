@@ -1,4 +1,4 @@
-package logic.level_listeners;
+package game.logic.level_listeners;
 
 /*
 this interface notifies the map about when having to place a burnt texture indicating that the tile has been damaged

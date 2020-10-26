@@ -1,4 +1,4 @@
-package graphics.screen_drawer.drawings;
+package game.graphics.screen_drawer.drawings;
 
 import game.models.entities.Entity;
 

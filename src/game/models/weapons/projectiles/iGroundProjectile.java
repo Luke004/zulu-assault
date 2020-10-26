@@ -1,4 +1,4 @@
-package models.weapons.projectiles;
+package game.models.weapons.projectiles;
 
 public interface iGroundProjectile {
 }

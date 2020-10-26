@@ -1,6 +1,6 @@
-package logic.level_listeners;
+package game.logic.level_listeners;
 
-import models.entities.Entity;
+import game.models.entities.Entity;
 
 public interface EntityDeleteListener {
     void notifyForEntityDestruction(Entity entity);

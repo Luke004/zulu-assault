@@ -1,4 +1,4 @@
-package menu.console;
+package game.menu.console;
 
 import game.levels.LevelHandler;
 import settings.SettingStorage;
@@ -92,7 +92,7 @@ public class Scanner {
                         return ERROR_UNRECOGNIZED;
                 }
 
-            case "exit":    // all commands to exit the menu.console
+            case "exit":    // all commands to exit the game.menu.console
             case "leave":
             case "end":
             case "stop":

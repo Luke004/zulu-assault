@@ -1,4 +1,4 @@
-package menu.elements;
+package game.menu.elements;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
@@ -15,8 +15,8 @@ public class Arrow {
     private final int MENU_SIZE;
 
     /*
-    @param menuSize how many options are there in the menu
-    @param y_pos_start yPos where the arrow starts at idx 0 (first menu option)
+    @param menuSize how many options are there in the game.menu
+    @param y_pos_start yPos where the arrow starts at idx 0 (first game.menu option)
      */
 
     public Arrow(GameContainer gameContainer, int menuSize, int y_pos_start) {

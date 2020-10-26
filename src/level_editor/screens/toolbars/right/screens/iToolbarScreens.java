@@ -1,4 +1,4 @@
-package game.level_editor.screens.toolbars.right.screens;
+package level_editor.screens.toolbars.right.screens;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;

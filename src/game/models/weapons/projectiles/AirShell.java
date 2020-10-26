@@ -1,7 +1,7 @@
-package models.weapons.projectiles;
+package game.models.weapons.projectiles;
 
-import models.CollisionModel;
-import models.weapons.AGM;
+import game.models.CollisionModel;
+import game.models.weapons.AGM;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 

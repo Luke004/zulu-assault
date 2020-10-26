@@ -1,7 +1,7 @@
-package models.entities.aircraft;
+package game.models.entities.aircraft;
 
-import models.weapons.AGM;
-import models.weapons.Uzi;
+import game.models.weapons.AGM;
+import game.models.weapons.Uzi;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;

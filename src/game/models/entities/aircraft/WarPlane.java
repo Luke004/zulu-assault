@@ -1,8 +1,8 @@
-package models.entities.aircraft;
+package game.models.entities.aircraft;
 
-import graphics.animations.other.AnimatedCrosshair;
-import models.weapons.AGM;
-import models.weapons.Uzi;
+import game.graphics.animations.other.AnimatedCrosshair;
+import game.models.weapons.AGM;
+import game.models.weapons.Uzi;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;

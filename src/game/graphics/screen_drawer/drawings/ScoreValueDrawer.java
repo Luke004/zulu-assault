@@ -1,6 +1,6 @@
-package graphics.screen_drawer.drawings;
+package game.graphics.screen_drawer.drawings;
 
-import graphics.fonts.FontManager;
+import game.graphics.fonts.FontManager;
 import game.models.entities.Entity;
 import org.newdawn.slick.TrueTypeFont;
 

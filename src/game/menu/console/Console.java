@@ -1,6 +1,6 @@
-package menu.console;
+package game.menu.console;
 
-import graphics.fonts.FontManager;
+import game.graphics.fonts.FontManager;
 import org.newdawn.slick.*;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Console {
 
-    private static Graphics graphics;   // give it its own graphics object for performance
+    private static Graphics graphics;   // give it its own game.graphics object for performance
     private static GameContainer gameContainer;
 
     private static final int CONSOLE_HEIGHT = 20;
@@ -21,7 +21,7 @@ public class Console {
 
     private static Font inputFont, outputFont;
 
-    // menu.console writing
+    // game.menu.console writing
     private static final String DEFAULT_TEXT = "> ";
     private static final String WRITE_INDICATOR = "|";
     private static int write_indicator_x;
@@ -29,13 +29,13 @@ public class Console {
     private static final int WI_BLINK_TIME_MILLIS = 1000;  // blink in second ticks
     private static long wi_timePassed, wi_lastTime;
 
-    // menu.console output
+    // game.menu.console output
     private static boolean printResponse;
     private static String s_response;
     private static final int RT_TIME_MILLIS = 5000;  // show response for 5 seconds
     private static long rt_timePassed, rt_lastTime;
 
-    // menu.console memory
+    // game.menu.console memory
     private static ArrayList<String> memory;
     private static final int MEMORY_MAX_SIZE = 6;
     private static int currMemoryIdx = 0;

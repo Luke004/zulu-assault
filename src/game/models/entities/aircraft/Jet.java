@@ -1,4 +1,4 @@
-package models.entities.aircraft;
+package game.models.entities.aircraft;
 
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
