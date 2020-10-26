@@ -1,7 +1,7 @@
 package models.entities.soldiers;
 
 import logic.CollisionHandler;
-import logic.WayPointManager;
+import level_editor.util.WayPointManager;
 import models.CollisionModel;
 import models.entities.MovableEntity;
 import models.entities.Entity;

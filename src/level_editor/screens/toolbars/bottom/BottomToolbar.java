@@ -6,7 +6,7 @@ import level_editor.screens.Window;
 import level_editor.screens.elements.Button;
 import level_editor.screens.toolbars.right.RightToolbar;
 import org.newdawn.slick.*;
-import save_game.GameSaver;
+import level_editor.util.LevelDataStorage;
 import settings.UserSettings;
 
 
@@ -89,7 +89,7 @@ public class BottomToolbar extends Window {
                         rightToolbar.setScreen(RightToolbar.SCREEN_MODIFY_ELEMENT);
                         break;
                     case "SAVE":
-                        new GameSaver().saveLevel(levelEditor.getMapName(), levelEditor.getElements());
+                        new LevelDataStorage().saveLevel(levelEditor.getMapName(), levelEditor.getElements());
                 }
                 break;
             }

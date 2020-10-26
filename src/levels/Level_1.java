@@ -1,11 +1,9 @@
 package levels;
 
-import logic.WayPointManager;
+import level_editor.util.WayPointManager;
 import main.ZuluAssault;
 import models.entities.windmills.Windmill;
-import models.entities.windmills.WindmillGreen;
 import models.entities.windmills.WindmillGrey;
-import models.entities.windmills.WindmillYellow;
 import models.interaction_circles.HealthCircle;
 import models.items.*;
 import models.entities.MovableEntity;
@@ -17,8 +15,6 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.state.transition.FadeInTransition;
-import org.newdawn.slick.state.transition.FadeOutTransition;
 import org.newdawn.slick.tiled.TiledMap;
 
 import java.util.ArrayList;

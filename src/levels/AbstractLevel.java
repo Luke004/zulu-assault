@@ -1,11 +1,13 @@
 package levels;
 
 import audio.CombatBackgroundMusic;
+import level_editor.util.TimeManager;
 import logic.*;
 import logic.level_listeners.GroundTileDamager;
 import logic.level_listeners.EntityDeleteListener;
 import main.ZuluAssault;
 import menu.Menu;
+import settings.TileMapData;
 import settings.UserSettings;
 import graphics.animations.explosion.BigExplosionAnimation;
 import graphics.hud.HUD;
@@ -31,7 +33,8 @@ import graphics.screen_drawer.ScreenDrawer;
 import java.util.ArrayList;
 import java.util.List;
 
-import static logic.TileMapInfo.*;
+import static level_editor.util.TileMapUtil.doCollateralTileDamage;
+import static settings.TileMapData.*;
 
 public abstract class AbstractLevel extends BasicGameState implements EntityDeleteListener, GroundTileDamager {
 
@@ -95,14 +98,14 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         // set the current tilemap based on the level
-        TileMapInfo.setMap(map);
+        TileMapData.setMap(map);
         // set the combat music based on the level
         combatBackgroundMusic.setIdx(getCombatMusicIdx());
         // reset the level info
         if (!has_initialized_once) {
             // this gets only executed once
             has_initialized_once = true;
-            TileMapInfo.init();
+            TileMapData.init();
             LevelHandler.init(stateBasedGame);
 
             randomItemDropper = new RandomItemDropper();
@@ -117,7 +120,7 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
         this.gameContainer = gameContainer;
 
         // check if the map size has changed - if so, inform the radar about it
-        boolean map_size_changed = TileMapInfo.updateMapSize();
+        boolean map_size_changed = TileMapData.updateMapSize();
         if (map_size_changed) radar.updateMapSize();
 
         // init time manager for each level
@@ -173,7 +176,7 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
 
     @Override
     public void leave(GameContainer var1, StateBasedGame var2) {
-        TileMapInfo.reset();
+        TileMapData.reset();
         combatBackgroundMusic.stop();
         ZuluAssault.prevState = this;
     }
@@ -327,7 +330,7 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
         int mapY = (int) (yPos / TILE_HEIGHT);
         int tileID = map.getTileId(mapX, mapY, LANDSCAPE_TILES_LAYER_IDX);
 
-        int replacement_tile_id = TileMapInfo.getReplacementTileID(tileID);
+        int replacement_tile_id = TileMapData.getReplacementTileID(tileID);
         if (replacement_tile_id != -1) {
             map.setTileId(mapX, mapY, DESTRUCTION_TILES_LAYER_IDX, replacement_tile_id);
         }

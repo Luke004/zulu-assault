@@ -1,13 +1,9 @@
 package models.entities.tanks;
 
 import logic.CollisionHandler;
-import logic.WayPointManager;
+import level_editor.util.WayPointManager;
 import models.CollisionModel;
-import models.entities.Entity;
 import models.entities.MovableEntity;
-import models.entities.aircraft.Aircraft;
-import models.entities.robots.Robot;
-import models.entities.soldiers.Soldier;
 import models.weapons.Weapon;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;

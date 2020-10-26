@@ -1,7 +1,6 @@
 package level_editor.screens;
 
 import graphics.fonts.FontManager;
-import logic.SettingsManager;
 import org.newdawn.slick.*;
 
 /* An abstract class which draws a black window with a title in the middle of the screen */

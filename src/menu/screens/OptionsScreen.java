@@ -1,7 +1,7 @@
 package menu.screens;
 
 import audio.MenuSounds;
-import logic.SettingsManager;
+import settings.SettingStorage;
 import menu.Menu;
 import menu.elements.Arrow;
 import menu.elements.Slider;
@@ -88,13 +88,13 @@ public class OptionsScreen extends AbstractMenuScreen {
             case 0: // BACK
                 Menu.returnToPreviousMenu();
                 // store the settings from user in the file 'config.properties'
-                SettingsManager.Property[] properties = new SettingsManager.Property[2];
-                properties[0] = new SettingsManager.Property("sound_volume_level",
+                SettingStorage.Property[] properties = new SettingStorage.Property[2];
+                properties[0] = new SettingStorage.Property("sound_volume_level",
                         Integer.toString(sound_volume_slider.getValue()));
-                properties[1] = new SettingsManager.Property("music_volume_level",
+                properties[1] = new SettingStorage.Property("music_volume_level",
                         Integer.toString(music_volume_slider.getValue()));
 
-                SettingsManager.storeSettings(properties);
+                SettingStorage.storeSettings(properties);
                 break;
             case 1: // SOUND VOLUME
 

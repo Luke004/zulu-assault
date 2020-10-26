@@ -1,6 +1,6 @@
 package levels;
 
-import logic.TimeManager;
+import level_editor.util.TimeManager;
 import main.ZuluAssault;
 import menu.Menu;
 import org.newdawn.slick.state.BasicGameState;

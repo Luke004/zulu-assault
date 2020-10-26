@@ -1,4 +1,4 @@
-package save_game;
+package level_editor.util;
 
 import models.Element;
 import models.entities.Entity;
@@ -8,13 +8,13 @@ import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
 
-/* This class holds all relevant data for loading and saving an element */
-public class GameSaver implements Serializable {
+/* This class stores all relevant data for loading and saving a level */
+public class LevelDataStorage implements Serializable {
 
     private List<ElementData> allElements;
     private List<EntityData> allEntities;
 
-    public GameSaver() {
+    public LevelDataStorage() {
         allElements = new LinkedList<>();
         allEntities = new LinkedList<>();
     }
@@ -79,7 +79,7 @@ public class GameSaver implements Serializable {
                     = new FileInputStream("saves/levels/" + name + ".ser");
             ObjectInputStream objectInputStream
                     = new ObjectInputStream(fileInputStream);
-            GameSaver p2 = (GameSaver) objectInputStream.readObject();
+            LevelDataStorage p2 = (LevelDataStorage) objectInputStream.readObject();
             objectInputStream.close();
 
             System.out.println("successfully loaded map!");

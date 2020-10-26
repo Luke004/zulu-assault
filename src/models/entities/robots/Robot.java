@@ -1,13 +1,9 @@
 package models.entities.robots;
 
 import logic.CollisionHandler;
-import logic.WayPointManager;
+import level_editor.util.WayPointManager;
 import models.CollisionModel;
-import models.entities.Entity;
 import models.entities.MovableEntity;
-import models.entities.aircraft.Aircraft;
-import models.entities.soldiers.Soldier;
-import models.entities.tanks.Tank;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 

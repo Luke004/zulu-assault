@@ -1,7 +1,6 @@
 package models.entities.tanks;
 
-import logic.WayPointManager;
-import models.CollisionModel;
+import level_editor.util.WayPointManager;
 import models.entities.MovableEntity;
 import models.weapons.Cannon;
 import models.weapons.DoubleRocketLauncher;

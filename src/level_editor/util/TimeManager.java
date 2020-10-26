@@ -1,4 +1,4 @@
-package logic;
+package level_editor.util;
 
 import levels.LevelHandler;
 

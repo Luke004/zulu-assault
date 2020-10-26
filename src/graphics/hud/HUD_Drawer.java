@@ -2,7 +2,7 @@ package graphics.hud;
 
 import graphics.fonts.FontManager;
 import levels.LevelHandler;
-import logic.TimeManager;
+import level_editor.util.TimeManager;
 import org.newdawn.slick.*;
 import player.Player;
 import settings.UserSettings;

@@ -1,6 +1,6 @@
 package models.entities.aircraft;
 
-import logic.TileMapInfo;
+import settings.TileMapData;
 import settings.UserSettings;
 import graphics.animations.other.AnimatedCrosshair;
 import models.weapons.AGM;
@@ -9,8 +9,8 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 
-import static logic.TileMapInfo.*;
-import static logic.TileMapInfo.LANDSCAPE_TILES_LAYER_IDX;
+import static settings.TileMapData.*;
+import static settings.TileMapData.LANDSCAPE_TILES_LAYER_IDX;
 
 public class AttackHelicopter extends Aircraft {
 
@@ -187,7 +187,7 @@ public class AttackHelicopter extends Aircraft {
         int mapY = (int) (position.y / TILE_HEIGHT);
         if (mapY < 0 || mapY >= LEVEL_HEIGHT_TILES) return false;  // player wants to land out of map
         int tileID = map.getTileId(mapX, mapY, LANDSCAPE_TILES_LAYER_IDX);
-        if (TileMapInfo.isCollisionTile(tileID)) return false;
+        if (TileMapData.isCollisionTile(tileID)) return false;
         helicopter_sound.stop();
         return true;
     }

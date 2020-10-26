@@ -1,6 +1,6 @@
 package levels;
 
-import logic.WayPointManager;
+import level_editor.util.WayPointManager;
 import main.ZuluAssault;
 import models.interaction_circles.TeleportCircle;
 import models.items.*;

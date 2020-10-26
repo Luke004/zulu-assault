@@ -1,6 +1,6 @@
 package levels;
 
-import logic.WayPointManager;
+import level_editor.util.WayPointManager;
 import main.ZuluAssault;
 import models.items.GoldenWrenchItem;
 import models.items.InvincibilityItem;

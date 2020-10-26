@@ -8,7 +8,7 @@ import level_editor.screens.toolbars.right.RightToolbar;
 import level_editor.screens.toolbars.right.screens.EntitySelector;
 import level_editor.util.Elements;
 import logic.Camera;
-import logic.TileMapInfo;
+import settings.TileMapData;
 import main.ZuluAssault;
 import models.Element;
 import models.entities.Entity;
@@ -99,7 +99,7 @@ public class LevelEditor extends BasicGameState {
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fc.getSelectedFile();
             this.mapName = selectedFile.getName();
-            TiledMap map = new TiledMap(custom_maps_folder.getPath() + "/" + mapName, TileMapInfo.TILESETS_LOCATION);
+            TiledMap map = new TiledMap(custom_maps_folder.getPath() + "/" + mapName, TileMapData.TILESETS_LOCATION);
             camera = new Camera(gc, map);
             mapWidth = map.getWidth() * map.getTileWidth();
             mapHeight = map.getHeight() * map.getTileHeight();

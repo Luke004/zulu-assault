@@ -1,6 +1,6 @@
 package models.entities;
 
-import logic.WayPointManager;
+import level_editor.util.WayPointManager;
 import models.entities.soldiers.Soldier;
 import settings.UserSettings;
 import models.interaction_circles.TeleportCircle;

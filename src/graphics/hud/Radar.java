@@ -1,6 +1,6 @@
 package graphics.hud;
 
-import logic.TileMapInfo;
+import settings.TileMapData;
 import models.entities.Entity;
 import models.entities.MovableEntity;
 import org.newdawn.slick.Color;
@@ -62,8 +62,8 @@ public class Radar {
         // draw the players position
         graphics.setLineWidth(1);
 
-        float player_x = player.getEntity().getPosition().x * ((float) RADAR_WIDTH / TileMapInfo.LEVEL_WIDTH_PIXELS);
-        float player_y = player.getEntity().getPosition().y * ((float) RADAR_HEIGHT / TileMapInfo.LEVEL_HEIGHT_PIXELS);
+        float player_x = player.getEntity().getPosition().x * ((float) RADAR_WIDTH / TileMapData.LEVEL_WIDTH_PIXELS);
+        float player_y = player.getEntity().getPosition().y * ((float) RADAR_HEIGHT / TileMapData.LEVEL_HEIGHT_PIXELS);
 
         graphics.setColor(Color.decode("#808080"));
         graphics.drawLine(radar_origin.x + player_x, radar_origin.y,
@@ -80,16 +80,16 @@ public class Radar {
         // draw the friendly entities
         graphics.setColor(Color.green);
         for (Entity friendly_entity : all_friendly_entities) {
-            float friend_x = friendly_entity.getPosition().x * ((float) RADAR_WIDTH / TileMapInfo.LEVEL_WIDTH_PIXELS);
-            float friend_y = friendly_entity.getPosition().y * ((float) RADAR_HEIGHT / TileMapInfo.LEVEL_HEIGHT_PIXELS);
+            float friend_x = friendly_entity.getPosition().x * ((float) RADAR_WIDTH / TileMapData.LEVEL_WIDTH_PIXELS);
+            float friend_y = friendly_entity.getPosition().y * ((float) RADAR_HEIGHT / TileMapData.LEVEL_HEIGHT_PIXELS);
             graphics.fillRect(radar_origin.x + friend_x, radar_origin.y + friend_y, 2, 2);
         }
 
         // draw the drivable entities
         graphics.setColor(Color.decode("#808080"));
         for (MovableEntity drivable_entity : drivable_entities) {
-            float friend_x = drivable_entity.getPosition().x * ((float) RADAR_WIDTH / TileMapInfo.LEVEL_WIDTH_PIXELS);
-            float friend_y = drivable_entity.getPosition().y * ((float) RADAR_HEIGHT / TileMapInfo.LEVEL_HEIGHT_PIXELS);
+            float friend_x = drivable_entity.getPosition().x * ((float) RADAR_WIDTH / TileMapData.LEVEL_WIDTH_PIXELS);
+            float friend_y = drivable_entity.getPosition().y * ((float) RADAR_HEIGHT / TileMapData.LEVEL_HEIGHT_PIXELS);
             graphics.fillRect(radar_origin.x + friend_x, radar_origin.y + friend_y, 1, 1);
         }
 
@@ -98,8 +98,8 @@ public class Radar {
         // movable entities
         for (Entity enemy_entity : all_hostile_entities) {
             if (enemy_entity.isMandatory && mandatoryBlinker) continue;
-            float enemy_x = enemy_entity.getPosition().x * ((float) RADAR_WIDTH / TileMapInfo.LEVEL_WIDTH_PIXELS);
-            float enemy_y = enemy_entity.getPosition().y * ((float) RADAR_HEIGHT / TileMapInfo.LEVEL_HEIGHT_PIXELS);
+            float enemy_x = enemy_entity.getPosition().x * ((float) RADAR_WIDTH / TileMapData.LEVEL_WIDTH_PIXELS);
+            float enemy_y = enemy_entity.getPosition().y * ((float) RADAR_HEIGHT / TileMapData.LEVEL_HEIGHT_PIXELS);
             graphics.fillRect(radar_origin.x + enemy_x, radar_origin.y + enemy_y, 2, 2);
         }
         // special red color for enemy windmills
@@ -124,8 +124,8 @@ public class Radar {
     }
 
     public void updateMapSize() {
-        RADAR_SCREEN_RECT_WIDTH = RADAR_WIDTH / (float) TileMapInfo.LEVEL_WIDTH_TILES * 14.07f;
-        RADAR_SCREEN_RECT_HEIGHT = RADAR_HEIGHT / (float) TileMapInfo.LEVEL_HEIGHT_TILES * 12.f;
+        RADAR_SCREEN_RECT_WIDTH = RADAR_WIDTH / (float) TileMapData.LEVEL_WIDTH_TILES * 14.07f;
+        RADAR_SCREEN_RECT_HEIGHT = RADAR_HEIGHT / (float) TileMapData.LEVEL_HEIGHT_TILES * 12.f;
     }
 
     public static void hideRadar() {

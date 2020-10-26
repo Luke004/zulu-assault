@@ -1,6 +1,6 @@
 package levels;
 
-import logic.WayPointManager;
+import level_editor.util.WayPointManager;
 import main.ZuluAssault;
 import models.entities.MovableEntity;
 import models.entities.aircraft.ScoutJet;

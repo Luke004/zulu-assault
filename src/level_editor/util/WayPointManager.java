@@ -1,4 +1,4 @@
-package logic;
+package level_editor.util;
 
 import models.entities.MovableEntity;
 import org.newdawn.slick.geom.Vector2f;

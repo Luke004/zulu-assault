@@ -1,8 +1,7 @@
 package console;
 
 import levels.LevelHandler;
-import logic.SettingsManager;
-import logic.TimeManager;
+import settings.SettingStorage;
 import main.ZuluAssault;
 import settings.UserSettings;
 
@@ -60,19 +59,19 @@ public class Scanner {
                     case "time":    // display the time needed for the play through
                         UserSettings.toggleTimeDisplay();
                         if (UserSettings.displayTime) {
-                            SettingsManager.storeSetting(new SettingsManager.Property("show_time", "true"));
+                            SettingStorage.storeSetting(new SettingStorage.Property("show_time", "true"));
                             return "Time display enabled.";
                         } else {
-                            SettingsManager.storeSetting(new SettingsManager.Property("show_time", "false"));
+                            SettingStorage.storeSetting(new SettingStorage.Property("show_time", "false"));
                             return "Time display disabled.";
                         }
                     case "fps":    // display frames per second
                         UserSettings.toggleFPSDisplay();
                         if (UserSettings.displayFPS) {
-                            SettingsManager.storeSetting(new SettingsManager.Property("show_fps", "true"));
+                            SettingStorage.storeSetting(new SettingStorage.Property("show_fps", "true"));
                             return "FPS display enabled.";
                         } else {
-                            SettingsManager.storeSetting(new SettingsManager.Property("show_fps", "false"));
+                            SettingStorage.storeSetting(new SettingStorage.Property("show_fps", "false"));
                             return "FPS display disabled.";
                         }
                     default:
@@ -83,11 +82,11 @@ public class Scanner {
                 switch (country) {
                     case "1":   // German
                         UserSettings.keyboardLayout_1 = true;
-                        SettingsManager.storeSetting(new SettingsManager.Property("keyboard_layout_1", "true"));
+                        SettingStorage.storeSetting(new SettingStorage.Property("keyboard_layout_1", "true"));
                         return "Using keyboard layout 1 (German).";
                     case "2":   // English
                         UserSettings.keyboardLayout_1 = false;
-                        SettingsManager.storeSetting(new SettingsManager.Property("keyboard_layout_1", "false"));
+                        SettingStorage.storeSetting(new SettingStorage.Property("keyboard_layout_1", "false"));
                         return "Using keyboard layout 2 (English).";
                     default:
                         return ERROR_UNRECOGNIZED;

@@ -1,11 +1,10 @@
 package models.entities.windmills;
 
-import logic.WayPointManager;
+import level_editor.util.WayPointManager;
 import graphics.animations.smoke.SmokeAnimation;
 import models.CollisionModel;
 import models.entities.Entity;
 import models.entities.MovableEntity;
-import models.weapons.MegaPulse;
 import models.weapons.Weapon;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;

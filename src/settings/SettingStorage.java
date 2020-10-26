@@ -1,11 +1,9 @@
-package logic;
-
-import settings.UserSettings;
+package settings;
 
 import java.io.*;
 import java.util.Properties;
 
-public class SettingsManager {
+public class SettingStorage {
 
     private static final String SETTINGS_FILE_NAME = "config.properties";
     private static final File directory = new File("saves/settings/");
@@ -17,13 +15,13 @@ public class SettingsManager {
             boolean created = properties_file.createNewFile();
             if (created) {  // file didnt exist and was just created
                 // SOUND VOLUME
-                SettingsManager.storeSetting(new SettingsManager.Property("sound_volume_level",
+                SettingStorage.storeSetting(new SettingStorage.Property("sound_volume_level",
                         Integer.toString(UserSettings.VOLUME_MAX_LEVEL)));
                 // MUSIC VOLUME
-                SettingsManager.storeSetting(new SettingsManager.Property("music_volume_level",
+                SettingStorage.storeSetting(new SettingStorage.Property("music_volume_level",
                         Integer.toString(UserSettings.VOLUME_MAX_LEVEL)));
                 // SHOW TIME
-                SettingsManager.storeSetting(new SettingsManager.Property("show_time", "false"));
+                SettingStorage.storeSetting(new SettingStorage.Property("show_time", "false"));
             }
         } catch (IOException e) {
             System.out.println("Could not create initial settings file '" + SETTINGS_FILE_NAME + "'");
@@ -78,7 +76,7 @@ public class SettingsManager {
             }
         }
         // key doesn't exist -> create one with the default value
-        SettingsManager.storeSetting(new SettingsManager.Property(key, defaultValue));
+        SettingStorage.storeSetting(new SettingStorage.Property(key, defaultValue));
         return defaultValue;
     }
 

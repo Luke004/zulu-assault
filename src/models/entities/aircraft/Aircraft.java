@@ -1,7 +1,7 @@
 package models.entities.aircraft;
 
-import logic.TileMapInfo;
-import logic.WayPointManager;
+import settings.TileMapData;
+import level_editor.util.WayPointManager;
 import audio.MenuSounds;
 import models.entities.Entity;
 import settings.UserSettings;
@@ -12,7 +12,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
-import static logic.TileMapInfo.*;
+import static settings.TileMapData.*;
 
 public abstract class Aircraft extends MovableEntity {
 
@@ -271,7 +271,7 @@ public abstract class Aircraft extends MovableEntity {
             int mapY = (int) (tile_before_plane.y / TILE_HEIGHT);
             if (mapY < 0 || mapY >= LEVEL_HEIGHT_TILES) return false;  // player wants to land out of map
             int tileID = map.getTileId(mapX, mapY, LANDSCAPE_TILES_LAYER_IDX);
-            if (TileMapInfo.isCollisionTile(tileID)) return false;
+            if (TileMapData.isCollisionTile(tileID)) return false;
         } while (tile_idx++ < 6);    // do it six times (6 tiles before the plane)
 
         return true;

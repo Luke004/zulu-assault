@@ -2,7 +2,7 @@ package main;
 
 import level_editor.LevelEditor;
 import levels.*;
-import logic.SettingsManager;
+import settings.SettingStorage;
 import menu.Menu;
 import org.lwjgl.LWJGLUtil;
 import org.newdawn.slick.AppGameContainer;
@@ -10,7 +10,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import save_game.GameSaver;
 
 import java.io.File;
 
@@ -64,7 +63,7 @@ public class ZuluAssault extends StateBasedGame {
                 new File(System.getProperty("user.dir"), "native"),
                 LWJGLUtil.getPlatformName())
                 .getAbsolutePath());
-        SettingsManager.createSettingsFile();
+        SettingStorage.createSettingsFile();
         try {
             AppGameContainer app = new AppGameContainer(new ZuluAssault(gameName));
             app.setDisplayMode(alterRes ? 1920 : 640, alterRes ? 1080 : 480, fullscreen);

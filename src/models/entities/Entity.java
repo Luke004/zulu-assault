@@ -1,7 +1,7 @@
 package models.entities;
 
 import levels.AbstractLevel;
-import logic.WayPointManager;
+import level_editor.util.WayPointManager;
 import logic.level_listeners.EntityDeleteListener;
 import models.Element;
 import models.entities.robots.RocketRobot;

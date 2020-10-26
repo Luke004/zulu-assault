@@ -19,8 +19,10 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import player.Player;
 
+import static level_editor.util.TileMapUtil.doCollateralTileDamage;
+import static level_editor.util.TileMapUtil.generateKey;
 import static levels.AbstractLevel.*;
-import static logic.TileMapInfo.*;
+import static settings.TileMapData.*;
 
 import java.util.*;
 

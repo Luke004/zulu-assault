@@ -1,6 +1,6 @@
 package models.entities.aircraft;
 
-import logic.WayPointManager;
+import level_editor.util.WayPointManager;
 import models.entities.Entity;
 import models.entities.MovableEntity;
 import org.newdawn.slick.geom.Vector2f;
