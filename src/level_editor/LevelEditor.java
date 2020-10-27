@@ -310,9 +310,11 @@ public class LevelEditor extends BasicGameState {
                         // deep copy the selected element
                         copy.setPosition(new Vector2f(selectedElement.getPosition().x + mapX,
                                 selectedElement.getPosition().y + mapY));
-                        // add rotation
+                        // add rotation and mandatory
                         if (selectedElement instanceof Entity) {
-                            ((Entity) copy).setRotation(((Entity) selectedElement).getRotation());
+                            Entity entityCopy = (Entity) copy;
+                            entityCopy.setRotation(((Entity) selectedElement).getRotation());
+                            entityCopy.isMandatory = EntitySelector.isMandatory;
                         }
                         elements.add(copy);
                     }

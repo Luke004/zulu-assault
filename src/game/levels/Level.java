@@ -104,14 +104,11 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-        System.out.println("level init call");
         if (ZuluAssault.nextLevelName.isEmpty()) {
             // this is called only once at startup
             LevelHandler.init(stateBasedGame);
             return;
         }
-
-        System.out.println("through");
 
         String mapLocation;
         boolean isStandardLevel = isStandardLevel(ZuluAssault.nextLevelName);
@@ -414,6 +411,11 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
             if (entity.isMandatory) return false;
         }
         return true;
+    }
+
+    @Override
+    public void keyReleased(int key,char c){
+        keyInputHandler.onKeyRelease(key);
     }
 
     protected static void resetLevel() {

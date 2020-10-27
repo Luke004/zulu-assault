@@ -132,6 +132,7 @@ public class LevelDataStorage implements Serializable {
                 Entity casted_copy = (Entity) copy;
                 casted_copy.setPosition(new Vector2f(entityData.xPos, entityData.yPos));
                 casted_copy.setRotation(entityData.rotation);
+                casted_copy.isMandatory = entityData.isMandatory;
                 entities.add(casted_copy);
             }
         }

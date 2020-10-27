@@ -118,14 +118,14 @@ public abstract class Entity extends Element {
         }
         float xPos, yPos, dist;
         if (player != null) {
-            // game.player not null means it's a hostile tank
-            // calculate dist between the game.player and the enemy
+            // player not null means it's a hostile tank
+            // calculate dist between the player and the enemy
             xPos = player.position.x;
             yPos = player.position.y;
             dist = (float) Math.sqrt((xPos - position.x) * (xPos - position.x)
                     + (yPos - position.y) * (yPos - position.y));
         } else {
-            // game.player null means it's a friendly tank
+            // player null means it's a friendly tank
             xPos = 0;
             yPos = 0;
             dist = Float.MAX_VALUE;
@@ -157,7 +157,7 @@ public abstract class Entity extends Element {
             // fire
             fireWeapon(MovableEntity.WeaponType.WEAPON_1);
 
-            // following bot controlled entities can also fire their 2nd weapon
+            // following bot controlled entities can also fire their 2nd weapon:
             if (this instanceof RocketRobot || this instanceof XTank) {
                 fireWeapon(MovableEntity.WeaponType.WEAPON_2);
             }

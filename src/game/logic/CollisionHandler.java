@@ -81,17 +81,27 @@ public class CollisionHandler {
         bigExplosionAnimation.update(deltaTime);
         plasmaDamageAnimation.update(deltaTime);
 
-        // movement collisions for the game.player entity
+        // all movement collisions for the player entity
         handleMovableEntityCollisions(playerEntity);
 
-        // bullet collisions for the game.player entity
+        // bullet collisions for the player entity
         handleBulletCollisions(playerEntity);
 
-        // movement and bullet collisions for all other entities
-        handleAllEntityCollisions(playerEntity, all_friendly_entities, deltaTime);
+        // movement and bullet collisions for all hostile entities
+        for (Entity hostile_entity : all_hostile_entities) {
+            hostile_entity.shootAtEnemies(playerEntity, all_friendly_entities, deltaTime);
+            handleShotCollisions(hostile_entity, playerEntity);
+            handleMovableEntityCollisions(hostile_entity);
+        }
+        // movement and bullet collisions for all friendly entities
+        for (Entity friendly_entity : all_friendly_entities) {
+            friendly_entity.shootAtEnemies(null, all_hostile_entities, deltaTime);
+            handleMovableEntityCollisions(friendly_entity);
+            handleShotCollisions(friendly_entity, null);
+        }
 
 
-        // ----- individual game.player collisions -----
+        // ----- individual player collisions -----
 
         // PLAYER COLLIDES WITH HEALTH CIRCLE
         for (HealthCircle health_circle : health_circles) {
@@ -504,30 +514,9 @@ public class CollisionHandler {
         }
     }
 
-    private void handleAllEntityCollisions(MovableEntity player_entity, List<Entity> friendly_entities, int deltaTime) {
-        for (Entity hostile_entity : all_hostile_entities) {
-            hostile_entity.shootAtEnemies(player_entity, friendly_entities, deltaTime);
-            handleShotCollisions(hostile_entity, player_entity);
-            handleMovableEntityCollisions(hostile_entity);
-        }
-
-        /*
-        for (StaticEntity enemy_staticEntity : static_enemy_entities) {
-            enemy_staticEntity.shootAtEnemies(player_entity, friendly_entities, deltaTime);
-            handleShotCollisions(enemy_staticEntity, player_entity);
-        }
-
-         */
-
-        for (Entity friendly_entity : friendly_entities) {
-            friendly_entity.shootAtEnemies(null, all_hostile_entities, deltaTime);
-            handleMovableEntityCollisions(friendly_entity);
-            handleShotCollisions(friendly_entity, null);
-        }
-    }
-
-    private void handleShotCollisions(Entity w, MovableEntity player) {
-        for (Weapon weapon : w.getWeapons()) {
+    private void handleShotCollisions(Entity entity, MovableEntity player) {
+        System.out.println("entity " + entity.isHostile);
+        for (Weapon weapon : entity.getWeapons()) {
             Iterator<Projectile> projectile_iterator = weapon.getProjectiles();
 
             while (projectile_iterator.hasNext()) {
@@ -549,11 +538,33 @@ public class CollisionHandler {
                         showBulletHitAnimation(weapon, projectile);
                         projectile_iterator.remove();   // remove bullet
                         if (!player.isInvincible()) {
-                            player.changeHealth(-weapon.getBulletDamage());  //drain health of game.player
+                            player.changeHealth(-weapon.getBulletDamage());  //drain health of player
                         }
                         continue;
                     }
+
+
+
+                    // HOSTILE SHOT COLLISION WITH FRIENDLY ENTITIES
+                    for (Entity friendly_entity : all_friendly_entities) {
+                        if (projectile.getCollisionModel().intersects(friendly_entity.getCollisionModel())) {
+                            showBulletHitAnimation(weapon, projectile);
+                            projectile_iterator.remove();
+                            friendly_entity.changeHealth(-weapon.getBulletDamage());  //drain health of friend
+                            canContinue = true;
+                        }
+                    }
+                    if (canContinue) continue;
+                    // HOSTILE SHOT COLLISION WITH FRIENDLY DRIVABLE ENTITIES
+                    for (MovableEntity drivable_entity : drivable_entities) {
+                        if (projectile.getCollisionModel().intersects(drivable_entity.getCollisionModel())) {
+                            showBulletHitAnimation(weapon, projectile);
+                            projectile_iterator.remove();
+                            drivable_entity.changeHealth(-weapon.getBulletDamage());
+                        }
+                    }
                 }
+
 
                 // BULLET COLLISION WITH DESTRUCTIBLE MAP TILE
                 canContinue = handleGroundProjectileTileCollision(projectile, weapon, projectile_iterator);
@@ -574,14 +585,17 @@ public class CollisionHandler {
                     // FRIENDLY SHOT COLLISION WITH STATIC ENTITIES
                     //handleGroundProjectileStaticEntityCollision(projectile, weapon, projectile_iterator);
                 } else {
+                    /*
                     // HOSTILE SHOT COLLISION WITH FRIENDLY ENTITIES
                     for (Entity friendly_entity : all_friendly_entities) {
                         if (projectile.getCollisionModel().intersects(friendly_entity.getCollisionModel())) {
                             showBulletHitAnimation(weapon, projectile);
                             projectile_iterator.remove();
                             friendly_entity.changeHealth(-weapon.getBulletDamage());  //drain health of friend
+                            canContinue = true;
                         }
                     }
+                    if (canContinue) continue;
                     // HOSTILE SHOT COLLISION WITH FRIENDLY DRIVABLE ENTITIES
                     for (MovableEntity drivable_entity : drivable_entities) {
                         if (projectile.getCollisionModel().intersects(drivable_entity.getCollisionModel())) {
@@ -589,8 +603,11 @@ public class CollisionHandler {
                             projectile_iterator.remove();
                             drivable_entity.changeHealth(-weapon.getBulletDamage());
                         }
+
+                     */
                     }
                 }
+
             }
         }
     }

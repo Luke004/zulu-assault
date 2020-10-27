@@ -131,17 +131,19 @@ public class KeyInputHandler {
                     }
                 }
                 break;
-            case TANK:      // game.player is in a tank
+            case TANK:      // player is in a tank
                 Tank tank = (Tank) playerEntity;
 
                 // forward movement
                 if (input.isKeyPressed(Input.KEY_UP)) {
+
                     if (KEY_DOWN_PRESSED) return;
                     KEY_UP_PRESSED = true;
                     if (tank.isMovingForward()) {
                         tank.cancelDeceleration();
                     }
                 } else if (KEY_UP_RELEASED) {
+                    System.out.println("key up released");
                     tank.startDeceleration(MovableEntity.Direction.FORWARD);
                     KEY_UP_RELEASED = false;
                     KEY_UP_PRESSED = false;
