@@ -10,6 +10,11 @@ import static settings.TileMapData.*;
 
 public class TileMapUtil {
 
+    // various tile specs
+    public static final float TILE_HEALTH = 100.f;
+    public static final float DESTRUCTIBLE_TILE_NORMAL_ARMOR = 5.f;
+    public static final float DESTRUCTIBLE_TILE_LOW_ARMOR = 1.f;
+
     private static final float CHANCE_FOR_TILE_DESTRUCTION = 0.1f;  // 10% chance for another tile to be destroyed
 
     public static void doCollateralTileDamage(int x, int y) {

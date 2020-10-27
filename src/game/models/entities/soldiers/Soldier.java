@@ -88,7 +88,7 @@ public abstract class Soldier extends MovableEntity {
             animation.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
         }
 
-        //collisionModel.draw(game.graphics);
+        //collisionModel.draw(graphics);
     }
 
     @Override
@@ -132,12 +132,6 @@ public abstract class Soldier extends MovableEntity {
         if (!(entity instanceof Aircraft)) {
             blockMovement();
         }
-    }
-
-    @Override
-    public void setPosition(Vector2f position) {
-        super.setPosition(position);
-        collisionModel.update(base_image.getRotation());
     }
 
     @Override

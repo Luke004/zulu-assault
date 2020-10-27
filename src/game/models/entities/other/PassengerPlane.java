@@ -34,7 +34,6 @@ public class PassengerPlane extends Entity {
     @Override
     public void init() {
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
-        collisionModel.update(0);
         super.init();
     }
 

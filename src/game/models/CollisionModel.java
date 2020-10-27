@@ -5,10 +5,10 @@ import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Vector2f;
 
 public class CollisionModel {
+
     private Vector2f position;
     private Point[] corners;
     public Point[] collision_points;
-
 
     public CollisionModel(Vector2f position, int model_width, int model_height) {
         this.position = position;
@@ -22,6 +22,7 @@ public class CollisionModel {
         collision_points[1] = new Point(0, 0);
         collision_points[2] = new Point(0, 0);
         collision_points[3] = new Point(0, 0);
+        update(0);  // init once with 0 rotation
     }
 
     public void update(float rotation_angle) {

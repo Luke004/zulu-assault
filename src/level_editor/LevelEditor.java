@@ -303,13 +303,12 @@ public class LevelEditor extends BasicGameState {
         if (isMouseInEditor) {
             if (button == Input.MOUSE_LEFT_BUTTON) {
                 if (selectedElement != null) {
-                    Element copy = MapElements.getCopyByName(selectedElement.getClass().getSimpleName(),
+                    Element copy = MapElements.getCopyByName(new Vector2f(selectedElement.getPosition().x + mapX,
+                                    selectedElement.getPosition().y + mapY),
+                            selectedElement.getClass().getSimpleName(),
                             EntitySelector.isHostile, EntitySelector.isDrivable);
                     if (copy != null) {
                         MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
-                        // deep copy the selected element
-                        copy.setPosition(new Vector2f(selectedElement.getPosition().x + mapX,
-                                selectedElement.getPosition().y + mapY));
                         // add rotation and mandatory
                         if (selectedElement instanceof Entity) {
                             Entity entityCopy = (Entity) copy;

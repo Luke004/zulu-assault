@@ -24,7 +24,6 @@ public abstract class InteractionCircle extends Element {
         int height = base_image.getHeight() / 3;
         Vector2f centeredPosition = new Vector2f(position.x + width / 2.f, position.y + height / 2.f);
         collisionModel = new CollisionModel(centeredPosition, width, height);
-        collisionModel.update(0);
     }
 
     @Override

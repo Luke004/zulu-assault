@@ -40,7 +40,6 @@ public abstract class Tank extends MovableEntity {
         TURRET_HEIGHT_HALF = turret.getHeight() / 2;
         destructionAnimation = new DestructionAnimation();
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
-        collisionModel.update(getRotation());   // init it by updating it once, needed for inner class "MyLine"
         super.init();
     }
 

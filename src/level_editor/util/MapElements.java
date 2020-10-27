@@ -109,8 +109,7 @@ public class MapElements {
         };
     }
 
-    public static Element getCopyByName(String name, boolean isHostile, boolean isDrivable) {
-        Vector2f pos = new Vector2f(0, 0);
+    public static Element getCopyByName(Vector2f pos, String name, boolean isHostile, boolean isDrivable) {
         switch (name) {
             case "SilverWrenchItem":
                 return new SilverWrenchItem(pos);
@@ -174,8 +173,16 @@ public class MapElements {
         return null;
     }
 
+    public static Element getCopyByName(Vector2f pos, String name) {
+        return getCopyByName(pos, name, false, false);
+    }
+
     public static Element getCopyByName(String name) {
         return getCopyByName(name, false, false);
+    }
+
+    public static Element getCopyByName(String name, boolean isHostile, boolean isDrivable) {
+        return getCopyByName(new Vector2f(0, 0), name, isHostile, isDrivable);
     }
 
 }

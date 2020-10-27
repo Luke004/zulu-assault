@@ -143,7 +143,6 @@ public class KeyInputHandler {
                         tank.cancelDeceleration();
                     }
                 } else if (KEY_UP_RELEASED) {
-                    System.out.println("key up released");
                     tank.startDeceleration(MovableEntity.Direction.FORWARD);
                     KEY_UP_RELEASED = false;
                     KEY_UP_PRESSED = false;
@@ -267,7 +266,7 @@ public class KeyInputHandler {
 
                 break;
 
-            case PLANE:     // game.player is in a plane
+            case PLANE:     // player is in a plane
                 Aircraft aircraft = (Aircraft) playerEntity;
 
                 if (input.isKeyDown(Input.KEY_UP)) {
@@ -290,7 +289,7 @@ public class KeyInputHandler {
                 }
                 break;
 
-            case HELICOPTER:     // game.player is in a helicopter
+            case HELICOPTER:     // player is in a helicopter
                 AttackHelicopter attackHelicopter = (AttackHelicopter) playerEntity;
 
                 // forward movement

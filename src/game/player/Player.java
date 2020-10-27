@@ -1,8 +1,10 @@
 package game.player;
 
+import game.logic.CollisionHandler;
 import game.logic.level_listeners.ChangeVehicleListener;
 import game.logic.level_listeners.ItemChangeListener;
 import game.graphics.hud.HUD;
+import game.models.entities.Entity;
 import game.models.entities.MovableEntity;
 import game.models.entities.aircraft.AttackHelicopter;
 import game.models.entities.aircraft.Aircraft;
@@ -36,13 +38,15 @@ public class Player {
         current_entity.showAccessibleAnimation(false);
         this.current_entity = current_entity;
         if (this.changeVehicleListener != null) this.changeVehicleListener.onPlayerChangeVehicle();
-        base_soldier = new PlayerSoldier(new Vector2f(0, 0), false);
+        base_soldier = new PlayerSoldier(new Vector2f(current_entity.getPosition().x, current_entity.getPosition().y), false);
     }
 
     public void update(GameContainer gameContainer, int deltaTime) {
         current_entity.update(gameContainer, deltaTime);
 
-        // check for map boundaries, don't let the game.player cross them
+        base_soldier.update(gameContainer, deltaTime);
+
+        // check for map boundaries, don't let the player cross them
         if (current_entity.getPosition().x <= 0) {
             current_entity.getPosition().x = 0;
         } else if (current_entity.getPosition().x >= LEVEL_WIDTH_PIXELS) {
@@ -66,20 +70,34 @@ public class Player {
     /*
     soldier goes back in a once used tank or plane
      */
-    public void setEntity(MovableEntity entity, EnterAction action) {
+    public void setEntity(MovableEntity vehicle, EnterAction action) {
         switch (action) {
             case ENTERING:
-                this.current_entity = entity;
+                this.current_entity = vehicle;
                 break;
             case LEAVING:
-                Vector2f spawn_position = entity.calculateSoldierSpawnPosition();
-                base_soldier.setPosition(spawn_position);
-                // set soldiers rotation so he's facing towards the tank at its back
-                base_soldier.setRotation(entity.getRotation());
+                setSoldierSpawnPos(base_soldier, vehicle);
                 this.current_entity = base_soldier;
                 break;
         }
         this.changeVehicleListener.onPlayerChangeVehicle();
+    }
+
+    private static void setSoldierSpawnPos(Soldier baseSoldier, Entity vehicle) {
+        Image baseImage = vehicle.getBaseImage();
+        // set player 10 pixels behind the tank
+        final float DISTANCE = 10;
+        final float SPAWN_X = 0;
+        final float SPAWN_Y = baseImage.getHeight() / 2.f + DISTANCE;
+
+        float xVal = (float) (Math.cos(((baseImage.getRotation()) * Math.PI) / 180) * SPAWN_X
+                + -Math.sin(((baseImage.getRotation()) * Math.PI) / 180) * SPAWN_Y);
+        float yVal = (float) (Math.sin(((baseImage.getRotation()) * Math.PI) / 180) * SPAWN_X
+                + Math.cos(((baseImage.getRotation()) * Math.PI) / 180) * SPAWN_Y);
+        baseSoldier.getPosition().x = xVal + vehicle.getPosition().x;
+        baseSoldier.getPosition().y = yVal + vehicle.getPosition().y;
+        // set soldiers rotation so he's facing towards the tank at its back
+        baseSoldier.setRotation(vehicle.getRotation());
     }
 
     public MovableEntity getEntity() {

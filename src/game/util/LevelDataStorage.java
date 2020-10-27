@@ -116,8 +116,7 @@ public class LevelDataStorage implements Serializable {
     public List<Element> getAllElements() {
         List<Element> elements = new LinkedList<>();
         for (ElementData elementData : allElements) {
-            Element copy = MapElements.getCopyByName(elementData.name);
-            copy.setPosition(new Vector2f(elementData.xPos, elementData.yPos));
+            Element copy = MapElements.getCopyByName(new Vector2f(elementData.xPos, elementData.yPos), elementData.name);
             elements.add(copy);
         }
         return elements;
@@ -126,11 +125,11 @@ public class LevelDataStorage implements Serializable {
     public List<Entity> getAllEntities() {
         List<Entity> entities = new LinkedList<>();
         for (EntityData entityData : allEntities) {
-            Element copy = MapElements.getCopyByName(entityData.name, entityData.isHostile, entityData.isDrivable);
+            Element copy = MapElements.getCopyByName(new Vector2f(entityData.xPos, entityData.yPos), entityData.name,
+                    entityData.isHostile, entityData.isDrivable);
             if (copy == null) continue;
             if (copy instanceof Entity) {
                 Entity casted_copy = (Entity) copy;
-                casted_copy.setPosition(new Vector2f(entityData.xPos, entityData.yPos));
                 casted_copy.setRotation(entityData.rotation);
                 casted_copy.isMandatory = entityData.isMandatory;
                 entities.add(casted_copy);

@@ -32,7 +32,6 @@ public abstract class Item extends Element {
         int height = IMAGE_WIDTH_AND_HEIGHT / 2;
         Vector2f centeredPosition = new Vector2f(position.x + width / 2.f, position.y + height / 2.f);
         collisionModel = new CollisionModel(centeredPosition, width, height);
-        collisionModel.update(0);
     }
 
     @Override
