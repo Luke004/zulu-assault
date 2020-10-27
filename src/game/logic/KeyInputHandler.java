@@ -13,8 +13,8 @@ import game.models.entities.soldiers.Soldier;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
-import static game.levels.AbstractLevel.all_entities;
-import static game.levels.AbstractLevel.drivable_entities;
+import static game.levels.Level.all_entities;
+import static game.levels.Level.drivable_entities;
 
 public class KeyInputHandler {
     private Player player;

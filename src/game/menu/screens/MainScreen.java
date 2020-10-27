@@ -105,7 +105,7 @@ public class MainScreen extends AbstractMenuScreen {
             case 0: // NEW
                 // START NEW GAME
                 // init a new game starting with level 1
-                LevelHandler.startNewGame(ZuluAssault.LEVEL_9, basicGameState);
+                LevelHandler.startNewGame("map_1", basicGameState);
                 break;  // TODO: LOAD AND SAVE
             case 1: // LOAD
                 MenuSounds.ERROR_SOUND.play(1.f, UserSettings.soundVolume);

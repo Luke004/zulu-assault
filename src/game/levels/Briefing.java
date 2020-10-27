@@ -3,6 +3,7 @@ package game.levels;
 import game.audio.CombatBackgroundMusic;
 import game.audio.MenuSounds;
 import game.graphics.fonts.FontManager;
+import level_editor.util.LevelDataStorage;
 import main.ZuluAssault;
 import settings.UserSettings;
 import org.newdawn.slick.Graphics;
@@ -25,11 +26,10 @@ public class Briefing extends BasicGameState {
     private StateBasedGame stateBasedGame;
 
     private Thread loadMusicThread;
-
-    private int nextLevelID;
+    private int musicIdx;
 
     private List<String> briefing_message;
-    private String briefing_header, briefing_mission_header, confirm_message, mission_name;
+    private String briefing_header, briefing_mission_header, confirm_message, mission_title;
     private static TrueTypeFont text_drawer;
     private static boolean has_initialized_once;
     private static Image briefing_screen_image;
@@ -43,12 +43,88 @@ public class Briefing extends BasicGameState {
     }
 
     @Override
-    public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+    public void enter(GameContainer gc, StateBasedGame sbg) {
         briefing_music_intro.play(1.f, UserSettings.musicVolume);
-        gameContainer.setMouseGrabbed(true);    // hide the mouse cursor
-        this.nextLevelID = ZuluAssault.nextLevelID;
-        AbstractLevel level = (AbstractLevel) stateBasedGame.getState(nextLevelID);
-        this.mission_name = "Mission " + nextLevelID;
+        gc.setMouseGrabbed(true);    // hide the mouse cursor
+
+
+        // try to init the level we are about to play
+        //sbg.getState(ZuluAssault.IN_LEVEL).init(gc, sbg);
+        // get access to the level we just initialized
+        //Level level = (Level) sbg.getState(ZuluAssault.IN_LEVEL);
+
+        boolean isStandardLevel = Level.isStandardLevel(ZuluAssault.nextLevelName);
+
+        LevelDataStorage lds = LevelDataStorage.loadLevel(ZuluAssault.nextLevelName, isStandardLevel);
+
+        if (lds != null) {
+            this.musicIdx = lds.musicIdx;
+            String s_briefingMessage = lds.briefing_message;
+            this.mission_title = lds.mission_title;
+            this.briefing_message = new ArrayList<>();
+
+            if (s_briefingMessage.isEmpty()) {
+                this.briefing_message.add("The creator did not create a briefing message. Good luck!");
+            } else {
+                String[] split_strings = s_briefingMessage.split("\\s+");
+                StringBuilder builder = new StringBuilder();
+
+                for (String next_part : split_strings) {
+                    builder.append(next_part).append(" ");
+                    if (text_drawer.getWidth(builder.toString()) > gc.getWidth() - 50) {
+                        this.briefing_message.add(builder.toString());
+                        builder.setLength(0);
+                    }
+                }
+                if (builder.length() > 0) {
+                    this.briefing_message.add(builder.toString());
+                }
+            }
+            loadMusicThread = new LoadMusicThread();
+            loadMusicThread.start();
+
+            String s_missionName = "Mission ";
+            if (isStandardLevel) {
+                s_missionName += ZuluAssault.nextLevelName.substring(ZuluAssault.nextLevelName.indexOf("_") + 1);
+            } else {
+                s_missionName += "";
+            }
+            this.briefing_mission_header = s_missionName + " - " + this.mission_title;
+        }
+
+
+    }
+
+        /*
+        levelDataStorage = LevelDataStorage.loadLevel(ZuluAssault.nextLevelName);
+        if (levelDataStorage != null) {
+            this.mission_title = levelDataStorage.levelName;
+            this.briefing_message = new ArrayList<>();
+            if (levelDataStorage.briefing_message.isEmpty()) {
+                this.briefing_message.add("The creator did not create a briefing message. Good luck!");
+            } else {
+                String[] split_strings = levelDataStorage.briefing_message.split("\\s+");
+                StringBuilder builder = new StringBuilder();
+
+                for (String next_part : split_strings) {
+                    builder.append(next_part).append(" ");
+                    if (text_drawer.getWidth(builder.toString()) > gc.getWidth() - 50) {
+                        this.briefing_message.add(builder.toString());
+                        builder.setLength(0);
+                    }
+                }
+                if (builder.length() > 0) {
+                    this.briefing_message.add(builder.toString());
+                }
+            }
+
+        }
+
+         */
+
+/*
+        Level level = (Level) stateBasedGame.getState(nextLevelString);
+        this.mission_name = "Mission " + nextLevelString;
         String briefing_message = level.getBriefingMessage();
         this.briefing_message = new ArrayList<>();
         if (briefing_message == null || briefing_message.isEmpty()) {
@@ -69,11 +145,7 @@ public class Briefing extends BasicGameState {
             }
         }
 
-        loadMusicThread = new LoadMusicThread();
-        loadMusicThread.start();
-
-        this.briefing_mission_header = this.mission_name + " - " + level.getMissionTitle();
-    }
+ */
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
@@ -127,8 +199,8 @@ public class Briefing extends BasicGameState {
 
         text_drawer.drawString(
                 TEXT_MARGIN,
-                gameContainer.getHeight() - text_drawer.getHeight(mission_name) - TEXT_MARGIN,
-                mission_name);
+                gameContainer.getHeight() - text_drawer.getHeight(mission_title) - TEXT_MARGIN,
+                mission_title);
 
         text_drawer.drawString(
                 gameContainer.getWidth() / 2.f - text_drawer.getWidth(confirm_message) / 2.f,
@@ -141,9 +213,8 @@ public class Briefing extends BasicGameState {
         if (loadMusicThread.isAlive()) return;
         MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
         try {
-            stateBasedGame.getState(nextLevelID).init(gameContainer, stateBasedGame);
-            stateBasedGame.enterState(nextLevelID,
-                    new FadeOutTransition(), new FadeInTransition());
+            stateBasedGame.getState(ZuluAssault.IN_LEVEL).init(gameContainer, stateBasedGame);
+            stateBasedGame.enterState(ZuluAssault.IN_LEVEL, new FadeOutTransition(), new FadeInTransition());
         } catch (SlickException e) {
             e.printStackTrace();
         }
@@ -156,11 +227,11 @@ public class Briefing extends BasicGameState {
         ZuluAssault.prevState = this;
     }
 
-    class LoadMusicThread extends Thread {
-        @Override
-        public void run() {
-            CombatBackgroundMusic.load(((AbstractLevel) stateBasedGame.getState(nextLevelID)).getCombatMusicIdx());
-        }
+class LoadMusicThread extends Thread {
+    @Override
+    public void run() {
+        CombatBackgroundMusic.load(musicIdx);
     }
+}
 
 }

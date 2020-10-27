@@ -1,6 +1,6 @@
 package game.models.entities;
 
-import game.levels.AbstractLevel;
+import game.levels.Level;
 import game.util.WayPointManager;
 import game.logic.level_listeners.EntityDeleteListener;
 import game.models.Element;
@@ -64,7 +64,7 @@ public abstract class Entity extends Element {
         }
     }
 
-    public void init(){
+    public void init() {
         health_bar_offset = new Vector2f((health_bar_image.getWidth() + 12) / 2.f, base_image.getHeight() / 2.f + 15);
         setHealthBarPosition(position);
     }
@@ -237,11 +237,11 @@ public abstract class Entity extends Element {
         this.isMandatory = true;
     }
 
-    public void addListeners(AbstractLevel abstractLevel) {
-        this.level_delete_listener = abstractLevel;
+    public void addListeners(Level level) {
+        this.level_delete_listener = level;
         for (Weapon weapon : weapons) {
             if (weapon instanceof iGroundTileDamageWeapon) {
-                ((iGroundTileDamageWeapon) weapon).addListener(abstractLevel);
+                ((iGroundTileDamageWeapon) weapon).addListener(level);
             }
         }
     }

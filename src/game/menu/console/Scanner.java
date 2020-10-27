@@ -29,28 +29,22 @@ public class Scanner {
                     Matcher matcher = pattern.matcher(level);
 
                     if (matcher.matches()) {
-                        int levelID = Integer.parseInt(matcher.group(1));
-                        if (ZuluAssault.existsLevel(levelID)) {
-                            LevelHandler.openSingleLevel(levelID);
+                        String s_level = matcher.group(1);
+                        if (ZuluAssault.existsLevel(s_level)) {
+                            LevelHandler.openSingleLevel(s_level);
                             closeConsoleWithDelay();
-                            return "Opening level " + levelID + " ...";
+                            return "Opening level " + s_level + " ...";
                         }
-                        return "Level " + levelID + " doesn't exist yet.";
+                        return "Level " + s_level + " doesn't exist yet.";
                     }
                 } else {    // e.g. 'open level 1'
-                    String s_levelID = input_split_by_whitespace[2];
-                    int levelID;
-                    try {
-                        levelID = Integer.parseInt(s_levelID);
-                    } catch (Exception ignored) {
-                        return "Level " + s_levelID + " doesn't exist.";
-                    }
-                    if (ZuluAssault.existsLevel(levelID)) {
-                        LevelHandler.openSingleLevel(levelID);
+                    String s_level = input_split_by_whitespace[2];
+                    if (ZuluAssault.existsLevel(s_level)) {
+                        LevelHandler.openSingleLevel(s_level);
                         closeConsoleWithDelay();
-                        return "Opening level " + levelID + " ...";
+                        return "Opening level " + s_level + " ...";
                     }
-                    return "Level " + levelID + " doesn't exist yet.";
+                    return "Level " + s_level + " doesn't exist yet. Maybe create it using the editor x)";
                 }
                 return "Level doesn't exist.";
             case "show":

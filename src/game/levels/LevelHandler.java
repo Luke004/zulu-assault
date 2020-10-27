@@ -12,17 +12,18 @@ public class LevelHandler {
 
     private static StateBasedGame stateBasedGame;
 
-    private static boolean playerIsInPlayThrough;
+    private static boolean playerIsInPlayThrough, hasPreviousPlayThrough;
 
-    public static void startNewGame(int levelID, BasicGameState bgs) {
+    public static void startNewGame(String s_level, BasicGameState bgs) {
         playerIsInPlayThrough = true;
-        AbstractLevel.resetPlayerStats();
+        if (hasPreviousPlayThrough) Level.prepareNewPlayThrough();
         TimeManager.reset();
-        startNextLevel(levelID, bgs);
+        startNextLevel(s_level, bgs);
+        hasPreviousPlayThrough = true;
     }
 
-    public static void startNextLevel(int levelID, BasicGameState bgs) {
-        ZuluAssault.nextLevelID = levelID;
+    public static void startNextLevel(String s_level, BasicGameState bgs) {
+        ZuluAssault.nextLevelName = s_level;
         stateBasedGame.enterState(ZuluAssault.BRIEFING, new FadeOutTransition(), new FadeInTransition());
         ZuluAssault.prevState = bgs;
     }
@@ -34,9 +35,9 @@ public class LevelHandler {
         );
     }
 
-    public static void openSingleLevel(int levelID) {
+    public static void openSingleLevel(String s_level) {
         playerIsInPlayThrough = false;
-        ZuluAssault.nextLevelID = levelID;
+        ZuluAssault.nextLevelName = s_level;
         stateBasedGame.enterState(ZuluAssault.BRIEFING, new FadeOutTransition(), new FadeInTransition());
     }
 

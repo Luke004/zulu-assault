@@ -33,7 +33,7 @@ import java.util.List;
 public class LevelEditor extends BasicGameState {
 
     // for choosing the map
-    private static final File custom_maps_folder = new File("custom_maps/");
+    public static final String CUSTOM_MAPS_FOLDER = "custom_maps/";
 
     private String mapName;
 
@@ -82,7 +82,7 @@ public class LevelEditor extends BasicGameState {
         // prompt the user to select a map file
         JFileChooser fc = new JFileChooser();
         fc.setDialogTitle("Select Level File");
-        fc.setCurrentDirectory(custom_maps_folder);
+        fc.setCurrentDirectory(new File(CUSTOM_MAPS_FOLDER));
         fc.addChoosableFileFilter(new FileFilter() {
             @Override
             public boolean accept(File f) {
@@ -101,7 +101,7 @@ public class LevelEditor extends BasicGameState {
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fc.getSelectedFile();
             this.mapName = selectedFile.getName();
-            TiledMap map = new TiledMap(custom_maps_folder.getPath() + "/" + mapName, TileMapData.TILESETS_LOCATION);
+            TiledMap map = new TiledMap(CUSTOM_MAPS_FOLDER + mapName, TileMapData.TILESETS_LOCATION);
             camera = new Camera(gc, map);
             mapWidth = map.getWidth() * map.getTileWidth();
             mapHeight = map.getHeight() * map.getTileHeight();
@@ -109,7 +109,7 @@ public class LevelEditor extends BasicGameState {
             mapY = mapHeight / 2.f;
 
             // attempt to load already created map data
-            LevelDataStorage levelDataStorage = LevelDataStorage.loadLevel(getSimpleMapName());
+            LevelDataStorage levelDataStorage = LevelDataStorage.loadLevel(getSimpleMapName(), false);
             if (levelDataStorage != null) {
                 this.elements.addAll(levelDataStorage.getAllElements());
                 this.elements.addAll(levelDataStorage.getAllEntities());

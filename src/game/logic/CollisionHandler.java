@@ -19,9 +19,9 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import game.player.Player;
 
+import static game.levels.Level.*;
 import static game.util.TileMapUtil.doCollateralTileDamage;
 import static game.util.TileMapUtil.generateKey;
-import static game.levels.AbstractLevel.*;
 import static settings.TileMapData.*;
 
 import java.util.*;

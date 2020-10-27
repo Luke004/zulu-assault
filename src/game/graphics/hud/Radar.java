@@ -11,7 +11,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import game.player.Player;
 
-import static game.levels.AbstractLevel.*;
+import static game.levels.Level.*;
 
 public class Radar {
 

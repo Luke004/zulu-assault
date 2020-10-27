@@ -113,7 +113,7 @@ public class InGameScreen extends AbstractMenuScreen {
                         new FadeOutTransition(), new FadeInTransition());
                 break;
             case 1: // START NEW GAME
-                LevelHandler.startNewGame(ZuluAssault.LEVEL_1, gameState);
+                LevelHandler.startNewGame("map_1", gameState);
                 break;
             case 2: // LOAD
             case 3: // SAVE

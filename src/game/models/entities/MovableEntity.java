@@ -14,8 +14,9 @@ import game.player.Player;
 
 import java.util.Iterator;
 
-import static game.levels.AbstractLevel.all_entities;
-import static game.levels.AbstractLevel.all_hostile_entities;
+import static game.levels.Level.all_entities;
+import static game.levels.Level.all_hostile_entities;
+
 
 public abstract class MovableEntity extends Entity {
 

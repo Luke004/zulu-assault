@@ -1,3 +1,4 @@
+/*
 package game.levels;
 
 import game.audio.CombatBackgroundMusic;
@@ -167,184 +168,184 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
         keyInputHandler.setPlayer(player);
         combatBackgroundMusic.start();
 
-        /*
+
         if (ZuluAssault.prevState.getID() == ZuluAssault.MAIN_MENU) {
             // game.player is resuming the level
         }
-         */
+
     }
 
-    @Override
-    public void leave(GameContainer var1, StateBasedGame var2) {
+@Override
+public void leave(GameContainer var1,StateBasedGame var2){
         TileMapData.reset();
         combatBackgroundMusic.stop();
-        ZuluAssault.prevState = this;
-    }
-
-    @Override
-    public void update(GameContainer gc, StateBasedGame stateBasedGame, int deltaTime) {
-        if (hasWonTheLevel) {
-            // notify TimeManager that the level is finished
-            TimeManager.finishLevel();
-            // enter debriefing
-            stateBasedGame.enterState(ZuluAssault.DEBRIEFING,
-                    new FadeOutTransition(), new FadeInTransition());
-            return;
-        }
-        player.update(gc, deltaTime);
-        for (int idx = 0; idx < all_entities.size(); ++idx) {
-            all_entities.get(idx).update(gc, deltaTime);
+        ZuluAssault.prevState=this;
         }
 
-        /*
+@Override
+public void update(GameContainer gc,StateBasedGame stateBasedGame,int deltaTime){
+        if(hasWonTheLevel){
+        // notify TimeManager that the level is finished
+        TimeManager.finishLevel();
+        // enter debriefing
+        stateBasedGame.enterState(ZuluAssault.DEBRIEFING,
+        new FadeOutTransition(),new FadeInTransition());
+        return;
+        }
+        player.update(gc,deltaTime);
+        for(int idx=0;idx<all_entities.size();++idx){
+        all_entities.get(idx).update(gc,deltaTime);
+        }
+
+
         for (int idx = 0; idx < static_enemy_entities.size(); ++idx) {
             static_enemy_entities.get(idx).update(gc, deltaTime);
         }
 
-         */
 
-        for (InteractionCircle health_circle : health_circles) {
-            health_circle.update(gc, deltaTime);
+
+        for(InteractionCircle health_circle:health_circles){
+        health_circle.update(gc,deltaTime);
         }
-        for (InteractionCircle teleport_circle : teleport_circles) {
-            teleport_circle.update(gc, deltaTime);
+        for(InteractionCircle teleport_circle:teleport_circles){
+        teleport_circle.update(gc,deltaTime);
         }
-        for (Item item : items) {
-            item.update(gc, deltaTime);
+        for(Item item:items){
+        item.update(gc,deltaTime);
         }
-        keyInputHandler.update(gc, deltaTime);
+        keyInputHandler.update(gc,deltaTime);
         collisionHandler.update(deltaTime);
         hud.update(deltaTime);
         radar.update(deltaTime);
         screenDrawer.update(deltaTime);
         bigExplosionAnimation.update(deltaTime);
-        camera.centerOn(player.getEntity().getPosition().x, player.getEntity().getPosition().y);
+        camera.centerOn(player.getEntity().getPosition().x,player.getEntity().getPosition().y);
         camera.update(deltaTime);
         TimeManager.update(deltaTime);
 
-        if (gc.getInput().isKeyPressed(Input.KEY_ESCAPE)) {  // paused the game
-            Menu.goToMenu(Menu.STATE_IN_GAME_MENU);
-            stateBasedGame.enterState(ZuluAssault.MAIN_MENU,
-                    new FadeOutTransition(), new FadeInTransition());
-            ZuluAssault.prevState = this;
+        if(gc.getInput().isKeyPressed(Input.KEY_ESCAPE)){  // paused the game
+        Menu.goToMenu(Menu.STATE_IN_GAME_MENU);
+        stateBasedGame.enterState(ZuluAssault.MAIN_MENU,
+        new FadeOutTransition(),new FadeInTransition());
+        ZuluAssault.prevState=this;
         }
 
         combatBackgroundMusic.update();
-        hasWonTheLevel = checkWon();
-    }
+        hasWonTheLevel=checkWon();
+        }
 
-    // TODO: 25.10.2020 add windmills to check won
-    private boolean checkWon() {
-        for (Entity entity : all_entities) {
-            if (entity.isMandatory) return false;
+// TODO: 25.10.2020 add windmills to check won
+private boolean checkWon(){
+        for(Entity entity:all_entities){
+        if(entity.isMandatory)return false;
         }
         return true;
-    }
+        }
 
-    @Override
-    public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) {
+@Override
+public void render(GameContainer gameContainer,StateBasedGame stateBasedGame,Graphics graphics){
         camera.drawMap();
         camera.translateGraphics();
-        for (InteractionCircle health_circle : health_circles) {
-            health_circle.draw(graphics);
+        for(InteractionCircle health_circle:health_circles){
+        health_circle.draw(graphics);
         }
-        for (InteractionCircle teleport_circle : teleport_circles) {
-            teleport_circle.draw(graphics);
+        for(InteractionCircle teleport_circle:teleport_circles){
+        teleport_circle.draw(graphics);
         }
-        for (Item item : items) {
-            item.draw(graphics);
+        for(Item item:items){
+        item.draw(graphics);
         }
 
         screenDrawer.draw();    // draws dead bodies and score values
 
-        /* --------------------- draw all entities --------------------- */
+        /* --------------------- draw all entities ---------------------
 
-        for (MovableEntity drivableEntity : drivable_entities) {
-            drivableEntity.draw(graphics);
+        for(MovableEntity drivableEntity:drivable_entities){
+        drivableEntity.draw(graphics);
         }
 
-        if (!(player.getEntity() instanceof Aircraft)) player.getEntity().draw(graphics);
+        if(!(player.getEntity()instanceof Aircraft))player.getEntity().draw(graphics);
 
         /*
         for (StaticEntity staticEnemy : static_enemy_entities) {
             staticEnemy.draw(game.graphics);
         }
-         */
 
-        for (Entity renderInstance : renderList) {
-            renderInstance.draw(graphics);
+
+        for(Entity renderInstance:renderList){
+        renderInstance.draw(graphics);
         }
 
         bigExplosionAnimation.draw();
         collisionHandler.draw();
 
-        if (player.getEntity() instanceof Aircraft) player.getEntity().draw(graphics);
+        if(player.getEntity()instanceof Aircraft)player.getEntity().draw(graphics);
 
         // un-translate game.graphics to draw the HUD-items
         camera.untranslateGraphics();
         hud.draw(gameContainer);
         radar.draw(graphics);
-    }
-
-    @Override
-    public void notifyForEntityDestruction(Entity entity) {
-        if (entity.isHostile) {
-            all_hostile_entities.remove(entity);
-            player.addPoints(entity.getScoreValue());  // add points
-            screenDrawer.drawScoreValue(5, entity);    // draw the score on the screen
-        } else {
-            if (entity instanceof MovableEntity) {
-                if (entity == player.getEntity()) {
-                    // THE PLAYER DIED
-                    LevelHandler.gameOver(this);
-                } else {
-                    all_friendly_entities.remove(entity);
-                    if (((MovableEntity) entity).isDrivable) {
-                        drivable_entities.remove(entity);
-                    }
-                }
-            }
         }
-        if (entity instanceof Robot) camera.shake();
-        if (entity instanceof Soldier) screenDrawer.drawDeadSoldierBody(10, entity);
-        else {
-            this.damageGroundTile(entity.getPosition().x, entity.getPosition().y);
-            bigExplosionAnimation.playTenTimes(entity.getPosition().x, entity.getPosition().y, 0);
-            explosion_sound.play(1.f, UserSettings.soundVolume);
+
+@Override
+public void notifyForEntityDestruction(Entity entity){
+        if(entity.isHostile){
+        all_hostile_entities.remove(entity);
+        player.addPoints(entity.getScoreValue());  // add points
+        screenDrawer.drawScoreValue(5,entity);    // draw the score on the screen
+        }else{
+        if(entity instanceof MovableEntity){
+        if(entity==player.getEntity()){
+        // THE PLAYER DIED
+        LevelHandler.gameOver(this);
+        }else{
+        all_friendly_entities.remove(entity);
+        if(((MovableEntity)entity).isDrivable){
+        drivable_entities.remove(entity);
+        }
+        }
+        }
+        }
+        if(entity instanceof Robot)camera.shake();
+        if(entity instanceof Soldier)screenDrawer.drawDeadSoldierBody(10,entity);
+        else{
+        this.damageGroundTile(entity.getPosition().x,entity.getPosition().y);
+        bigExplosionAnimation.playTenTimes(entity.getPosition().x,entity.getPosition().y,0);
+        explosion_sound.play(1.f,UserSettings.soundVolume);
         }
 
         // maybe drop an item
-        Item drop_item = randomItemDropper.dropItem(entity.getPosition());
-        if (drop_item != null) {
-            items.add(drop_item);
+        Item drop_item=randomItemDropper.dropItem(entity.getPosition());
+        if(drop_item!=null){
+        items.add(drop_item);
         }
         // remove entity from other relevant lists
         renderList.remove(entity);
         all_entities.remove(entity);
-    }
+        }
 
-    @Override
-    public void damageGroundTile(float xPos, float yPos) {
+@Override
+public void damageGroundTile(float xPos,float yPos){
         // damage a ground tile
-        int mapX = (int) (xPos / TILE_WIDTH);
-        int mapY = (int) (yPos / TILE_HEIGHT);
-        int tileID = map.getTileId(mapX, mapY, LANDSCAPE_TILES_LAYER_IDX);
+        int mapX=(int)(xPos/TILE_WIDTH);
+        int mapY=(int)(yPos/TILE_HEIGHT);
+        int tileID=map.getTileId(mapX,mapY,LANDSCAPE_TILES_LAYER_IDX);
 
-        int replacement_tile_id = TileMapData.getReplacementTileID(tileID);
-        if (replacement_tile_id != -1) {
-            map.setTileId(mapX, mapY, DESTRUCTION_TILES_LAYER_IDX, replacement_tile_id);
+        int replacement_tile_id=TileMapData.getReplacementTileID(tileID);
+        if(replacement_tile_id!=-1){
+        map.setTileId(mapX,mapY,DESTRUCTION_TILES_LAYER_IDX,replacement_tile_id);
         }
         // maybe damage other ground tiles that are around, too
-        doCollateralTileDamage(mapX, mapY);
-    }
+        doCollateralTileDamage(mapX,mapY);
+        }
 
-    @Override
-    public void keyReleased(int key, char c) {
+@Override
+public void keyReleased(int key,char c){
         keyInputHandler.onKeyRelease(key);
-    }
+        }
 
-    protected static void resetLevel() {
-        if (player.getEntity() == null) return;
+private void resetLevel(){
+        if(player.getEntity()==null)return;
         all_hostile_entities.clear();
         all_friendly_entities.clear();
         drivable_entities.clear();
@@ -354,25 +355,26 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
         teleport_circles.clear();
         items.clear();
         Radar.hideRadar();
-        hasWonTheLevel = false;
-    }
+        hasWonTheLevel=false;
+        }
 
-    public static void resetPlayerStats() {
+public static void resetPlayerStats(){
         player.reset();
         hud.reset();
-    }
+        }
 
-    public String getBriefingMessage() {
+public String getBriefingMessage(){
         return briefing_message;
-    }
+        }
 
-    public String getDebriefingMessage() {
+public String getDebriefingMessage(){
         return debriefing_message;
-    }
+        }
 
-    public String getMissionTitle() {
+public String getMissionTitle(){
         return mission_title;
-    }
+        }
 
-    public abstract int getCombatMusicIdx();
-}
+public abstract int getCombatMusicIdx();
+        }
+      */

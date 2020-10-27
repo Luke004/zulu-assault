@@ -13,6 +13,11 @@ import java.util.List;
 public class LevelDataStorage implements Serializable {
 
     private static final String CUSTOM_MAPS_DATA_SAVE_FOLDER = "saves/custom_maps_data/";
+    private static final String STANDARD_MAPS_DATA_SAVE_FOLDER = "assets/maps/";
+
+    public String levelName;
+    public String mission_title, briefing_message, debriefing_message;
+    public int musicIdx;
 
     public List<ElementData> allElements;
     public List<EntityData> allEntities;
@@ -35,6 +40,7 @@ public class LevelDataStorage implements Serializable {
     }
 
     public void saveLevel(String name, List<Element> elements) {
+        this.levelName = name;
         for (Element element : elements) {
             if (element instanceof Entity) {
                 Entity entity = (Entity) element;
@@ -74,18 +80,25 @@ public class LevelDataStorage implements Serializable {
 
     }
 
-    public static LevelDataStorage loadLevel(String name) {
+    public static LevelDataStorage loadLevel(String name, boolean isStandardLevel) {
         try {
             FileInputStream fileInputStream
-                    = new FileInputStream(CUSTOM_MAPS_DATA_SAVE_FOLDER + name + ".data");
+                    = new FileInputStream((isStandardLevel ? STANDARD_MAPS_DATA_SAVE_FOLDER : CUSTOM_MAPS_DATA_SAVE_FOLDER) + name + ".data");
             ObjectInputStream objectInputStream
                     = new ObjectInputStream(fileInputStream);
             LevelDataStorage lds = (LevelDataStorage) objectInputStream.readObject();
             objectInputStream.close();
+
+            // TODO: add values
+            lds.mission_title = "";
+            lds.briefing_message = "Default briefing message";
+            lds.debriefing_message = "Default debriefing message";
+            lds.musicIdx = 0;
+
             return lds;
         } catch (IOException | ClassNotFoundException i) {
-            return null;
             //i.printStackTrace();
+            return null;
         }
     }
 
@@ -99,8 +112,8 @@ public class LevelDataStorage implements Serializable {
         return elements;
     }
 
-    public List<Element> getAllEntities() {
-        List<Element> entities = new LinkedList<>();
+    public List<Entity> getAllEntities() {
+        List<Entity> entities = new LinkedList<>();
         for (EntityData entityData : allEntities) {
             Element copy = Elements.getCopyByName(entityData.name, entityData.isHostile, entityData.isDrivable);
             if (copy == null) continue;

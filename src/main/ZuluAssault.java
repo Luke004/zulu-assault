@@ -19,6 +19,14 @@ public class ZuluAssault extends StateBasedGame {
     public static final String gameVersion = "Alpha Test Version 1.2";
 
     public static final int MAIN_MENU = 0;
+    public static final int BRIEFING = 1;
+    public static final int DEBRIEFING = 2;
+    public static final int IN_LEVEL = 3;
+    public static final int LEVEL_EDITOR = 4;
+
+    public static final int MAX_LEVEL = 9;
+
+    /*
     public static final int LEVEL_1 = 1;
     public static final int LEVEL_2 = 2;
     public static final int LEVEL_3 = 3;
@@ -28,18 +36,17 @@ public class ZuluAssault extends StateBasedGame {
     public static final int LEVEL_7 = 7;
     public static final int LEVEL_8 = 8;
     public static final int LEVEL_9 = 9;
-    public static final int BRIEFING = -1;
-    public static final int DEBRIEFING = -2;
-    public static final int LEVEL_EDITOR = -3;
 
-    public static final int MAX_LEVEL = LEVEL_9;
+     */
 
     public static BasicGameState prevState = null;
-    public static int nextLevelID = 0;
+    public static String nextLevelName = "";
 
     public ZuluAssault(String name) {
         super(name);
         this.addState(new Menu());
+        this.addState(new Level());
+        /*
         this.addState(new Level_1());
         this.addState(new Level_2());
         this.addState(new Level_3());
@@ -49,6 +56,7 @@ public class ZuluAssault extends StateBasedGame {
         this.addState(new Level_7());
         this.addState(new Level_8());
         this.addState(new Level_9());
+         */
         this.addState(new Debriefing());
         this.addState(new Briefing());
         this.addState(new LevelEditor());
@@ -78,13 +86,21 @@ public class ZuluAssault extends StateBasedGame {
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
         //this.getState(MAIN_MENU).init(gameContainer, this);
-        this.getState(LEVEL_1).init(gameContainer, this);   // pre-load the first level at the start
+        //this.getState(LEVEL_1).init(gameContainer, this);   // pre-load the first level at the start
         this.enterState(MAIN_MENU);
     }
 
-    public static boolean existsLevel(int id) {
-        if (id < 1 || id > MAX_LEVEL) return false;
-        return true;
+    public static boolean existsLevel(String name) {
+        try {
+            int levelID = Integer.parseInt(name);
+            if (levelID <= MAX_LEVEL && levelID >= 1) {
+                return true;
+            }
+        } catch (NumberFormatException e) {
+            // a level string was put in -> look for custom level
+            // TODO: 26.10.2020 check if custom maps exist with this name
+        }
+        return false;
     }
 
 }
