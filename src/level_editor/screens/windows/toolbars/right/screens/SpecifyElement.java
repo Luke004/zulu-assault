@@ -1,9 +1,9 @@
-package level_editor.screens.toolbars.right.screens;
+package level_editor.screens.windows.toolbars.right.screens;
 
 import game.audio.MenuSounds;
-import level_editor.screens.Window;
+import level_editor.screens.windows.Window;
 import level_editor.screens.elements.Button;
-import level_editor.screens.toolbars.right.RightToolbar;
+import level_editor.screens.windows.toolbars.right.RightToolbar;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import settings.UserSettings;

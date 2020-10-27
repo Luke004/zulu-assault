@@ -1,13 +1,13 @@
-package level_editor.screens.toolbars.bottom;
+package level_editor.screens.windows.toolbars.bottom;
 
 import game.audio.MenuSounds;
 import level_editor.LevelEditor;
-import level_editor.screens.Window;
+import level_editor.screens.windows.Window;
 import level_editor.screens.elements.Button;
-import level_editor.screens.toolbars.right.RightToolbar;
+import level_editor.screens.windows.center.SaveLevelPopupWindow;
+import level_editor.screens.windows.toolbars.right.RightToolbar;
 import main.ZuluAssault;
 import org.newdawn.slick.*;
-import game.util.LevelDataStorage;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
@@ -18,6 +18,7 @@ public class BottomToolbar extends Window {
 
     private RightToolbar rightToolbar;
     private LevelEditor levelEditor;
+    private SaveLevelPopupWindow saveLevelPopupWindow;
 
     // buttons
     private Button[] buttons;
@@ -30,6 +31,7 @@ public class BottomToolbar extends Window {
         this.levelEditor = levelEditor;
         this.rightToolbar = rightToolbar;
         this.sbg = sbg;
+        this.saveLevelPopupWindow = new SaveLevelPopupWindow("SAVE LEVEL", gc, levelEditor);
 
         // create the four buttons
         final int BUTTON_SIZE = 4;
@@ -75,6 +77,7 @@ public class BottomToolbar extends Window {
         for (Button b : buttons) {
             b.draw(graphics);
         }
+        saveLevelPopupWindow.draw(gc, graphics);
     }
 
     @Override
@@ -97,7 +100,9 @@ public class BottomToolbar extends Window {
                         rightToolbar.setScreen(RightToolbar.SCREEN_MODIFY_ELEMENT);
                         break;
                     case "SAVE":
-                        new LevelDataStorage().saveLevel(levelEditor.getSimpleMapName(), levelEditor.getElements());
+                        saveLevelPopupWindow.show();
+                        levelEditor.setPopupWindow(saveLevelPopupWindow);
+                        //
                         break;
                     case "EXIT":
                         sbg.enterState(ZuluAssault.MAIN_MENU, new FadeOutTransition(), new FadeInTransition());

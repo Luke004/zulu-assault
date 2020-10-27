@@ -1,11 +1,11 @@
-package level_editor.screens.toolbars.right.screens;
+package level_editor.screens.windows.toolbars.right.screens;
 
 import game.audio.MenuSounds;
 import level_editor.LevelEditor;
-import level_editor.screens.Window;
+import level_editor.screens.windows.Window;
 import level_editor.screens.elements.Button;
-import level_editor.screens.toolbars.right.RightToolbar;
-import level_editor.util.Elements;
+import level_editor.screens.windows.toolbars.right.RightToolbar;
+import level_editor.util.MapElements;
 import game.models.Element;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -55,7 +55,7 @@ public abstract class ElementSelector extends ToolbarScreen {
         int currentY = startY;
 
         for (String s_element : elementNames) {
-            selectorSquareList.add(new SelectorSquare(Elements.getCopyByName(s_element),
+            selectorSquareList.add(new SelectorSquare(MapElements.getCopyByName(s_element),
                     currentX,
                     currentY,
                     size
@@ -130,7 +130,7 @@ public abstract class ElementSelector extends ToolbarScreen {
         }
 
         Element getElement() {
-            return Elements.getCopyByName(element.getClass().getSimpleName(), EntitySelector.isHostile, EntitySelector.isDrivable);
+            return MapElements.getCopyByName(element.getClass().getSimpleName(), EntitySelector.isHostile, EntitySelector.isDrivable);
         }
 
     }

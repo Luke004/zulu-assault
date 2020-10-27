@@ -1,8 +1,8 @@
-package level_editor.screens.toolbars.right;
+package level_editor.screens.windows.toolbars.right;
 
 import level_editor.LevelEditor;
-import level_editor.screens.Window;
-import level_editor.screens.toolbars.right.screens.*;
+import level_editor.screens.windows.Window;
+import level_editor.screens.windows.toolbars.right.screens.*;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;

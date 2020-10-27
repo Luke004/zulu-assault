@@ -1,11 +1,11 @@
-package level_editor.screens.toolbars.right.screens;
+package level_editor.screens.windows.toolbars.right.screens;
 
 import game.audio.MenuSounds;
 import level_editor.LevelEditor;
-import level_editor.screens.Window;
+import level_editor.screens.windows.Window;
 import level_editor.screens.elements.Checkbox;
-import level_editor.screens.toolbars.right.RightToolbar;
-import level_editor.util.Elements;
+import level_editor.screens.windows.toolbars.right.RightToolbar;
+import level_editor.util.MapElements;
 import game.models.Element;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -61,7 +61,7 @@ public class EntitySelector extends ElementSelector {
                         isHostile = checkboxes[i].isChecked();
                         Element selectedElement = levelEditor.getSelectedElement();
                         if (selectedElement != null) {
-                            Element replacement = Elements.getCopyByName(selectedElement.getClass().getSimpleName(),
+                            Element replacement = MapElements.getCopyByName(selectedElement.getClass().getSimpleName(),
                                     isHostile, isDrivable);
                             if (replacement != null) {
                                 levelEditor.setSelectedElement(replacement);
@@ -116,6 +116,6 @@ public class EntitySelector extends ElementSelector {
 
     @Override
     protected String[] getElementNames() {
-        return Elements.getAllEntities();
+        return MapElements.getAllEntities();
     }
 }
