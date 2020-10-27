@@ -1,10 +1,10 @@
-package level_editor.screens;
+package level_editor.screens.windows;
 
 import game.graphics.fonts.FontManager;
 import org.newdawn.slick.*;
 
 /* An abstract class which draws a black window with a title in the middle of the screen */
-public abstract class CenterWindow extends Window {
+public abstract class CenterPopupWindow extends Window {
 
     // config sizes
     private static final float INLINE_LINE_WIDTH = 1.f;
@@ -22,11 +22,13 @@ public abstract class CenterWindow extends Window {
 
     private String s_title;
 
+    protected boolean isActive;
+
     static {
         title_string_drawer = FontManager.getStencilMediumFont();
     }
 
-    public CenterWindow(String title, GameContainer gc) {
+    public CenterPopupWindow(String title, GameContainer gc) {
         super((int) (gc.getWidth() * RELATIVE_WIDTH - (gc.getWidth() * RELATIVE_WIDTH) / 2),
                 (int) (gc.getHeight() * RELATIVE_HEIGHT - (gc.getHeight() * RELATIVE_HEIGHT) / 2),
                 (int) (gc.getWidth() * RELATIVE_WIDTH),
@@ -42,6 +44,7 @@ public abstract class CenterWindow extends Window {
 
     @Override
     public void draw(GameContainer gc, Graphics graphics) {
+        if (!this.isActive) return;
         super.draw(gc, graphics);
         // draw screen outline
         graphics.setLineWidth(OUTLINE_LINE_WIDTH);
@@ -61,6 +64,10 @@ public abstract class CenterWindow extends Window {
                 windowY + absoluteTitleHeight,
                 windowX + windowWidth,
                 windowY + absoluteTitleHeight);
+    }
+
+    public void show() {
+        this.isActive = true;
     }
 
 }

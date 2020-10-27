@@ -26,7 +26,7 @@ import game.models.items.Item;
 import game.player.Player;
 import game.util.TimeManager;
 import level_editor.LevelEditor;
-import level_editor.util.LevelDataStorage;
+import game.util.LevelDataStorage;
 import main.ZuluAssault;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;

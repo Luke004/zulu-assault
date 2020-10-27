@@ -7,7 +7,7 @@ import level_editor.screens.elements.Button;
 import level_editor.screens.toolbars.right.RightToolbar;
 import main.ZuluAssault;
 import org.newdawn.slick.*;
-import level_editor.util.LevelDataStorage;
+import game.util.LevelDataStorage;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;

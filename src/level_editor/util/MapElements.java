@@ -22,7 +22,7 @@ import game.models.interaction_circles.TeleportCircle;
 import game.models.items.*;
 import org.newdawn.slick.geom.Vector2f;
 
-public class Elements {
+public class MapElements {
 
     private static final String[] allElements;
 

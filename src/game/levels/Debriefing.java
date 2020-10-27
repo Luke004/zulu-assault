@@ -5,7 +5,7 @@ import java.util.List;
 
 import game.audio.MenuSounds;
 import game.graphics.fonts.FontManager;
-import level_editor.util.LevelDataStorage;
+import game.util.LevelDataStorage;
 import main.ZuluAssault;
 import settings.UserSettings;
 import org.newdawn.slick.*;
@@ -23,7 +23,7 @@ public class Debriefing extends BasicGameState {
     private String finished_level_Name;
 
     private List<String> debriefing_message;
-    private String debriefing_header, debriefing_mission_header, confirm_message, mission_title;
+    private String debriefing_header, debriefing_mission_header, confirm_message, mission_title_abstract;
     private static TrueTypeFont text_drawer;
     private static boolean has_initialized_once;
     private static Image debriefing_screen_image;
@@ -44,7 +44,7 @@ public class Debriefing extends BasicGameState {
 
         if (lds != null) {
             String debriefing_message = lds.debriefing_message;
-            this.mission_title = lds.mission_title;
+            String mission_title_detailed = lds.mission_title;
             this.finished_level_Name = ZuluAssault.nextLevelName;
             this.debriefing_message = new ArrayList<>();
             if (debriefing_message == null || debriefing_message.isEmpty()) {
@@ -64,13 +64,13 @@ public class Debriefing extends BasicGameState {
                     this.debriefing_message.add(builder.toString());
                 }
             }
-            String s_missionName = "Mission ";
+
             if (isStandardLevel) {
-                s_missionName += ZuluAssault.nextLevelName.substring(ZuluAssault.nextLevelName.indexOf("_") + 1);
+                mission_title_abstract = "Mission " + ZuluAssault.nextLevelName.substring(ZuluAssault.nextLevelName.indexOf("_") + 1);
             } else {
-                s_missionName += "";
+                mission_title_abstract = "Custom Mission";
             }
-            this.debriefing_mission_header = s_missionName + " - " + mission_title;
+            this.debriefing_mission_header = mission_title_abstract + " - " + mission_title_detailed;
         }
 
 
@@ -120,8 +120,8 @@ public class Debriefing extends BasicGameState {
 
         text_drawer.drawString(
                 TEXT_MARGIN,
-                gameContainer.getHeight() - text_drawer.getHeight(mission_title) - TEXT_MARGIN,
-                mission_title);
+                gameContainer.getHeight() - text_drawer.getHeight(mission_title_abstract) - TEXT_MARGIN,
+                mission_title_abstract);
 
         text_drawer.drawString(
                 gameContainer.getWidth() / 2.f - text_drawer.getWidth(confirm_message) / 2.f,

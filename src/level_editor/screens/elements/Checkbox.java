@@ -1,6 +1,6 @@
 package level_editor.screens.elements;
 
-import level_editor.screens.Window;
+import level_editor.screens.windows.Window;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;

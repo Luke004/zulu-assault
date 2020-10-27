@@ -1,4 +1,4 @@
-package level_editor.screens;
+package level_editor.screens.windows;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -18,13 +18,17 @@ public abstract class Window {
         this.windowHeight = windowHeight;
     }
 
-    protected void draw(GameContainer gc, Graphics graphics) {
+    public void draw(GameContainer gc, Graphics graphics) {
         // background
         graphics.setColor(Color.black);
         graphics.fillRect(windowX, windowY, windowWidth, windowHeight);
     }
 
     public abstract void update(GameContainer gc);
+
+    public boolean isMouseOver(int mouseX, int mouseY) {
+        return (mouseX > windowX && mouseX < windowX + windowWidth && mouseY > windowY && mouseY < windowY + windowHeight);
+    }
 
     public abstract void onMouseClick(int button, int mouseX, int mouseY);
 

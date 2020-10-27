@@ -2,19 +2,19 @@ package level_editor;
 
 import game.audio.MenuSounds;
 import game.graphics.fonts.FontManager;
-import level_editor.screens.Window;
-import level_editor.screens.toolbars.bottom.BottomToolbar;
-import level_editor.screens.toolbars.right.RightToolbar;
-import level_editor.screens.toolbars.right.screens.EntitySelector;
-import level_editor.util.Elements;
 import game.logic.Camera;
-import level_editor.util.LevelDataStorage;
-import settings.TileMapData;
-import main.ZuluAssault;
 import game.models.Element;
 import game.models.entities.Entity;
 import game.models.entities.MovableEntity;
 import game.models.items.Item;
+import game.util.LevelDataStorage;
+import level_editor.screens.windows.CenterPopupWindow;
+import level_editor.screens.windows.Window;
+import level_editor.screens.windows.toolbars.bottom.BottomToolbar;
+import level_editor.screens.windows.toolbars.right.RightToolbar;
+import level_editor.screens.windows.toolbars.right.screens.EntitySelector;
+import level_editor.util.MapElements;
+import main.ZuluAssault;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
@@ -22,6 +22,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 import org.newdawn.slick.tiled.TiledMap;
+import settings.TileMapData;
 import settings.UserSettings;
 
 import javax.swing.*;
@@ -50,12 +51,14 @@ public class LevelEditor extends BasicGameState {
     private float mapX, mapY;
     private int mapWidth, mapHeight;
     private int prevMouseX, prevMouseY, mouseSlideX, mouseSlideY;   // to slide the map using mouse's right key
-    private boolean allowMouseSlide;
+    private boolean allowMouseSlide, isMouseInEditor;
 
     private static final float MOVE_SPEED = 0.3f;
 
+    // all windows of the level editor
     private RightToolbar rightToolbar;
     private BottomToolbar bottomToolbar;
+    private CenterPopupWindow popupWindow;
 
     private Camera camera;
 
@@ -72,7 +75,7 @@ public class LevelEditor extends BasicGameState {
         Window.Props.initMargin(gc.getWidth());
         title_string_drawer = FontManager.getStencilBigFont();
         rightToolbar = new RightToolbar(this, TITLE_RECT_HEIGHT + 1, gc);
-        bottomToolbar = new BottomToolbar(this, rightToolbar, gc, sbg);
+        bottomToolbar = new BottomToolbar(this, (RightToolbar) rightToolbar, gc, sbg);
     }
 
     @Override
@@ -141,7 +144,7 @@ public class LevelEditor extends BasicGameState {
         // draw all instances that are static above the map (HUD) below
 
         // draw the selected element
-        if (isMouseInEditor(gc.getInput().getMouseX(), gc.getInput().getMouseY())) {
+        if (isMouseInEditor) {
             if (selectedElement != null) {
                 selectedElement.draw(graphics);
             }
@@ -163,6 +166,10 @@ public class LevelEditor extends BasicGameState {
                 Color.lightGray
         );
 
+        if (hasPopupWindow()) {
+            popupWindow.draw(gc, graphics);
+        }
+
         rightToolbar.draw(gc, graphics);
         bottomToolbar.draw(gc, graphics);
 
@@ -170,6 +177,11 @@ public class LevelEditor extends BasicGameState {
 
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int dt) {
+        if (hasPopupWindow()) {
+            popupWindow.update(gc);
+            return;
+        }
+
         camera.centerOn(mapX - mouseSlideX,
                 mapY - mouseSlideY,
                 gc.getHeight(), gc.getWidth(), rightToolbar.getWidth(), TITLE_RECT_HEIGHT, bottomToolbar.getHeight());
@@ -217,7 +229,6 @@ public class LevelEditor extends BasicGameState {
             }
         }
 
-
         if (selectedElement != null) {
             if (!(selectedElement instanceof Item)) {
                 selectedElement.editorUpdate(gc, dt);
@@ -235,6 +246,10 @@ public class LevelEditor extends BasicGameState {
                 }
             }
         }
+
+        this.isMouseInEditor = (gc.getInput().getMouseX() < rightToolbar.getX()
+                && gc.getInput().getMouseY() > TITLE_RECT_HEIGHT
+                && gc.getInput().getMouseY() < bottomToolbar.getY());
 
     }
 
@@ -256,7 +271,7 @@ public class LevelEditor extends BasicGameState {
     @Override
     public void mousePressed(int button, int mouseX, int mouseY) {
         if (button == Input.MOUSE_RIGHT_BUTTON) {
-            if (isMouseInEditor(mouseX, mouseY)) {
+            if (isMouseInEditor) {
                 allowMouseSlide = true;
                 prevMouseX = mouseX;
                 prevMouseY = mouseY;
@@ -278,10 +293,17 @@ public class LevelEditor extends BasicGameState {
 
     @Override
     public void mouseClicked(int button, int mouseX, int mouseY, int clickCount) {
-        if (isMouseInEditor(mouseX, mouseY)) {
+        if (hasPopupWindow()) {
+            if (popupWindow.isMouseOver(mouseX, mouseY)) {
+                popupWindow.onMouseClick(button, mouseX, mouseY);
+            }
+            return;
+        }
+
+        if (isMouseInEditor) {
             if (button == Input.MOUSE_LEFT_BUTTON) {
                 if (selectedElement != null) {
-                    Element copy = Elements.getCopyByName(selectedElement.getClass().getSimpleName(),
+                    Element copy = MapElements.getCopyByName(selectedElement.getClass().getSimpleName(),
                             EntitySelector.isHostile, EntitySelector.isDrivable);
                     if (copy != null) {
                         MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
@@ -298,10 +320,10 @@ public class LevelEditor extends BasicGameState {
             }
         } else {
             // mouse is not in editor -> is on a toolbar
-            if (mouseY > bottomToolbar.getY()) {
-                bottomToolbar.onMouseClick(button, mouseX, mouseY);
-            } else {
+            if (rightToolbar.isMouseOver(mouseX, mouseY)) {
                 rightToolbar.onMouseClick(button, mouseX, mouseY);
+            } else if (bottomToolbar.isMouseOver(mouseX, mouseY)) {
+                bottomToolbar.onMouseClick(button, mouseX, mouseY);
             }
         }
     }
@@ -319,8 +341,13 @@ public class LevelEditor extends BasicGameState {
         return elements;
     }
 
-    private boolean isMouseInEditor(int mouseX, int mouseY) {
-        return (mouseX < rightToolbar.getX() && mouseY > TITLE_RECT_HEIGHT && mouseY < bottomToolbar.getY());
+    private boolean hasPopupWindow() {
+        return this.popupWindow != null;
+    }
+
+    public void setPopupWindow(CenterPopupWindow popupWindow) {
+        isMouseInEditor = false;
+        this.popupWindow = popupWindow;
     }
 
     public String getSimpleMapName() {

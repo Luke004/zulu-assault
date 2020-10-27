@@ -1,8 +1,9 @@
-package level_editor.util;
+package game.util;
 
 import game.models.Element;
 import game.models.entities.Entity;
 import game.models.entities.MovableEntity;
+import level_editor.util.MapElements;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.io.*;
@@ -39,8 +40,9 @@ public class LevelDataStorage implements Serializable {
         boolean isHostile, isDrivable, isMandatory;
     }
 
-    public void saveLevel(String name, List<Element> elements) {
+    public void saveLevel(String name, List<Element> elements, String mission_title, String briefing_message, String debriefing_message) {
         this.levelName = name;
+        // save all elements
         for (Element element : elements) {
             if (element instanceof Entity) {
                 Entity entity = (Entity) element;
@@ -65,6 +67,14 @@ public class LevelDataStorage implements Serializable {
                 allElements.add(elementData);
             }
         }
+        // save mission description
+        this.mission_title = mission_title;
+        this.briefing_message = briefing_message;
+        this.debriefing_message = debriefing_message;
+        this.musicIdx = 0;  // TODO: add user music instead of default ?
+
+        // save player data
+        // TODO: 27.10.2020 save player data 
 
         try {
             FileOutputStream fileOutputStream
@@ -88,12 +98,13 @@ public class LevelDataStorage implements Serializable {
                     = new ObjectInputStream(fileInputStream);
             LevelDataStorage lds = (LevelDataStorage) objectInputStream.readObject();
             objectInputStream.close();
-
+            /*
             // TODO: add values
             lds.mission_title = "";
             lds.briefing_message = "Default briefing message";
             lds.debriefing_message = "Default debriefing message";
             lds.musicIdx = 0;
+            */
 
             return lds;
         } catch (IOException | ClassNotFoundException i) {
@@ -105,7 +116,7 @@ public class LevelDataStorage implements Serializable {
     public List<Element> getAllElements() {
         List<Element> elements = new LinkedList<>();
         for (ElementData elementData : allElements) {
-            Element copy = Elements.getCopyByName(elementData.name);
+            Element copy = MapElements.getCopyByName(elementData.name);
             copy.setPosition(new Vector2f(elementData.xPos, elementData.yPos));
             elements.add(copy);
         }
@@ -115,7 +126,7 @@ public class LevelDataStorage implements Serializable {
     public List<Entity> getAllEntities() {
         List<Entity> entities = new LinkedList<>();
         for (EntityData entityData : allEntities) {
-            Element copy = Elements.getCopyByName(entityData.name, entityData.isHostile, entityData.isDrivable);
+            Element copy = MapElements.getCopyByName(entityData.name, entityData.isHostile, entityData.isDrivable);
             if (copy == null) continue;
             if (copy instanceof Entity) {
                 Entity casted_copy = (Entity) copy;
