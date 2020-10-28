@@ -113,35 +113,18 @@ public class ElementModifier extends ToolbarScreen {
                         ((MovableEntity) elementToModify).isHostile = checkboxes[0].isChecked();
                         ((MovableEntity) elementToModify).isDrivable = checkbox.isChecked();
                         copy = MapElements.getDeepCopy(elementToModify);
-
-                        /*
-                        copy = MapElements.getCopyByName(
-                                elementToModify.getPosition(),
-                                elementToModify.getClass().getSimpleName(),
-                                checkboxes[0].isChecked(),
-                                checkbox.isChecked()
-                        );
-                        if (copy != null) ((Entity) copy).setRotation(((Entity) elementToModify).getRotation());
-                         */
                         break;
                     case "Mandatory":
-                        if (elementToModify instanceof MovableEntity) {
-                            ((MovableEntity) elementToModify).isHostile = checkboxes[0].isChecked();
-                            ((MovableEntity) elementToModify).isDrivable = checkboxes[1].isChecked();
-                            ((MovableEntity) elementToModify).isMandatory = checkbox.isChecked();
+                        if (elementToModify instanceof Entity) {
+                            ((Entity) elementToModify).isHostile = checkboxes[0].isChecked();
+                            ((Entity) elementToModify).isMandatory = checkbox.isChecked();
+                            if (elementToModify instanceof MovableEntity) {
+                                ((MovableEntity) elementToModify).isDrivable = checkboxes[1].isChecked();
+                            }
                         } else if (elementToModify instanceof Item) {
                             ((Item) elementToModify).isMandatory = checkbox.isChecked();
                         }
                         copy = MapElements.getDeepCopy(elementToModify);
-
-                        /*
-                        copy = MapElements.getCopyByName(
-                                elementToModify.getPosition(),
-                                elementToModify.getClass().getSimpleName(),
-                                checkboxes[0].isChecked(),
-                                checkboxes[1].isChecked()
-                        );
-                         */
                         break;
                 }
                 if (copy != null) {

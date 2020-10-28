@@ -43,7 +43,7 @@ public class RightToolbar extends Window {
         screens[SCREEN_ADD_CIRCLE] = new CircleAdder(this, levelEditor);
         screens[SCREEN_MODIFY_ELEMENT] = new ElementModifier(this, levelEditor);
 
-        setScreen(SCREEN_ADD_ELEMENT);
+        setScreen(SCREEN_MODIFY_ELEMENT);
     }
 
     @Override
