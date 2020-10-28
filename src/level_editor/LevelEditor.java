@@ -315,10 +315,7 @@ public class LevelEditor extends BasicGameState {
                 if (rightToolbar.getState() == RightToolbar.STATE_ADD) {
                     if (elementToPlace != null) {
                         // PLACE AN ELEMENT
-                        Element copy = MapElements.getCopyByName(new Vector2f(elementToPlace.getPosition().x + mapX,
-                                        elementToPlace.getPosition().y + mapY),
-                                elementToPlace.getClass().getSimpleName(),
-                                EntityAdder.isHostile, EntityAdder.isDrivable);
+                        Element copy = MapElements.getDeepCopy(elementToPlace, mapX, mapY);
                         if (copy != null) {
                             MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
                             // add rotation and mandatory
@@ -331,6 +328,13 @@ public class LevelEditor extends BasicGameState {
                         }
                     }
                 } else if (rightToolbar.getState() == RightToolbar.STATE_MODIFY) {
+                    // first: special case -> move an already placed element
+                    if (elementToPlace != null) {
+                        Element copy = MapElements.getDeepCopy(elementToPlace, mapX, mapY);
+                        elements.add(copy);
+                        elementToPlace = null;
+                    }
+
                     // SELECT A PLACED ELEMENT TO MODIFY
                     boolean hasSelectedElement = false;
                     for (Element element : elements) {
@@ -375,6 +379,28 @@ public class LevelEditor extends BasicGameState {
                 i.remove();
                 elements.add(replacingElement);
                 this.elementToModify = replacingElement;
+                return;
+            }
+        }
+    }
+
+    public void removeElement(Element elementToRemove) {
+        Iterator<Element> i = elements.iterator();
+        while (i.hasNext()) {
+            if (i.next().getPosition() == elementToRemove.getPosition()) {
+                i.remove();
+                this.elementToModify = null;
+                return;
+            }
+        }
+    }
+
+    public void moveElement(Element elementToMove) {
+        Iterator<Element> i = elements.iterator();
+        while (i.hasNext()) {
+            if (i.next().getPosition() == elementToMove.getPosition()) {
+                i.remove();
+                this.elementToPlace = elementToMove;
                 return;
             }
         }

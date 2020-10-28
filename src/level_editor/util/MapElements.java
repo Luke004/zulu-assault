@@ -1,7 +1,10 @@
 package level_editor.util;
 
 
+import game.audio.MenuSounds;
 import game.models.Element;
+import game.models.entities.Entity;
+import game.models.entities.MovableEntity;
 import game.models.entities.aircraft.AttackHelicopter;
 import game.models.entities.aircraft.ScoutJet;
 import game.models.entities.aircraft.WarJet;
@@ -20,7 +23,9 @@ import game.models.entities.windmills.WindmillYellow;
 import game.models.interaction_circles.HealthCircle;
 import game.models.interaction_circles.TeleportCircle;
 import game.models.items.*;
+import level_editor.screens.windows.toolbars.right.screens.EntityAdder;
 import org.newdawn.slick.geom.Vector2f;
+import settings.UserSettings;
 
 public class MapElements {
 
@@ -177,12 +182,47 @@ public class MapElements {
         return getCopyByName(pos, name, false, false);
     }
 
+    public static Element getCopyByName(Vector2f pos, String name, boolean isHostile) {
+        return getCopyByName(pos, name, isHostile, false);
+    }
+
     public static Element getCopyByName(String name) {
         return getCopyByName(name, false, false);
     }
 
     public static Element getCopyByName(String name, boolean isHostile, boolean isDrivable) {
         return getCopyByName(new Vector2f(0, 0), name, isHostile, isDrivable);
+    }
+
+    public static Element getDeepCopy(Element element, float xOffset, float yOffset) {
+        Element copy;
+        if (element instanceof MovableEntity) {
+            MovableEntity movableEntity = (MovableEntity) element;
+            copy = MapElements.getCopyByName(
+                    new Vector2f(movableEntity.getPosition().x + xOffset, movableEntity.getPosition().y + yOffset),
+                    movableEntity.getClass().getSimpleName(),
+                    movableEntity.isHostile,
+                    movableEntity.isDrivable);
+            if (copy != null) ((MovableEntity) copy).setRotation(((Entity) element).getRotation());
+        } else if (element instanceof Entity) {
+            Entity entity = (Entity) element;
+            copy = MapElements.getCopyByName(
+                    new Vector2f(entity.getPosition().x + xOffset, entity.getPosition().y + yOffset),
+                    entity.getClass().getSimpleName(),
+                    entity.isHostile
+            );
+            // add rotation
+            if (copy != null) ((Entity) copy).setRotation(((Entity) element).getRotation());
+        } else {
+            copy = MapElements.getCopyByName(
+                    new Vector2f(element.getPosition().x + xOffset, element.getPosition().y + yOffset),
+                    element.getClass().getSimpleName()
+            );
+        }
+        if (copy != null) {
+            copy.isMandatory = element.isMandatory;
+            return copy;
+        } else return null;
     }
 
 }

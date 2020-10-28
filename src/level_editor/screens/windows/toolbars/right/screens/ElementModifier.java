@@ -4,6 +4,7 @@ import game.models.Element;
 import game.models.entities.Entity;
 import game.models.entities.MovableEntity;
 import level_editor.LevelEditor;
+import level_editor.screens.elements.Button;
 import level_editor.screens.elements.Checkbox;
 import level_editor.screens.windows.Window;
 import level_editor.screens.windows.toolbars.right.RightToolbar;
@@ -16,6 +17,7 @@ public class ElementModifier extends ToolbarScreen {
     private static String title_no_selection = "NO SELECTION";
 
     private Checkbox[] checkboxes;
+    private Button[] buttons;
 
     private boolean display;
 
@@ -49,6 +51,20 @@ public class ElementModifier extends ToolbarScreen {
                 checkbox_height
         );
 
+        buttons = new Button[2];
+        buttons[0] = new Button("MOVE",
+                checkbox_x,
+                startY + checkbox_height * 3 + Window.Props.DEFAULT_MARGIN * 4,
+                checkbox_width,
+                checkbox_height
+        );
+        buttons[1] = new Button("DELETE",
+                checkbox_x,
+                startY + checkbox_height * 4 + Window.Props.DEFAULT_MARGIN * 6,
+                checkbox_width,
+                checkbox_height
+        );
+
     }
 
     @Override
@@ -59,18 +75,24 @@ public class ElementModifier extends ToolbarScreen {
         for (Checkbox checkbox : checkboxes) {
             checkbox.draw(graphics);
         }
+
+        for (Button button : buttons) {
+            button.draw(graphics);
+        }
     }
 
     @Override
-    public void update(GameContainer gameContainer) {
-        //rightToolbar.getElementToModify().
+    public void update(GameContainer gc) {
+        for (Button button : buttons) {
+            button.update(gc);
+        }
     }
 
     @Override
     public void onMouseClick(int mouseX, int mouseY) {
+        Element elementToModify = levelEditor.getElementToModify();
         for (Checkbox checkbox : checkboxes) {
             if (checkbox.isMouseOver(mouseX, mouseY)) {
-                Element elementToModify = levelEditor.getElementToModify();
                 Element copy = null;
                 switch (checkbox.getName()) {
                     case "Hostile":
@@ -111,9 +133,23 @@ public class ElementModifier extends ToolbarScreen {
                     copy.isMandatory = checkbox.isChecked();
                     levelEditor.replaceModifiedElement(copy);
                 }
+                return;
             }
         }
+        for (Button button : buttons) {
+            if (button.isMouseOver(mouseX, mouseY)) {
+                switch (button.getName()) {
+                    case "MOVE":
+                        levelEditor.moveElement(elementToModify);
+                        return;
+                    case "DELETE":
+                        levelEditor.removeElement(elementToModify);
+                        this.setupElement(null);
+                        return;
+                }
 
+            }
+        }
     }
 
     public void setupElement(Element elementToModify) {
