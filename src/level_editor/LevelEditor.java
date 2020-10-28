@@ -122,7 +122,8 @@ public class LevelEditor extends BasicGameState {
             // attempt to load already created map data
             LevelDataStorage levelDataStorage = LevelDataStorage.loadLevel(getSimpleMapName(), false);
             if (levelDataStorage != null) {
-                this.elements.addAll(levelDataStorage.getAllElements());
+                this.elements.addAll(levelDataStorage.getAllItems());
+                this.elements.addAll(levelDataStorage.getAllCircles());
                 this.elements.addAll(levelDataStorage.getAllEntities());
             }
 
@@ -375,7 +376,9 @@ public class LevelEditor extends BasicGameState {
     public void replaceModifiedElement(Element replacingElement) {
         Iterator<Element> i = elements.iterator();
         while (i.hasNext()) {
-            if (i.next().getPosition() == replacingElement.getPosition()) {
+            Element nextElement = i.next();
+            if (nextElement.getPosition().x == replacingElement.getPosition().x
+                    && nextElement.getPosition().y == replacingElement.getPosition().y) {   // identify via position
                 i.remove();
                 elements.add(replacingElement);
                 this.elementToModify = replacingElement;
@@ -387,7 +390,9 @@ public class LevelEditor extends BasicGameState {
     public void removeElement(Element elementToRemove) {
         Iterator<Element> i = elements.iterator();
         while (i.hasNext()) {
-            if (i.next().getPosition() == elementToRemove.getPosition()) {
+            Element nextElement = i.next();
+            if (nextElement.getPosition().x == elementToRemove.getPosition().x
+                    && nextElement.getPosition().y == elementToRemove.getPosition().y) {    // identify via position
                 i.remove();
                 this.elementToModify = null;
                 return;
@@ -398,7 +403,9 @@ public class LevelEditor extends BasicGameState {
     public void moveElement(Element elementToMove) {
         Iterator<Element> i = elements.iterator();
         while (i.hasNext()) {
-            if (i.next().getPosition() == elementToMove.getPosition()) {
+            Element nextElement = i.next();
+            if (nextElement.getPosition().x == elementToMove.getPosition().x
+                    && nextElement.getPosition().y == elementToMove.getPosition().y) {    // identify via position
                 i.remove();
                 this.elementToPlace = elementToMove;
                 return;

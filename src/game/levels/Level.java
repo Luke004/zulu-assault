@@ -127,16 +127,18 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
 
             LevelDataStorage lds = LevelDataStorage.loadLevel(ZuluAssault.nextLevelName, isStandardLevel);
             if (lds != null) {
-                // load all elements
-                for (Element element : lds.getAllElements()) {
-                    if (element instanceof HealthCircle) {
-                        health_circles.add((HealthCircle) element);
-                    } else if (element instanceof TeleportCircle) {
-                        teleport_circles.add((TeleportCircle) element);
-                    } else if (element instanceof Item) {
-                        items.add((Item) element);
+                // load all items
+                items.addAll(lds.getAllItems());
+
+                // load all circles
+                for (InteractionCircle interactionCircle : lds.getAllCircles()) {
+                    if (interactionCircle instanceof HealthCircle) {
+                        health_circles.add((HealthCircle) interactionCircle);
+                    } else if (interactionCircle instanceof TeleportCircle) {
+                        teleport_circles.add((TeleportCircle) interactionCircle);
                     }
                 }
+
                 // load all entities
                 for (Entity entity : lds.getAllEntities()) {
                     if (entity instanceof MovableEntity) {
@@ -414,7 +416,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
     }
 
     @Override
-    public void keyReleased(int key,char c){
+    public void keyReleased(int key, char c) {
         keyInputHandler.onKeyRelease(key);
     }
 

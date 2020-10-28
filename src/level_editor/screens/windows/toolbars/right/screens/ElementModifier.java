@@ -3,6 +3,8 @@ package level_editor.screens.windows.toolbars.right.screens;
 import game.models.Element;
 import game.models.entities.Entity;
 import game.models.entities.MovableEntity;
+import game.models.interaction_circles.InteractionCircle;
+import game.models.items.Item;
 import level_editor.LevelEditor;
 import level_editor.screens.elements.Button;
 import level_editor.screens.elements.Checkbox;
@@ -93,11 +95,11 @@ public class ElementModifier extends ToolbarScreen {
         Element elementToModify = levelEditor.getElementToModify();
         for (Checkbox checkbox : checkboxes) {
             if (checkbox.isMouseOver(mouseX, mouseY)) {
+                if (checkbox.isDisabled()) return;
+                checkbox.toggle();
                 Element copy = null;
                 switch (checkbox.getName()) {
                     case "Hostile":
-                        if (!(elementToModify instanceof Entity)) return;
-                        checkbox.toggle();
                         checkboxes[2].setDisabled(!checkbox.isChecked());
                         copy = MapElements.getCopyByName(
                                 elementToModify.getPosition(),
@@ -108,8 +110,11 @@ public class ElementModifier extends ToolbarScreen {
                         if (copy != null) ((Entity) copy).setRotation(((Entity) elementToModify).getRotation());
                         break;
                     case "Drivable":
-                        if (!(elementToModify instanceof Entity)) return;
-                        checkbox.toggle();
+                        ((MovableEntity) elementToModify).isHostile = checkboxes[0].isChecked();
+                        ((MovableEntity) elementToModify).isDrivable = checkbox.isChecked();
+                        copy = MapElements.getDeepCopy(elementToModify);
+
+                        /*
                         copy = MapElements.getCopyByName(
                                 elementToModify.getPosition(),
                                 elementToModify.getClass().getSimpleName(),
@@ -117,20 +122,30 @@ public class ElementModifier extends ToolbarScreen {
                                 checkbox.isChecked()
                         );
                         if (copy != null) ((Entity) copy).setRotation(((Entity) elementToModify).getRotation());
+                         */
                         break;
                     case "Mandatory":
-                        if (checkbox.isDisabled()) return;
-                        checkbox.toggle();
+                        if (elementToModify instanceof MovableEntity) {
+                            ((MovableEntity) elementToModify).isHostile = checkboxes[0].isChecked();
+                            ((MovableEntity) elementToModify).isDrivable = checkboxes[1].isChecked();
+                            ((MovableEntity) elementToModify).isMandatory = checkbox.isChecked();
+                        } else if (elementToModify instanceof Item) {
+                            ((Item) elementToModify).isMandatory = checkbox.isChecked();
+                        }
+                        copy = MapElements.getDeepCopy(elementToModify);
+
+                        /*
                         copy = MapElements.getCopyByName(
                                 elementToModify.getPosition(),
                                 elementToModify.getClass().getSimpleName(),
                                 checkboxes[0].isChecked(),
                                 checkboxes[1].isChecked()
                         );
+                         */
                         break;
                 }
                 if (copy != null) {
-                    copy.isMandatory = checkbox.isChecked();
+                    //copy.isMandatory = checkbox.isChecked();
                     levelEditor.replaceModifiedElement(copy);
                 }
                 return;
@@ -174,12 +189,17 @@ public class ElementModifier extends ToolbarScreen {
             } else {
                 checkboxes[1].setDisabled(true);
             }
+            checkboxes[2].setChecked(((Entity) elementToModify).isMandatory);
         } else {
+            if (elementToModify instanceof InteractionCircle) {
+                checkboxes[2].setDisabled(true);
+            } else if (elementToModify instanceof Item) {
+                checkboxes[2].setDisabled(false);
+                checkboxes[2].setChecked(((Item) elementToModify).isMandatory);
+            }
             checkboxes[0].setDisabled(true);
             checkboxes[1].setDisabled(true);
-            checkboxes[2].setDisabled(false);
         }
-        checkboxes[2].setChecked(elementToModify.isMandatory);
     }
 
 }

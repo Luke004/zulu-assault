@@ -12,6 +12,7 @@ public abstract class Item extends Element {
 
     public Animation animation;
     private final static int IMAGE_WIDTH_AND_HEIGHT = 40;
+    public boolean isMandatory;
 
     public Item(Vector2f position) {
         this.position = position;

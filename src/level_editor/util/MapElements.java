@@ -21,6 +21,7 @@ import game.models.entities.windmills.WindmillGreen;
 import game.models.entities.windmills.WindmillGrey;
 import game.models.entities.windmills.WindmillYellow;
 import game.models.interaction_circles.HealthCircle;
+import game.models.interaction_circles.InteractionCircle;
 import game.models.interaction_circles.TeleportCircle;
 import game.models.items.*;
 import level_editor.screens.windows.toolbars.right.screens.EntityAdder;
@@ -194,8 +195,12 @@ public class MapElements {
         return getCopyByName(new Vector2f(0, 0), name, isHostile, isDrivable);
     }
 
+    public static Element getDeepCopy(Element element) {
+        return getDeepCopy(element, 0, 0);
+    }
+
     public static Element getDeepCopy(Element element, float xOffset, float yOffset) {
-        Element copy;
+        Element copy = null;
         if (element instanceof MovableEntity) {
             MovableEntity movableEntity = (MovableEntity) element;
             copy = MapElements.getCopyByName(
@@ -203,7 +208,10 @@ public class MapElements {
                     movableEntity.getClass().getSimpleName(),
                     movableEntity.isHostile,
                     movableEntity.isDrivable);
-            if (copy != null) ((MovableEntity) copy).setRotation(((Entity) element).getRotation());
+            if (copy != null) {
+                ((MovableEntity) copy).setRotation(((Entity) element).getRotation());
+                ((Entity) copy).isMandatory = ((Entity) element).isMandatory;
+            }
         } else if (element instanceof Entity) {
             Entity entity = (Entity) element;
             copy = MapElements.getCopyByName(
@@ -212,17 +220,25 @@ public class MapElements {
                     entity.isHostile
             );
             // add rotation
-            if (copy != null) ((Entity) copy).setRotation(((Entity) element).getRotation());
-        } else {
+            if (copy != null) {
+                ((Entity) copy).setRotation(((Entity) element).getRotation());
+                ((Entity) copy).isMandatory = ((Entity) element).isMandatory;
+            }
+        } else if (element instanceof Item) {
+            copy = MapElements.getCopyByName(
+                    new Vector2f(element.getPosition().x + xOffset, element.getPosition().y + yOffset),
+                    element.getClass().getSimpleName()
+            );
+            if (copy != null) {
+                ((Item) copy).isMandatory = ((Item) element).isMandatory;
+            }
+        } else if (element instanceof InteractionCircle) {
             copy = MapElements.getCopyByName(
                     new Vector2f(element.getPosition().x + xOffset, element.getPosition().y + yOffset),
                     element.getClass().getSimpleName()
             );
         }
-        if (copy != null) {
-            copy.isMandatory = element.isMandatory;
-            return copy;
-        } else return null;
+        return copy;
     }
 
 }

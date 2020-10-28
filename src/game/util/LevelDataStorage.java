@@ -3,6 +3,8 @@ package game.util;
 import game.models.Element;
 import game.models.entities.Entity;
 import game.models.entities.MovableEntity;
+import game.models.interaction_circles.InteractionCircle;
+import game.models.items.Item;
 import level_editor.util.MapElements;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -20,15 +22,23 @@ public class LevelDataStorage implements Serializable {
     public String mission_title, briefing_message, debriefing_message;
     public int musicIdx;
 
-    public List<ElementData> allElements;
+    public List<ItemData> allItems;
+    public List<CircleData> allCircles;
     public List<EntityData> allEntities;
 
     public LevelDataStorage() {
-        allElements = new LinkedList<>();
+        allItems = new LinkedList<>();
+        allCircles = new LinkedList<>();
         allEntities = new LinkedList<>();
     }
 
-    static class ElementData implements Serializable {
+    static class ItemData implements Serializable {
+        private String name;
+        float xPos, yPos;
+        boolean isMandatory;
+    }
+
+    static class CircleData implements Serializable {
         private String name;
         float xPos, yPos;
     }
@@ -53,18 +63,24 @@ public class LevelDataStorage implements Serializable {
                 entityData.rotation = entity.getRotation();
                 entityData.xPos = entity.getPosition().x;
                 entityData.yPos = entity.getPosition().y;
-
                 if (element instanceof MovableEntity) {
                     MovableEntity movableEntity = (MovableEntity) element;
                     entityData.isDrivable = movableEntity.isDrivable;
                 }
                 allEntities.add(entityData);
-            } else {
-                ElementData elementData = new ElementData();
-                elementData.name = element.getClass().getSimpleName();
-                elementData.xPos = element.getPosition().x;
-                elementData.yPos = element.getPosition().y;
-                allElements.add(elementData);
+            } else if (element instanceof InteractionCircle) {
+                CircleData circleData = new CircleData();
+                circleData.name = element.getClass().getSimpleName();
+                circleData.xPos = element.getPosition().x;
+                circleData.yPos = element.getPosition().y;
+                allCircles.add(circleData);
+            } else if (element instanceof Item) {
+                ItemData itemData = new ItemData();
+                itemData.name = element.getClass().getSimpleName();
+                itemData.xPos = element.getPosition().x;
+                itemData.yPos = element.getPosition().y;
+                itemData.isMandatory = ((Item) element).isMandatory;
+                allItems.add(itemData);
             }
         }
         // save mission description
@@ -113,13 +129,31 @@ public class LevelDataStorage implements Serializable {
         }
     }
 
-    public List<Element> getAllElements() {
-        List<Element> elements = new LinkedList<>();
-        for (ElementData elementData : allElements) {
-            Element copy = MapElements.getCopyByName(new Vector2f(elementData.xPos, elementData.yPos), elementData.name);
-            elements.add(copy);
+    public List<Item> getAllItems() {
+        List<Item> items = new LinkedList<>();
+        for (ItemData itemData : allItems) {
+            Element copy = MapElements.getCopyByName(new Vector2f(itemData.xPos, itemData.yPos), itemData.name);
+            if (copy == null) continue;
+            if (copy instanceof Item) {
+                Item casted_copy = (Item) copy;
+                casted_copy.isMandatory = itemData.isMandatory;
+                items.add(casted_copy);
+            }
         }
-        return elements;
+        return items;
+    }
+
+    public List<InteractionCircle> getAllCircles() {
+        List<InteractionCircle> circles = new LinkedList<>();
+        for (CircleData circleData : allCircles) {
+            Element copy = MapElements.getCopyByName(new Vector2f(circleData.xPos, circleData.yPos), circleData.name);
+            if (copy == null) continue;
+            if (copy instanceof InteractionCircle) {
+                InteractionCircle casted_copy = (InteractionCircle) copy;
+                circles.add(casted_copy);
+            }
+        }
+        return circles;
     }
 
     public List<Entity> getAllEntities() {

@@ -24,7 +24,7 @@ public abstract class Entity extends Element {
     // specs related
     protected static final float MAX_HEALTH = 100;
     protected float current_health;
-    public boolean isHostile, isDestroyed;
+    public boolean isHostile, isDestroyed, isMandatory;
     protected boolean isEnemyNear;
 
     // game.graphics related
@@ -230,10 +230,6 @@ public abstract class Entity extends Element {
 
     public enum WeaponType {
         WEAPON_1, WEAPON_2, MEGA_PULSE
-    }
-
-    public void setAsMandatory() {
-        this.isMandatory = true;
     }
 
     public void addListeners(Level level) {
