@@ -1,6 +1,7 @@
 package level_editor.screens.windows.toolbars.right.screens;
 
 import game.audio.MenuSounds;
+import level_editor.LevelEditor;
 import level_editor.screens.windows.Window;
 import level_editor.screens.elements.Button;
 import level_editor.screens.windows.toolbars.right.RightToolbar;
@@ -71,13 +72,13 @@ public class SpecifyElement extends ToolbarScreen {
                 MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
                 switch (b.getName()) {
                     case "ITEM":
-                        rightToolbar.setScreen(RightToolbar.SCREEN_SELECT_ITEM);
+                        rightToolbar.setScreen(RightToolbar.SCREEN_ADD_ITEM);
                         break;
                     case "ENTITY":
-                        rightToolbar.setScreen(RightToolbar.SCREEN_SELECT_ENTITY);
+                        rightToolbar.setScreen(RightToolbar.SCREEN_ADD_ENTITY);
                         break;
                     case "CIRCLE":
-                        rightToolbar.setScreen(RightToolbar.SCREEN_SELECT_CIRCLE);
+                        rightToolbar.setScreen(RightToolbar.SCREEN_ADD_CIRCLE);
                         break;
                     case "WAYPOINT":
                         //rightToolbar.setScreen(RightToolbar.SCREEN_SELECT_ITEM);

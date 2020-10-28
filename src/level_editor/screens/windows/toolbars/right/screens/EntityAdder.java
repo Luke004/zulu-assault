@@ -1,7 +1,6 @@
 package level_editor.screens.windows.toolbars.right.screens;
 
 import game.audio.MenuSounds;
-import game.models.entities.Entity;
 import level_editor.LevelEditor;
 import level_editor.screens.windows.Window;
 import level_editor.screens.elements.Checkbox;
@@ -12,31 +11,24 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import settings.UserSettings;
 
-public class EntitySelector extends ElementSelector {
+public class EntityAdder extends ElementSelector {
 
     private static final String title = "ADD ENTITIES";
 
     private Checkbox[] checkboxes;
-    private LevelEditor levelEditor;
 
     public static boolean isHostile, isDrivable, isMandatory;
 
-    public EntitySelector(RightToolbar rightToolbar, LevelEditor levelEditor) {
+    public EntityAdder(RightToolbar rightToolbar, LevelEditor levelEditor) {
         super(rightToolbar, levelEditor, title);
-        this.levelEditor = levelEditor;
     }
 
     @Override
     public void render(GameContainer gc, Graphics graphics) {
         super.render(gc, graphics);
 
-        checkboxes[0].draw(graphics);
-        checkboxes[1].draw(graphics);
-
-        if (!checkboxes[0].isChecked()) {
-            checkboxes[2].drawWithOpacity(graphics);
-        } else {
-            checkboxes[2].draw(graphics);
+        for (Checkbox checkbox : checkboxes) {
+            checkbox.draw(graphics);
         }
 
     }
@@ -51,7 +43,6 @@ public class EntitySelector extends ElementSelector {
     public void onMouseClick(int mouseX, int mouseY) {
         super.onMouseClick(mouseX, mouseY);
 
-
         for (int i = 0; i < checkboxes.length; ++i) {
             if (checkboxes[i].isMouseOver(mouseX, mouseY)) {
                 MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
@@ -59,13 +50,14 @@ public class EntitySelector extends ElementSelector {
 
                 switch (i) {
                     case 0: // "isHostile" checkbox
-                        isHostile = checkboxes[i].isChecked();
-                        Element selectedElement = levelEditor.getSelectedElement();
+                        isHostile = checkboxes[0].isChecked();
+                        checkboxes[2].setDisabled(!isHostile);
+                        Element selectedElement = levelEditor.getElementToPlace();
                         if (selectedElement != null) {
                             Element replacement = MapElements.getCopyByName(selectedElement.getClass().getSimpleName(),
                                     isHostile, isDrivable);
                             if (replacement != null) {
-                                levelEditor.setSelectedElement(replacement);
+                                levelEditor.setElementToPlace(replacement);
                             }
                         }
                         return;
@@ -110,6 +102,7 @@ public class EntitySelector extends ElementSelector {
                 checkbox_width,
                 checkbox_height
         );
+        checkboxes[2].setDisabled(true);
 
         // tell the back button on which y coordinate the last selector square was drawn, so it can go below it
         return checkboxStartY + checkbox_height * 3 + Window.Props.DEFAULT_MARGIN;

@@ -16,8 +16,8 @@ import settings.UserSettings;
 
 public class BottomToolbar extends Window {
 
-    private RightToolbar rightToolbar;
     private LevelEditor levelEditor;
+    private RightToolbar rightToolbar;
     private SaveLevelPopupWindow saveLevelPopupWindow;
 
     // buttons
@@ -25,6 +25,7 @@ public class BottomToolbar extends Window {
 
     // to go back to main menu
     private StateBasedGame sbg;
+
 
     public BottomToolbar(LevelEditor levelEditor, RightToolbar rightToolbar, GameContainer gc, StateBasedGame sbg) {
         super(0, gc.getHeight() - gc.getHeight() / 17, gc.getWidth(), gc.getHeight() / 17);
@@ -98,11 +99,11 @@ public class BottomToolbar extends Window {
                         break;
                     case "SELECT":
                         rightToolbar.setScreen(RightToolbar.SCREEN_MODIFY_ELEMENT);
+                        levelEditor.setElementToPlace(null);
                         break;
                     case "SAVE":
                         saveLevelPopupWindow.show();
                         levelEditor.setPopupWindow(saveLevelPopupWindow);
-                        //
                         break;
                     case "EXIT":
                         sbg.enterState(ZuluAssault.MAIN_MENU, new FadeOutTransition(), new FadeInTransition());

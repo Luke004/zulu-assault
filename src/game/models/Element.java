@@ -10,6 +10,7 @@ public abstract class Element {
     protected Vector2f position;
     protected Image base_image;
     protected CollisionModel collisionModel;
+    public boolean isMandatory;
 
     abstract public void draw(Graphics graphics);
 

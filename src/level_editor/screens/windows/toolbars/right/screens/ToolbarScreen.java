@@ -11,12 +11,12 @@ import org.newdawn.slick.TrueTypeFont;
 
 public abstract class ToolbarScreen implements iToolbarScreens {
 
-    private String title_string;
+    protected String title_string;
     protected static TrueTypeFont title_string_drawer;
 
     protected int startX, startY;
 
-    private int titleStringX, titleStringY;
+    protected int titleStringX, titleStringY;
     private int lineY;
 
     protected RightToolbar rightToolbar;

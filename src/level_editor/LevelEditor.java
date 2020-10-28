@@ -3,6 +3,7 @@ package level_editor;
 import game.audio.MenuSounds;
 import game.graphics.fonts.FontManager;
 import game.logic.Camera;
+import game.models.CollisionModel;
 import game.models.Element;
 import game.models.entities.Entity;
 import game.models.entities.MovableEntity;
@@ -12,7 +13,7 @@ import level_editor.screens.windows.CenterPopupWindow;
 import level_editor.screens.windows.Window;
 import level_editor.screens.windows.toolbars.bottom.BottomToolbar;
 import level_editor.screens.windows.toolbars.right.RightToolbar;
-import level_editor.screens.windows.toolbars.right.screens.EntitySelector;
+import level_editor.screens.windows.toolbars.right.screens.EntityAdder;
 import level_editor.util.MapElements;
 import main.ZuluAssault;
 import org.newdawn.slick.*;
@@ -29,6 +30,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class LevelEditor extends BasicGameState {
@@ -39,7 +41,7 @@ public class LevelEditor extends BasicGameState {
     private String mapName;
 
     private List<Element> elements;
-    private Element selectedElement;
+    private Element elementToPlace, elementToModify;
 
     private static final String title_string;
     private static TrueTypeFont title_string_drawer;
@@ -60,6 +62,10 @@ public class LevelEditor extends BasicGameState {
     private BottomToolbar bottomToolbar;
     private CenterPopupWindow popupWindow;
 
+    // for selecting elements
+    private CollisionModel mouseCollisionModel;
+    private Vector2f mousePosition;
+
     private Camera camera;
 
     static {
@@ -68,6 +74,8 @@ public class LevelEditor extends BasicGameState {
 
     public LevelEditor() {
         elements = new ArrayList<>();
+        mousePosition = new Vector2f();
+        mouseCollisionModel = new CollisionModel(mousePosition, 4, 4);
     }
 
     @Override
@@ -75,7 +83,7 @@ public class LevelEditor extends BasicGameState {
         Window.Props.initMargin(gc.getWidth());
         title_string_drawer = FontManager.getStencilBigFont();
         rightToolbar = new RightToolbar(this, TITLE_RECT_HEIGHT + 1, gc);
-        bottomToolbar = new BottomToolbar(this, (RightToolbar) rightToolbar, gc, sbg);
+        bottomToolbar = new BottomToolbar(this, rightToolbar, gc, sbg);
     }
 
     @Override
@@ -139,14 +147,13 @@ public class LevelEditor extends BasicGameState {
             element.draw(graphics);
         }
 
-
         camera.untranslateGraphics();
         // draw all instances that are static above the map (HUD) below
 
         // draw the selected element
         if (isMouseInEditor) {
-            if (selectedElement != null) {
-                selectedElement.draw(graphics);
+            if (elementToPlace != null) {
+                elementToPlace.draw(graphics);
             }
         }
 
@@ -229,12 +236,12 @@ public class LevelEditor extends BasicGameState {
             }
         }
 
-        if (selectedElement != null) {
-            if (!(selectedElement instanceof Item)) {
-                selectedElement.editorUpdate(gc, dt);
+        if (elementToPlace != null) {
+            if (!(elementToPlace instanceof Item)) {
+                elementToPlace.editorUpdate(gc, dt);
             }
-            selectedElement.getPosition().x = gc.getInput().getMouseX();
-            selectedElement.getPosition().y = gc.getInput().getMouseY();
+            elementToPlace.getPosition().x = gc.getInput().getMouseX();
+            elementToPlace.getPosition().y = gc.getInput().getMouseY();
         }
 
         for (Element element : elements) {
@@ -251,14 +258,17 @@ public class LevelEditor extends BasicGameState {
                 && gc.getInput().getMouseY() > TITLE_RECT_HEIGHT
                 && gc.getInput().getMouseY() < bottomToolbar.getY());
 
+        this.mousePosition.x = mapX + gc.getInput().getMouseX();
+        this.mousePosition.y = mapY + gc.getInput().getMouseY();
+        this.mouseCollisionModel.update(0);
     }
 
     @Override
     public void mouseWheelMoved(int change) {
         change /= 20.f;
-        if (selectedElement != null) {
-            if (selectedElement instanceof Entity) {
-                Entity entity = (Entity) selectedElement;
+        if (elementToPlace != null) {
+            if (elementToPlace instanceof Entity) {
+                Entity entity = (Entity) elementToPlace;
                 entity.setRotation(entity.getRotation() + change);
             }
             /* else {   // should not allow: rotation of items and circles
@@ -302,20 +312,38 @@ public class LevelEditor extends BasicGameState {
 
         if (isMouseInEditor) {
             if (button == Input.MOUSE_LEFT_BUTTON) {
-                if (selectedElement != null) {
-                    Element copy = MapElements.getCopyByName(new Vector2f(selectedElement.getPosition().x + mapX,
-                                    selectedElement.getPosition().y + mapY),
-                            selectedElement.getClass().getSimpleName(),
-                            EntitySelector.isHostile, EntitySelector.isDrivable);
-                    if (copy != null) {
-                        MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
-                        // add rotation and mandatory
-                        if (selectedElement instanceof Entity) {
-                            Entity entityCopy = (Entity) copy;
-                            entityCopy.setRotation(((Entity) selectedElement).getRotation());
-                            entityCopy.isMandatory = EntitySelector.isMandatory;
+                if (rightToolbar.getState() == RightToolbar.STATE_ADD) {
+                    if (elementToPlace != null) {
+                        // PLACE AN ELEMENT
+                        Element copy = MapElements.getCopyByName(new Vector2f(elementToPlace.getPosition().x + mapX,
+                                        elementToPlace.getPosition().y + mapY),
+                                elementToPlace.getClass().getSimpleName(),
+                                EntityAdder.isHostile, EntityAdder.isDrivable);
+                        if (copy != null) {
+                            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
+                            // add rotation and mandatory
+                            if (elementToPlace instanceof Entity) {
+                                Entity entityCopy = (Entity) copy;
+                                entityCopy.setRotation(((Entity) elementToPlace).getRotation());
+                                entityCopy.isMandatory = EntityAdder.isMandatory;
+                            }
+                            elements.add(copy);
                         }
-                        elements.add(copy);
+                    }
+                } else if (rightToolbar.getState() == RightToolbar.STATE_MODIFY) {
+                    // SELECT A PLACED ELEMENT TO MODIFY
+                    boolean hasSelectedElement = false;
+                    for (Element element : elements) {
+                        if (element.getCollisionModel().intersects(mouseCollisionModel)) {
+                            System.out.println("selected " + element);
+                            this.elementToModify = element;
+                            rightToolbar.notifyForModification(element);
+                            hasSelectedElement = true;
+                            break;
+                        }
+                    }
+                    if (!hasSelectedElement) {
+                        rightToolbar.notifyForModification(null);
                     }
                 }
             }
@@ -329,13 +357,31 @@ public class LevelEditor extends BasicGameState {
         }
     }
 
-    public void setSelectedElement(Element element) {
-        this.selectedElement = element;
-        element.getBaseImage().setAlpha(0.7f);
+    public void setElementToPlace(Element element) {
+        this.elementToPlace = element;
+        if (element != null) {
+            element.getBaseImage().setAlpha(0.7f);
+        }
     }
 
-    public Element getSelectedElement() {
-        return this.selectedElement;
+    public Element getElementToPlace() {
+        return this.elementToPlace;
+    }
+
+    public void replaceModifiedElement(Element replacingElement) {
+        Iterator<Element> i = elements.iterator();
+        while (i.hasNext()) {
+            if (i.next().getPosition() == replacingElement.getPosition()) {
+                i.remove();
+                elements.add(replacingElement);
+                this.elementToModify = replacingElement;
+                return;
+            }
+        }
+    }
+
+    public Element getElementToModify() {
+        return this.elementToModify;
     }
 
     public List<Element> getElements() {

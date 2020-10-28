@@ -1,5 +1,6 @@
 package level_editor.screens.windows.toolbars.right;
 
+import game.models.Element;
 import level_editor.LevelEditor;
 import level_editor.screens.windows.Window;
 import level_editor.screens.windows.toolbars.right.screens.*;
@@ -17,10 +18,13 @@ public class RightToolbar extends Window {
     private iToolbarScreens[] screens;
 
     public static final int SCREEN_ADD_ELEMENT = 0,
-            SCREEN_SELECT_ITEM = 1,
-            SCREEN_SELECT_ENTITY = 2,
-            SCREEN_SELECT_CIRCLE = 3,
+            SCREEN_ADD_ITEM = 1,
+            SCREEN_ADD_ENTITY = 2,
+            SCREEN_ADD_CIRCLE = 3,
             SCREEN_MODIFY_ELEMENT = 4;
+
+    public static final int STATE_ADD = -1, STATE_MODIFY = -2;
+    private int state;
 
     private int current_screen, prev_screen;
 
@@ -34,10 +38,10 @@ public class RightToolbar extends Window {
         // init all toolbar screens
         screens = new iToolbarScreens[5];
         screens[SCREEN_ADD_ELEMENT] = new SpecifyElement(this);
-        screens[SCREEN_SELECT_ITEM] = new ItemSelector(this, levelEditor);
-        screens[SCREEN_SELECT_ENTITY] = new EntitySelector(this, levelEditor);
-        screens[SCREEN_SELECT_CIRCLE] = new CircleSelector(this, levelEditor);
-        screens[SCREEN_MODIFY_ELEMENT] = new ElementModifier(this);
+        screens[SCREEN_ADD_ITEM] = new ItemAdder(this, levelEditor);
+        screens[SCREEN_ADD_ENTITY] = new EntityAdder(this, levelEditor);
+        screens[SCREEN_ADD_CIRCLE] = new CircleAdder(this, levelEditor);
+        screens[SCREEN_MODIFY_ELEMENT] = new ElementModifier(this, levelEditor);
 
         setScreen(SCREEN_ADD_ELEMENT);
     }
@@ -63,13 +67,27 @@ public class RightToolbar extends Window {
         screens[current_screen].update(gc);
     }
 
-    public void setScreen(int stateID) {
+    public void setScreen(int screenID) {
         prev_screen = current_screen;
-        current_screen = stateID;
+        current_screen = screenID;
+
+        // set the state
+        if (current_screen == SCREEN_MODIFY_ELEMENT) {
+            state = STATE_MODIFY;
+        } else {
+            state = STATE_ADD;
+        }
+    }
+
+    public int getState() {
+        return state;
     }
 
     public void goToLastScreen() {
         current_screen = prev_screen;
     }
 
+    public void notifyForModification(Element element) {
+        ((ElementModifier) screens[current_screen]).setupElement(element);
+    }
 }

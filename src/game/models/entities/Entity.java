@@ -25,7 +25,6 @@ public abstract class Entity extends Element {
     protected static final float MAX_HEALTH = 100;
     protected float current_health;
     public boolean isHostile, isDestroyed;
-    public boolean isMandatory;
     protected boolean isEnemyNear;
 
     // game.graphics related

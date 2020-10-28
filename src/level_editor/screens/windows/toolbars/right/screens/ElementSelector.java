@@ -1,6 +1,7 @@
 package level_editor.screens.windows.toolbars.right.screens;
 
 import game.audio.MenuSounds;
+import game.levels.Level;
 import level_editor.LevelEditor;
 import level_editor.screens.windows.Window;
 import level_editor.screens.elements.Button;
@@ -17,16 +18,16 @@ import java.util.List;
 
 public abstract class ElementSelector extends ToolbarScreen {
 
-    private LevelEditor levelEditor;
-
     protected List<SelectorSquare> selectorSquareList;
 
     private Button backButton;
 
+    protected LevelEditor levelEditor;
+
     public ElementSelector(RightToolbar rightToolbar, LevelEditor levelEditor, String title) {
         super(rightToolbar, title);
-        this.levelEditor = levelEditor;
         selectorSquareList = new ArrayList<>();
+        this.levelEditor = levelEditor;
 
         int backButtonStartY = initSuperElements();
 
@@ -93,7 +94,7 @@ public abstract class ElementSelector extends ToolbarScreen {
         for (SelectorSquare selectorSquare : selectorSquareList) {
             if (selectorSquare.clicked(mouseX, mouseY)) {
                 MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
-                levelEditor.setSelectedElement(selectorSquare.getElement());
+                levelEditor.setElementToPlace(selectorSquare.getElement());
                 return;
             }
         }
@@ -130,7 +131,7 @@ public abstract class ElementSelector extends ToolbarScreen {
         }
 
         Element getElement() {
-            return MapElements.getCopyByName(element.getClass().getSimpleName(), EntitySelector.isHostile, EntitySelector.isDrivable);
+            return MapElements.getCopyByName(element.getClass().getSimpleName(), EntityAdder.isHostile, EntityAdder.isDrivable);
         }
 
     }

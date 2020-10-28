@@ -11,7 +11,7 @@ public class Checkbox extends ToolbarElement {
     private int innerCheckboxX, innerCheckboxY;
     private int outerCheckboxY;
 
-    private boolean isChecked;
+    private boolean isChecked, isDisabled;
 
     private static Color lightGreyWithOpacity = new Color(0.7f, 0.7f, 0.7f, 0.5f);
 
@@ -34,7 +34,7 @@ public class Checkbox extends ToolbarElement {
         //game.graphics.drawRect(xPos, yPos, width, height);
 
         // draw the check rect
-        graphics.setColor(Color.lightGray);
+        graphics.setColor(isDisabled ? lightGreyWithOpacity : Color.lightGray);
         if (isChecked) {
             graphics.fillRect(innerCheckboxX,
                     innerCheckboxY,
@@ -43,14 +43,16 @@ public class Checkbox extends ToolbarElement {
         }
         graphics.drawRect(xPos, outerCheckboxY, outerCheckboxSize, outerCheckboxSize);
 
-        string_drawer.drawString(xNameString, yNameString, name, Color.lightGray);
+        string_drawer.drawString(xNameString, yNameString, name, isDisabled ? lightGreyWithOpacity : Color.lightGray);
     }
 
+    /*
     public void drawWithOpacity(Graphics graphics) {
         graphics.setColor(lightGreyWithOpacity);
         graphics.drawRect(xPos, outerCheckboxY, outerCheckboxSize, outerCheckboxSize);
         string_drawer.drawString(xNameString, yNameString, name, lightGreyWithOpacity);
     }
+     */
 
     @Override
     public void update(GameContainer gc) {
@@ -61,8 +63,21 @@ public class Checkbox extends ToolbarElement {
         isChecked = !isChecked;
     }
 
+    public void setChecked(boolean val) {
+        isChecked = val;
+    }
+
+    public void setDisabled(boolean val) {
+        isDisabled = val;
+        isChecked = false;
+    }
+
     public boolean isChecked() {
         return isChecked;
+    }
+
+    public boolean isDisabled() {
+        return isDisabled;
     }
 
 }

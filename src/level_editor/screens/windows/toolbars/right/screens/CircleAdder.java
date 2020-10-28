@@ -4,11 +4,11 @@ import level_editor.LevelEditor;
 import level_editor.screens.windows.toolbars.right.RightToolbar;
 import level_editor.util.MapElements;
 
-public class CircleSelector extends ElementSelector {
+public class CircleAdder extends ElementSelector {
 
     private static final String title = "ADD CIRCLES";
 
-    public CircleSelector(RightToolbar rightToolbar, LevelEditor levelEditor) {
+    public CircleAdder(RightToolbar rightToolbar, LevelEditor levelEditor) {
         super(rightToolbar, levelEditor, title);
     }
 
