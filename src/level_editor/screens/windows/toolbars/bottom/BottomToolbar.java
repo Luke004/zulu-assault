@@ -50,7 +50,7 @@ public class BottomToolbar extends Window {
                 button_width,
                 button_height);
 
-        buttons[1] = new Button("SELECT",
+        buttons[1] = new Button("MODIFY",
                 button_width + button_margin_x * 2,
                 buttonY,
                 button_width,
@@ -97,7 +97,7 @@ public class BottomToolbar extends Window {
                     case "ADD":
                         rightToolbar.setScreen(RightToolbar.SCREEN_ADD_ELEMENT);
                         break;
-                    case "SELECT":
+                    case "MODIFY":
                         rightToolbar.setScreen(RightToolbar.SCREEN_MODIFY_ELEMENT);
                         levelEditor.setElementToPlace(null);
                         break;

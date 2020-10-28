@@ -406,11 +406,13 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
         combatBackgroundMusic.update();
         hasWonTheLevel = checkWon();
     }
-
-    // TODO: 25.10.2020 add windmills to check won
+    
     private boolean checkWon() {
         for (Entity entity : all_entities) {
             if (entity.isMandatory) return false;
+        }
+        for (Item item : items) {
+            if (item.isMandatory) return false;
         }
         return true;
     }
