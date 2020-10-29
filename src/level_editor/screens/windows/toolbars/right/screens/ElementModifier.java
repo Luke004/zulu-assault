@@ -33,7 +33,7 @@ public class ElementModifier extends ToolbarScreen {
         int checkbox_width = Window.Props.calcRectSize(rightToolbar.getWidth(), 0.1f, 1);
         int checkbox_height = Window.Props.calcRectSize(rightToolbar.getHeight() / 14, 0.5f, 1);
 
-        checkboxes = new Checkbox[3];
+        checkboxes = new Checkbox[4];
         checkboxes[0] = new Checkbox("Hostile",
                 checkbox_x,
                 startY + Window.Props.DEFAULT_MARGIN,
@@ -53,16 +53,23 @@ public class ElementModifier extends ToolbarScreen {
                 checkbox_height
         );
 
+        checkboxes[3] = new Checkbox("Player",
+                checkbox_x,
+                startY + checkbox_height * 3 + Window.Props.DEFAULT_MARGIN,
+                checkbox_width,
+                checkbox_height
+        );
+
         buttons = new Button[2];
         buttons[0] = new Button("MOVE",
                 checkbox_x,
-                startY + checkbox_height * 3 + Window.Props.DEFAULT_MARGIN * 4,
+                startY + checkbox_height * 4 + Window.Props.DEFAULT_MARGIN * 5,
                 checkbox_width,
                 checkbox_height
         );
         buttons[1] = new Button("DELETE",
                 checkbox_x,
-                startY + checkbox_height * 4 + Window.Props.DEFAULT_MARGIN * 6,
+                startY + checkbox_height * 6 + Window.Props.DEFAULT_MARGIN * 7,
                 checkbox_width,
                 checkbox_height
         );
@@ -101,6 +108,15 @@ public class ElementModifier extends ToolbarScreen {
                 switch (checkbox.getName()) {
                     case "Hostile":
                         checkboxes[2].setDisabled(!checkbox.isChecked());
+                        if (elementToModify instanceof MovableEntity) {
+                            checkboxes[3].setDisabled(checkbox.isChecked());
+                            if (elementToModify.equals(levelEditor.getPlayerEntity())) {
+                                if (checkbox.isChecked()) {
+                                    // player entity was set to hostile --> clear player entity
+                                    levelEditor.setPlayerEntity(null);
+                                }
+                            }
+                        }
                         copy = MapElements.getCopyByName(
                                 elementToModify.getPosition(),
                                 elementToModify.getClass().getSimpleName(),
@@ -125,6 +141,16 @@ public class ElementModifier extends ToolbarScreen {
                             ((Item) elementToModify).isMandatory = checkbox.isChecked();
                         }
                         copy = MapElements.getDeepCopy(elementToModify);
+                        break;
+                    case "Player":
+                        if(checkbox.isChecked()){
+                            levelEditor.setPlayerEntity(elementToModify);
+                            checkboxes[1].setDisabled(true);
+                        } else {
+                            levelEditor.setPlayerEntity(null);
+                            checkboxes[1].setDisabled(false);
+                        }
+
                         break;
                 }
                 if (copy != null) {
@@ -168,9 +194,17 @@ public class ElementModifier extends ToolbarScreen {
             checkboxes[2].setDisabled((!((Entity) elementToModify).isHostile));
             if (elementToModify instanceof MovableEntity) {
                 checkboxes[1].setDisabled(false);
-                checkboxes[1].setChecked((((MovableEntity) elementToModify).isDrivable));
+                checkboxes[3].setDisabled(false);
+                if (elementToModify.equals(levelEditor.getPlayerEntity())) {
+                    checkboxes[3].setChecked(true);
+                    checkboxes[1].setDisabled(true);
+                } else {
+                    checkboxes[1].setChecked((((MovableEntity) elementToModify).isDrivable));
+                    if (checkboxes[0].isChecked()) checkboxes[3].setDisabled(true);
+                }
             } else {
                 checkboxes[1].setDisabled(true);
+                checkboxes[3].setDisabled(true);
             }
             checkboxes[2].setChecked(((Entity) elementToModify).isMandatory);
         } else {
@@ -182,6 +216,7 @@ public class ElementModifier extends ToolbarScreen {
             }
             checkboxes[0].setDisabled(true);
             checkboxes[1].setDisabled(true);
+            checkboxes[3].setDisabled(true);
         }
     }
 

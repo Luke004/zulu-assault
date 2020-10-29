@@ -4,6 +4,7 @@ import game.audio.MenuSounds;
 import level_editor.LevelEditor;
 import level_editor.screens.windows.Window;
 import level_editor.screens.elements.Button;
+import level_editor.screens.windows.center.ErrorPopupWindow;
 import level_editor.screens.windows.center.SaveLevelPopupWindow;
 import level_editor.screens.windows.toolbars.right.RightToolbar;
 import main.ZuluAssault;
@@ -19,6 +20,7 @@ public class BottomToolbar extends Window {
     private LevelEditor levelEditor;
     private RightToolbar rightToolbar;
     private SaveLevelPopupWindow saveLevelPopupWindow;
+    private ErrorPopupWindow errorPopupWindow;
 
     // buttons
     private Button[] buttons;
@@ -32,7 +34,8 @@ public class BottomToolbar extends Window {
         this.levelEditor = levelEditor;
         this.rightToolbar = rightToolbar;
         this.sbg = sbg;
-        this.saveLevelPopupWindow = new SaveLevelPopupWindow("SAVE LEVEL", gc, levelEditor);
+        this.saveLevelPopupWindow = new SaveLevelPopupWindow(gc, levelEditor);
+        this.errorPopupWindow = new ErrorPopupWindow(gc, levelEditor);
 
         // create the four buttons
         final int BUTTON_SIZE = 4;
@@ -78,7 +81,6 @@ public class BottomToolbar extends Window {
         for (Button b : buttons) {
             b.draw(graphics);
         }
-        saveLevelPopupWindow.draw(gc, graphics);
     }
 
     @Override
@@ -102,8 +104,15 @@ public class BottomToolbar extends Window {
                         levelEditor.setElementToPlace(null);
                         break;
                     case "SAVE":
-                        saveLevelPopupWindow.show();
-                        levelEditor.setPopupWindow(saveLevelPopupWindow);
+                        if (levelEditor.getPlayerEntity() == null) {
+                            this.errorPopupWindow.setTitle("NO PLAYER");
+                            this.errorPopupWindow.setMessage("No player defined.");
+                            this.errorPopupWindow.show();
+                            levelEditor.setPopupWindow(errorPopupWindow);
+                        } else {
+                            saveLevelPopupWindow.show();
+                            levelEditor.setPopupWindow(saveLevelPopupWindow);
+                        }
                         break;
                     case "EXIT":
                         sbg.enterState(ZuluAssault.MAIN_MENU, new FadeOutTransition(), new FadeInTransition());

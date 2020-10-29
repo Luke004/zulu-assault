@@ -1,6 +1,5 @@
 package level_editor.screens.windows.center;
 
-import game.graphics.fonts.FontManager;
 import game.util.LevelDataStorage;
 import level_editor.LevelEditor;
 import level_editor.screens.elements.Button;
@@ -8,39 +7,30 @@ import level_editor.screens.windows.CenterPopupWindow;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.gui.TextField;
 
 public class SaveLevelPopupWindow extends CenterPopupWindow {
 
-    private static TrueTypeFont textFieldFont;
-
-    private LevelEditor levelEditor;
-
+    private static final String title = "SAVE LEVEL";
     private TextField[] textFields;
-
     private Button confirmBtn;
 
-    static {
-        textFieldFont = FontManager.getConsoleOutputFont(false);
-    }
-
-    public SaveLevelPopupWindow(String title, GameContainer gc, LevelEditor levelEditor) {
-        super(title, gc);
+    public SaveLevelPopupWindow(GameContainer gc, LevelEditor levelEditor) {
+        super(title, gc, levelEditor);
         this.levelEditor = levelEditor;
 
         textFields = new TextField[3];
 
         // title text field
-        textFields[0] = new TextField(gc, textFieldFont, windowX + Props.DEFAULT_MARGIN, startYSuper, 100, 20);
+        textFields[0] = new TextField(gc, text_drawer, windowX + Props.DEFAULT_MARGIN, startYSuper, 100, 20);
         textFields[0].setMaxLength(20);
 
         // briefing message text field
-        textFields[1] = new TextField(gc, textFieldFont, windowX + Props.DEFAULT_MARGIN, startYSuper, 100, 20);
+        textFields[1] = new TextField(gc, text_drawer, windowX + Props.DEFAULT_MARGIN, startYSuper, 100, 20);
         textFields[1].setMaxLength(1000);
 
         // debriefing message text field
-        textFields[2] = new TextField(gc, textFieldFont, windowX + Props.DEFAULT_MARGIN, startYSuper, 100, 20);
+        textFields[2] = new TextField(gc, text_drawer, windowX + Props.DEFAULT_MARGIN, startYSuper, 100, 20);
         textFields[2].setMaxLength(1000);
 
         for (int i = 0; i < textFields.length; ++i) {
@@ -87,6 +77,8 @@ public class SaveLevelPopupWindow extends CenterPopupWindow {
                     textFields[1].getText(),
                     textFields[2].getText()
             );
+            this.isActive = false;
+            levelEditor.setPopupWindow(null);
         }
     }
 }

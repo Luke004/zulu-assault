@@ -6,6 +6,7 @@ import java.util.List;
 import game.audio.MenuSounds;
 import game.graphics.fonts.FontManager;
 import game.util.LevelDataStorage;
+import game.util.StringUtil;
 import main.ZuluAssault;
 import settings.UserSettings;
 import org.newdawn.slick.*;
@@ -22,7 +23,7 @@ public class Debriefing extends BasicGameState {
 
     private String finished_level_Name;
 
-    private List<String> debriefing_message;
+    private List<String> debriefing_message_line_split_list;
     private String debriefing_header, debriefing_mission_header, confirm_message, mission_title_abstract;
     private static TrueTypeFont text_drawer;
     private static boolean has_initialized_once;
@@ -43,26 +44,18 @@ public class Debriefing extends BasicGameState {
         LevelDataStorage lds = LevelDataStorage.loadLevel(ZuluAssault.nextLevelName, isStandardLevel);
 
         if (lds != null) {
-            String debriefing_message = lds.debriefing_message;
+            String s_debriefing_message = lds.debriefing_message;
             String mission_title_detailed = lds.mission_title;
             this.finished_level_Name = ZuluAssault.nextLevelName;
-            this.debriefing_message = new ArrayList<>();
-            if (debriefing_message == null || debriefing_message.isEmpty()) {
-                this.debriefing_message.add("You have won the level. Well done!");
+            this.debriefing_message_line_split_list = new ArrayList<>();
+            if (s_debriefing_message == null || s_debriefing_message.isEmpty()) {
+                this.debriefing_message_line_split_list.add("You have won the level. Well done!");
             } else {
-                String[] split_strings = debriefing_message.split("\\s+");
-                StringBuilder builder = new StringBuilder();
-
-                for (String next_part : split_strings) {
-                    builder.append(next_part).append(" ");
-                    if (text_drawer.getWidth(builder.toString()) > gameContainer.getWidth() - 50) {
-                        this.debriefing_message.add(builder.toString());
-                        builder.setLength(0);
-                    }
-                }
-                if (builder.length() > 0) {
-                    this.debriefing_message.add(builder.toString());
-                }
+                this.debriefing_message_line_split_list = StringUtil.getLineSplitMessageList(
+                        s_debriefing_message,
+                        gameContainer.getWidth() - TEXT_MARGIN * 2,
+                        text_drawer
+                );
             }
 
             if (isStandardLevel) {
@@ -81,8 +74,6 @@ public class Debriefing extends BasicGameState {
         if (!has_initialized_once) {
             // this gets only executed once
             has_initialized_once = true;
-            //this.gameContainer = gameContainer;
-            //this.stateBasedGame = stateBasedGame;
             text_drawer = FontManager.getConsoleInputFont();
             MESSAGE_Y_START = gameContainer.getHeight() / 8.f;
             this.confirm_message = "Press a key to confirm orders.";
@@ -111,11 +102,11 @@ public class Debriefing extends BasicGameState {
                 MESSAGE_Y_START + MESSAGE_HEIGHT,
                 debriefing_mission_header);
 
-        for (int idx = 0; idx < debriefing_message.size(); ++idx) {
+        for (int idx = 0; idx < debriefing_message_line_split_list.size(); ++idx) {
             text_drawer.drawString(
                     TEXT_MARGIN,
                     MESSAGE_Y_START + MESSAGE_HEIGHT * (3 + idx),
-                    debriefing_message.get(idx));
+                    debriefing_message_line_split_list.get(idx));
         }
 
         text_drawer.drawString(

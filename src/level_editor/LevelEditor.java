@@ -43,6 +43,11 @@ public class LevelEditor extends BasicGameState {
     private List<Element> elements;
     private Element elementToPlace, elementToModify;
 
+    // player entity
+    private Element playerEntity;
+    private static final Color opacityBlue = new Color(16, 133, 199, 80);
+    private int playerOvalX, playerOvalY, playerOvalSize;
+
     private static final String title_string;
     private static TrueTypeFont title_string_drawer;
 
@@ -142,8 +147,15 @@ public class LevelEditor extends BasicGameState {
         camera.translateGraphics();
         // draw all instances that are moving with the map (ENTITIES, ITEMS, CIRCLES etc..) below
 
-        // draw placed elements
 
+        // draw the player
+        if (playerEntity != null) {
+            graphics.setColor(opacityBlue);
+            //System.out.println(playerEntity.getPosition());
+            graphics.fillOval(playerOvalX, playerOvalY, playerOvalSize, playerOvalSize);
+        }
+
+        // draw placed elements
         for (Element element : elements) {
             element.draw(graphics);
         }
@@ -333,6 +345,7 @@ public class LevelEditor extends BasicGameState {
                     if (elementToPlace != null) {
                         Element copy = MapElements.getDeepCopy(elementToPlace, mapX, mapY);
                         elements.add(copy);
+                        if (this.elementToPlace.equals(playerEntity)) setPlayerEntity(copy);  // player entity is moved
                         elementToPlace = null;
                     }
 
@@ -388,6 +401,7 @@ public class LevelEditor extends BasicGameState {
     }
 
     public void removeElement(Element elementToRemove) {
+        if (elementToRemove.equals(this.playerEntity)) this.playerEntity = null;
         Iterator<Element> i = elements.iterator();
         while (i.hasNext()) {
             Element nextElement = i.next();
@@ -425,9 +439,27 @@ public class LevelEditor extends BasicGameState {
         return this.popupWindow != null;
     }
 
+    public void setPlayerEntity(Element playerEntity) {
+        this.playerEntity = playerEntity;
+        if (playerEntity == null) return;
+        Image playerImage = playerEntity.getBaseImage();
+
+        playerOvalSize = (int) (Math.max(playerImage.getHeight(), playerImage.getWidth()) * 1.5);
+        playerOvalX = (int) (playerEntity.getPosition().x - playerOvalSize / 2);
+        playerOvalY = (int) (playerEntity.getPosition().y - playerOvalSize / 2);
+    }
+
+    public Element getPlayerEntity() {
+        return this.playerEntity;
+    }
+
     public void setPopupWindow(CenterPopupWindow popupWindow) {
-        isMouseInEditor = false;
-        this.popupWindow = popupWindow;
+        if (popupWindow != null) {
+            isMouseInEditor = false;
+            this.popupWindow = popupWindow;
+        } else {
+            this.popupWindow = null;
+        }
     }
 
     public String getSimpleMapName() {

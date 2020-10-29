@@ -18,6 +18,12 @@ public abstract class Window {
         this.windowHeight = windowHeight;
     }
 
+    /* for windows that have their height based on how much elements it has */
+    public Window(int windowX, int windowWidth) {
+        this.windowX = windowX;
+        this.windowWidth = windowWidth;
+    }
+
     public void draw(GameContainer gc, Graphics graphics) {
         // background
         graphics.setColor(Color.black);

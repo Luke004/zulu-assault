@@ -4,6 +4,7 @@ import game.audio.CombatBackgroundMusic;
 import game.audio.MenuSounds;
 import game.graphics.fonts.FontManager;
 import game.util.LevelDataStorage;
+import game.util.StringUtil;
 import main.ZuluAssault;
 import settings.UserSettings;
 import org.newdawn.slick.Graphics;
@@ -28,7 +29,7 @@ public class Briefing extends BasicGameState {
     private Thread loadMusicThread;
     private int musicIdx;
 
-    private List<String> briefing_message;
+    private List<String> briefing_message_line_split_list;
     private String briefing_header, briefing_mission_header, confirm_message, mission_title_abstract;
     private static TrueTypeFont text_drawer;
     private static boolean has_initialized_once;
@@ -55,24 +56,16 @@ public class Briefing extends BasicGameState {
             this.musicIdx = lds.musicIdx;
             String s_briefingMessage = lds.briefing_message;
             String mission_title_detailed = lds.mission_title;
-            this.briefing_message = new ArrayList<>();
+            this.briefing_message_line_split_list = new ArrayList<>();
 
             if (s_briefingMessage.isEmpty()) {
-                this.briefing_message.add("The creator did not create a briefing message. Good luck!");
+                this.briefing_message_line_split_list.add("The creator did not create a briefing message. Good luck!");
             } else {
-                String[] split_strings = s_briefingMessage.split("\\s+");
-                StringBuilder builder = new StringBuilder();
-
-                for (String next_part : split_strings) {
-                    builder.append(next_part).append(" ");
-                    if (text_drawer.getWidth(builder.toString()) > gc.getWidth() - 50) {
-                        this.briefing_message.add(builder.toString());
-                        builder.setLength(0);
-                    }
-                }
-                if (builder.length() > 0) {
-                    this.briefing_message.add(builder.toString());
-                }
+                this.briefing_message_line_split_list = StringUtil.getLineSplitMessageList(
+                        s_briefingMessage,
+                        gameContainer.getWidth() - TEXT_MARGIN * 2,
+                        text_drawer
+                );
             }
             loadMusicThread = new LoadMusicThread();
             loadMusicThread.start();
@@ -129,11 +122,11 @@ public class Briefing extends BasicGameState {
                 MESSAGE_Y_START + MESSAGE_HEIGHT,
                 briefing_mission_header);
 
-        for (int idx = 0; idx < briefing_message.size(); ++idx) {
+        for (int idx = 0; idx < briefing_message_line_split_list.size(); ++idx) {
             text_drawer.drawString(
                     TEXT_MARGIN,
                     MESSAGE_Y_START + MESSAGE_HEIGHT * (3 + idx),
-                    briefing_message.get(idx));
+                    briefing_message_line_split_list.get(idx));
         }
 
         text_drawer.drawString(

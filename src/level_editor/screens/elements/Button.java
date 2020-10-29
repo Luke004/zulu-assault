@@ -35,4 +35,9 @@ public class Button extends ToolbarElement {
         mouseOver = isMouseOver(gc.getInput().getMouseX(), gc.getInput().getMouseY());
     }
 
+    public void setYPos(int yPos) {
+        this.yPos = yPos;
+        this.yNameString = (int) (yPos + height / 2.f - string_drawer.getHeight(name) / 2.f);
+    }
+
 }
