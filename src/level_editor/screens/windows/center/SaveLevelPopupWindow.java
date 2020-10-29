@@ -3,6 +3,7 @@ package level_editor.screens.windows.center;
 import game.util.LevelDataStorage;
 import level_editor.LevelEditor;
 import level_editor.screens.elements.Button;
+import level_editor.screens.elements.TextFieldTitled;
 import level_editor.screens.windows.CenterPopupWindow;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -12,25 +13,29 @@ import org.newdawn.slick.gui.TextField;
 public class SaveLevelPopupWindow extends CenterPopupWindow {
 
     private static final String title = "SAVE LEVEL";
-    private TextField[] textFields;
+    private TextFieldTitled[] textFields;
     private Button confirmBtn;
 
     public SaveLevelPopupWindow(GameContainer gc, LevelEditor levelEditor) {
         super(title, gc, levelEditor);
         this.levelEditor = levelEditor;
 
-        textFields = new TextField[3];
+        int textFieldWidth = windowWidth - Props.DEFAULT_MARGIN * 2;
+        int textFieldHeight = 20;
 
+        textFields = new TextFieldTitled[3];
         // title text field
-        textFields[0] = new TextField(gc, text_drawer, windowX + Props.DEFAULT_MARGIN, startYSuper, 100, 20);
+        int titleTextFieldWidth = windowWidth / 2;
+        textFields[0] = new TextFieldTitled(gc, text_drawer, 0, 0, titleTextFieldWidth, textFieldHeight, "Title"
+        );
         textFields[0].setMaxLength(20);
 
         // briefing message text field
-        textFields[1] = new TextField(gc, text_drawer, windowX + Props.DEFAULT_MARGIN, startYSuper, 100, 20);
+        textFields[1] = new TextFieldTitled(gc, text_drawer, 0, 0, textFieldWidth, textFieldHeight, "Briefing");
         textFields[1].setMaxLength(1000);
 
         // debriefing message text field
-        textFields[2] = new TextField(gc, text_drawer, windowX + Props.DEFAULT_MARGIN, startYSuper, 100, 20);
+        textFields[2] = new TextFieldTitled(gc, text_drawer, 0, 0, textFieldWidth, textFieldHeight, "Debriefing");
         textFields[2].setMaxLength(1000);
 
         for (int i = 0; i < textFields.length; ++i) {
@@ -40,13 +45,32 @@ public class SaveLevelPopupWindow extends CenterPopupWindow {
             textFields[i].setBorderColor(Color.darkGray);
         }
 
-        confirmBtn = new Button("OK",
-                windowX + Props.DEFAULT_MARGIN,
-                startYSuper + textFields.length * (20 + Props.DEFAULT_MARGIN * 2),
-                100,
-                20
-        );
+        int marginsHeight = 0;
+        int textFieldsHeight = 0;
+        marginsHeight += Props.DEFAULT_MARGIN;  // one top margin
+        for (TextFieldTitled textField : textFields) {
+            textFieldsHeight += textField.getHeight();
+            marginsHeight += Props.DEFAULT_MARGIN;  // margin below each text field
+        }
 
+        int buttonWidth = 100;
+        int buttonHeight = 20;
+        confirmBtn = new Button("OK", windowX + windowWidth / 2 - buttonWidth / 2, 0, buttonWidth, buttonHeight);
+        marginsHeight += Props.DEFAULT_MARGIN * 2;  // margin for the button (top and bottom)
+
+        // calculate height of window
+        super.initHeight(textFieldsHeight + buttonHeight + marginsHeight);
+
+        // set y positions based on the height
+        int textFieldY = startYSuper;
+        for (TextField textField : textFields) {
+            textField.setLocation(windowX + windowWidth / 2 - textField.getWidth() / 2, textFieldY);
+            textFieldY += textField.getHeight() + Props.DEFAULT_MARGIN;
+        }
+        TextFieldTitled lastTextField = textFields[textFields.length - 1];
+        int textFieldMaxY = lastTextField.getY() + lastTextField.getHeight();
+
+        this.confirmBtn.setYPos(textFieldMaxY + Props.DEFAULT_MARGIN * 2);
     }
 
     @Override
