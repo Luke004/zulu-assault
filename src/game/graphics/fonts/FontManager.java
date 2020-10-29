@@ -19,10 +19,10 @@ public class FontManager {
     private static final TrueTypeFont item;
 
     static {
-        console_input = new TrueTypeFont(new java.awt.Font("DialogInput", java.awt.Font.PLAIN, 14), false);
-        console_output = new TrueTypeFont(new java.awt.Font("DialogInput", java.awt.Font.PLAIN, 11), false);
-        console_output_bold = new TrueTypeFont(new java.awt.Font("DialogInput", Font.BOLD, 11), false);
-        game_title = new TrueTypeFont(new java.awt.Font("Stencil", java.awt.Font.PLAIN, 69), false);
+        console_input = new TrueTypeFont(new java.awt.Font("DialogInput", java.awt.Font.PLAIN, 14), true);
+        console_output = new TrueTypeFont(new java.awt.Font("DialogInput", java.awt.Font.PLAIN, 11), true);
+        console_output_bold = new TrueTypeFont(new java.awt.Font("DialogInput", Font.BOLD, 11), true);
+        game_title = new TrueTypeFont(new java.awt.Font("Stencil", java.awt.Font.PLAIN, 69), true);
         stencil_small = new TrueTypeFont(new Font("Stencil", Font.PLAIN, 12), true);
         stencil_smaller = new TrueTypeFont(new Font("Stencil", Font.PLAIN, 11), true);
         stencil_medium = new TrueTypeFont(new Font("Stencil", Font.PLAIN, 19), true);

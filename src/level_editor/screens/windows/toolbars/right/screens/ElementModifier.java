@@ -107,14 +107,14 @@ public class ElementModifier extends ToolbarScreen {
                 Element copy = null;
                 switch (checkbox.getName()) {
                     case "Hostile":
-                        checkboxes[2].setDisabled(!checkbox.isChecked());
-                        if (elementToModify instanceof MovableEntity) {
-                            checkboxes[3].setDisabled(checkbox.isChecked());
-                            if (elementToModify.equals(levelEditor.getPlayerEntity())) {
-                                if (checkbox.isChecked()) {
-                                    // player entity was set to hostile --> clear player entity
-                                    levelEditor.setPlayerEntity(null);
-                                }
+                        if (checkboxes[1].isChecked()) {
+                            if (!checkbox.isChecked()) {
+                                checkboxes[3].setDisabled(true);
+                            }
+                        } else {
+                            checkboxes[2].setDisabled(!checkbox.isChecked());
+                            if (elementToModify instanceof MovableEntity) {
+                                checkboxes[3].setDisabled(checkbox.isChecked());
                             }
                         }
                         copy = MapElements.getCopyByName(
@@ -126,6 +126,13 @@ public class ElementModifier extends ToolbarScreen {
                         if (copy != null) ((Entity) copy).setRotation(((Entity) elementToModify).getRotation());
                         break;
                     case "Drivable":
+                        if (checkboxes[0].isChecked()) {
+                            if (!checkbox.isChecked()) {
+                                checkboxes[3].setDisabled(true);
+                            }
+                        } else {
+                            checkboxes[3].setDisabled(checkbox.isChecked());
+                        }
                         ((MovableEntity) elementToModify).isHostile = checkboxes[0].isChecked();
                         ((MovableEntity) elementToModify).isDrivable = checkbox.isChecked();
                         copy = MapElements.getDeepCopy(elementToModify);
@@ -143,14 +150,17 @@ public class ElementModifier extends ToolbarScreen {
                         copy = MapElements.getDeepCopy(elementToModify);
                         break;
                     case "Player":
-                        if(checkbox.isChecked()){
+                        if (checkbox.isChecked()) {
                             levelEditor.setPlayerEntity(elementToModify);
+                            checkboxes[0].setDisabled(true);
                             checkboxes[1].setDisabled(true);
+                            checkboxes[2].setDisabled(true);
                         } else {
                             levelEditor.setPlayerEntity(null);
+                            checkboxes[0].setDisabled(false);
                             checkboxes[1].setDisabled(false);
+                            checkboxes[2].setDisabled(true);
                         }
-
                         break;
                 }
                 if (copy != null) {
@@ -198,6 +208,7 @@ public class ElementModifier extends ToolbarScreen {
                 if (elementToModify.equals(levelEditor.getPlayerEntity())) {
                     checkboxes[3].setChecked(true);
                     checkboxes[1].setDisabled(true);
+                    checkboxes[0].setDisabled(true);
                 } else {
                     checkboxes[1].setChecked((((MovableEntity) elementToModify).isDrivable));
                     if (checkboxes[0].isChecked()) checkboxes[3].setDisabled(true);

@@ -1,5 +1,6 @@
 package level_editor.screens.windows.center;
 
+import game.models.entities.Entity;
 import game.util.LevelDataStorage;
 import level_editor.LevelEditor;
 import level_editor.screens.elements.Button;
@@ -43,6 +44,7 @@ public class SaveLevelPopupWindow extends CenterPopupWindow {
             textFields[i].setConsumeEvents(true);
             textFields[i].setBackgroundColor(Color.lightGray);
             textFields[i].setBorderColor(Color.darkGray);
+            textFields[i].setTextColor(Color.black);
         }
 
         int marginsHeight = 0;
@@ -97,6 +99,7 @@ public class SaveLevelPopupWindow extends CenterPopupWindow {
             new LevelDataStorage().saveLevel(
                     levelEditor.getSimpleMapName(),
                     levelEditor.getElements(),
+                    (Entity) levelEditor.getPlayerEntity(),
                     textFields[0].getText(),
                     textFields[1].getText(),
                     textFields[2].getText()

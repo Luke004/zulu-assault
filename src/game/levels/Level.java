@@ -155,10 +155,8 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
                     }
                 }
 
-                // TODO: 27.10.2020 define and add player entity in LevelDataStorage and then load here
-                Vector2f playerStartPos = new Vector2f(750, 800);
-                CannonTank tank = new CannonTank(playerStartPos, false, true);
-                player.init(tank);
+                // load the player
+                player.init(lds.getPlayerEntity(false));
 
                 if (!initOnce) {
                     initOnce = true;
@@ -406,7 +404,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
         combatBackgroundMusic.update();
         hasWonTheLevel = checkWon();
     }
-    
+
     private boolean checkWon() {
         for (Entity entity : all_entities) {
             if (entity.isMandatory) return false;

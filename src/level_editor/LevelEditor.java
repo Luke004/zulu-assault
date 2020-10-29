@@ -127,6 +127,8 @@ public class LevelEditor extends BasicGameState {
             // attempt to load already created map data
             LevelDataStorage levelDataStorage = LevelDataStorage.loadLevel(getSimpleMapName(), false);
             if (levelDataStorage != null) {
+                setPlayerEntity(levelDataStorage.getPlayerEntity(true));
+                this.elements.add(playerEntity);
                 this.elements.addAll(levelDataStorage.getAllItems());
                 this.elements.addAll(levelDataStorage.getAllCircles());
                 this.elements.addAll(levelDataStorage.getAllEntities());
@@ -319,6 +321,8 @@ public class LevelEditor extends BasicGameState {
         if (hasPopupWindow()) {
             if (popupWindow.isMouseOver(mouseX, mouseY)) {
                 popupWindow.onMouseClick(button, mouseX, mouseY);
+            } else {
+                popupWindow = null;
             }
             return;
         }
@@ -367,10 +371,10 @@ public class LevelEditor extends BasicGameState {
             }
         } else {
             // mouse is not in editor -> is on a toolbar
-            if (rightToolbar.isMouseOver(mouseX, mouseY)) {
-                rightToolbar.onMouseClick(button, mouseX, mouseY);
-            } else if (bottomToolbar.isMouseOver(mouseX, mouseY)) {
+            if (bottomToolbar.isMouseOver(mouseX, mouseY)) {
                 bottomToolbar.onMouseClick(button, mouseX, mouseY);
+            } else if (rightToolbar.isMouseOver(mouseX, mouseY)) {
+                rightToolbar.onMouseClick(button, mouseX, mouseY);
             }
         }
     }

@@ -115,6 +115,7 @@ public class BottomToolbar extends Window {
                         }
                         break;
                     case "EXIT":
+                        // TODO: 29.10.2020 add confirm popup window
                         sbg.enterState(ZuluAssault.MAIN_MENU, new FadeOutTransition(), new FadeInTransition());
                         break;
                 }

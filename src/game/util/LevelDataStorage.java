@@ -3,6 +3,7 @@ package game.util;
 import game.models.Element;
 import game.models.entities.Entity;
 import game.models.entities.MovableEntity;
+import game.models.entities.tanks.CannonTank;
 import game.models.interaction_circles.InteractionCircle;
 import game.models.items.Item;
 import level_editor.util.MapElements;
@@ -25,6 +26,7 @@ public class LevelDataStorage implements Serializable {
     public List<ItemData> allItems;
     public List<CircleData> allCircles;
     public List<EntityData> allEntities;
+    public EntityData player;
 
     public LevelDataStorage() {
         allItems = new LinkedList<>();
@@ -50,11 +52,15 @@ public class LevelDataStorage implements Serializable {
         boolean isHostile, isDrivable, isMandatory;
     }
 
-    public void saveLevel(String name, List<Element> elements, String mission_title, String briefing_message, String debriefing_message) {
+    public void saveLevel(String name, List<Element> elements, Entity player, String mission_title,
+                          String briefing_message, String debriefing_message) {
         this.levelName = name;
         // save all elements
         for (Element element : elements) {
             if (element instanceof Entity) {
+                if (element.equals(player)) {
+                    continue;   // don't add the player entity to the bot entity data
+                }
                 Entity entity = (Entity) element;
                 EntityData entityData = new EntityData();
                 entityData.name = entity.getClass().getSimpleName();
@@ -90,7 +96,15 @@ public class LevelDataStorage implements Serializable {
         this.musicIdx = 0;  // TODO: add user music instead of default ?
 
         // save player data
-        // TODO: 27.10.2020 save player data 
+        EntityData playerData = new EntityData();
+        playerData.name = player.getClass().getSimpleName();
+        playerData.xPos = player.getPosition().x;
+        playerData.yPos = player.getPosition().y;
+        playerData.isDrivable = true;
+        playerData.isHostile = false;
+        playerData.isMandatory = false;
+        playerData.rotation = player.getRotation();
+        this.player = playerData;
 
         try {
             FileOutputStream fileOutputStream
@@ -114,14 +128,6 @@ public class LevelDataStorage implements Serializable {
                     = new ObjectInputStream(fileInputStream);
             LevelDataStorage lds = (LevelDataStorage) objectInputStream.readObject();
             objectInputStream.close();
-            /*
-            // TODO: add values
-            lds.mission_title = "";
-            lds.briefing_message = "Default briefing message";
-            lds.debriefing_message = "Default debriefing message";
-            lds.musicIdx = 0;
-            */
-
             return lds;
         } catch (IOException | ClassNotFoundException i) {
             //i.printStackTrace();
@@ -170,6 +176,16 @@ public class LevelDataStorage implements Serializable {
             }
         }
         return entities;
+    }
+
+    public MovableEntity getPlayerEntity(boolean forMapEditor) {
+        MovableEntity copy = (MovableEntity) MapElements.getCopyByName(new Vector2f(player.xPos, player.yPos), player.name,
+                false, !forMapEditor);
+        if (copy != null) {
+            copy.setRotation(player.rotation);
+            return copy;
+        }
+        return null;
     }
 
 }
