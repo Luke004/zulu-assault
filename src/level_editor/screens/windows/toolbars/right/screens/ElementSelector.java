@@ -104,6 +104,7 @@ public abstract class ElementSelector extends ToolbarScreen {
         if (backButton.isMouseOver(mouseX, mouseY)) {
             MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
             rightToolbar.goToLastScreen();
+            levelEditor.setElementToPlace(null);
             // return;  // activate, if new code is added below
         }
     }

@@ -78,6 +78,7 @@ public class RightToolbar extends Window {
             state = STATE_MODIFY_ELEMENT;
         } else if (current_screen == SCREEN_ADD_WAYPOINT) {
             state = STATE_ADD_WAYPOINT;
+            setWaypointListStatus(WaypointAdder.Status.EMPTY);
         } else {
             state = STATE_ADD_ELEMENT;
         }
@@ -94,4 +95,9 @@ public class RightToolbar extends Window {
     public void notifyForModification(Element element) {
         ((ElementModifier) screens[current_screen]).setupElement(element);
     }
+
+    public void setWaypointListStatus(WaypointAdder.Status status) {
+        ((WaypointAdder) screens[current_screen]).setStatus(status);
+    }
+
 }

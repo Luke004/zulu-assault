@@ -14,6 +14,7 @@ import level_editor.screens.windows.Window;
 import level_editor.screens.windows.toolbars.bottom.BottomToolbar;
 import level_editor.screens.windows.toolbars.right.RightToolbar;
 import level_editor.screens.windows.toolbars.right.screens.EntityAdder;
+import level_editor.screens.windows.toolbars.right.screens.WaypointAdder;
 import level_editor.util.EditorWaypointList;
 import level_editor.util.MapElements;
 import main.ZuluAssault;
@@ -83,7 +84,7 @@ public class LevelEditor extends BasicGameState {
 
     public LevelEditor() {
         elements = new ArrayList<>();
-        currentWaypointList = new EditorWaypointList(this);
+        //currentWaypointList = new EditorWaypointList(this);
         allWayPointLists = new ArrayList<>();
         mapMousePosition = new Vector2f();
         mouseCollisionModel = new CollisionModel(mapMousePosition, 4, 4);
@@ -168,7 +169,9 @@ public class LevelEditor extends BasicGameState {
         }
 
         // draw current waypoint list
-        currentWaypointList.draw(graphics, mapMousePosition);
+        if (isPlacingWaypoints) {
+            currentWaypointList.draw(graphics, mapMousePosition);
+        }
 
         // draw already created waypoint lists
         for (EditorWaypointList editorWaypointList : allWayPointLists) {
@@ -301,7 +304,9 @@ public class LevelEditor extends BasicGameState {
         }
 
         // update current waypoint list
-        currentWaypointList.update(mapMousePosition);
+        if (isPlacingWaypoints) {
+            currentWaypointList.update(mapMousePosition);
+        }
 
         this.isMouseInEditor = (screenMouseX < rightToolbar.getX()
                 && screenMouseY > TITLE_RECT_HEIGHT
@@ -399,14 +404,17 @@ public class LevelEditor extends BasicGameState {
                     }
                     if (!hasSelectedElement) {
                         rightToolbar.notifyForModification(null);
+                        this.elementToModify = null;
                     }
                 } else if (rightToolbar.getState() == RightToolbar.STATE_ADD_WAYPOINT) {
                     if (currentWaypointList.isLockedToFirstWaypoint()) {
                         // is locked to the first waypoint
                         currentWaypointList.setAsFinished();
+                        rightToolbar.setWaypointListStatus(WaypointAdder.Status.SAVED);
                     } else {
                         // normal
                         currentWaypointList.addWaypoint(new Vector2f(mapMousePosition));
+                        rightToolbar.setWaypointListStatus(WaypointAdder.Status.NOT_CONNECTED);
                     }
                 }
             } else if (button == Input.MOUSE_RIGHT_BUTTON) {
@@ -480,8 +488,13 @@ public class LevelEditor extends BasicGameState {
                     && nextElement.getPosition().y == elementToMove.getPosition().y) {    // identify via position
                 i.remove();
                 this.elementToPlace = elementToMove;
-                return;
+                break;
             }
+        }
+        // remove waypoint connection on entity move
+        for (EditorWaypointList editorWaypointList : allWayPointLists) {
+            boolean success = editorWaypointList.removeConnection((MovableEntity) elementToMove);
+            if (success) break;
         }
     }
 
@@ -505,6 +518,11 @@ public class LevelEditor extends BasicGameState {
         playerOvalSize = (int) (Math.max(playerImage.getHeight(), playerImage.getWidth()) * 1.5);
         playerOvalX = (int) (playerEntity.getPosition().x - playerOvalSize / 2);
         playerOvalY = (int) (playerEntity.getPosition().y - playerOvalSize / 2);
+        // remove waypoint connection on player set
+        for (EditorWaypointList editorWaypointList : allWayPointLists) {
+            boolean success = editorWaypointList.removeConnection((MovableEntity) this.playerEntity);
+            if (success) break;
+        }
     }
 
     public Element getPlayerEntity() {
@@ -513,6 +531,11 @@ public class LevelEditor extends BasicGameState {
 
     public void setPlacingWaypoints(boolean val) {
         this.isPlacingWaypoints = val;
+        if (val) {
+            currentWaypointList = new EditorWaypointList(this);
+        } else {
+            currentWaypointList = null;
+        }
     }
 
     public void finishCurrentWaypointList() {
@@ -522,6 +545,15 @@ public class LevelEditor extends BasicGameState {
 
     public void removeLastWaypoint() {
         currentWaypointList.removeLastWaypoint();
+    }
+
+    public void clearCurrentWaypointList() {
+        currentWaypointList.clear();
+        rightToolbar.setWaypointListStatus(WaypointAdder.Status.EMPTY);
+    }
+
+    public List<EditorWaypointList> getAllWayPointLists() {
+        return allWayPointLists;
     }
 
     public void setPopupWindow(CenterPopupWindow popupWindow) {

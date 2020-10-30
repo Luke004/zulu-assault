@@ -1,5 +1,6 @@
 package level_editor.screens.windows.toolbars.right.screens;
 
+import game.audio.MenuSounds;
 import game.models.Element;
 import game.models.entities.Entity;
 import game.models.entities.MovableEntity;
@@ -10,9 +11,11 @@ import level_editor.screens.elements.Button;
 import level_editor.screens.elements.Checkbox;
 import level_editor.screens.windows.Window;
 import level_editor.screens.windows.toolbars.right.RightToolbar;
+import level_editor.util.EditorWaypointList;
 import level_editor.util.MapElements;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import settings.UserSettings;
 
 public class ElementModifier extends ToolbarScreen {
 
@@ -136,6 +139,13 @@ public class ElementModifier extends ToolbarScreen {
                         ((MovableEntity) elementToModify).isHostile = checkboxes[0].isChecked();
                         ((MovableEntity) elementToModify).isDrivable = checkbox.isChecked();
                         copy = MapElements.getDeepCopy(elementToModify);
+                        // remove waypoint connection on drivable set
+                        if (checkbox.isChecked()) {
+                            for (EditorWaypointList editorWaypointList : levelEditor.getAllWayPointLists()) {
+                                boolean success = editorWaypointList.removeConnection((MovableEntity) elementToModify);
+                                if (success) break;
+                            }
+                        }
                         break;
                     case "Mandatory":
                         if (elementToModify instanceof Entity) {
@@ -154,13 +164,12 @@ public class ElementModifier extends ToolbarScreen {
                             levelEditor.setPlayerEntity(elementToModify);
                             checkboxes[0].setDisabled(true);
                             checkboxes[1].setDisabled(true);
-                            checkboxes[2].setDisabled(true);
                         } else {
                             levelEditor.setPlayerEntity(null);
                             checkboxes[0].setDisabled(false);
                             checkboxes[1].setDisabled(false);
-                            checkboxes[2].setDisabled(true);
                         }
+                        checkboxes[2].setDisabled(true);
                         break;
                 }
                 if (copy != null) {
@@ -172,6 +181,7 @@ public class ElementModifier extends ToolbarScreen {
         }
         for (Button button : buttons) {
             if (button.isMouseOver(mouseX, mouseY)) {
+                MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
                 switch (button.getName()) {
                     case "MOVE":
                         levelEditor.moveElement(elementToModify);

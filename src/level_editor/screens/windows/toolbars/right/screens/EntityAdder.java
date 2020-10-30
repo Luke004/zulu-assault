@@ -34,12 +34,6 @@ public class EntityAdder extends ElementSelector {
     }
 
     @Override
-    public void update(GameContainer gc) {
-        super.update(gc);
-
-    }
-
-    @Override
     public void onMouseClick(int mouseX, int mouseY) {
         super.onMouseClick(mouseX, mouseY);
 

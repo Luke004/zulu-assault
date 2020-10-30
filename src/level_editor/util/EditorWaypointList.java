@@ -1,5 +1,6 @@
 package level_editor.util;
 
+import game.models.Element;
 import game.models.entities.MovableEntity;
 import level_editor.LevelEditor;
 import org.newdawn.slick.Graphics;
@@ -106,6 +107,10 @@ public class EditorWaypointList {
         waypoints.remove(waypoints.size() - 1);
     }
 
+    public void clear() {
+        waypoints.clear();
+    }
+
     public void setAsFinished() {
         this.finished = true;
         levelEditor.finishCurrentWaypointList();
@@ -115,4 +120,11 @@ public class EditorWaypointList {
         return lockedToFirstWaypoint;
     }
 
+    public boolean removeConnection(MovableEntity elementToPlace) {
+        if (entityConnections.containsKey(elementToPlace)) {
+            entityConnections.remove(elementToPlace);
+            return true;
+        }
+        return false;
+    }
 }

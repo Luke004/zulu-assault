@@ -1,9 +1,11 @@
 package level_editor.screens.elements;
 
+import game.audio.MenuSounds;
 import level_editor.screens.windows.Window;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import settings.UserSettings;
 
 public class Checkbox extends ToolbarElement {
 
@@ -46,20 +48,13 @@ public class Checkbox extends ToolbarElement {
         string_drawer.drawString(xNameString, yNameString, name, isDisabled ? lightGreyWithOpacity : Color.lightGray);
     }
 
-    /*
-    public void drawWithOpacity(Graphics graphics) {
-        graphics.setColor(lightGreyWithOpacity);
-        graphics.drawRect(xPos, outerCheckboxY, outerCheckboxSize, outerCheckboxSize);
-        string_drawer.drawString(xNameString, yNameString, name, lightGreyWithOpacity);
-    }
-     */
-
     @Override
     public void update(GameContainer gc) {
 
     }
 
     public void toggle() {
+        MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
         isChecked = !isChecked;
     }
 

@@ -102,6 +102,7 @@ public class BottomToolbar extends Window {
                     case "MODIFY":
                         rightToolbar.setScreen(RightToolbar.SCREEN_MODIFY_ELEMENT);
                         levelEditor.setElementToPlace(null);
+                        levelEditor.setPlacingWaypoints(false);
                         break;
                     case "SAVE":
                         if (levelEditor.getPlayerEntity() == null) {
