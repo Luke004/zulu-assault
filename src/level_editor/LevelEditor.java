@@ -14,6 +14,7 @@ import level_editor.screens.windows.Window;
 import level_editor.screens.windows.toolbars.bottom.BottomToolbar;
 import level_editor.screens.windows.toolbars.right.RightToolbar;
 import level_editor.screens.windows.toolbars.right.screens.EntityAdder;
+import level_editor.util.EditorWaypointList;
 import level_editor.util.MapElements;
 import main.ZuluAssault;
 import org.newdawn.slick.*;
@@ -29,9 +30,7 @@ import settings.UserSettings;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class LevelEditor extends BasicGameState {
 
@@ -40,8 +39,12 @@ public class LevelEditor extends BasicGameState {
 
     private String mapName;
 
+    // elements
     private List<Element> elements;
     private Element elementToPlace, elementToModify;
+    private EditorWaypointList currentWaypointList;
+    private List<EditorWaypointList> allWayPointLists;
+    private boolean isPlacingWaypoints;
 
     // player entity
     private Element playerEntity;
@@ -55,6 +58,7 @@ public class LevelEditor extends BasicGameState {
     private static final int TITLE_RECT_HEIGHT = 40;    // absolute height of the title rect
 
     // map coords
+    private int screenMouseX, screenMouseY;
     private float mapX, mapY;
     private int mapWidth, mapHeight;
     private int prevMouseX, prevMouseY, mouseSlideX, mouseSlideY;   // to slide the map using mouse's right key
@@ -69,7 +73,7 @@ public class LevelEditor extends BasicGameState {
 
     // for selecting elements
     private CollisionModel mouseCollisionModel;
-    private Vector2f mousePosition;
+    private Vector2f mapMousePosition;
 
     private Camera camera;
 
@@ -79,8 +83,10 @@ public class LevelEditor extends BasicGameState {
 
     public LevelEditor() {
         elements = new ArrayList<>();
-        mousePosition = new Vector2f();
-        mouseCollisionModel = new CollisionModel(mousePosition, 4, 4);
+        currentWaypointList = new EditorWaypointList(this);
+        allWayPointLists = new ArrayList<>();
+        mapMousePosition = new Vector2f();
+        mouseCollisionModel = new CollisionModel(mapMousePosition, 4, 4);
     }
 
     @Override
@@ -153,7 +159,6 @@ public class LevelEditor extends BasicGameState {
         // draw the player
         if (playerEntity != null) {
             graphics.setColor(opacityBlue);
-            //System.out.println(playerEntity.getPosition());
             graphics.fillOval(playerOvalX, playerOvalY, playerOvalSize, playerOvalSize);
         }
 
@@ -162,6 +167,15 @@ public class LevelEditor extends BasicGameState {
             element.draw(graphics);
         }
 
+        // draw current waypoint list
+        currentWaypointList.draw(graphics, mapMousePosition);
+
+        // draw already created waypoint lists
+        for (EditorWaypointList editorWaypointList : allWayPointLists) {
+            editorWaypointList.draw(graphics, mapMousePosition);
+        }
+
+
         camera.untranslateGraphics();
         // draw all instances that are static above the map (HUD) below
 
@@ -169,6 +183,21 @@ public class LevelEditor extends BasicGameState {
         if (isMouseInEditor) {
             if (elementToPlace != null) {
                 elementToPlace.draw(graphics);
+            }
+        }
+
+        // draw waypoint circle
+        if (isPlacingWaypoints) {
+            if (currentWaypointList.isLockedToFirstWaypoint()) {
+                graphics.drawOval(currentWaypointList.getFirstWaypoint().x - EditorWaypointList.WAYPOINT_RADIUS,
+                        currentWaypointList.getFirstWaypoint().y - EditorWaypointList.WAYPOINT_RADIUS,
+                        EditorWaypointList.WAYPOINT_DIAMETER,
+                        EditorWaypointList.WAYPOINT_DIAMETER);
+            } else {
+                graphics.drawOval(screenMouseX - EditorWaypointList.WAYPOINT_RADIUS,
+                        screenMouseY - EditorWaypointList.WAYPOINT_RADIUS,
+                        EditorWaypointList.WAYPOINT_DIAMETER,
+                        EditorWaypointList.WAYPOINT_DIAMETER);
             }
         }
 
@@ -204,6 +233,9 @@ public class LevelEditor extends BasicGameState {
             return;
         }
 
+        this.screenMouseX = gc.getInput().getMouseX();
+        this.screenMouseY = gc.getInput().getMouseY();
+
         camera.centerOn(mapX - mouseSlideX,
                 mapY - mouseSlideY,
                 gc.getHeight(), gc.getWidth(), rightToolbar.getWidth(), TITLE_RECT_HEIGHT, bottomToolbar.getHeight());
@@ -236,9 +268,8 @@ public class LevelEditor extends BasicGameState {
         // slide the map while right mouse key is pressed
         if (gc.getInput().isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON)) {
             if (allowMouseSlide) {
-                mouseSlideX = gc.getInput().getMouseX() - prevMouseX;
-                mouseSlideY = gc.getInput().getMouseY() - prevMouseY;
-
+                mouseSlideX = screenMouseX - prevMouseX;
+                mouseSlideY = screenMouseY - prevMouseY;
                 // make it unable to slide past the borders
                 if (mapY < -TITLE_RECT_HEIGHT) mapY = -TITLE_RECT_HEIGHT;
                 if (mapY > mapHeight + bottomToolbar.getHeight() - gc.getHeight()) {
@@ -255,8 +286,8 @@ public class LevelEditor extends BasicGameState {
             if (!(elementToPlace instanceof Item)) {
                 elementToPlace.editorUpdate(gc, dt);
             }
-            elementToPlace.getPosition().x = gc.getInput().getMouseX();
-            elementToPlace.getPosition().y = gc.getInput().getMouseY();
+            elementToPlace.getPosition().x = screenMouseX;
+            elementToPlace.getPosition().y = screenMouseY;
         }
 
         for (Element element : elements) {
@@ -269,12 +300,15 @@ public class LevelEditor extends BasicGameState {
             }
         }
 
-        this.isMouseInEditor = (gc.getInput().getMouseX() < rightToolbar.getX()
-                && gc.getInput().getMouseY() > TITLE_RECT_HEIGHT
-                && gc.getInput().getMouseY() < bottomToolbar.getY());
+        // update current waypoint list
+        currentWaypointList.update(mapMousePosition);
 
-        this.mousePosition.x = mapX + gc.getInput().getMouseX();
-        this.mousePosition.y = mapY + gc.getInput().getMouseY();
+        this.isMouseInEditor = (screenMouseX < rightToolbar.getX()
+                && screenMouseY > TITLE_RECT_HEIGHT
+                && screenMouseY < bottomToolbar.getY());
+
+        this.mapMousePosition.x = mapX + screenMouseX - mouseSlideX;
+        this.mapMousePosition.y = mapY + screenMouseY - mouseSlideY;
         this.mouseCollisionModel.update(0);
     }
 
@@ -329,7 +363,7 @@ public class LevelEditor extends BasicGameState {
 
         if (isMouseInEditor) {
             if (button == Input.MOUSE_LEFT_BUTTON) {
-                if (rightToolbar.getState() == RightToolbar.STATE_ADD) {
+                if (rightToolbar.getState() == RightToolbar.STATE_ADD_ELEMENT) {
                     if (elementToPlace != null) {
                         // PLACE AN ELEMENT
                         Element copy = MapElements.getDeepCopy(elementToPlace, mapX, mapY);
@@ -344,7 +378,7 @@ public class LevelEditor extends BasicGameState {
                             elements.add(copy);
                         }
                     }
-                } else if (rightToolbar.getState() == RightToolbar.STATE_MODIFY) {
+                } else if (rightToolbar.getState() == RightToolbar.STATE_MODIFY_ELEMENT) {
                     // first: special case -> move an already placed element
                     if (elementToPlace != null) {
                         Element copy = MapElements.getDeepCopy(elementToPlace, mapX, mapY);
@@ -357,7 +391,6 @@ public class LevelEditor extends BasicGameState {
                     boolean hasSelectedElement = false;
                     for (Element element : elements) {
                         if (element.getCollisionModel().intersects(mouseCollisionModel)) {
-                            System.out.println("selected " + element);
                             this.elementToModify = element;
                             rightToolbar.notifyForModification(element);
                             hasSelectedElement = true;
@@ -366,6 +399,27 @@ public class LevelEditor extends BasicGameState {
                     }
                     if (!hasSelectedElement) {
                         rightToolbar.notifyForModification(null);
+                    }
+                } else if (rightToolbar.getState() == RightToolbar.STATE_ADD_WAYPOINT) {
+                    if (currentWaypointList.isLockedToFirstWaypoint()) {
+                        // is locked to the first waypoint
+                        currentWaypointList.setAsFinished();
+                    } else {
+                        // normal
+                        currentWaypointList.addWaypoint(new Vector2f(mapMousePosition));
+                    }
+                }
+            } else if (button == Input.MOUSE_RIGHT_BUTTON) {
+                if (rightToolbar.getState() == RightToolbar.STATE_MODIFY_ELEMENT) {
+                    if (elementToModify != null) {
+                        // user tries to assign element to a waypoint
+                        if (!(elementToModify instanceof MovableEntity)) return;    // no normal entities allowed
+                        if (elementToModify.equals(playerEntity)) return;           // no player entity allowed
+                        if (((MovableEntity) elementToModify).isDrivable) return;   // no drivable entities allowed
+                        for (EditorWaypointList editorWaypointList : allWayPointLists) {
+                            if (editorWaypointList.attemptToConnect(mapMousePosition, (MovableEntity) elementToModify))
+                                return; // return on successful connection to one of the waypoint lists
+                        }
                     }
                 }
             }
@@ -455,6 +509,19 @@ public class LevelEditor extends BasicGameState {
 
     public Element getPlayerEntity() {
         return this.playerEntity;
+    }
+
+    public void setPlacingWaypoints(boolean val) {
+        this.isPlacingWaypoints = val;
+    }
+
+    public void finishCurrentWaypointList() {
+        allWayPointLists.add(currentWaypointList);
+        currentWaypointList = new EditorWaypointList(this);
+    }
+
+    public void removeLastWaypoint() {
+        currentWaypointList.removeLastWaypoint();
     }
 
     public void setPopupWindow(CenterPopupWindow popupWindow) {

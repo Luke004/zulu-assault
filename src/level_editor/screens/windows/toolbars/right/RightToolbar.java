@@ -21,9 +21,10 @@ public class RightToolbar extends Window {
             SCREEN_ADD_ITEM = 1,
             SCREEN_ADD_ENTITY = 2,
             SCREEN_ADD_CIRCLE = 3,
-            SCREEN_MODIFY_ELEMENT = 4;
+            SCREEN_ADD_WAYPOINT = 4,
+            SCREEN_MODIFY_ELEMENT = 5;
 
-    public static final int STATE_ADD = -1, STATE_MODIFY = -2;
+    public static final int STATE_ADD_ELEMENT = -1, STATE_ADD_WAYPOINT = -2, STATE_MODIFY_ELEMENT = -3;
     private int state;
 
     private int current_screen, prev_screen;
@@ -36,11 +37,12 @@ public class RightToolbar extends Window {
         );
 
         // init all toolbar screens
-        screens = new iToolbarScreens[5];
-        screens[SCREEN_ADD_ELEMENT] = new SpecifyElement(this);
+        screens = new iToolbarScreens[6];
+        screens[SCREEN_ADD_ELEMENT] = new SpecifyElement(this, levelEditor);
         screens[SCREEN_ADD_ITEM] = new ItemAdder(this, levelEditor);
         screens[SCREEN_ADD_ENTITY] = new EntityAdder(this, levelEditor);
         screens[SCREEN_ADD_CIRCLE] = new CircleAdder(this, levelEditor);
+        screens[SCREEN_ADD_WAYPOINT] = new WaypointAdder(this, levelEditor);
         screens[SCREEN_MODIFY_ELEMENT] = new ElementModifier(this, levelEditor);
 
         setScreen(SCREEN_MODIFY_ELEMENT);
@@ -73,9 +75,11 @@ public class RightToolbar extends Window {
 
         // set the state
         if (current_screen == SCREEN_MODIFY_ELEMENT) {
-            state = STATE_MODIFY;
+            state = STATE_MODIFY_ELEMENT;
+        } else if (current_screen == SCREEN_ADD_WAYPOINT) {
+            state = STATE_ADD_WAYPOINT;
         } else {
-            state = STATE_ADD;
+            state = STATE_ADD_ELEMENT;
         }
     }
 

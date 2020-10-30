@@ -12,11 +12,12 @@ import settings.UserSettings;
 public class SpecifyElement extends ToolbarScreen {
 
     private static final String title = "SPECIFY ELEMENT";
-
+    private LevelEditor levelEditor;
     private Button[] buttons;
 
-    public SpecifyElement(RightToolbar rightToolbar) {
+    public SpecifyElement(RightToolbar rightToolbar, LevelEditor levelEditor) {
         super(rightToolbar, title);
+        this.levelEditor = levelEditor;
 
         final int BUTTON_AMOUNT = 4;
         // define the area that the buttons can spread on the y-axis
@@ -81,7 +82,8 @@ public class SpecifyElement extends ToolbarScreen {
                         rightToolbar.setScreen(RightToolbar.SCREEN_ADD_CIRCLE);
                         break;
                     case "WAYPOINT":
-                        //rightToolbar.setScreen(RightToolbar.SCREEN_SELECT_ITEM);
+                        rightToolbar.setScreen(RightToolbar.SCREEN_ADD_WAYPOINT);
+                        levelEditor.setPlacingWaypoints(true);
                         break;
                 }
                 break;

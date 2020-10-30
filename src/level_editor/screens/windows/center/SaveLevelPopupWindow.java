@@ -22,7 +22,7 @@ public class SaveLevelPopupWindow extends CenterPopupWindow {
         this.levelEditor = levelEditor;
 
         int textFieldWidth = windowWidth - Props.DEFAULT_MARGIN * 2;
-        int textFieldHeight = 20;
+        int textFieldHeight = 20;   // TODO: 30.10.2020 add relative size
 
         textFields = new TextFieldTitled[3];
         // title text field
@@ -55,7 +55,7 @@ public class SaveLevelPopupWindow extends CenterPopupWindow {
             marginsHeight += Props.DEFAULT_MARGIN;  // margin below each text field
         }
 
-        int buttonWidth = 100;
+        int buttonWidth = 100;  // TODO: 30.10.2020 add relative size
         int buttonHeight = 20;
         confirmBtn = new Button("OK", windowX + windowWidth / 2 - buttonWidth / 2, 0, buttonWidth, buttonHeight);
         marginsHeight += Props.DEFAULT_MARGIN * 2;  // margin for the button (top and bottom)

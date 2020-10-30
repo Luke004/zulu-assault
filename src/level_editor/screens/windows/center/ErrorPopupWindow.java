@@ -24,7 +24,7 @@ public class ErrorPopupWindow extends CenterPopupWindow {
         super(gc, levelEditor);
         message = new LinkedList<>();
 
-        int btnWidth = 100;
+        int btnWidth = 100;     // TODO: 30.10.2020 add relative size
         btnHeight = 20;
 
         messageX = windowX + Props.DEFAULT_MARGIN;
