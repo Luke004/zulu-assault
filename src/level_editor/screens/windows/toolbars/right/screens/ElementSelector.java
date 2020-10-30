@@ -1,7 +1,6 @@
 package level_editor.screens.windows.toolbars.right.screens;
 
 import game.audio.MenuSounds;
-import game.levels.Level;
 import level_editor.LevelEditor;
 import level_editor.screens.windows.Window;
 import level_editor.screens.elements.Button;
@@ -86,13 +85,16 @@ public abstract class ElementSelector extends ToolbarScreen {
 
     @Override
     public void update(GameContainer gc) {
+        for (SelectorSquare selectorSquare : selectorSquareList) {
+            selectorSquare.update(gc);
+        }
         backButton.update(gc);
     }
 
     @Override
     public void onMouseClick(int mouseX, int mouseY) {
         for (SelectorSquare selectorSquare : selectorSquareList) {
-            if (selectorSquare.clicked(mouseX, mouseY)) {
+            if (selectorSquare.mouseOver(mouseX, mouseY)) {
                 MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
                 levelEditor.setElementToPlace(selectorSquare.getElement());
                 return;
@@ -111,6 +113,7 @@ public abstract class ElementSelector extends ToolbarScreen {
         private int size;
         private Element element;
         private int xPos, yPos;
+        private boolean hover;
 
         SelectorSquare(Element element, int startX, int startY, int size) {
             this.element = element;
@@ -122,11 +125,17 @@ public abstract class ElementSelector extends ToolbarScreen {
         }
 
         void draw(Graphics graphics) {
+            graphics.setLineWidth(hover ? 2.f : 1.f);
             graphics.drawRect(xPos, yPos, size, size);
+            graphics.setLineWidth(1.f);
             element.drawPreview(graphics);
         }
 
-        boolean clicked(int mouseX, int mouseY) {
+        void update(GameContainer gc) {
+            hover = mouseOver(gc.getInput().getMouseX(), gc.getInput().getMouseY());
+        }
+
+        boolean mouseOver(int mouseX, int mouseY) {
             return (mouseX > xPos && mouseX < xPos + size && mouseY > yPos && mouseY < yPos + size);
         }
 
