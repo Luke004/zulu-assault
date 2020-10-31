@@ -85,7 +85,7 @@ public class LevelEditor extends BasicGameState {
     public LevelEditor() {
         elements = new ArrayList<>();
         //currentWaypointList = new EditorWaypointList(this);
-        allWayPointLists = new ArrayList<>();
+        allWayPointLists = new LinkedList<>();
         mapMousePosition = new Vector2f();
         mouseCollisionModel = new CollisionModel(mapMousePosition, 4, 4);
     }
@@ -132,13 +132,17 @@ public class LevelEditor extends BasicGameState {
             mapY = mapHeight / 2.f;
 
             // attempt to load already created map data
-            LevelDataStorage levelDataStorage = LevelDataStorage.loadLevel(getSimpleMapName(), false);
-            if (levelDataStorage != null) {
-                setPlayerEntity(levelDataStorage.getPlayerEntity(true));
+            LevelDataStorage lds = LevelDataStorage.loadLevel(getSimpleMapName(), false);
+            if (lds != null) {
+                setPlayerEntity(lds.getPlayerEntity(true));
                 this.elements.add(playerEntity);
-                this.elements.addAll(levelDataStorage.getAllItems());
-                this.elements.addAll(levelDataStorage.getAllCircles());
-                this.elements.addAll(levelDataStorage.getAllEntities());
+                this.elements.addAll(lds.getAllItems());
+                this.elements.addAll(lds.getAllCircles());
+                this.elements.addAll(lds.getAllEntities());
+                List<MovableEntity> waypointEntities = lds.getAllWaypointEntities();
+                this.elements.addAll(waypointEntities);
+                EditorWaypointList.setEntityConnections(lds.getEntityConnections(waypointEntities));
+                allWayPointLists.addAll(lds.getAllWaypointLists(this));
             }
 
         } else {
@@ -176,6 +180,12 @@ public class LevelEditor extends BasicGameState {
         // draw already created waypoint lists
         for (EditorWaypointList editorWaypointList : allWayPointLists) {
             editorWaypointList.draw(graphics, mapMousePosition);
+        }
+
+        // draw connections from movable entities to waypoints
+        for (Map.Entry<MovableEntity, Vector2f> entry : EditorWaypointList.getEntityConnections().entrySet()) {
+            graphics.drawLine(entry.getKey().getPosition().x, entry.getKey().getPosition().y,
+                    entry.getValue().x, entry.getValue().y);
         }
 
 
@@ -410,6 +420,7 @@ public class LevelEditor extends BasicGameState {
                     if (currentWaypointList.isLockedToFirstWaypoint()) {
                         // is locked to the first waypoint
                         currentWaypointList.setAsFinished();
+                        finishCurrentWaypointList();
                         rightToolbar.setWaypointListStatus(WaypointAdder.Status.SAVED);
                     } else {
                         // normal

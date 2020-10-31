@@ -29,6 +29,11 @@ public class EditorWaypointList {
         this.levelEditor = levelEditor;
     }
 
+    public EditorWaypointList(LevelEditor levelEditor, List<Vector2f> waypoints) {
+        this.waypoints = waypoints;
+        this.levelEditor = levelEditor;
+    }
+
     public void draw(Graphics graphics, Vector2f mapMousePosition) {
         if (waypoints.isEmpty()) return;
         // draw the circles that indicate a waypoint
@@ -61,12 +66,6 @@ public class EditorWaypointList {
             }
 
         }
-
-        // draw connections from movable entities to waypoints
-        for (Map.Entry<MovableEntity, Vector2f> entry : entityConnections.entrySet()) {
-            graphics.drawLine(entry.getKey().getPosition().x, entry.getKey().getPosition().y,
-                    entry.getValue().x, entry.getValue().y);
-        }
     }
 
     public void update(Vector2f mapMousePosition) {
@@ -78,6 +77,7 @@ public class EditorWaypointList {
         if (lockedToFirstWaypoint) {
             // is locked to the first waypoint
             this.setAsFinished();
+            levelEditor.finishCurrentWaypointList();
         } else {
             // normal
             this.waypoints.add(point);
@@ -113,7 +113,6 @@ public class EditorWaypointList {
 
     public void setAsFinished() {
         this.finished = true;
-        levelEditor.finishCurrentWaypointList();
     }
 
     public boolean isLockedToFirstWaypoint() {
@@ -130,6 +129,10 @@ public class EditorWaypointList {
 
     public List<Vector2f> getWaypoints() {
         return this.waypoints;
+    }
+
+    public static void setEntityConnections(Map<MovableEntity, Vector2f> connections) {
+        entityConnections = connections;
     }
 
     public static Map<MovableEntity, Vector2f> getEntityConnections() {

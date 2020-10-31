@@ -6,6 +6,7 @@ import level_editor.LevelEditor;
 import level_editor.screens.elements.Button;
 import level_editor.screens.elements.TextFieldTitled;
 import level_editor.screens.windows.CenterPopupWindow;
+import level_editor.util.EditorWaypointList;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -101,6 +102,7 @@ public class SaveLevelPopupWindow extends CenterPopupWindow {
                     levelEditor.getElements(),
                     (Entity) levelEditor.getPlayerEntity(),
                     levelEditor.getAllWayPointLists(),
+                    EditorWaypointList.getEntityConnections(),
                     textFields[0].getText(),
                     textFields[1].getText(),
                     textFields[2].getText()
