@@ -341,12 +341,6 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
 
         if (!(player.getEntity() instanceof Aircraft)) player.getEntity().draw(graphics);
 
-        /*
-        for (StaticEntity staticEnemy : static_enemy_entities) {
-            staticEnemy.draw(game.graphics);
-        }
-        */
-
         for (Entity renderInstance : renderList) {
             renderInstance.draw(graphics);
         }

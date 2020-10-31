@@ -8,8 +8,17 @@ import game.models.Element;
 import game.models.entities.Entity;
 import game.models.entities.MovableEntity;
 import game.models.entities.aircraft.Aircraft;
+import game.models.entities.aircraft.WarPlane;
+import game.models.entities.robots.PlasmaRobot;
+import game.models.entities.soldiers.UziSoldier;
+import game.models.entities.tanks.*;
+import game.models.interaction_circles.HealthCircle;
+import game.models.items.GoldenWrenchItem;
+import game.models.items.InvincibilityItem;
 import game.models.items.Item;
+import game.models.items.SilverWrenchItem;
 import game.util.LevelDataStorage;
+import game.util.WayPointManager;
 import level_editor.screens.windows.CenterPopupWindow;
 import level_editor.screens.windows.Window;
 import level_editor.screens.windows.toolbars.bottom.BottomToolbar;
@@ -134,7 +143,9 @@ public class LevelEditor extends BasicGameState {
 
             // attempt to load already created map data
             LevelDataStorage lds = LevelDataStorage.loadLevel(getSimpleMapName(), false);
-            if (lds != null) {
+
+            //if (lds != null) {
+                /*
                 setPlayerEntity(lds.getPlayerEntity(true));
                 this.elements.add(playerEntity);
                 this.elements.addAll(lds.getAllItems());
@@ -144,7 +155,385 @@ public class LevelEditor extends BasicGameState {
                 this.elements.addAll(waypointEntities);
                 EditorWaypointList.setEntityConnections(lds.getEntityConnections(waypointEntities));
                 allWayPointLists.addAll(lds.getAllWaypointLists(this));
-            }
+                // TODO: 31.10.2020 fill in the input text-fields with 'title', 'briefing' and 'debriefing' message
+                 */
+
+
+                // FOR MAP REBUILD:
+
+                // ADD PLAYER
+                Vector2f playerStartPos = new Vector2f(750, 800);
+                CannonTank tank = new CannonTank(playerStartPos, false, true);
+                tank.setRotation(190);
+                setPlayerEntity(tank);
+                this.elements.add(playerEntity);
+
+
+
+                // ---------- SETUP ITEMS ----------
+
+                // silver wrenches
+                Item silver_wrench_1 = new SilverWrenchItem(new Vector2f(160.f, 100.f));
+                this.elements.add(silver_wrench_1);
+
+                Item silver_wrench_2 = new SilverWrenchItem(new Vector2f(220.f, 100.f));
+                this.elements.add(silver_wrench_2);
+
+                Item silver_wrench_3 = new SilverWrenchItem(new Vector2f(227.f, 45.f));
+                this.elements.add(silver_wrench_3);
+
+                Item silver_wrench_4 = new SilverWrenchItem(new Vector2f(158.f, 45.f));
+                this.elements.add(silver_wrench_4);
+
+                Item silver_wrench_5 = new SilverWrenchItem(new Vector2f(1215, 2315));
+                this.elements.add(silver_wrench_5);
+
+                Item silver_wrench_6 = new SilverWrenchItem(new Vector2f(1220, 2410));
+                this.elements.add(silver_wrench_6);
+
+                Item silver_wrench_7 = new SilverWrenchItem(new Vector2f(1222, 2610));
+                this.elements.add(silver_wrench_7);
+
+                Item silver_wrench_8 = new SilverWrenchItem(new Vector2f(1220, 2680));
+                this.elements.add(silver_wrench_8);
+
+                Item silver_wrench_9 = new SilverWrenchItem(new Vector2f(25, 3720));
+                this.elements.add(silver_wrench_9);
+
+                Item silver_wrench_10 = new SilverWrenchItem(new Vector2f(100, 3780));
+                this.elements.add(silver_wrench_10);
+
+                Item silver_wrench_11 = new SilverWrenchItem(new Vector2f(185, 3840));
+                this.elements.add(silver_wrench_11);
+
+                Item silver_wrench_12 = new SilverWrenchItem(new Vector2f(190, 3940));
+                this.elements.add(silver_wrench_12);
+
+                Item silver_wrench_13 = new SilverWrenchItem(new Vector2f(3278, 3760));
+                this.elements.add(silver_wrench_13);
+
+                Item silver_wrench_14 = new SilverWrenchItem(new Vector2f(3280, 3905));
+                this.elements.add(silver_wrench_14);
+
+                Item silver_wrench_15 = new SilverWrenchItem(new Vector2f(1250, 14));
+                this.elements.add(silver_wrench_15);
+
+                Item silver_wrench_16 = new SilverWrenchItem(new Vector2f(1610, 16));
+                this.elements.add(silver_wrench_16);
+
+                Item silver_wrench_17 = new SilverWrenchItem(new Vector2f(1625, 110));
+                this.elements.add(silver_wrench_17);
+
+                Item silver_wrench_18 = new SilverWrenchItem(new Vector2f(1845, 595));
+                this.elements.add(silver_wrench_18);
+
+                Item silver_wrench_19 = new SilverWrenchItem(new Vector2f(2278, 735));
+                this.elements.add(silver_wrench_19);
+
+                Item silver_wrench_20 = new SilverWrenchItem(new Vector2f(2172, 185));
+                this.elements.add(silver_wrench_20);
+
+                Item silver_wrench_21 = new SilverWrenchItem(new Vector2f(2145, 85));
+                this.elements.add(silver_wrench_21);
+
+                Item silver_wrench_22 = new SilverWrenchItem(new Vector2f(2090, 25));
+                this.elements.add(silver_wrench_22);
+
+                Item silver_wrench_23 = new SilverWrenchItem(new Vector2f(3725, 400));
+                this.elements.add(silver_wrench_23);
+
+                Item silver_wrench_24 = new SilverWrenchItem(new Vector2f(3775, 475));
+                this.elements.add(silver_wrench_24);
+
+                Item silver_wrench_25 = new SilverWrenchItem(new Vector2f(3625, 900));
+                this.elements.add(silver_wrench_25);
+
+                Item silver_wrench_26 = new SilverWrenchItem(new Vector2f(3577, 1225));
+                this.elements.add(silver_wrench_26);
+
+                Item silver_wrench_27 = new SilverWrenchItem(new Vector2f(3645, 1320));
+                this.elements.add(silver_wrench_27);
+
+                Item silver_wrench_28 = new SilverWrenchItem(new Vector2f(3340, 2040));
+                this.elements.add(silver_wrench_28);
+
+                Item silver_wrench_29 = new SilverWrenchItem(new Vector2f(3475, 2040));
+                this.elements.add(silver_wrench_29);
+
+                Item silver_wrench_30 = new SilverWrenchItem(new Vector2f(3650, 2040));
+                this.elements.add(silver_wrench_30);
+
+                Item silver_wrench_31 = new SilverWrenchItem(new Vector2f(3800, 3650));
+                this.elements.add(silver_wrench_31);
+
+                Item silver_wrench_32 = new SilverWrenchItem(new Vector2f(3800, 3740));
+                this.elements.add(silver_wrench_32);
+
+                // golden wrenches
+                Item golden_wrench_1 = new GoldenWrenchItem(new Vector2f(55, 3890));
+                this.elements.add(golden_wrench_1);
+
+                Item golden_wrench_2 = new GoldenWrenchItem(new Vector2f(3520, 2715));
+                this.elements.add(golden_wrench_2);
+
+                // mega pulse
+
+                // invincibility
+                Item invincibility_1 = new InvincibilityItem(new Vector2f(1780, 2240));
+                this.elements.add(invincibility_1);
+
+                // EMP
+
+
+
+
+
+                // ---------- SETUP TELEPORT CIRCLES ----------
+
+
+
+                // ---------- SETUP HEALTH CIRCLES ----------
+                HealthCircle health_circle_1 = new HealthCircle(new Vector2f(2380.f, 340.f));
+                this.elements.add(health_circle_1);
+
+
+
+                // ---------- SETUP ENEMY ENTITIES NOT MOVING ---------
+                MovableEntity enemy_cannon_tank = new CannonTank(new Vector2f(3055, 3110), true, false);
+                this.elements.add(enemy_cannon_tank);
+
+                MovableEntity enemy_meme_car = new MemeCar(new Vector2f(2110, 1960), true, false);
+                enemy_meme_car.setRotation(15);
+                this.elements.add(enemy_meme_car);
+
+                MovableEntity enemy_soldier_1 = new UziSoldier(new Vector2f(1370.f, 3150.f), true);
+                this.elements.add(enemy_soldier_1);
+
+                MovableEntity enemy_soldier_2 = new UziSoldier(new Vector2f(1473.f, 3198.f), true);
+                this.elements.add(enemy_soldier_2);
+
+                MovableEntity enemy_soldier_3 = new UziSoldier(new Vector2f(1266.f, 3206.f), true);
+                this.elements.add(enemy_soldier_3);
+
+                MovableEntity enemy_tank_3_rocket = new RocketTank(new Vector2f(2970.f, 130.f), true, false);
+                enemy_tank_3_rocket.setRotation(100);
+                this.elements.add(enemy_tank_3_rocket);
+
+                MovableEntity enemy_tank_4_rocket = new RocketTank(new Vector2f(3250.f, 140.f), true, false);
+                enemy_tank_4_rocket.setRotation(160);
+                this.elements.add(enemy_tank_4_rocket);
+
+                MovableEntity enemy_tank_5_rocket = new RocketTank(new Vector2f(3460.f, 70.f), true, false);
+                enemy_tank_5_rocket.setRotation(225);
+                this.elements.add(enemy_tank_5_rocket);
+
+                MovableEntity enemy_soldier_4 = new UziSoldier(new Vector2f(2565.f, 160.f), true);
+                this.elements.add(enemy_soldier_4);
+
+                MovableEntity enemy_soldier_5 = new UziSoldier(new Vector2f(2500.f, 240.f), true);
+                this.elements.add(enemy_soldier_5);
+
+                MovableEntity enemy_soldier_6 = new UziSoldier(new Vector2f(2460.f, 60.f), true);
+                this.elements.add(enemy_soldier_6);
+
+                MovableEntity enemy_soldier_7 = new UziSoldier(new Vector2f(2350.f, 100.f), true);
+                this.elements.add(enemy_soldier_7);
+
+                MovableEntity enemy_soldier_8 = new UziSoldier(new Vector2f(2340.f, 160.f), true);
+                this.elements.add(enemy_soldier_8);
+
+
+                List<Vector2f> wayPoints = new ArrayList<>();
+                MovableEntity enemy_shell_tank_1 = new ShellTank(new Vector2f(2100.f, 2050.f), true, false);
+                enemy_shell_tank_1.isMandatory = true;
+                enemy_shell_tank_1.setMoving(true);
+                enemy_shell_tank_1.setRotation(180);
+                wayPoints.add(new Vector2f(2100.f, 2100.f));
+                wayPoints.add(new Vector2f(2100.f, 2500.f));
+                wayPoints.add(new Vector2f(1600.f, 2500.f));
+                wayPoints.add(new Vector2f(1600.f, 2100.f));
+                enemy_shell_tank_1.addWayPoints(new WayPointManager(enemy_shell_tank_1.getPosition(), enemy_shell_tank_1.getRotation(),
+                        wayPoints, 0));
+                this.elements.add(enemy_shell_tank_1);
+
+                MovableEntity enemy_shell_tank_2 = new ShellTank(new Vector2f(1600.f, 2600.f), true, false);
+                enemy_shell_tank_2.isMandatory = true;
+                enemy_shell_tank_2.setMoving(true);
+
+                enemy_shell_tank_2.addWayPoints(new WayPointManager(enemy_shell_tank_2.getPosition(),
+                        enemy_shell_tank_2.getRotation(),
+                        wayPoints, 2));
+                this.elements.add(enemy_shell_tank_2);
+
+
+                EditorWaypointList editorWaypointList = new EditorWaypointList(this, wayPoints);
+                editorWaypointList.setAsFinished();
+                allWayPointLists.add(editorWaypointList);
+
+
+                // ---------- SETUP ENEMY PLANES ----------
+                MovableEntity enemy_plane_1 = new WarPlane(new Vector2f(2700, 3500), true, false);
+                wayPoints = new ArrayList<>();
+                wayPoints.add(new Vector2f(2700, 3367));
+                wayPoints.add(new Vector2f(2700, 3034));
+                wayPoints.add(new Vector2f(3033, 2700));
+                wayPoints.add(new Vector2f(3366, 2700));
+                wayPoints.add(new Vector2f(3700, 3033));
+                wayPoints.add(new Vector2f(3700, 3366));
+                wayPoints.add(new Vector2f(3367, 3700));
+                wayPoints.add(new Vector2f(3034, 3700));
+                enemy_plane_1.addWayPoints(new WayPointManager(enemy_plane_1.getPosition(),
+                        enemy_plane_1.getRotation(),
+                        wayPoints));
+                this.elements.add(enemy_plane_1);
+
+                editorWaypointList = new EditorWaypointList(this, wayPoints);
+                editorWaypointList.setAsFinished();
+                allWayPointLists.add(editorWaypointList);
+
+                MovableEntity enemy_plane_2 = new WarPlane(new Vector2f(2700, 1900), true, false);
+                wayPoints = new ArrayList<>();
+                wayPoints.add(new Vector2f(2700, 1767));
+                wayPoints.add(new Vector2f(2700, 1434));
+                wayPoints.add(new Vector2f(3033, 1100));
+                wayPoints.add(new Vector2f(3366, 1100));
+                wayPoints.add(new Vector2f(3700, 1433));
+                wayPoints.add(new Vector2f(3700, 1766));
+                wayPoints.add(new Vector2f(3366, 2100));
+                wayPoints.add(new Vector2f(3033, 2100));
+                enemy_plane_2.addWayPoints(new WayPointManager(enemy_plane_2.getPosition(),
+                        enemy_plane_2.getRotation(),
+                        wayPoints));
+                this.elements.add(enemy_plane_2);
+
+                editorWaypointList = new EditorWaypointList(this, wayPoints);
+                editorWaypointList.setAsFinished();
+                allWayPointLists.add(editorWaypointList);
+
+                MovableEntity enemy_plane_3 = new WarPlane(new Vector2f(3260, 200), true, false);
+                enemy_plane_3.setRotation(180);
+                wayPoints = new ArrayList<>();
+                wayPoints.add(new Vector2f(3260, 613));
+                wayPoints.add(new Vector2f(3260, 946));
+                wayPoints.add(new Vector2f(2926, 1280));
+                wayPoints.add(new Vector2f(2593, 1280));
+                wayPoints.add(new Vector2f(2260, 946));
+                wayPoints.add(new Vector2f(2260, 613));
+                wayPoints.add(new Vector2f(2593, 280));
+                wayPoints.add(new Vector2f(2926, 280));
+                enemy_plane_3.addWayPoints(new WayPointManager(enemy_plane_3.getPosition(),
+                        enemy_plane_3.getRotation(),
+                        wayPoints));
+                this.elements.add(enemy_plane_3);
+
+                editorWaypointList = new EditorWaypointList(this, wayPoints);
+                editorWaypointList.setAsFinished();
+                allWayPointLists.add(editorWaypointList);
+
+
+                // waypoint list 1
+                wayPoints = new ArrayList<>();
+                wayPoints.add(new Vector2f(1005, 1000));    // y: 1000
+                wayPoints.add(new Vector2f(806, 1277));
+                wayPoints.add(new Vector2f(600, 1726));
+                wayPoints.add(new Vector2f(770, 1883));
+                wayPoints.add(new Vector2f(1084, 1665));
+                wayPoints.add(new Vector2f(1596, 1342));
+                wayPoints.add(new Vector2f(1651, 1079));
+                wayPoints.add(new Vector2f(1494, 872));
+
+                editorWaypointList = new EditorWaypointList(this, wayPoints);
+                editorWaypointList.setAsFinished();
+                allWayPointLists.add(editorWaypointList);
+
+                MovableEntity player_ally_1 = new NapalmTank(new Vector2f(1005, 900), false, false);
+                player_ally_1.setRotation(180);
+                player_ally_1.setMoving(true);
+                player_ally_1.addWayPoints(new WayPointManager(player_ally_1.getPosition(),
+                        player_ally_1.getRotation(),
+                        wayPoints));
+                this.elements.add(player_ally_1);
+
+
+                // waypoint list2
+                wayPoints = new ArrayList<>();
+                wayPoints.add(new Vector2f(1376, 903));
+                wayPoints.add(new Vector2f(1005, 1000));    // added
+                wayPoints.add(new Vector2f(806, 1277));
+                wayPoints.add(new Vector2f(600, 1726));
+                wayPoints.add(new Vector2f(770, 1883));
+                wayPoints.add(new Vector2f(789, 2769));
+                wayPoints.add(new Vector2f(845, 3380));
+                wayPoints.add(new Vector2f(1290, 3465));
+                wayPoints.add(new Vector2f(1580, 3363));
+                wayPoints.add(new Vector2f(1582, 3153));
+                wayPoints.add(new Vector2f(1893, 2840));
+                wayPoints.add(new Vector2f(2335, 2840));
+                wayPoints.add(new Vector2f(2693, 2530));
+                wayPoints.add(new Vector2f(2863, 2169));
+                wayPoints.add(new Vector2f(2645, 1661));
+                wayPoints.add(new Vector2f(1656, 1361));
+                wayPoints.add(new Vector2f(1651, 1079));
+                wayPoints.add(new Vector2f(1494, 872));
+
+                editorWaypointList = new EditorWaypointList(this, wayPoints);
+                editorWaypointList.setAsFinished();
+                allWayPointLists.add(editorWaypointList);
+
+                MovableEntity player_ally_2 = new NapalmTank(new Vector2f(1376, 903), false, false);
+                player_ally_2.setRotation(180);
+                player_ally_2.setMoving(true);
+                player_ally_2.addWayPoints(new WayPointManager(player_ally_2.getPosition(),
+                        player_ally_2.getRotation(),
+                        wayPoints));
+                this.elements.add(player_ally_2);
+
+
+                // waypoint list4
+                wayPoints = new ArrayList<>();
+                wayPoints.add(new Vector2f(1171, 955));    // y: 1000
+                wayPoints.add(new Vector2f(1005, 1000));    // added
+                wayPoints.add(new Vector2f(806, 1277));
+                wayPoints.add(new Vector2f(600, 1726));
+                wayPoints.add(new Vector2f(770, 1883));
+                wayPoints.add(new Vector2f(789, 2769));
+                wayPoints.add(new Vector2f(845, 3380));
+                wayPoints.add(new Vector2f(1290, 3465));
+                wayPoints.add(new Vector2f(1580, 3363));
+                wayPoints.add(new Vector2f(1930, 3260));
+                wayPoints.add(new Vector2f(2380, 3327));
+                wayPoints.add(new Vector2f(3120, 3350));
+                wayPoints.add(new Vector2f(3288, 3187));
+                wayPoints.add(new Vector2f(2863, 2169));
+                wayPoints.add(new Vector2f(2645, 1661));
+                wayPoints.add(new Vector2f(1656, 1361));
+                wayPoints.add(new Vector2f(1651, 1079));
+                wayPoints.add(new Vector2f(1494, 872));
+
+
+                editorWaypointList = new EditorWaypointList(this, wayPoints);
+                editorWaypointList.setAsFinished();
+                allWayPointLists.add(editorWaypointList);
+
+                MovableEntity player_ally_3 = new NapalmTank(new Vector2f(1171, 955), false, false);
+                player_ally_3.setRotation(180);
+                player_ally_3.setMoving(true);
+                player_ally_3.addWayPoints(new WayPointManager(player_ally_3.getPosition(),
+                        player_ally_3.getRotation(),
+                        wayPoints));
+                this.elements.add(player_ally_3);
+
+
+
+
+                // ---------- SETUP THE PLAYERS DRIVABLE ENTITIES ----------
+                MovableEntity player_drivable_robot_1 = new PlasmaRobot(new Vector2f(2465.f, 170.f), false, true);
+                this.elements.add(player_drivable_robot_1);
+
+
+
+
+            //}
 
         } else {
             // USER CANCELLED
@@ -378,6 +767,7 @@ public class LevelEditor extends BasicGameState {
         }
 
         if (isMouseInEditor) {
+            System.out.println(mapMousePosition);
             if (button == Input.MOUSE_LEFT_BUTTON) {
                 if (rightToolbar.getState() == RightToolbar.STATE_ADD_ELEMENT) {
                     if (elementToPlace != null) {

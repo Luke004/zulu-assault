@@ -105,7 +105,8 @@ public class SaveLevelPopupWindow extends CenterPopupWindow {
                     EditorWaypointList.getEntityConnections(),
                     textFields[0].getText(),
                     textFields[1].getText(),
-                    textFields[2].getText()
+                    textFields[2].getText(),
+                    0
             );
             this.isActive = false;
             levelEditor.setPopupWindow(null);

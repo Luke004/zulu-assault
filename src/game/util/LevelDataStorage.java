@@ -78,7 +78,8 @@ public class LevelDataStorage implements Serializable {
                           Map<MovableEntity, Vector2f> entityConnections,
                           String mission_title,
                           String briefing_message,
-                          String debriefing_message) {
+                          String debriefing_message,
+                          int musicIdx) {
         this.levelName = name;
         // save all elements
         for (Element element : elements) {
@@ -150,7 +151,7 @@ public class LevelDataStorage implements Serializable {
         this.mission_title = mission_title;
         this.briefing_message = briefing_message;
         this.debriefing_message = debriefing_message;
-        this.musicIdx = 0;  // TODO: add user music instead of default ?
+        this.musicIdx = musicIdx;
 
         // save player data
         EntityData playerData = new EntityData();

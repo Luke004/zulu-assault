@@ -2,6 +2,7 @@ package game.models.entities.other;
 
 import game.models.CollisionModel;
 import game.models.entities.Entity;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -33,8 +34,17 @@ public class PassengerPlane extends Entity {
 
     @Override
     public void init() {
-        collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
+        collisionModel = new CollisionModel(position, base_image.getWidth() / 8, base_image.getHeight());
         super.init();
+    }
+
+    @Override
+    public void update(GameContainer gc, int deltaTime) {
+        super.update(gc, deltaTime);
+
+        if (isDestroyed) {
+            level_delete_listener.notifyForEntityDestruction(this);
+        }
     }
 
     @Override
