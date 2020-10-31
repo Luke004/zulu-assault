@@ -98,6 +98,8 @@ public class BottomToolbar extends Window {
                 switch (b.getName()) {
                     case "ADD":
                         rightToolbar.setScreen(RightToolbar.SCREEN_ADD_ELEMENT);
+                        levelEditor.setElementToPlace(null);
+                        levelEditor.setPlacingWaypoints(false);
                         break;
                     case "MODIFY":
                         rightToolbar.setScreen(RightToolbar.SCREEN_MODIFY_ELEMENT);
@@ -105,6 +107,8 @@ public class BottomToolbar extends Window {
                         levelEditor.setPlacingWaypoints(false);
                         break;
                     case "SAVE":
+                        // TODO: 31.10.2020 add control: at least one mandatory hostile entity 
+                        // TODO: 31.10.2020 add control: each bot controlled aircraft has waypoints  
                         if (levelEditor.getPlayerEntity() == null) {
                             this.errorPopupWindow.setTitle("NO PLAYER");
                             this.errorPopupWindow.setMessage("No player defined.");

@@ -100,6 +100,7 @@ public class SaveLevelPopupWindow extends CenterPopupWindow {
                     levelEditor.getSimpleMapName(),
                     levelEditor.getElements(),
                     (Entity) levelEditor.getPlayerEntity(),
+                    levelEditor.getAllWayPointLists(),
                     textFields[0].getText(),
                     textFields[1].getText(),
                     textFields[2].getText()

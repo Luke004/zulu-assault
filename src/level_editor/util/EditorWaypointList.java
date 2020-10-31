@@ -127,4 +127,13 @@ public class EditorWaypointList {
         }
         return false;
     }
+
+    public List<Vector2f> getWaypoints() {
+        return this.waypoints;
+    }
+
+    public static Map<MovableEntity, Vector2f> getEntityConnections() {
+        return entityConnections;
+    }
+
 }

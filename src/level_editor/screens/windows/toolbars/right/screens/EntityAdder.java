@@ -39,7 +39,6 @@ public class EntityAdder extends ElementSelector {
 
         for (int i = 0; i < checkboxes.length; ++i) {
             if (checkboxes[i].isMouseOver(mouseX, mouseY)) {
-                MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
                 checkboxes[i].toggle();
 
                 switch (i) {

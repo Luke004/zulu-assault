@@ -155,6 +155,15 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
                     }
                 }
 
+                // load all waypoint entities
+                for (MovableEntity movableEntity : lds.getAllWaypointEntities()) {
+                    if (movableEntity.isHostile) {
+                        all_hostile_entities.add(movableEntity);
+                    } else {
+                        all_friendly_entities.add(movableEntity);
+                    }
+                }
+
                 // load the player
                 player.init(lds.getPlayerEntity(false));
 

@@ -3,15 +3,16 @@ package game.util;
 import game.models.Element;
 import game.models.entities.Entity;
 import game.models.entities.MovableEntity;
-import game.models.entities.tanks.CannonTank;
 import game.models.interaction_circles.InteractionCircle;
 import game.models.items.Item;
+import level_editor.util.EditorWaypointList;
 import level_editor.util.MapElements;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /* This class stores all relevant data for loading and saving a level */
 public class LevelDataStorage implements Serializable {
@@ -26,12 +27,14 @@ public class LevelDataStorage implements Serializable {
     public List<ItemData> allItems;
     public List<CircleData> allCircles;
     public List<EntityData> allEntities;
+    public List<WaypointEntityData> allWaypointEntities;
     public EntityData player;
 
     public LevelDataStorage() {
         allItems = new LinkedList<>();
         allCircles = new LinkedList<>();
         allEntities = new LinkedList<>();
+        allWaypointEntities = new LinkedList<>();
     }
 
     static class ItemData implements Serializable {
@@ -52,9 +55,21 @@ public class LevelDataStorage implements Serializable {
         boolean isHostile, isDrivable, isMandatory;
     }
 
-    public void saveLevel(String name, List<Element> elements, Entity player, String mission_title,
-                          String briefing_message, String debriefing_message) {
+    static class WaypointEntityData implements Serializable {
+        EntityData entityData;
+        List<Vector2f> waypoints;
+        int waypointStartIdx;
+    }
+
+    public void saveLevel(String name,
+                          List<Element> elements,
+                          Entity player,
+                          List<EditorWaypointList> allWayPointLists,
+                          String mission_title,
+                          String briefing_message,
+                          String debriefing_message) {
         this.levelName = name;
+        Map<MovableEntity, Vector2f> entityConnections = EditorWaypointList.getEntityConnections();
         // save all elements
         for (Element element : elements) {
             if (element instanceof Entity) {
@@ -69,7 +84,30 @@ public class LevelDataStorage implements Serializable {
                 entityData.rotation = entity.getRotation();
                 entityData.xPos = entity.getPosition().x;
                 entityData.yPos = entity.getPosition().y;
+
                 if (element instanceof MovableEntity) {
+                    if (entityConnections.containsKey(element)) {   // check if its a entity that has waypoints
+                        WaypointEntityData waypointEntityData = new WaypointEntityData();
+                        waypointEntityData.entityData = entityData;
+                        // find out which waypoint list is connected to this entity
+                        for (Map.Entry<MovableEntity, Vector2f> entry : entityConnections.entrySet()) {
+                            MovableEntity movableEntity = entry.getKey();
+                            if (movableEntity.equals(element)) {
+                                Vector2f startingWaypoint = entry.getValue();
+                                for (EditorWaypointList editorWaypointList : allWayPointLists) {
+                                    List<Vector2f> waypoints = editorWaypointList.getWaypoints();
+                                    if (waypoints.contains(startingWaypoint)) {
+                                        waypointEntityData.waypoints = waypoints;
+                                        waypointEntityData.waypointStartIdx = waypoints.indexOf(startingWaypoint);
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                        allWaypointEntities.add(waypointEntityData);
+                        continue;   // finished adding waypoint entity
+                    }
                     MovableEntity movableEntity = (MovableEntity) element;
                     entityData.isDrivable = movableEntity.isDrivable;
                 }
@@ -172,6 +210,27 @@ public class LevelDataStorage implements Serializable {
                 Entity casted_copy = (Entity) copy;
                 casted_copy.setRotation(entityData.rotation);
                 casted_copy.isMandatory = entityData.isMandatory;
+                entities.add(casted_copy);
+            }
+        }
+        return entities;
+    }
+
+    public List<MovableEntity> getAllWaypointEntities() {
+        List<MovableEntity> entities = new LinkedList<>();
+        for (WaypointEntityData waypointEntityData : allWaypointEntities) {
+            Element copy = MapElements.getCopyByName(
+                    new Vector2f(waypointEntityData.entityData.xPos, waypointEntityData.entityData.yPos),
+                    waypointEntityData.entityData.name,
+                    waypointEntityData.entityData.isHostile,
+                    waypointEntityData.entityData.isDrivable);
+            if (copy == null) continue;
+            if (copy instanceof MovableEntity) {
+                MovableEntity casted_copy = (MovableEntity) copy;
+                casted_copy.addWayPoints(new WayPointManager(casted_copy.getPosition(), casted_copy.getRotation(),
+                        waypointEntityData.waypoints, waypointEntityData.waypointStartIdx));
+                casted_copy.setRotation(waypointEntityData.entityData.rotation);
+                casted_copy.isMandatory = waypointEntityData.entityData.isMandatory;
                 entities.add(casted_copy);
             }
         }
