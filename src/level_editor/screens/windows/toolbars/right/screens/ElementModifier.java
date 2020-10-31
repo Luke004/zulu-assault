@@ -188,6 +188,9 @@ public class ElementModifier extends ToolbarScreen {
                         return;
                     case "DELETE":
                         levelEditor.removeElement(elementToModify);
+                        if (elementToModify instanceof MovableEntity){
+                            EditorWaypointList.getEntityConnections().remove(elementToModify);
+                        }
                         this.setupElement(null);
                         return;
                 }

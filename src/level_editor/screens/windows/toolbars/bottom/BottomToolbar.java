@@ -107,11 +107,23 @@ public class BottomToolbar extends Window {
                         levelEditor.setPlacingWaypoints(false);
                         break;
                     case "SAVE":
-                        // TODO: 31.10.2020 add control: at least one mandatory hostile entity 
-                        // TODO: 31.10.2020 add control: each bot controlled aircraft has waypoints  
+                        boolean hasError = false;
                         if (levelEditor.getPlayerEntity() == null) {
+                            hasError = true;
                             this.errorPopupWindow.setTitle("NO PLAYER");
                             this.errorPopupWindow.setMessage("No player defined.");
+                        } else if (levelEditor.hasNoMandatoryEntities()) {
+                            hasError = true;
+                            this.errorPopupWindow.setTitle("NO WIN CONDITION");
+                            this.errorPopupWindow.setMessage("No hostile entities/ items are set as mandatory. Please" +
+                                    " set at least one hostile entity/ item as mandatory.");
+                        } else if (levelEditor.hasAircraftWithoutWaypoints()) {
+                            hasError = true;
+                            this.errorPopupWindow.setTitle("AIRCRAFT WITHOUT WAYPOINTS");
+                            this.errorPopupWindow.setMessage("At least one bot-controlled aircraft has no waypoints " +
+                                    "connected to it. Please connect all bot-controlled aircraft to a list of waypoints.");
+                        }
+                        if (hasError) {
                             this.errorPopupWindow.show();
                             levelEditor.setPopupWindow(errorPopupWindow);
                         } else {

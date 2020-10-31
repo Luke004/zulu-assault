@@ -7,6 +7,7 @@ import game.models.CollisionModel;
 import game.models.Element;
 import game.models.entities.Entity;
 import game.models.entities.MovableEntity;
+import game.models.entities.aircraft.Aircraft;
 import game.models.items.Item;
 import game.util.LevelDataStorage;
 import level_editor.screens.windows.CenterPopupWindow;
@@ -565,6 +566,26 @@ public class LevelEditor extends BasicGameState {
 
     public List<EditorWaypointList> getAllWayPointLists() {
         return allWayPointLists;
+    }
+
+    public boolean hasNoMandatoryEntities() {
+        for (Element element : elements) {
+            if (element instanceof Item) {
+                if (((Item) element).isMandatory) return false;
+            } else if (element instanceof Entity) {
+                if (((Entity) element).isMandatory) return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean hasAircraftWithoutWaypoints() {
+        for (Element element : elements) {
+            if (element instanceof Aircraft) {
+                if (!EditorWaypointList.getEntityConnections().containsKey(element)) return true;
+            }
+        }
+        return false;
     }
 
     public void setPopupWindow(CenterPopupWindow popupWindow) {
