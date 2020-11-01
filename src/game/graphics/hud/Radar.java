@@ -19,6 +19,9 @@ public class Radar {
 
     private Image radar_image;
     private Vector2f radar_image_position;
+    private static final Color lightRed = Color.decode("#800000");
+    private static final Color lightGrey = Color.decode("#808080");
+
 
     private Player player;
 
@@ -65,7 +68,7 @@ public class Radar {
         float player_x = player.getEntity().getPosition().x * ((float) RADAR_WIDTH / TileMapData.LEVEL_WIDTH_PIXELS);
         float player_y = player.getEntity().getPosition().y * ((float) RADAR_HEIGHT / TileMapData.LEVEL_HEIGHT_PIXELS);
 
-        graphics.setColor(Color.decode("#808080"));
+        graphics.setColor(lightGrey);
         graphics.drawLine(radar_origin.x + player_x, radar_origin.y,
                 radar_origin.x + player_x, radar_origin.y + Y_END - Y_START);
         graphics.drawLine(radar_origin.x, radar_origin.y + player_y,
@@ -78,7 +81,7 @@ public class Radar {
                 RADAR_SCREEN_RECT_HEIGHT);
 
         // draw the friendly entities
-        graphics.setColor(Color.green);
+        graphics.setColor(Color.blue);
         for (Entity friendly_entity : all_friendly_entities) {
             float friend_x = friendly_entity.getPosition().x * ((float) RADAR_WIDTH / TileMapData.LEVEL_WIDTH_PIXELS);
             float friend_y = friendly_entity.getPosition().y * ((float) RADAR_HEIGHT / TileMapData.LEVEL_HEIGHT_PIXELS);
@@ -86,7 +89,7 @@ public class Radar {
         }
 
         // draw the drivable entities
-        graphics.setColor(Color.decode("#808080"));
+        graphics.setColor(lightGrey);
         for (MovableEntity drivable_entity : drivable_entities) {
             float friend_x = drivable_entity.getPosition().x * ((float) RADAR_WIDTH / TileMapData.LEVEL_WIDTH_PIXELS);
             float friend_y = drivable_entity.getPosition().y * ((float) RADAR_HEIGHT / TileMapData.LEVEL_HEIGHT_PIXELS);
@@ -94,31 +97,19 @@ public class Radar {
         }
 
         // draw the enemy entities
-        graphics.setColor(Color.red);
+
         // movable entities
         for (Entity enemy_entity : all_hostile_entities) {
             if (enemy_entity.isMandatory && mandatoryBlinker) continue;
             float enemy_x = enemy_entity.getPosition().x * ((float) RADAR_WIDTH / TileMapData.LEVEL_WIDTH_PIXELS);
             float enemy_y = enemy_entity.getPosition().y * ((float) RADAR_HEIGHT / TileMapData.LEVEL_HEIGHT_PIXELS);
+            if (enemy_entity instanceof MovableEntity) {
+                graphics.setColor(Color.red);
+            } else {    // lighter red color for enemy not movable entities
+                graphics.setColor(lightRed);
+            }
             graphics.fillRect(radar_origin.x + enemy_x, radar_origin.y + enemy_y, 2, 2);
         }
-        // special red color for enemy windmills
-        /*
-        for (StaticEntity staticEnemyEntity : static_enemy_entities) {
-            if (staticEnemyEntity.isMandatory() && mandatoryBlinker) continue;
-            float enemy_x = staticEnemyEntity.getPosition().x * ((float) RADAR_WIDTH / TileMapInfo.LEVEL_WIDTH_PIXELS);
-            float enemy_y = staticEnemyEntity.getPosition().y * ((float) RADAR_HEIGHT / TileMapInfo.LEVEL_HEIGHT_PIXELS);
-            if (staticEnemyEntity instanceof StaticEnemyPlane) {
-                game.graphics.setColor(Color.decode("#808080"));
-                game.graphics.fillRect(radar_origin.x + enemy_x, radar_origin.y + enemy_y, 1, 1);
-            } else {
-                game.graphics.setColor(Color.decode("#800000"));
-                game.graphics.fillRect(radar_origin.x + enemy_x, radar_origin.y + enemy_y, 2, 2);
-            }
-        }
-
-         */
-
         // draw the radar decoration outline image
         radar_image.draw(radar_image_position.x, radar_image_position.y);
     }
