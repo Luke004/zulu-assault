@@ -112,4 +112,11 @@ public class SaveLevelPopupWindow extends CenterPopupWindow {
             levelEditor.setPopupWindow(null);
         }
     }
+
+    public void fillTextFields(String title, String briefing, String debriefing) {
+        this.textFields[0].setText(title);
+        this.textFields[1].setText(briefing);
+        this.textFields[2].setText(debriefing);
+    }
+
 }

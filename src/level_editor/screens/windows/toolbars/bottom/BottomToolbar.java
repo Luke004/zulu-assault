@@ -53,7 +53,7 @@ public class BottomToolbar extends Window {
                 button_width,
                 button_height);
 
-        buttons[1] = new Button("MODIFY",
+        buttons[1] = new Button("SELECT",
                 button_width + button_margin_x * 2,
                 buttonY,
                 button_width,
@@ -101,7 +101,7 @@ public class BottomToolbar extends Window {
                         levelEditor.setElementToPlace(null);
                         levelEditor.setPlacingWaypoints(false);
                         break;
-                    case "MODIFY":
+                    case "SELECT":
                         rightToolbar.setScreen(RightToolbar.SCREEN_MODIFY_ELEMENT);
                         levelEditor.setElementToPlace(null);
                         levelEditor.setPlacingWaypoints(false);
@@ -139,6 +139,10 @@ public class BottomToolbar extends Window {
                 break;
             }
         }
+    }
+
+    public void fillSaveTextFields(String title, String briefing, String debriefing) {
+        this.saveLevelPopupWindow.fillTextFields(title, briefing, debriefing);
     }
 
 
