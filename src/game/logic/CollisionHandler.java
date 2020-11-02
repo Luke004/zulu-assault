@@ -1,5 +1,6 @@
 package game.logic;
 
+import game.models.interaction_circles.TeleportCircle;
 import settings.UserSettings;
 import game.models.CollisionModel;
 import game.graphics.animations.damage.PlasmaDamageAnimation;
@@ -110,12 +111,23 @@ public class CollisionHandler {
         boolean noIntersection = true;
         for (int idx = 0; idx < teleport_circles.size(); ++idx) {
             if (player.getEntity().getCollisionModel().intersects(teleport_circles.get(idx).getCollisionModel())) {
-                // teleport the game.player to any random teleport circle in the list
                 int idxToTeleportTo;
-                do {
-                    // if it's the same circle, get another random idx again
-                    idxToTeleportTo = random.nextInt(teleport_circles.size());
-                } while (idxToTeleportTo == idx);
+                if ((teleport_circles.size() & 1) == 0) {
+                    // even number -> teleport from one to next circle
+                    if ((idx & 1) == 0) {
+                        // idx is even number -> teleport to next idx circle
+                        idxToTeleportTo = idx + 1;
+                    } else {
+                        // idx is uneven number -> teleport to previous idx circle
+                        idxToTeleportTo = idx - 1;
+                    }
+                } else {
+                    // uneven number -> teleport to random circle in the list
+                    do {
+                        // if it's the same circle, get another random idx again
+                        idxToTeleportTo = random.nextInt(teleport_circles.size());
+                    } while (idxToTeleportTo == idx);
+                }
                 // teleport
                 player.getEntity().teleport(teleport_circles.get(idxToTeleportTo).getPosition());
                 noIntersection = false;
