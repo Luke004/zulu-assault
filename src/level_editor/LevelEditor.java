@@ -638,13 +638,21 @@ public class LevelEditor extends BasicGameState {
                 mouseSlideX = screenMouseX - prevMouseX;
                 mouseSlideY = screenMouseY - prevMouseY;
                 // make it unable to slide past the borders
-                if (mapY < -TITLE_RECT_HEIGHT) mapY = -TITLE_RECT_HEIGHT;
-                if (mapY > mapHeight + bottomToolbar.getHeight() - gc.getHeight()) {
-                    mapY = mapHeight + bottomToolbar.getHeight() - gc.getHeight();
+                if (mapY - mouseSlideY < -TITLE_RECT_HEIGHT) {
+                    mapY = -TITLE_RECT_HEIGHT;
+                    mouseSlideY = 0;
                 }
-                if (mapX < 0) mapX = 0;
-                if (mapX > mapWidth - gc.getWidth() + rightToolbar.getWidth()) {
+                if (mapY - mouseSlideY > mapHeight + bottomToolbar.getHeight() - gc.getHeight()) {
+                    mapY = mapHeight + bottomToolbar.getHeight() - gc.getHeight();
+                    mouseSlideY = 0;
+                }
+                if (mapX - mouseSlideX < 0) {
+                    mapX = 0;
+                    mouseSlideX = 0;
+                }
+                if (mapX - mouseSlideX > mapWidth - gc.getWidth() + rightToolbar.getWidth()) {
                     mapX = mapWidth - gc.getWidth() + rightToolbar.getWidth();
+                    mouseSlideX = 0;
                 }
             }
         }
@@ -757,7 +765,6 @@ public class LevelEditor extends BasicGameState {
                         if (this.elementToPlace.equals(playerEntity)) setPlayerEntity(copy);  // player entity is moved
                         elementToPlace = null;
                     }
-
                     // SELECT A PLACED ELEMENT TO MODIFY
                     boolean hasSelectedElement = false;
                     for (Element element : elements) {
