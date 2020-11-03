@@ -16,8 +16,9 @@ import static settings.TileMapData.*;
 
 public abstract class Aircraft extends MovableEntity {
 
-    protected boolean landing, starting, hasLanded, hasStarted;
-    protected PlaneShadow planeShadow;
+    public boolean hasLanded;
+    protected boolean landing, starting, hasStarted;
+    protected PlaneShadow shadow;
 
     private static final int AIRCRAFT_DEFAULT_SCORE_VALUE = 500;
 
@@ -30,13 +31,13 @@ public abstract class Aircraft extends MovableEntity {
         WIDTH_HALF = base_image.getWidth() / 2;
         HEIGHT_HALF = base_image.getHeight() / 2;
 
-        planeShadow = new PlaneShadow(new Vector2f(position));
+        shadow = new PlaneShadow(new Vector2f(position));
 
         if (!isDrivable) {
             setMoving(true);
             hasStarted = true;    // bot planes are already flying from the start
         } else {
-            landing = true;     // for the game.player - land the plane so he can get in eventually
+            landing = true;     // for the player - land the plane so he can get in eventually
         }
         collisionModel = new CollisionModel(position, base_image.getWidth(), base_image.getHeight());
         super.init();
@@ -113,6 +114,7 @@ public abstract class Aircraft extends MovableEntity {
         }
 
         if (landing) {
+            if (isDestroyed) level_delete_listener.notifyForEntityDestruction(this);
             if (hasLanded) return;
             // calc landing shadow positions
             landPlane(deltaTime);
@@ -126,7 +128,7 @@ public abstract class Aircraft extends MovableEntity {
                 if (hasLanded) level_delete_listener.notifyForEntityDestruction(this);
             } else {
                 // normal shadow position
-                planeShadow.update();
+                shadow.update();
             }
         }
 
@@ -157,23 +159,23 @@ public abstract class Aircraft extends MovableEntity {
     public abstract void decreaseSpeed(int deltaTime);
 
     protected void movePlaneShadow(int deltaTime, Vector2f target_pos) {
-        float angle = WayPointManager.calculateAngleToRotateTo(planeShadow.current_shadow_pos, target_pos);
+        float angle = WayPointManager.calculateAngleToRotateTo(shadow.current_shadow_pos, target_pos);
         float moveX = (float) Math.sin(angle * Math.PI / 180);
         float moveY = (float) -Math.cos(angle * Math.PI / 180);
         moveX *= deltaTime * PlaneShadow.STARTING_LANDING_SPEED;
         moveY *= deltaTime * PlaneShadow.STARTING_LANDING_SPEED;
         Vector2f m_dir = new Vector2f(moveX, moveY);
-        planeShadow.current_shadow_pos.add(m_dir);  // add the dir of the shadow movement
-        planeShadow.current_shadow_pos.add(dir);    // add the dir of the plane as well
-        planeShadow.origin_pos.x = position.x - WIDTH_HALF * 2;
-        planeShadow.origin_pos.y = position.y;
+        shadow.current_shadow_pos.add(m_dir);  // add the dir of the shadow movement
+        shadow.current_shadow_pos.add(dir);    // add the dir of the plane as well
+        shadow.origin_pos.x = position.x - WIDTH_HALF * 2;
+        shadow.origin_pos.y = position.y;
     }
 
     private void startPlane(int deltaTime) {
         // move the plane's shadow away from the plane towards the origin position of the shadow
-        movePlaneShadow(deltaTime, planeShadow.origin_pos);
+        movePlaneShadow(deltaTime, shadow.origin_pos);
 
-        if (WayPointManager.dist(planeShadow.current_shadow_pos, planeShadow.origin_pos)
+        if (WayPointManager.dist(shadow.current_shadow_pos, shadow.origin_pos)
                 <= PlaneShadow.STARTING_LANDING_SPEED * 4) {
             hasStarted = true;
             starting = false;
@@ -183,7 +185,7 @@ public abstract class Aircraft extends MovableEntity {
     private void landPlane(int deltaTime) {
         Vector2f plane_pos = new Vector2f(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
         movePlaneShadow(deltaTime, plane_pos);  // move the plane's shadow towards the plane
-        if (WayPointManager.dist(planeShadow.current_shadow_pos, plane_pos)
+        if (WayPointManager.dist(shadow.current_shadow_pos, plane_pos)
                 <= 2.f) {
             hasLanded = true;
             setMoving(false);
@@ -199,7 +201,7 @@ public abstract class Aircraft extends MovableEntity {
     public void draw(Graphics graphics) {
         // draw the plane's shadow
         if (!hasLanded) {
-            base_image.drawFlash(planeShadow.current_shadow_pos.x, planeShadow.current_shadow_pos.y,
+            base_image.drawFlash(shadow.current_shadow_pos.x, shadow.current_shadow_pos.y,
                     WIDTH_HALF * 2, HEIGHT_HALF * 2, Color.black);
         }
         drawBaseImage();
@@ -237,7 +239,7 @@ public abstract class Aircraft extends MovableEntity {
     @Override
     public void showAccessibleAnimation(boolean activate) {
         super.showAccessibleAnimation(activate);
-        // stop the plane when game.player leaves it, start it again when game.player enters it back
+        // stop the plane when the player leaves it, start it again when the player enters it back
         if (!activate && hasLanded) {
             initStart();    // start the plane
         }
@@ -310,8 +312,8 @@ public abstract class Aircraft extends MovableEntity {
         }
 
         void update() {
-            planeShadow.current_shadow_pos.x = position.x - WIDTH_HALF * 2;
-            planeShadow.current_shadow_pos.y = position.y;
+            shadow.current_shadow_pos.x = position.x - WIDTH_HALF * 2;
+            shadow.current_shadow_pos.y = position.y;
         }
 
     }

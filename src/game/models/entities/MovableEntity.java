@@ -1,5 +1,6 @@
 package game.models.entities;
 
+import game.models.entities.aircraft.AttackHelicopter;
 import game.util.WayPointManager;
 import game.models.entities.soldiers.Soldier;
 import settings.UserSettings;
@@ -213,7 +214,7 @@ public abstract class MovableEntity extends Entity {
 
     protected abstract float getMaxSpeed();
 
-    /* Default implementation of 'onCollision': Like if it was a big war machine */
+    /* Default implementation of 'onCollision': Like if it was a war machine */
     public void onCollision(Entity entity) {
         if (entity instanceof Soldier) {   // enemy is a soldier (bad for him)
             if (entity.isDestroyed) return;
@@ -221,7 +222,11 @@ public abstract class MovableEntity extends Entity {
                 entity.changeHealth(-150.f);
             }
             blockMovement();
-        } else if (!(entity instanceof Aircraft)) {
+        } else {
+            if (entity instanceof Aircraft) {
+                if (((Aircraft) entity).isMoving) return;
+                if (entity instanceof AttackHelicopter) return;
+            }
             blockMovement();
             if (!isHostile && entity.isHostile) {
                 entity.changeHealth(-10.f);

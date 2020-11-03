@@ -1,7 +1,6 @@
 package level_editor.util;
 
 
-import game.audio.MenuSounds;
 import game.models.Element;
 import game.models.entities.Entity;
 import game.models.entities.MovableEntity;
@@ -9,7 +8,7 @@ import game.models.entities.aircraft.AttackHelicopter;
 import game.models.entities.aircraft.ScoutJet;
 import game.models.entities.aircraft.WarJet;
 import game.models.entities.aircraft.WarPlane;
-import game.models.entities.other.PassengerPlane;
+import game.models.entities.aircraft.PassengerPlane;
 import game.models.entities.robots.PlasmaRobot;
 import game.models.entities.robots.RocketRobot;
 import game.models.entities.robots.RocketRobot2;
@@ -24,9 +23,7 @@ import game.models.interaction_circles.HealthCircle;
 import game.models.interaction_circles.InteractionCircle;
 import game.models.interaction_circles.TeleportCircle;
 import game.models.items.*;
-import level_editor.screens.windows.toolbars.right.screens.EntityAdder;
 import org.newdawn.slick.geom.Vector2f;
-import settings.UserSettings;
 
 public class MapElements {
 
@@ -174,7 +171,7 @@ public class MapElements {
             case "WarJet":
                 return new WarJet(pos, isHostile, isDrivable);
             case "PassengerPlane":
-                return new PassengerPlane(pos, isHostile);
+                return new PassengerPlane(pos, isHostile, isDrivable);
         }
         return null;
     }

@@ -141,8 +141,11 @@ public class LevelEditor extends BasicGameState {
 
             if (lds != null) {
                 setPlayerEntity(lds.getPlayerEntity(true));
+                // add player
                 this.elements.add(playerEntity);
+                // add all items
                 this.elements.addAll(lds.getAllItems());
+                // add all circles
                 List<InteractionCircle> interactionCircles = lds.getAllCircles();
                 for (InteractionCircle interactionCircle : interactionCircles) {
                     if (interactionCircle instanceof TeleportCircle) {
@@ -150,8 +153,21 @@ public class LevelEditor extends BasicGameState {
                     }
                 }
                 this.elements.addAll(lds.getAllCircles());
-                this.elements.addAll(lds.getAllEntities());
+                // add all entities
+                List<Entity> entities = lds.getAllEntities();
+                for (Entity entity : entities) {
+                    if (entity instanceof Aircraft) {
+                        ((Aircraft) entity).hasLanded = true;   // so the shadow won't draw
+                    }
+                }
+                this.elements.addAll(entities);
+                // add all entities that have waypoints
                 List<MovableEntity> waypointEntities = lds.getAllWaypointEntities();
+                for (MovableEntity entity : waypointEntities) {
+                    if (entity instanceof Aircraft) {
+                        ((Aircraft) entity).hasLanded = true;   // so the shadow won't draw
+                    }
+                }
                 this.elements.addAll(waypointEntities);
                 EditorWaypointList.setEntityConnections(lds.getEntityConnections(waypointEntities));
                 allWayPointLists.addAll(lds.getAllWaypointLists(this));
@@ -751,6 +767,9 @@ public class LevelEditor extends BasicGameState {
                                 Entity entityCopy = (Entity) copy;
                                 entityCopy.setRotation(((Entity) elementToPlace).getRotation());
                                 entityCopy.isMandatory = EntityAdder.isMandatory;
+                                if (elementToPlace instanceof Aircraft) {
+                                    ((Aircraft) entityCopy).hasLanded = true;   // dont't draw shadow
+                                }
                             } else if (elementToPlace instanceof TeleportCircle) {
                                 teleportCircles.add((TeleportCircle) copy);
                             }
@@ -761,6 +780,9 @@ public class LevelEditor extends BasicGameState {
                     // first: special case -> move an already placed element
                     if (elementToPlace != null) {
                         Element copy = MapElements.getDeepCopy(elementToPlace, mapX, mapY);
+                        if (copy instanceof Aircraft) {
+                            ((Aircraft) copy).hasLanded = true;   // dont't draw shadow
+                        }
                         elements.add(copy);
                         if (this.elementToPlace.equals(playerEntity)) setPlayerEntity(copy);  // player entity is moved
                         elementToPlace = null;
@@ -819,6 +841,9 @@ public class LevelEditor extends BasicGameState {
         this.elementToPlace = element;
         if (element != null) {
             element.getBaseImage().setAlpha(0.7f);
+            if (element instanceof Aircraft) {
+                ((Aircraft) element).hasLanded = true;
+            }
         }
     }
 

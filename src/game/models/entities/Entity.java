@@ -1,6 +1,7 @@
 package game.models.entities;
 
 import game.levels.Level;
+import game.models.entities.tanks.MegaPulseTank;
 import game.util.WayPointManager;
 import game.logic.level_listeners.EntityDeleteListener;
 import game.models.Element;
@@ -157,7 +158,7 @@ public abstract class Entity extends Element {
             fireWeapon(MovableEntity.WeaponType.WEAPON_1);
 
             // following bot controlled entities can also fire their 2nd weapon:
-            if (this instanceof RocketRobot || this instanceof XTank) {
+            if (this instanceof RocketRobot || this instanceof XTank || this instanceof MegaPulseTank) {
                 fireWeapon(MovableEntity.WeaponType.WEAPON_2);
             }
         }

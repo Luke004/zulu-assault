@@ -16,6 +16,13 @@ public class WarPlane extends Plane {
 
     private AnimatedCrosshair animatedCrosshair;
 
+    // STATS
+    private static final float ARMOR = 40.f;
+    private static final float ROTATE_SPEED_PLAYER = 0.1f, ROTATE_SPEED_BOT = 0.1f;
+    private static final float MIN_SPEED_PLAYER = 0.1f, MIN_SPEED_BOT = 0.2f;
+    private static final float MAX_SPEED_PLAYER = 0.22f, MAX_SPEED_BOT = 0.22f;
+    private static final float SPEED_CHANGE_FACTOR = 0.000035f;
+
     public WarPlane(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
 
@@ -48,6 +55,31 @@ public class WarPlane extends Plane {
     public void draw(Graphics graphics) {
         super.draw(graphics);
         if (isDrivable && !hasLanded) animatedCrosshair.draw();     // draw the war plane's crosshair
+    }
+
+    @Override
+    protected float getBaseRotateSpeed() {
+        return isDrivable ? ROTATE_SPEED_PLAYER : ROTATE_SPEED_BOT;
+    }
+
+    @Override
+    protected float getMinSpeed() {
+        return (isDrivable ? MIN_SPEED_PLAYER : MIN_SPEED_BOT);
+    }
+
+    @Override
+    protected float getMaxSpeed() {
+        return (isDrivable ? MAX_SPEED_PLAYER : MAX_SPEED_BOT);
+    }
+
+    @Override
+    protected float getSpeedChangeFactor() {
+        return SPEED_CHANGE_FACTOR;
+    }
+
+    @Override
+    public void changeHealth(float amount) {
+        super.changeHealth(amount, ARMOR);
     }
 
 }

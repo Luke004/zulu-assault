@@ -145,6 +145,9 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
                         MovableEntity movableEntity = (MovableEntity) entity;
                         if (movableEntity.isDrivable) {
                             drivable_entities.add(movableEntity);
+                            if (movableEntity.isMandatory) {
+                                all_hostile_entities.add(entity);   // mandatory hostile entities can also be shot
+                            }
                             continue;
                         }
                     }
@@ -195,7 +198,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
                 renderList.addAll(all_entities);    // TODO: 25.10.2020 why are drivable_entities not in render list?
                 all_entities.addAll(drivable_entities);
 
-                // put planes at the end of the list so they get rendered LAST
+                // put planes at the end of the list so they get rendered on top of other entities
                 renderList.sort((o1, o2) -> {
                     if (o1 instanceof Aircraft && o2 instanceof Aircraft) return 0;
                     else if (o1 instanceof Aircraft) return 1;
@@ -247,6 +250,11 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
     public void notifyForEntityDestruction(Entity entity) {
         if (entity.isHostile) {
             all_hostile_entities.remove(entity);
+            if (entity instanceof MovableEntity) {
+                if (((MovableEntity) entity).isDrivable) {
+                    drivable_entities.remove(entity);
+                }
+            }
             player.addPoints(entity.getScoreValue());  // add points
             screenDrawer.drawScoreValue(5, entity);    // draw the score on the screen
         } else {
@@ -370,13 +378,6 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
         for (int idx = 0; idx < all_entities.size(); ++idx) {
             all_entities.get(idx).update(gc, dt);
         }
-
-        /*
-        for (int idx = 0; idx < static_enemy_entities.size(); ++idx) {
-            static_enemy_entities.get(idx).update(gc, deltaTime);
-        }
-
-         */
 
         for (InteractionCircle health_circle : health_circles) {
             health_circle.update(gc, dt);
