@@ -19,7 +19,7 @@ public abstract class ElementSelector extends ToolbarScreen {
 
     protected List<SelectorSquare> selectorSquareList;
 
-    private Button backButton;
+    protected Button backButton;
 
     protected LevelEditor levelEditor;
 

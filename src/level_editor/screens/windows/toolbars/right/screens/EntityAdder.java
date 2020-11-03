@@ -1,6 +1,8 @@
 package level_editor.screens.windows.toolbars.right.screens;
 
 import game.audio.MenuSounds;
+import game.models.entities.MovableEntity;
+import game.models.entities.soldiers.Soldier;
 import level_editor.LevelEditor;
 import level_editor.screens.windows.Window;
 import level_editor.screens.elements.Checkbox;
@@ -35,35 +37,52 @@ public class EntityAdder extends ElementSelector {
 
     @Override
     public void onMouseClick(int mouseX, int mouseY) {
-        super.onMouseClick(mouseX, mouseY);
+        for (SelectorSquare selectorSquare : selectorSquareList) {
+            if (selectorSquare.mouseOver(mouseX, mouseY)) {
+                MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
+                levelEditor.setElementToPlace(selectorSquare.getElement());
+                if (selectorSquare.getElement() instanceof MovableEntity && !(selectorSquare.getElement() instanceof Soldier)) {
+                    checkboxes[1].setDisabled(false);
+                } else {
+                    checkboxes[1].setDisabled(true);
+                    isDrivable = false;
+                }
+                return;
+            }
+        }
+
+        if (backButton.isMouseOver(mouseX, mouseY)) {
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
+            rightToolbar.goToLastScreen();
+            levelEditor.setElementToPlace(null);
+            return;
+        }
 
         for (int i = 0; i < checkboxes.length; ++i) {
             if (checkboxes[i].isMouseOver(mouseX, mouseY)) {
                 checkboxes[i].toggle();
-
+                Element selectedElement = levelEditor.getElementToPlace();
                 switch (i) {
                     case 0: // "isHostile" checkbox
-                        isHostile = checkboxes[0].isChecked();
+                        isHostile = checkboxes[i].isChecked();
                         checkboxes[2].setDisabled(!isHostile);
-                        Element selectedElement = levelEditor.getElementToPlace();
-                        if (selectedElement != null) {
-                            Element replacement = MapElements.getCopyByName(selectedElement.getClass().getSimpleName(),
-                                    isHostile, isDrivable);
-                            if (replacement != null) {
-                                levelEditor.setElementToPlace(replacement);
-                            }
-                        }
-                        return;
+                        isMandatory = false;
+                        break;
                     case 1: // "isDrivable" checkbox
                         isDrivable = checkboxes[i].isChecked();
-                        return;
+                        break;
                     case 2: // "isMandatory" checkbox
                         isMandatory = checkboxes[i].isChecked();
-                        return;
+                        break;
+                }
+                if (selectedElement == null) return;
+                Element replacement = MapElements.getCopyByName(selectedElement.getClass().getSimpleName(),
+                        isHostile, isDrivable);
+                if (replacement != null) {
+                    levelEditor.setElementToPlace(replacement);
                 }
                 break;
             }
-
         }
 
     }

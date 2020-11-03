@@ -54,6 +54,7 @@ public class Checkbox extends ToolbarElement {
     }
 
     public void toggle() {
+        if (isDisabled) return;
         MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
         isChecked = !isChecked;
     }
@@ -64,7 +65,7 @@ public class Checkbox extends ToolbarElement {
 
     public void setDisabled(boolean val) {
         isDisabled = val;
-        isChecked = false;
+        if (val) isChecked = false;
     }
 
     public boolean isChecked() {
