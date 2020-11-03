@@ -52,11 +52,11 @@ public class CollisionHandler {
     }
 
     static {
-        smokeAnimation = new SmokeAnimation(5);
-        uziHitExplosionAnimation = new UziHitExplosionAnimation(20);
-        uziDamageAnimation = new UziDamageAnimation(20);
-        bigExplosionAnimation = new BigExplosionAnimation(100);
-        plasmaDamageAnimation = new PlasmaDamageAnimation(20);
+        smokeAnimation = new SmokeAnimation(10);
+        uziHitExplosionAnimation = new UziHitExplosionAnimation(30);
+        uziDamageAnimation = new UziDamageAnimation(30);
+        bigExplosionAnimation = new BigExplosionAnimation(250);
+        plasmaDamageAnimation = new PlasmaDamageAnimation(30);
         random = new Random();
     }
 

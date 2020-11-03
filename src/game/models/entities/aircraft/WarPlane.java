@@ -19,7 +19,7 @@ public class WarPlane extends Plane {
     // STATS
     private static final float ARMOR = 40.f;
     private static final float ROTATE_SPEED_PLAYER = 0.1f, ROTATE_SPEED_BOT = 0.1f;
-    private static final float MIN_SPEED_PLAYER = 0.1f, MIN_SPEED_BOT = 0.2f;
+    private static final float MIN_SPEED_PLAYER = 0.1f, MIN_SPEED_BOT = 0.17f;
     private static final float MAX_SPEED_PLAYER = 0.22f, MAX_SPEED_BOT = 0.22f;
     private static final float SPEED_CHANGE_FACTOR = 0.000035f;
 

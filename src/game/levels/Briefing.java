@@ -157,6 +157,7 @@ public class Briefing extends BasicGameState {
         briefing_music_intro.stop();
         briefing_music.stop();
         ZuluAssault.prevState = this;
+        gameContainer.getInput().clearKeyPressedRecord();
     }
 
     class LoadMusicThread extends Thread {

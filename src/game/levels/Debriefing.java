@@ -146,5 +146,6 @@ public class Debriefing extends BasicGameState {
     public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) {
         debriefing_music.stop();
         ZuluAssault.prevState = this;
+        gameContainer.getInput().clearKeyPressedRecord();
     }
 }

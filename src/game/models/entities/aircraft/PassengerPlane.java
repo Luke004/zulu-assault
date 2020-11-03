@@ -12,7 +12,7 @@ public class PassengerPlane extends Plane {
     private static Texture passenger_plane_texture;
 
     // STATS
-    private static final float ARMOR = 75.f;
+    private static final float ARMOR = 63.f;
     private static final float ROTATE_SPEED_PLAYER = 0.02f, ROTATE_SPEED_BOT = 0.02f;
     private static final float MIN_SPEED_PLAYER = 0.05f, MIN_SPEED_BOT = 0.05f;
     private static final float MAX_SPEED_PLAYER = 0.1f, MAX_SPEED_BOT = 0.05f;

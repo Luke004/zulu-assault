@@ -34,7 +34,7 @@ public class ScoutJet extends Jet {
         }
 
         weapons.add(new Uzi(isDrivable));       // WEAPON_1
-        weapons.add(new AGM(true));     // WEAPON_2
+        weapons.add(new AGM(isDrivable));     // WEAPON_2
 
         super.init();
     }
