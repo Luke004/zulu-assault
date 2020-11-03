@@ -143,7 +143,6 @@ public abstract class Robot extends MovableEntity {
         // start the animation since the robot is moving because of way points
         this.setMovingForward(true);
         this.startAnimation();
-        this.setMoving(true);
     }
 
     @Override

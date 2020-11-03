@@ -146,6 +146,7 @@ public abstract class MovableEntity extends Entity {
 
     public void addWayPoints(WayPointManager waypointManager) {
         this.waypointManager = waypointManager;
+        setMoving(true);
     }
 
     private void initAccessibleAnimation() {

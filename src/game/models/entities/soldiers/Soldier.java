@@ -131,6 +131,10 @@ public abstract class Soldier extends MovableEntity {
         //if (movableEntity.isDrivable()) blockMovement();
         if (!(entity instanceof Aircraft)) {
             blockMovement();
+        } else {
+            if (!(((Aircraft) entity).isMoving())) {
+                blockMovement();
+            }
         }
     }
 
