@@ -75,24 +75,6 @@ public abstract class Windmill extends Entity {
     }
 
     @Override
-    public void fireWeapon(MovableEntity.WeaponType weaponType) {
-        Weapon weapon = null;
-        switch (weaponType) {
-            case WEAPON_1:
-                weapon = getWeapon(MovableEntity.WeaponType.WEAPON_1);
-                break;
-            case WEAPON_2:
-                weapon = getWeapon(MovableEntity.WeaponType.WEAPON_2);
-                break;
-            case MEGA_PULSE:
-                weapon = getWeapon(MovableEntity.WeaponType.MEGA_PULSE);
-                break;
-        }
-        if (weapon == null) return;  // does not have a WEAPON_2, so return
-        weapon.fire(position.x, position.y, turret.getRotation());
-    }
-
-    @Override
     public void changeAimingDirection(float angle, int deltaTime) {
         float rotation = WayPointManager.getShortestSignedAngle(turret.getRotation(), angle);
         if (rotation < 0) {
@@ -100,6 +82,11 @@ public abstract class Windmill extends Entity {
         } else {
             turret.rotate(TURRET_ROTATE_SPEED * deltaTime);
         }
+    }
+
+    @Override
+    public float getAimingDirection() {
+        return turret.getRotation();
     }
 
     @Override

@@ -22,7 +22,7 @@ public class ShellTank extends Tank {
         super(startPos, isHostile, isDrivable);
 
         weapons.add(new Shell(isDrivable));   // WEAPON_1
-        weapons.add(new Goliath(isDrivable));   // WEAPON_2
+        if (isDrivable) weapons.add(new Goliath(true));   // WEAPON_2
 
         // LOAD TEXTURES
         try {

@@ -45,18 +45,6 @@ public class MegaPulseTank extends Tank {
         super.init();
     }
 
-    /* special fireWeapon case which should only be used by bots */
-    @Override
-    public void fireWeapon(WeaponType weaponType) {
-        Weapon weapon;
-        if (weaponType == WeaponType.WEAPON_2) {
-            weapon = weapons.get(1);    // mega pulse
-        } else {
-            weapon = weapons.get(0);    // plasma
-        }
-        weapon.fire(position.x, position.y, turret.getRotation());
-    }
-
     @Override
     protected float getBaseRotateSpeed() {
         return isDrivable ? ROTATE_SPEED_PLAYER : ROTATE_SPEED_BOT;

@@ -1,6 +1,5 @@
 package game.player;
 
-import game.logic.CollisionHandler;
 import game.logic.level_listeners.ChangeVehicleListener;
 import game.logic.level_listeners.ItemChangeListener;
 import game.graphics.hud.HUD;
@@ -145,7 +144,7 @@ public class Player {
                 idx = 1;
                 break;
             case MEGA_PULSE:
-                MegaPulse mega_pulse = (MegaPulse) current_entity.getWeapon(MovableEntity.WeaponType.MEGA_PULSE);
+                MegaPulse mega_pulse = (MegaPulse) current_entity.getWeapon(Entity.WeaponType.MEGA_PULSE);
                 if (!mega_pulse.canFire()) return;
                 else mega_pulse.clearHitList();
                 idx = 2;

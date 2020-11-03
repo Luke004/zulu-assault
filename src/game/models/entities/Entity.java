@@ -155,33 +155,46 @@ public abstract class Entity extends Element {
         }
         if (dist < 500) {
             // fire
-            fireWeapon(MovableEntity.WeaponType.WEAPON_1);
-
-            // following bot controlled entities can also fire their 2nd weapon:
-            if (this instanceof RocketRobot || this instanceof XTank || this instanceof MegaPulseTank) {
-                fireWeapon(MovableEntity.WeaponType.WEAPON_2);
-            }
+            fireWeapon(WeaponType.WEAPON_1);
+            fireWeapon(WeaponType.WEAPON_2);
         }
     }
 
-    public abstract void fireWeapon(MovableEntity.WeaponType weapon);
+    public void fireWeapon(WeaponType weaponType) {
+        if (weapons.size() == 0) return;
+        Weapon weapon = null;
+        switch (weaponType) {
+            case WEAPON_1:
+                weapon = getWeapon(WeaponType.WEAPON_1);
+                break;
+            case WEAPON_2:
+                weapon = getWeapon(WeaponType.WEAPON_2);
+                break;
+            case MEGA_PULSE:
+                weapon = getWeapon(WeaponType.MEGA_PULSE);
+                break;
+        }
+        if (weapon == null) return;  // does not have a WEAPON_2, so return
+        weapon.fire(position.x, position.y, getAimingDirection());
+    }
+
+    public Weapon getWeapon(WeaponType weaponType) {
+        switch (weaponType) {
+            case WEAPON_1:
+                return weapons.get(0);
+            case WEAPON_2:
+                if (weapons.size() < 2) return null;    // does not have a WEAPON_2
+                else return weapons.get(1);
+            case MEGA_PULSE:
+                return weapons.get(weapons.size() - 1);     // mega pulse is always at the end of the weapons list
+        }
+        return null;
+    }
 
     public abstract void changeAimingDirection(float degree, int deltaTime);
 
-
-    public Weapon getWeapon(MovableEntity.WeaponType weaponType) {
-        switch (weaponType) {
-            case WEAPON_1:
-                if (weapons.size() == 0) return null;    // does not have a WEAPON_1
-                return weapons.get(0);
-            case WEAPON_2:
-                if (weapons.size() == 2) return null;    // does not have a WEAPON_2
-                else return weapons.get(1);
-            case MEGA_PULSE:
-                if (weapons.size() == 2) return weapons.get(1);
-                else return weapons.get(2);
-        }
-        return null;
+    public float getAimingDirection() {
+        return base_image.getRotation();
     }
 
     public List<Weapon> getWeapons() {

@@ -1,6 +1,7 @@
 package game.logic;
 
 import game.audio.MenuSounds;
+import game.models.entities.Entity;
 import settings.UserSettings;
 import game.graphics.hud.Radar;
 import game.models.entities.MovableEntity;
@@ -39,13 +40,13 @@ public class KeyInputHandler {
         // fire weapon1
         if (input.isKeyDown(Input.KEY_LCONTROL) || input.isKeyPressed(Input.KEY_RCONTROL)) {
             if (playerEntity.isDestroyed) return;
-            playerEntity.fireWeapon(MovableEntity.WeaponType.WEAPON_1);
+            playerEntity.fireWeapon(Entity.WeaponType.WEAPON_1);
         }
 
         // fire weapon2
         if (input.isKeyDown(Input.KEY_LALT) || input.isKeyPressed(Input.KEY_RALT)) {
             if (playerEntity.isDestroyed) return;
-            playerEntity.fireWeapon(MovableEntity.WeaponType.WEAPON_2);
+            playerEntity.fireWeapon(Entity.WeaponType.WEAPON_2);
         }
 
         // activate items
@@ -104,12 +105,12 @@ public class KeyInputHandler {
 
                 // fire weapon1
                 if (input.isKeyDown(Input.KEY_LCONTROL) || input.isKeyPressed(Input.KEY_RCONTROL)) {
-                    soldier.fireWeapon(MovableEntity.WeaponType.WEAPON_1);
+                    soldier.fireWeapon(Entity.WeaponType.WEAPON_1);
                 }
 
                 // fire weapon2
                 if (input.isKeyDown(Input.KEY_LALT) || input.isKeyPressed(Input.KEY_RALT)) {
-                    soldier.fireWeapon(MovableEntity.WeaponType.WEAPON_2);
+                    soldier.fireWeapon(Entity.WeaponType.WEAPON_2);
                 }
 
                 // activate invincibility

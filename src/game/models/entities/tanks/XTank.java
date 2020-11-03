@@ -1,7 +1,7 @@
 package game.models.entities.tanks;
 
+import game.models.entities.Entity;
 import game.util.WayPointManager;
-import game.models.entities.MovableEntity;
 import game.models.weapons.Cannon;
 import game.models.weapons.DoubleRocketLauncher;
 import game.models.weapons.Weapon;
@@ -62,19 +62,6 @@ public class XTank extends Tank {
     @Override
     public void drawPreview(Graphics graphics) {
         this.base_image.draw(position.x, position.y, 0.3f);
-    }
-
-    @Override
-    public Weapon getWeapon(MovableEntity.WeaponType weaponType) {
-        switch (weaponType) {
-            case WEAPON_1:
-                return weapons.get(0);
-            case WEAPON_2:
-                return weapons.get(1);
-            case MEGA_PULSE:
-                return weapons.get(2);
-        }
-        return null;
     }
 
     @Override

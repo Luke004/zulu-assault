@@ -86,26 +86,6 @@ public abstract class Aircraft extends MovableEntity {
     }
 
     @Override
-    public void fireWeapon(WeaponType weapon) {
-        switch (weapon) {
-            case WEAPON_1:
-                weapons.get(0).fire(position.x, position.y, base_image.getRotation());
-                break;
-            case WEAPON_2:
-                if (weapons.size() < 2) return;    // does not have a WEAPON_2, so return
-                weapons.get(1).fire(position.x, position.y, base_image.getRotation());
-                break;
-            case MEGA_PULSE:
-                if (weapons.size() == 2) {   // does not have a WEAPON_2, MEGA_PULSE it at index [1]
-                    weapons.get(1).fire(position.x, position.y, base_image.getRotation());
-                } else {    // does have a WEAPON_2, MEGA_PULSE it at index [2]
-                    weapons.get(2).fire(position.x, position.y, base_image.getRotation());
-                }
-                break;
-        }
-    }
-
-    @Override
     public void update(GameContainer gc, int deltaTime) {
         super.update(gc, deltaTime);
 

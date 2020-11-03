@@ -64,7 +64,7 @@ public class AttackHelicopter extends Aircraft {
         WINGS_IMAGE_HALF = helicopter_wings_moving_image.getWidth() / 2.f;
 
         weapons.add(new RocketLauncher(isDrivable));    // WEAPON 1
-        weapons.add(new AGM(isDrivable));   // WEAPON 2
+        weapons.add(new AGM(true));   // WEAPON 2
 
         super.init();
     }

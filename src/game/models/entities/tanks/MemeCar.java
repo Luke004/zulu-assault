@@ -1,6 +1,5 @@
 package game.models.entities.tanks;
 
-import game.models.weapons.Uzi;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
@@ -19,8 +18,6 @@ public class MemeCar extends Tank {
 
     public MemeCar(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
-
-        if (isDrivable) weapons.add(new Uzi(isDrivable));  // WEAPON_1
 
         // LOAD TEXTURES
         try {

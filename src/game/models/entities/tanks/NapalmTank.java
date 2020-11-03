@@ -22,7 +22,7 @@ public class NapalmTank extends Tank {
         super(startPos, isHostile, isDrivable);
 
         weapons.add(new Plasma(isDrivable));  // WEAPON_1
-        weapons.add(new Napalm(isDrivable));  // WEAPON_2
+        if (isDrivable) weapons.add(new Napalm(true));  // WEAPON_2
 
         // LOAD TEXTURES
         try {

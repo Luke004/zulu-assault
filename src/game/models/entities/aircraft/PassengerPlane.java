@@ -1,92 +1,64 @@
-package game.models.entities.other;
+package game.models.entities.aircraft;
 
 import game.models.CollisionModel;
-import game.models.entities.Entity;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
+import game.models.weapons.Uzi;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 
-public class PassengerPlane extends Entity {
+public class PassengerPlane extends Plane {
 
     private static Texture passenger_plane_texture;
 
-    private static final float PASSENGER_PLANE_ARMOR = 90.f;
-    private static final int PASSENGER_PLANE_SCORE_VALUE = 2000;
+    // STATS
+    private static final float ARMOR = 75.f;
+    private static final float ROTATE_SPEED_PLAYER = 0.02f, ROTATE_SPEED_BOT = 0.02f;
+    private static final float MIN_SPEED_PLAYER = 0.05f, MIN_SPEED_BOT = 0.05f;
+    private static final float MAX_SPEED_PLAYER = 0.1f, MAX_SPEED_BOT = 0.05f;
+    private static final float SPEED_CHANGE_FACTOR = 0.00005f;
 
-    public PassengerPlane(Vector2f startPos, boolean isHostile) {
-        super(startPos, isHostile);
+    public PassengerPlane(Vector2f startPos, boolean isHostile, boolean isDrivable) {
+        super(startPos, isHostile, isDrivable);
 
         // LOAD TEXTURES
         try {
             if (passenger_plane_texture == null) {
-                passenger_plane_texture = new Image("assets/entities/other/passenger_plane.png")
+                passenger_plane_texture = new Image("assets/entities/aircraft/passenger_plane.png")
                         .getTexture();
             }
             base_image = new Image(passenger_plane_texture);
         } catch (SlickException e) {
             e.printStackTrace();
         }
-        this.init();
-    }
 
-    @Override
-    public void init() {
-        collisionModel = new CollisionModel(position, base_image.getWidth() / 8, base_image.getHeight());
         super.init();
+        collisionModel = new CollisionModel(position, base_image.getWidth() / 8, base_image.getHeight());
     }
 
     @Override
-    public void update(GameContainer gc, int deltaTime) {
-        super.update(gc, deltaTime);
-
-        if (isDestroyed) {
-            level_delete_listener.notifyForEntityDestruction(this);
-        }
+    protected float getBaseRotateSpeed() {
+        return isDrivable ? ROTATE_SPEED_PLAYER : ROTATE_SPEED_BOT;
     }
 
     @Override
-    public void draw(Graphics graphics) {
-        base_image.drawCentered(position.x, position.y);
-        drawHealthBar(graphics);
+    protected float getMinSpeed() {
+        return (isDrivable ? MIN_SPEED_PLAYER : MIN_SPEED_BOT);
     }
 
     @Override
-    public void drawPreview(Graphics graphics) {
-        base_image.draw(position.x, position.y, 0.13f);
+    protected float getMaxSpeed() {
+        return (isDrivable ? MAX_SPEED_PLAYER : MAX_SPEED_BOT);
     }
 
     @Override
-    public void fireWeapon(WeaponType weapon) {
-
-    }
-
-    @Override
-    public void changeAimingDirection(float degree, int deltaTime) {
-
-    }
-
-    @Override
-    public void setRotation(float degree) {
-        base_image.setRotation(degree);
-        collisionModel.update(getRotation());
+    protected float getSpeedChangeFactor() {
+        return SPEED_CHANGE_FACTOR;
     }
 
     @Override
     public void changeHealth(float amount) {
-        super.changeHealth(amount, PASSENGER_PLANE_ARMOR);
-    }
-
-    @Override
-    public int getScoreValue() {
-        return PASSENGER_PLANE_SCORE_VALUE;
-    }
-
-    @Override
-    public float getRotation() {
-        return base_image.getRotation();
+        super.changeHealth(amount, ARMOR);
     }
 
 }

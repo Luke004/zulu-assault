@@ -231,6 +231,11 @@ public abstract class Tank extends MovableEntity {
         }
     }
 
+    @Override
+    public float getAimingDirection() {
+        return turret.getRotation();
+    }
+
     public void rotateTurret(RotateDirection r, int deltaTime) {
         if (isDestroyed) return;
         isTurretCentered = false;
@@ -242,24 +247,6 @@ public abstract class Tank extends MovableEntity {
                 turret.rotate(getTurretRotateSpeed() * deltaTime);
                 break;
         }
-    }
-
-    @Override
-    public void fireWeapon(WeaponType weaponType) {
-        Weapon weapon = null;
-        switch (weaponType) {
-            case WEAPON_1:
-                weapon = getWeapon(WeaponType.WEAPON_1);
-                break;
-            case WEAPON_2:
-                weapon = getWeapon(WeaponType.WEAPON_2);
-                break;
-            case MEGA_PULSE:
-                weapon = getWeapon(WeaponType.MEGA_PULSE);
-                break;
-        }
-        if (weapon == null) return;  // does not have a WEAPON_2, so return
-        weapon.fire(position.x, position.y, turret.getRotation());
     }
 
     protected abstract float getAccelerationFactor();

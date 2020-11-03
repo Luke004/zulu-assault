@@ -15,7 +15,7 @@ public class ShellRobot extends Robot {
         super(startPos, isHostile, isDrivable);
 
         weapons.add(new DoubleShell(isDrivable));
-        weapons.add(new Napalm(isDrivable));
+        if (isDrivable) weapons.add(new Napalm(true));
 
         // LOAD TEXTURES
         try {
