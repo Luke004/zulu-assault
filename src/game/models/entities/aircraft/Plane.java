@@ -3,20 +3,21 @@ package game.models.entities.aircraft;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.openal.SoundStore;
 import settings.UserSettings;
 
 public abstract class Plane extends Aircraft {
 
     protected static Sound plane_engine_sound;
 
-    private static final int ENGINE_SOUND_MILLIS_TO_WAIT = 110;
+    private static final int ENGINE_SOUND_MILLIS_TO_WAIT = 130;
     private int current_engine_sound_play_time;
     boolean canPlayEngineSound;
     protected Sound engine_sound;
 
     static {
         try {
-            plane_engine_sound = new Sound("audio/sounds/jet.ogg");     // TODO: 03.11.2020 add own engine sound for planes
+            plane_engine_sound = new Sound("audio/sounds/war_plane.ogg");     // default plane sound is war plane
         } catch (SlickException e) {
             e.printStackTrace();
         }
@@ -38,6 +39,7 @@ public abstract class Plane extends Aircraft {
             canPlayEngineSound = true;
         }
         if (isDrivable) {
+
             if (!engine_sound.playing()) {
                 playEngineSound();
             }
@@ -64,8 +66,7 @@ public abstract class Plane extends Aircraft {
         if (!isMoving || !canPlayEngineSound) return;
         canPlayEngineSound = false;
         engine_sound.stop();
-        float pitch = current_speed / getMaxSpeed();
-        engine_sound.play(pitch, UserSettings.soundVolume);
+        engine_sound.play(current_speed / getMaxSpeed(), UserSettings.soundVolume);
     }
 
     /* only allow the plane to land if its not too fast */
