@@ -233,8 +233,6 @@ public abstract class MovableEntity extends Entity {
         if (isDestroyed) return;
         position.sub(dir);  // set the position on last position before the collision
         collisionModel.update(base_image.getRotation());    // update collision model
-        //current_speed = 0.f;    // set the speed to zero (stop moving on collision)
-        //rotate_speed = 0.f;
     }
 
     public abstract void rotate(RotateDirection r, int deltaTime);

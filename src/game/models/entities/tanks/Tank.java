@@ -143,6 +143,14 @@ public abstract class Tank extends MovableEntity {
             position.y += dir.y;
     }
 
+    @Override
+    public void blockMovement() {
+        if (isDestroyed) return;
+        position.sub(dir);  // set the position on last position before the collision
+        collisionModel.update(base_image.getRotation());    // update collision model
+        current_speed = 0.f;    // set the speed to zero -> reset velocity
+    }
+
     public boolean isDecelerating() {
         return decelerate;
     }

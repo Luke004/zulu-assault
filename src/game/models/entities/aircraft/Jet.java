@@ -40,8 +40,10 @@ public abstract class Jet extends Aircraft {
             current_jet_engine_sound_play_time = 0;
             canPlayJetEngineSound = true;
         }
-        if (!jet_sound.playing()) {
-            playJetEngineSound();
+        if (isDrivable) {
+            if (!jet_sound.playing()) {
+                playJetEngineSound();
+            }
         }
     }
 
