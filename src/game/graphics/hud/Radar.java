@@ -91,6 +91,7 @@ public class Radar {
         // draw the drivable entities
         graphics.setColor(lightGrey);
         for (MovableEntity drivable_entity : drivable_entities) {
+            if (drivable_entity.isMandatory && mandatoryBlinker) continue;
             float friend_x = drivable_entity.getPosition().x * ((float) RADAR_WIDTH / TileMapData.LEVEL_WIDTH_PIXELS);
             float friend_y = drivable_entity.getPosition().y * ((float) RADAR_HEIGHT / TileMapData.LEVEL_HEIGHT_PIXELS);
             graphics.fillRect(radar_origin.x + friend_x, radar_origin.y + friend_y, 1, 1);
@@ -100,6 +101,9 @@ public class Radar {
 
         // movable entities
         for (Entity enemy_entity : all_hostile_entities) {
+            if (enemy_entity instanceof MovableEntity) {
+                if (((MovableEntity) enemy_entity).isDrivable) continue;
+            }
             if (enemy_entity.isMandatory && mandatoryBlinker) continue;
             float enemy_x = enemy_entity.getPosition().x * ((float) RADAR_WIDTH / TileMapData.LEVEL_WIDTH_PIXELS);
             float enemy_y = enemy_entity.getPosition().y * ((float) RADAR_HEIGHT / TileMapData.LEVEL_HEIGHT_PIXELS);

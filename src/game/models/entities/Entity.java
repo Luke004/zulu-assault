@@ -1,12 +1,10 @@
 package game.models.entities;
 
 import game.levels.Level;
-import game.models.entities.tanks.MegaPulseTank;
+import game.models.weapons.MegaPulse;
 import game.util.WayPointManager;
 import game.logic.level_listeners.EntityDeleteListener;
 import game.models.Element;
-import game.models.entities.robots.RocketRobot;
-import game.models.entities.tanks.XTank;
 import game.models.weapons.Weapon;
 import game.models.weapons.projectiles.iGroundTileDamageWeapon;
 import org.newdawn.slick.*;
@@ -184,6 +182,7 @@ public abstract class Entity extends Element {
                 return weapons.get(0);
             case WEAPON_2:
                 if (weapons.size() < 2) return null;    // does not have a WEAPON_2
+                if (weapons.get(1) instanceof MegaPulse) return null;
                 else return weapons.get(1);
             case MEGA_PULSE:
                 return weapons.get(weapons.size() - 1);     // mega pulse is always at the end of the weapons list

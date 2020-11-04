@@ -168,7 +168,11 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
                 }
 
                 // load the player
-                player.init(lds.getPlayerEntity(false));
+                MovableEntity playerEntity = lds.getPlayerEntity(false);
+                if (playerEntity instanceof Aircraft) {
+                    ((Aircraft) playerEntity).setStarting();
+                }
+                player.init(playerEntity);
 
                 if (!initOnce) {
                     initOnce = true;
