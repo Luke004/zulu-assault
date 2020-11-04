@@ -16,6 +16,7 @@ public class Shell extends Weapon {
     private static Sound shell_fire_sound;
     private static Texture shell_hud_texture;
     private static Texture shell_bullet_texture;
+    private final static float SHELL_SPEED = 0.42f;
 
     protected SmokeAnimation smokeAnimation;
 
@@ -63,6 +64,7 @@ public class Shell extends Weapon {
             current_reload_time = 0;    // reset the reload time when a shot is fired
 
             Projectile bullet = addBullet(spawnX, spawnY, rotation_angle, 0.f);
+            bullet.setProjectileSpeed(SHELL_SPEED);
             projectile_list.add(bullet);
 
             fire_sound.play(1.f, UserSettings.soundVolume);

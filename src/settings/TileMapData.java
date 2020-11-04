@@ -16,7 +16,7 @@ public class TileMapData {
             LEVEL_HEIGHT_PIXELS;
 
     // tilesets
-    public static final int LANDSCAPE_TILES_TILESET_IDX = 1;
+    public static final int LANDSCAPE_TILES_TILESET_IDX = 0;
     public static final String TILESETS_LOCATION = "assets/tilesets";
 
     // layers

@@ -491,11 +491,14 @@ public class LevelEditor extends BasicGameState {
                 //}
 
             } else {
-                // USER CANCELLED
-                sbg.enterState(ZuluAssault.MAIN_MENU, new FadeOutTransition(), new FadeInTransition());
+                // no lds data found
+                System.out.println("No level data found.");
             }
             //gc.setFullscreen(true);   // TODO: 26.10.2020 - don't forget to enable this for a build!
 
+        } else {
+            // USER CANCELLED
+            sbg.enterState(ZuluAssault.MAIN_MENU, new FadeOutTransition(), new FadeInTransition());
         }
     }
 
@@ -505,7 +508,6 @@ public class LevelEditor extends BasicGameState {
         camera.drawMap();
         camera.translateGraphics();
         // draw all instances that are moving with the map (ENTITIES, ITEMS, CIRCLES etc..) below
-
 
         // draw the player
         if (playerEntity != null) {

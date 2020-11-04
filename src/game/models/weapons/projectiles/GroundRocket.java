@@ -11,6 +11,7 @@ public class GroundRocket extends Projectile {
     protected Animation rocket_animation;
     private final int ANIMATION_WIDTH_HALF, ANIMATION_HEIGHT_HALF;
     private float xVal, yVal;
+    private final static float ROCKET_SPEED = 0.37f;
 
     public GroundRocket(Vector2f startPos, Vector2f dir, float rotation, Texture projectile_texture,  Animation rocket_animation) {
         super(startPos, dir, rotation, projectile_texture);
@@ -20,7 +21,7 @@ public class GroundRocket extends Projectile {
         this.rocket_animation = rocket_animation;
         ANIMATION_WIDTH_HALF = rocket_animation.getCurrentFrame().getWidth() / 2;
         ANIMATION_HEIGHT_HALF = rocket_animation.getCurrentFrame().getHeight() / 2;
-        projectile_speed = 0.5f;   // set individual rocket speed (slower than from a normal projectile)
+        projectile_speed = ROCKET_SPEED;   // set individual rocket speed (slower than from a normal projectile)
         // calculate x and y to set rocket behind the bullet
         final float DISTANCE = -70;
         final float SPAWN_X = -3;

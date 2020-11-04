@@ -14,7 +14,7 @@ public class CannonTank extends Tank {
     // attributes
     private static final float ARMOR = 50.f;
     private static final float ROTATE_SPEED_PLAYER = 0.15f, ROTATE_SPEED_BOT = 0.05f;
-    private static final float MAX_SPEED_PLAYER = 0.27f, MAX_SPEED_BOT = 0.06f;
+    private static final float MAX_SPEED_PLAYER = 0.23f, MAX_SPEED_BOT = 0.09f;
     private static final float ACCELERATION_FACTOR = 0.0005f, DECELERATION_FACTOR = 0.0005f;
 
     public CannonTank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
