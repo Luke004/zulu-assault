@@ -14,7 +14,6 @@ public class Cannon extends Uzi {
     private static final float MIN_BULLET_SPREAD = -3.f, MAX_BULLET_SPREAD = 3.f;
     private static Texture cannon_hud_texture;
     private static Random random;
-    private float bullet_spread;
     private final int SIDE_OFFSET;
 
     public Cannon(boolean isDrivable, final int SIDE_OFFSET) {
@@ -43,7 +42,7 @@ public class Cannon extends Uzi {
             current_reload_time = 0;    // reset the reload time when a shot is fired
             Projectile bullet;
             if (isDrivable) {
-                bullet_spread = random.nextFloat() * (MAX_BULLET_SPREAD - MIN_BULLET_SPREAD) + MIN_BULLET_SPREAD;
+                float bullet_spread = random.nextFloat() * (MAX_BULLET_SPREAD - MIN_BULLET_SPREAD) + MIN_BULLET_SPREAD;
                 if (switch_bullet_spawn_side) {
                     bullet = addBullet(spawnX, spawnY, rotation_angle + bullet_spread, -SIDE_OFFSET);
                     switch_bullet_spawn_side = false;

@@ -257,6 +257,9 @@ public class KeyInputHandler {
                         drivable_entities.add(robot);
                         all_entities.add(robot);
                         player.setEntity(robot, Player.EnterAction.LEAVING);
+                    } else {
+                        // robot is moving, can't get out of it
+                        MenuSounds.ERROR_SOUND.play(1.f, UserSettings.soundVolume);
                     }
                 }
 

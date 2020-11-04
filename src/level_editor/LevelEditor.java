@@ -894,10 +894,12 @@ public class LevelEditor extends BasicGameState {
                 break;
             }
         }
-        // remove waypoint connection on entity move
-        for (EditorWaypointList editorWaypointList : allWayPointLists) {
-            boolean success = editorWaypointList.removeConnection((MovableEntity) elementToMove);
-            if (success) break;
+        if (elementToMove instanceof MovableEntity) {
+            // remove waypoint connection on entity move
+            for (EditorWaypointList editorWaypointList : allWayPointLists) {
+                boolean success = editorWaypointList.removeConnection((MovableEntity) elementToMove);
+                if (success) break;
+            }
         }
     }
 

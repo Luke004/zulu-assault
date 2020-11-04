@@ -9,10 +9,7 @@ import game.models.entities.aircraft.ScoutJet;
 import game.models.entities.aircraft.WarJet;
 import game.models.entities.aircraft.WarPlane;
 import game.models.entities.aircraft.PassengerPlane;
-import game.models.entities.robots.PlasmaRobot;
-import game.models.entities.robots.RocketRobot;
-import game.models.entities.robots.RocketRobot2;
-import game.models.entities.robots.ShellRobot;
+import game.models.entities.robots.*;
 import game.models.entities.soldiers.RocketSoldier;
 import game.models.entities.soldiers.UziSoldier;
 import game.models.entities.tanks.*;
@@ -39,7 +36,7 @@ public class MapElements {
                 "ExpandItem",
                 "HealthCircle",             // CIRCLES (2)
                 "TeleportCircle",
-                "WindmillGreen",            // ENTITIES (20)
+                "WindmillGreen",            // ENTITIES (21)
                 "WindmillGrey",
                 "WindmillYellow",
                 "MemeCar",
@@ -50,9 +47,10 @@ public class MapElements {
                 "MegaPulseTank",
                 "XTank",
                 "PlasmaRobot",
+                "WarRobot",
                 "RocketRobot",
-                "RocketRobot2",
-                "ShellRobot",   // TODO: add laser robot
+                "ShellRobot",
+                "LaserRobot",
                 "UziSoldier",
                 "RocketSoldier",
                 "WarPlane",
@@ -108,7 +106,8 @@ public class MapElements {
                 allElements[25],
                 allElements[26],
                 allElements[27],
-                allElements[28]
+                allElements[28],
+                allElements[29]
         };
     }
 
@@ -152,12 +151,14 @@ public class MapElements {
                 return new XTank(pos, isHostile, isDrivable);
             case "PlasmaRobot":
                 return new PlasmaRobot(pos, isHostile, isDrivable);
+            case "WarRobot":
+                return new WarRobot(pos, isHostile, isDrivable);
             case "RocketRobot":
                 return new RocketRobot(pos, isHostile, isDrivable);
-            case "RocketRobot2":
-                return new RocketRobot2(pos, isHostile, isDrivable);
             case "ShellRobot":
                 return new ShellRobot(pos, isHostile, isDrivable);
+            case "LaserRobot":
+                return new LaserRobot(pos, isHostile, isDrivable);
             case "UziSoldier":
                 return new UziSoldier(pos, isHostile);
             case "RocketSoldier":

@@ -53,7 +53,7 @@ public class CollisionHandler {
 
     static {
         smokeAnimation = new SmokeAnimation(10);
-        uziHitExplosionAnimation = new UziHitExplosionAnimation(30);
+        uziHitExplosionAnimation = new UziHitExplosionAnimation(350);
         uziDamageAnimation = new UziDamageAnimation(30);
         bigExplosionAnimation = new BigExplosionAnimation(250);
         plasmaDamageAnimation = new PlasmaDamageAnimation(30);
@@ -281,6 +281,13 @@ public class CollisionHandler {
                     if (!((PiercingWeapon) weapon).hasAlreadyHit(hostileEntity)) {
                         //drain health of hit tank:
                         hostileEntity.changeHealth(-weapon.getBulletDamage());
+                        if (weapon instanceof Laser) {
+                            uziHitExplosionAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y,
+                                    random.nextInt(360));
+                            uziDamageAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y,
+                                    projectile.projectile_image.getRotation() - 90
+                                            + random.nextInt(30 + 1 + 30) - 30);
+                        }
                     }
                     continue;
                 } else if (weapon instanceof Uzi) {
@@ -333,6 +340,9 @@ public class CollisionHandler {
                             bigExplosionAnimation.playTenTimes(x * TILE_WIDTH + 20, y * TILE_HEIGHT + 20, 0);
                         } else if (!((PiercingWeapon) weapon).hasAlreadyHit(generateKey(x, y))) {
                             damageTile(x, y, weapon, destructible_tile_replace_indices[idx], null);
+                            if (weapon instanceof Laser) {
+                                uziHitExplosionAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y, random.nextInt(360));
+                            }
                         }
                         continue;
                     } else if (weapon instanceof Uzi) {

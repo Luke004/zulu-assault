@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class PiercingWeapon extends Weapon {
+
     private List<Integer> hit_indices;
 
     public PiercingWeapon() {
