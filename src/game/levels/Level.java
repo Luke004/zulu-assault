@@ -12,13 +12,11 @@ import game.logic.RandomItemDropper;
 import game.logic.level_listeners.EntityDeleteListener;
 import game.logic.level_listeners.GroundTileDamager;
 import game.menu.Menu;
-import game.models.Element;
 import game.models.entities.Entity;
 import game.models.entities.MovableEntity;
 import game.models.entities.aircraft.Aircraft;
 import game.models.entities.robots.Robot;
 import game.models.entities.soldiers.Soldier;
-import game.models.entities.tanks.CannonTank;
 import game.models.interaction_circles.HealthCircle;
 import game.models.interaction_circles.InteractionCircle;
 import game.models.interaction_circles.TeleportCircle;
@@ -29,7 +27,6 @@ import level_editor.LevelEditor;
 import game.util.LevelDataStorage;
 import main.ZuluAssault;
 import org.newdawn.slick.*;
-import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
@@ -127,6 +124,8 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
 
             LevelDataStorage lds = LevelDataStorage.loadLevel(ZuluAssault.nextLevelName, isStandardLevel);
             if (lds != null) {
+                reset();
+
                 // load all items
                 items.addAll(lds.getAllItems());
 
@@ -428,7 +427,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
         keyInputHandler.onKeyRelease(key);
     }
 
-    protected static void resetLevel() {
+    private static void reset() {
         if (player.getEntity() == null) return;
         all_hostile_entities.clear();
         all_friendly_entities.clear();

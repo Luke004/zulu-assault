@@ -87,7 +87,7 @@ public class DeathScreen extends AbstractMenuScreen {
     private void handleMenuItemChoice(GameContainer gameContainer, StateBasedGame stateBasedGame, int idx) {
         switch (idx) {
             case 0: // REPLAY MISSION
-                LevelHandler.startNewGame("map_1", gameState);
+                LevelHandler.startNewGame(ZuluAssault.nextLevelName, gameState);
                 break;
             case 1: // LOAD A GAME
                 // TODO: LOAD

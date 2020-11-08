@@ -127,10 +127,10 @@ public class Debriefing extends BasicGameState {
         if (LevelHandler.playerIsInPlayThrough()) {
             int idx = finished_level_Name.indexOf("_");
             String s_nextLevel = finished_level_Name.substring(idx + 1);
-            int nextLevelID = Integer.parseInt(s_nextLevel);
+            int nextLevelID = Integer.parseInt(s_nextLevel) + 1;
 
             // TODO: remove this, this is temporary for the alpha version
-            if (nextLevelID == ZuluAssault.MAX_LEVEL) {
+            if (nextLevelID > ZuluAssault.MAX_LEVEL) {      // there is no more level
                 LevelHandler.goToMainMenu();
                 return;
             }
