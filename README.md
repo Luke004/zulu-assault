@@ -47,7 +47,7 @@ https://github.com/Luke004/Zulu-Assault/releases/download/1.3/zulu-assault-remas
 
 ## Console commands
 
-You can open the game.menu.console in the game.menu by pressing <kbd>^</kbd> (German version - key to the left of 1)
+You can open the console in the menu by pressing <kbd>^</kbd> (German version - key to the left of 1)
 
 |Command|Action|
 |-----|-----------|
