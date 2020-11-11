@@ -42,8 +42,8 @@ The game was originally published in July 1998 for Windows 95/98/NT platforms su
 *Repel projectiles of enemy weapons*
 
 
-## Play now (download)
-https://www.dropbox.com/sh/dft4pes6qxbbuts/AAC3EQgJXdtmXwD29vViDMa4a?dl=0
+## Play current release (download)
+https://github.com/Luke004/Zulu-Assault/releases/download/1.3/zulu-assault-remaster-1.3.zip
 
 ## Console commands
 
