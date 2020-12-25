@@ -8,6 +8,8 @@ public class Scanner {
 
     private static final String KEYWORD_LEVEL = "level";
     private static final String ERROR_UNRECOGNIZED = "Unrecognized command.";
+    private static final String HELP_OPEN_LEVEL = "Use: 'open level x'  " +
+            "|  x = number between 1-20 or the name of a custom level";
 
     public static String scan(String input) {
         if (input.isEmpty()) return "";
@@ -17,7 +19,7 @@ public class Scanner {
 
         switch (command) {
             case "open":    // open a specific level
-                if (input_split_by_whitespace.length != 3) return ERROR_UNRECOGNIZED;
+                if (input_split_by_whitespace.length != 3) return HELP_OPEN_LEVEL;
                 // e.g. 'open level 1'
                 String s_level = input_split_by_whitespace[2];
                 if (!LevelManager.existsLevel(s_level)) {
