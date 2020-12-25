@@ -39,7 +39,7 @@ import java.util.*;
 public class LevelEditor extends BasicGameState {
 
     // for choosing the map
-    public static final String CUSTOM_MAPS_FOLDER = "custom_maps/";
+    public static final String CUSTOM_MAPS_FOLDER = "assets/maps_custom/";
 
     private String mapName;
 

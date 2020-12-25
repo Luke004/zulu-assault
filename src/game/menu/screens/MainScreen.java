@@ -2,7 +2,7 @@ package game.menu.screens;
 
 import game.audio.MenuSounds;
 import game.graphics.fonts.FontManager;
-import game.levels.LevelHandler;
+import game.levels.LevelManager;
 import main.ZuluAssault;
 import game.menu.Menu;
 import game.menu.elements.Arrow;
@@ -105,7 +105,7 @@ public class MainScreen extends AbstractMenuScreen {
             case 0: // NEW
                 // START NEW GAME
                 // init a new game starting with level 1
-                LevelHandler.startNewGame("map_1", basicGameState);
+                LevelManager.startNewGame("map_1", basicGameState);
                 break;  // TODO: LOAD AND SAVE
             case 1: // LOAD
                 MenuSounds.ERROR_SOUND.play(1.f, UserSettings.soundVolume);

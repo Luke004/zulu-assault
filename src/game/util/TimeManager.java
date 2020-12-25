@@ -1,6 +1,6 @@
 package game.util;
 
-import game.levels.LevelHandler;
+import game.levels.LevelManager;
 
 public class TimeManager {
 
@@ -16,7 +16,7 @@ public class TimeManager {
     }
 
     public static void finishLevel() {
-        if (LevelHandler.playerIsInPlayThrough())
+        if (LevelManager.playerIsInPlayThrough())
             timeTotalMillis += timeInLevelMillis;
     }
 

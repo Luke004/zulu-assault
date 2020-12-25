@@ -1,12 +1,8 @@
 package game.menu.console;
 
-import game.levels.LevelHandler;
+import game.levels.LevelManager;
 import settings.SettingStorage;
-import main.ZuluAssault;
 import settings.UserSettings;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Scanner {
 
@@ -21,32 +17,15 @@ public class Scanner {
 
         switch (command) {
             case "open":    // open a specific level
-                if (input_split_by_whitespace.length > 3 || input_split_by_whitespace.length < 2)
-                    return ERROR_UNRECOGNIZED;
-                if (input_split_by_whitespace.length == 2) {    // e.g. 'open level_1'
-                    String level = input_split_by_whitespace[1];
-                    Pattern pattern = Pattern.compile(KEYWORD_LEVEL + "[-_]?([0-9]+)");
-                    Matcher matcher = pattern.matcher(level);
-
-                    if (matcher.matches()) {
-                        String s_level = matcher.group(1);
-                        if (ZuluAssault.existsLevel(s_level)) {
-                            LevelHandler.openSingleLevel(s_level);
-                            closeConsoleWithDelay();
-                            return "Opening level " + s_level + " ...";
-                        }
-                        return "Level " + s_level + " doesn't exist yet.";
-                    }
-                } else {    // e.g. 'open level 1'
-                    String s_level = input_split_by_whitespace[2];
-                    if (ZuluAssault.existsLevel(s_level)) {
-                        LevelHandler.openSingleLevel(s_level);
-                        closeConsoleWithDelay();
-                        return "Opening level " + s_level + " ...";
-                    }
-                    return "Level " + s_level + " doesn't exist yet. Maybe create it using the editor x)";
+                if (input_split_by_whitespace.length != 3) return ERROR_UNRECOGNIZED;
+                // e.g. 'open level 1'
+                String s_level = input_split_by_whitespace[2];
+                if (!LevelManager.existsLevel(s_level)) {
+                    return "Level " + s_level + " doesn't exist yet. Maybe create it using the editor?";
                 }
-                return "Level doesn't exist.";
+                LevelManager.openSingleLevel(s_level);
+                closeConsoleWithDelay();
+                return "Opening level " + s_level + " ...";
             case "show":
                 String element = input_split_by_whitespace[1];
                 switch (element) {

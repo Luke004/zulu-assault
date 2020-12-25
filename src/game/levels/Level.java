@@ -103,7 +103,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         if (ZuluAssault.nextLevelName.isEmpty()) {
             // this is called only once at startup
-            LevelHandler.init(stateBasedGame);
+            LevelManager.init(stateBasedGame);
             return;
         }
 
@@ -264,7 +264,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
             if (entity instanceof MovableEntity) {
                 if (entity == player.getEntity()) {
                     // THE PLAYER DIED
-                    LevelHandler.gameOver(this);
+                    LevelManager.gameOver(this);
                 } else {
                     all_friendly_entities.remove(entity);
                     if (((MovableEntity) entity).isDrivable) {
@@ -307,16 +307,14 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
     }
 
     public static boolean isStandardLevel(String s_name) {
-        if (s_name.substring(0, 4).equals("map_")) {
-            try {
+        if (s_name.length() > 4) {
+            if (s_name.substring(0, 4).equals("map_")) {
+                // official map
                 int levelID = Integer.parseInt(s_name.substring(4));
                 if (levelID <= ZuluAssault.MAX_LEVEL && levelID >= 1) {
                     return true;
                 }
-            } catch (NumberFormatException e) {
-                return false;
             }
-
         }
         return false;
     }

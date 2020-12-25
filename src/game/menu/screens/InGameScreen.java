@@ -2,7 +2,7 @@ package game.menu.screens;
 
 import game.audio.MenuSounds;
 import game.graphics.fonts.FontManager;
-import game.levels.LevelHandler;
+import game.levels.LevelManager;
 import main.ZuluAssault;
 import game.menu.Menu;
 import game.menu.elements.Arrow;
@@ -113,7 +113,7 @@ public class InGameScreen extends AbstractMenuScreen {
                         new FadeOutTransition(), new FadeInTransition());
                 break;
             case 1: // START NEW GAME
-                LevelHandler.startNewGame("map_1", gameState);
+                LevelManager.startNewGame("map_1", gameState);
                 break;
             case 2: // LOAD
             case 3: // SAVE

@@ -47,11 +47,11 @@ https://github.com/Luke004/Zulu-Assault/releases/download/1.3/zulu-assault-remas
 
 ## Console commands
 
-You can open the game.menu.console in the game.menu by pressing <kbd>^</kbd> (German version - key to the left of 1)
+You can open up the console in the games menu by pressing <kbd>^</kbd> (German version - key to the left of 1)
 
 |Command|Action|
 |-----|-----------|
-|*open level_x* |open and play a single level x|
+|*open level x* |open and play a single level x (where x can be a level number (1-20) but can also be the name of a custom map|
 |*show time* |display the time needed for the play through (speedrunner support =D)|
 |*show fps* |display the frames per second (bottom right corner)|
 |*keyboard_layout x* |switch between keyboard layouts (1 = German, 2 = English)|

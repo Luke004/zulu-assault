@@ -90,17 +90,4 @@ public class ZuluAssault extends StateBasedGame {
         this.enterState(MAIN_MENU);
     }
 
-    public static boolean existsLevel(String name) {
-        try {
-            int levelID = Integer.parseInt(name);
-            if (levelID <= MAX_LEVEL && levelID >= 1) {
-                return true;
-            }
-        } catch (NumberFormatException e) {
-            // a level string was put in -> look for custom level
-            // TODO: 26.10.2020 check if custom maps exist with this name
-        }
-        return false;
-    }
-
 }

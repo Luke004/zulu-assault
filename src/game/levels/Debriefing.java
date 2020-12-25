@@ -124,21 +124,21 @@ public class Debriefing extends BasicGameState {
     public void keyPressed(int key, char c) {
         MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
 
-        if (LevelHandler.playerIsInPlayThrough()) {
+        if (LevelManager.playerIsInPlayThrough()) {
             int idx = finished_level_Name.indexOf("_");
             String s_nextLevel = finished_level_Name.substring(idx + 1);
             int nextLevelID = Integer.parseInt(s_nextLevel) + 1;
 
             // TODO: remove this, this is temporary for the alpha version
             if (nextLevelID > ZuluAssault.MAX_LEVEL) {      // there is no more level
-                LevelHandler.goToMainMenu();
+                LevelManager.goToMainMenu();
                 return;
             }
 
             s_nextLevel = "map_" + s_nextLevel;
-            LevelHandler.startNextLevel(s_nextLevel, this);
+            LevelManager.startNextLevel(s_nextLevel, this);
         } else {
-            LevelHandler.goToMainMenu();
+            LevelManager.goToMainMenu();
         }
     }
 

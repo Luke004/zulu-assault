@@ -1,6 +1,7 @@
 package game.levels;
 
 import game.util.TimeManager;
+import level_editor.LevelEditor;
 import main.ZuluAssault;
 import game.menu.Menu;
 import org.newdawn.slick.state.BasicGameState;
@@ -8,7 +9,9 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
-public class LevelHandler {
+import java.io.File;
+
+public class LevelManager {
 
     private static StateBasedGame stateBasedGame;
 
@@ -37,7 +40,8 @@ public class LevelHandler {
 
     public static void openSingleLevel(String s_level) {
         playerIsInPlayThrough = false;
-        ZuluAssault.nextLevelName = s_level;
+        // if it is an official level, add 'map_' - prefix
+        ZuluAssault.nextLevelName = isCustomLevel(s_level) ? s_level : "map_" + s_level;
         stateBasedGame.enterState(ZuluAssault.BRIEFING, new FadeOutTransition(), new FadeInTransition());
     }
 
@@ -55,6 +59,36 @@ public class LevelHandler {
 
     public static void init(StateBasedGame sbg) {
         stateBasedGame = sbg;
+    }
+
+    public static boolean existsLevel(String name) {
+        try {
+            int levelID = Integer.parseInt(name);
+            if (levelID <= ZuluAssault.MAX_LEVEL && levelID >= 1) {
+                return true;
+            }
+        } catch (NumberFormatException e) {
+            // a level string was put in -> look for custom level
+            return existsCustomLevel(name);
+        }
+        return existsCustomLevel(name);
+    }
+
+    private static boolean existsCustomLevel(String name) {
+        String fileName = LevelEditor.CUSTOM_MAPS_FOLDER + name + ".tmx";
+        return new File(fileName).exists();
+    }
+
+    public static boolean isCustomLevel(String name) {
+        try {
+            int levelID = Integer.parseInt(name);
+            if (levelID <= ZuluAssault.MAX_LEVEL && levelID >= 1) {
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            return true;
+        }
+        return true;
     }
 
 }

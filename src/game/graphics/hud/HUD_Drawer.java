@@ -1,7 +1,7 @@
 package game.graphics.hud;
 
 import game.graphics.fonts.FontManager;
-import game.levels.LevelHandler;
+import game.levels.LevelManager;
 import game.util.TimeManager;
 import org.newdawn.slick.*;
 import game.player.Player;
@@ -93,7 +93,7 @@ public class HUD_Drawer {
             // draw the current time spent in level
             drawTime(TimeManager.getTimeInLevel(), 5.f, TimeManager.TEXT_LEVEL_TIME);
             // draw the total time spent in the current play through
-            if (LevelHandler.playerIsInPlayThrough())
+            if (LevelManager.playerIsInPlayThrough())
                 drawTime(TimeManager.getTotalTime(), 33.f, TimeManager.TEXT_TOTAL_TIME);
         }
 
