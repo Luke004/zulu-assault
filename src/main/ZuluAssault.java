@@ -26,19 +26,6 @@ public class ZuluAssault extends StateBasedGame {
 
     public static final int MAX_LEVEL = 13;
 
-    /*
-    public static final int LEVEL_1 = 1;
-    public static final int LEVEL_2 = 2;
-    public static final int LEVEL_3 = 3;
-    public static final int LEVEL_4 = 4;
-    public static final int LEVEL_5 = 5;
-    public static final int LEVEL_6 = 6;
-    public static final int LEVEL_7 = 7;
-    public static final int LEVEL_8 = 8;
-    public static final int LEVEL_9 = 9;
-
-     */
-
     public static BasicGameState prevState = null;
     public static String nextLevelName = "";
 
@@ -46,17 +33,6 @@ public class ZuluAssault extends StateBasedGame {
         super(name);
         this.addState(new Menu());
         this.addState(new Level());
-        /*
-        this.addState(new Level_1());
-        this.addState(new Level_2());
-        this.addState(new Level_3());
-        this.addState(new Level_4());
-        this.addState(new Level_5());
-        this.addState(new Level_6());
-        this.addState(new Level_7());
-        this.addState(new Level_8());
-        this.addState(new Level_9());
-         */
         this.addState(new Debriefing());
         this.addState(new Briefing());
         this.addState(new LevelEditor());

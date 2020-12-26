@@ -1,4 +1,4 @@
-package settings;
+package game.logic;
 
 import org.newdawn.slick.tiled.TileSet;
 import org.newdawn.slick.tiled.TiledMap;
@@ -23,7 +23,7 @@ public class TileMapData {
     public static final int LANDSCAPE_TILES_LAYER_IDX = 0;
     public static final int DESTRUCTION_TILES_LAYER_IDX = 1;
 
-    public static int[] CLASS_GRASS, CLASS_CONCRETE, CLASS_DIRT;
+    public static int[] CLASS_GRASS, CLASS_CONCRETE, CLASS_DIRT, CLASS_SNOW, CLASS_SWAMP;
 
     public static final int[] collision_replace_indices;
     public static final int[] destructible_tile_indices;
@@ -36,12 +36,14 @@ public class TileMapData {
         collision_replace_indices = new int[]{
                 144,    // DIRT
                 145,    // CONCRETE
-                146     // GRASS
+                146,    // GRASS
+                147,    // SNOW
+                216,    // SWAMP
         };
-        destructible_tile_indices = new int[]{1, 2, 26, 27, 37, 97, 100, 123, 132, 133};
-        destructible_tile_replace_indices = new int[]{48, 49, 50, 51, 52, 53, 139, 138, 137, 135};
+        destructible_tile_indices = new int[]{1, 2, 26, 27, 37, 97, 100, 123, 132, 133, 157, 158, 159, 160, 161, 205, 206, 207};
+        destructible_tile_replace_indices = new int[]{48, 49, 50, 51, 52, 53, 139, 138, 137, 135, 169, 170, 171, 172, 173, 217, 218, 219};
         indestructible_tile_indices = new int[]{60, 72, 73, 74, 75, 76, 77, 78, 79, 84, 85, 86, 87, 88, 89, 96, 98, 99,
-                101, 108, 109, 110, 111, 112, 113};
+                101, 108, 109, 110, 111, 112, 113, 180, 181, 182, 183, 184, 185, 187, 188, 189, 192, 193, 194, 195, 196, 197, 200, 201};
     }
 
     public static void init() {
@@ -91,39 +93,22 @@ public class TileMapData {
         for (int i = 0; i < dirt_indices.length; ++i) {
             CLASS_DIRT[i] = landscape_tiles.firstGID + dirt_indices[i];
         }
-
-        /*
-        // create TileInfo for 'enemy_tiles' TileSet
-        TileSet enemy_tiles = map.getTileSet(ENEMY_TILES_TILESET_IDX);
-        if (!enemy_tiles.name.equals("enemy_tiles"))
-            throw new IllegalAccessError("Wrong tileset index: [" + ENEMY_TILES_TILESET_IDX + "] is not enemy_tiles");
-        else {
-            for (int idx = 0; idx < windmill_indices.length; ++idx) {
-                windmill_indices[idx] += enemy_tiles.firstGID;
-            }
+        // init tiles of snow for tile replacement
+        int[] snow_indices = new int[]{
+                156, 162, 163, 164, 165, 166, 167, 190, 191, 202, 203, 211, 212, 213, 214, 215
+        };
+        CLASS_SNOW = new int[snow_indices.length];
+        for (int i = 0; i < snow_indices.length; ++i) {
+            CLASS_SNOW[i] = landscape_tiles.firstGID + snow_indices[i];
         }
-         */
-
-        /*
-        // create TileInfo for 'plane_tiles' TileSet
-        TileSet plane_tiles = map.getTileSet(PLANE_TILES_TILESET_IDX);
-        if (!plane_tiles.name.equals("plane_tiles"))
-            throw new IllegalAccessError("Wrong tileset index: [" + PLANE_TILES_TILESET_IDX + "] is not plane_tiles");
-        else {
-            for (int idx = 0; idx < static_plane_creation_indices.length; ++idx) {
-                static_plane_creation_indices[idx] += plane_tiles.firstGID;
-            }
-            for (int idx = 0; idx < static_plane_collision_indices.length; ++idx) {
-                static_plane_collision_indices[idx] += plane_tiles.firstGID;
-            }
+        // init tiles of snow for tile replacement
+        int[] swamp_indices = new int[]{
+                176, 177, 178, 179, 204, 208
+        };
+        CLASS_SWAMP = new int[swamp_indices.length];
+        for (int i = 0; i < swamp_indices.length; ++i) {
+            CLASS_SWAMP[i] = landscape_tiles.firstGID + swamp_indices[i];
         }
-        static_entity_indices = new int[static_plane_collision_indices.length + windmill_indices.length];
-        for (int i = 0; i < static_entity_indices.length; ++i) {
-            if (i < static_plane_collision_indices.length)
-                static_entity_indices[i] = static_plane_collision_indices[i];
-            else static_entity_indices[i] = windmill_indices[i - static_plane_collision_indices.length];
-        }
- */
 
         destructible_tiles_health_info = new HashMap<>();
     }
@@ -157,6 +142,12 @@ public class TileMapData {
         }
         for (int value : CLASS_GRASS) {
             if (tileID == value) return collision_replace_indices[2];
+        }
+        for (int value : CLASS_SNOW) {
+            if (tileID == value) return collision_replace_indices[3];
+        }
+        for (int value : CLASS_SWAMP) {
+            if (tileID == value) return collision_replace_indices[4];
         }
         return -1;
     }

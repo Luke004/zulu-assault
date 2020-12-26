@@ -8,7 +8,7 @@ import game.logic.level_listeners.GroundTileDamager;
 import game.logic.level_listeners.EntityDeleteListener;
 import main.ZuluAssault;
 import game.menu.Menu;
-import settings.TileMapData;
+import game.logic.TileMapData;
 import settings.UserSettings;
 import game.graphics.animations.explosion.BigExplosionAnimation;
 import game.graphics.hud.HUD;
@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static game.util.TileMapUtil.doCollateralTileDamage;
-import static settings.TileMapData.*;
+import static game.logic.TileMapData.*;
 
 public abstract class AbstractLevel extends BasicGameState implements EntityDeleteListener, GroundTileDamager {
 

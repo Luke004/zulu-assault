@@ -32,15 +32,15 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 import org.newdawn.slick.tiled.TiledMap;
-import settings.TileMapData;
+import game.logic.TileMapData;
 import settings.UserSettings;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static game.util.TileMapUtil.doCollateralTileDamage;
-import static settings.TileMapData.*;
-import static settings.TileMapData.DESTRUCTION_TILES_LAYER_IDX;
+import static game.logic.TileMapData.*;
+import static game.logic.TileMapData.DESTRUCTION_TILES_LAYER_IDX;
 
 public class Level extends BasicGameState implements EntityDeleteListener, GroundTileDamager {
 

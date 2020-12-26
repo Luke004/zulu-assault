@@ -1,6 +1,6 @@
 package game.graphics.hud;
 
-import settings.TileMapData;
+import game.logic.TileMapData;
 import game.models.entities.Entity;
 import game.models.entities.MovableEntity;
 import org.newdawn.slick.Color;

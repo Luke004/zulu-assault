@@ -1,6 +1,6 @@
 package game.models.entities.aircraft;
 
-import settings.TileMapData;
+import game.logic.TileMapData;
 import settings.UserSettings;
 import game.graphics.animations.other.AnimatedCrosshair;
 import game.models.weapons.AGM;
@@ -9,8 +9,8 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 
-import static settings.TileMapData.*;
-import static settings.TileMapData.LANDSCAPE_TILES_LAYER_IDX;
+import static game.logic.TileMapData.*;
+import static game.logic.TileMapData.LANDSCAPE_TILES_LAYER_IDX;
 
 public class AttackHelicopter extends Aircraft {
 

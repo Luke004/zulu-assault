@@ -17,8 +17,8 @@ import org.newdawn.slick.geom.Vector2f;
 
 import java.util.Arrays;
 
-import static settings.TileMapData.LEVEL_HEIGHT_PIXELS;
-import static settings.TileMapData.LEVEL_WIDTH_PIXELS;
+import static game.logic.TileMapData.LEVEL_HEIGHT_PIXELS;
+import static game.logic.TileMapData.LEVEL_WIDTH_PIXELS;
 
 public class Player {
     private PlayerSoldier base_soldier;

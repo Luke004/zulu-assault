@@ -1,6 +1,5 @@
 package game.logic;
 
-import game.models.interaction_circles.TeleportCircle;
 import settings.UserSettings;
 import game.models.CollisionModel;
 import game.graphics.animations.damage.PlasmaDamageAnimation;
@@ -22,7 +21,7 @@ import game.player.Player;
 
 import static game.levels.Level.*;
 import static game.util.TileMapUtil.*;
-import static settings.TileMapData.*;
+import static game.logic.TileMapData.*;
 
 import java.util.*;
 

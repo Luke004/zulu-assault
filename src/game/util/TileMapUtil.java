@@ -1,12 +1,12 @@
 package game.util;
 
 
-import settings.TileMapData;
+import game.logic.TileMapData;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static settings.TileMapData.*;
+import static game.logic.TileMapData.*;
 
 public class TileMapUtil {
 

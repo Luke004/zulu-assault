@@ -1,6 +1,6 @@
 package game.models.entities.aircraft;
 
-import settings.TileMapData;
+import game.logic.TileMapData;
 import game.util.WayPointManager;
 import game.audio.MenuSounds;
 import game.models.entities.Entity;
@@ -12,7 +12,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
-import static settings.TileMapData.*;
+import static game.logic.TileMapData.*;
 
 public abstract class Aircraft extends MovableEntity {
 
