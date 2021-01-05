@@ -30,7 +30,7 @@ public class MegaPulse extends PiercingWeapon {
         // individual MegaPulse specs
         bullet_damage = 3000;
         shot_reload_time = 500;
-        if (!isDrivable) shot_reload_time *= 7;
+        if (!isDrivable) shot_reload_time *= 11;
     }
 
     @Override
