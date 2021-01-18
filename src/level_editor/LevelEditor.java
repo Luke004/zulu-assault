@@ -976,6 +976,7 @@ public class LevelEditor extends BasicGameState {
         for (Element element : elements) {
             if (element instanceof Aircraft) {
                 if (!((Aircraft) element).isDrivable) {
+                    if (element.equals(this.playerEntity)) continue;
                     if (!EditorWaypointList.getEntityConnections().containsKey(element)) return true;
                 }
             }
