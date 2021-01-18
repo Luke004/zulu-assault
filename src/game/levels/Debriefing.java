@@ -135,7 +135,7 @@ public class Debriefing extends BasicGameState {
                 return;
             }
 
-            s_nextLevel = "map_" + s_nextLevel;
+            s_nextLevel = "map_" + nextLevelID;
             LevelManager.startNextLevel(s_nextLevel, this);
         } else {
             LevelManager.goToMainMenu();
