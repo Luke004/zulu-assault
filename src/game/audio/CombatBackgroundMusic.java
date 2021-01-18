@@ -15,7 +15,7 @@ import settings.UserSettings;
 
 public class CombatBackgroundMusic {
 
-    private static final int COMBAT_MUSIC_SIZE = 5;     // there are 5 combat music songs
+    public static final int COMBAT_MUSIC_SIZE = 10;     // there are 5 songs from base game and 5 extra from me
 
     private static Sound[] combat_background_intro_sound_list;
     private static Music[] combat_background_music_list;
@@ -53,28 +53,8 @@ public class CombatBackgroundMusic {
     public static void load(int idx) {
         if (combat_background_music_list[idx] != null) return;  // return when sound has already been loaded
         try {
-            switch (idx) {
-                case 1:
-                    combat_background_music_list[idx] = new Music("audio/music/level_2.ogg");
-                    combat_background_intro_sound_list[idx] = new Sound("audio/music/level_2_intro.ogg");
-                    break;
-                case 2:
-                    combat_background_music_list[idx] = new Music("audio/music/level_3.ogg");
-                    combat_background_intro_sound_list[idx] = new Sound("audio/music/level_3_intro.ogg");
-                    break;
-                case 3:
-                    combat_background_music_list[idx] = new Music("audio/music/level_4.ogg");
-                    combat_background_intro_sound_list[idx] = new Sound("audio/music/level_4_intro.ogg");
-                    break;
-                case 4:
-                    combat_background_music_list[idx] = new Music("audio/music/level_5.ogg");
-                    combat_background_intro_sound_list[idx] = new Sound("audio/music/level_5_intro.ogg");
-                    break;
-                default:
-                    combat_background_music_list[idx] = new Music("audio/music/level_1.ogg");
-                    combat_background_intro_sound_list[idx] = new Sound("audio/music/level_1_intro.ogg");
-                    break;
-            }
+            combat_background_music_list[idx] = new Music("audio/music/music_" + (idx + 1) + ".ogg");
+            combat_background_intro_sound_list[idx] = new Sound("audio/music/music_" + (idx + 1) + "_intro.ogg");
         } catch (SlickException e) {
             e.printStackTrace();
         }

@@ -186,7 +186,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
                 }
 
                 // set the combat music based on the level
-                combatBackgroundMusic.setIdx(0);    // TODO: 27.10.2020 add correct combat music
+                combatBackgroundMusic.setIdx(lds.musicIdx);
 
                 // check if the map size has changed - if so, inform the radar about it
                 boolean map_size_changed = TileMapData.updateMapSize();

@@ -141,8 +141,8 @@ public class BottomToolbar extends Window {
         }
     }
 
-    public void fillSaveTextFields(String title, String briefing, String debriefing) {
-        this.saveLevelPopupWindow.fillTextFields(title, briefing, debriefing);
+    public void fillSaveTextFields(String title, String briefing, String debriefing, int musicIdx) {
+        this.saveLevelPopupWindow.fillTextFields(title, briefing, debriefing, musicIdx);
     }
 
 

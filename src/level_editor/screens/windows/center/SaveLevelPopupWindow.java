@@ -1,5 +1,6 @@
 package level_editor.screens.windows.center;
 
+import game.audio.CombatBackgroundMusic;
 import game.models.entities.Entity;
 import game.util.LevelDataStorage;
 import level_editor.LevelEditor;
@@ -25,11 +26,10 @@ public class SaveLevelPopupWindow extends CenterPopupWindow {
         int textFieldWidth = windowWidth - Props.DEFAULT_MARGIN * 2;
         int textFieldHeight = 20;   // TODO: 30.10.2020 add relative size
 
-        textFields = new TextFieldTitled[3];
+        textFields = new TextFieldTitled[4];
         // title text field
         int titleTextFieldWidth = windowWidth / 2;
-        textFields[0] = new TextFieldTitled(gc, text_drawer, 0, 0, titleTextFieldWidth, textFieldHeight, "Title"
-        );
+        textFields[0] = new TextFieldTitled(gc, text_drawer, 0, 0, titleTextFieldWidth, textFieldHeight, "Title");
         textFields[0].setMaxLength(20);
 
         // briefing message text field
@@ -39,6 +39,10 @@ public class SaveLevelPopupWindow extends CenterPopupWindow {
         // debriefing message text field
         textFields[2] = new TextFieldTitled(gc, text_drawer, 0, 0, textFieldWidth, textFieldHeight, "Debriefing");
         textFields[2].setMaxLength(1000);
+
+        // music index text field
+        textFields[3] = new TextFieldTitled(gc, text_drawer, 0, 0, titleTextFieldWidth / 2, textFieldHeight, "Music (1-10)");
+        textFields[3].setMaxLength(2);
 
         for (int i = 0; i < textFields.length; ++i) {
             textFields[i].setLocation(windowX + Props.DEFAULT_MARGIN, startYSuper + i * (20 + Props.DEFAULT_MARGIN * 2));
@@ -106,17 +110,29 @@ public class SaveLevelPopupWindow extends CenterPopupWindow {
                     textFields[0].getText(),
                     textFields[1].getText(),
                     textFields[2].getText(),
-                    0
+                    parseMusicIdx(textFields[3].getText())
             );
             this.isActive = false;
             levelEditor.setPopupWindow(null);
         }
     }
 
-    public void fillTextFields(String title, String briefing, String debriefing) {
+    private static int parseMusicIdx(String s_musicIdx) {
+        int i_musicIdx;
+        try {
+            i_musicIdx = Integer.parseInt(s_musicIdx);
+        } catch (Exception e) {
+            i_musicIdx = 1;
+        }
+        if (i_musicIdx < 1 || i_musicIdx > CombatBackgroundMusic.COMBAT_MUSIC_SIZE) i_musicIdx = 1;
+        return i_musicIdx - 1;  // subtract 1 (UI uses 1-10, we use indexes 0-9)
+    }
+
+    public void fillTextFields(String title, String briefing, String debriefing, int musicIdx) {
         this.textFields[0].setText(title);
         this.textFields[1].setText(briefing);
         this.textFields[2].setText(debriefing);
+        this.textFields[3].setText(Integer.toString(musicIdx + 1));
     }
 
 }

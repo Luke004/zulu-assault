@@ -172,7 +172,7 @@ public class LevelEditor extends BasicGameState {
                 EditorWaypointList.setEntityConnections(lds.getEntityConnections(waypointEntities));
                 allWayPointLists.addAll(lds.getAllWaypointLists(this));
                 // fill in the save-text-fields with the 'title', 'briefing' and 'debriefing' message
-                this.bottomToolbar.fillSaveTextFields(lds.mission_title, lds.briefing_message, lds.debriefing_message);
+                this.bottomToolbar.fillSaveTextFields(lds.mission_title, lds.briefing_message, lds.debriefing_message, lds.musicIdx);
 
                 // FOR MAP REBUILD:
             /*
