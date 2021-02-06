@@ -43,7 +43,7 @@ The game was originally published in July 1998 for Windows 95/98/NT platforms su
 
 
 ## Play current release (download)
-https://github.com/Luke004/Zulu-Assault/releases/download/1.3/zulu-assault-remaster-1.3.zip
+https://github.com/Luke004/zulu-assault/releases/download/1.3.2/zulu-assault-1.3.2.zip
 
 ## Console commands
 
