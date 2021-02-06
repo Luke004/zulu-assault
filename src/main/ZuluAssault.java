@@ -24,7 +24,7 @@ public class ZuluAssault extends StateBasedGame {
     public static final int IN_LEVEL = 3;
     public static final int LEVEL_EDITOR = 4;
 
-    public static final int MAX_LEVEL = 15;
+    public static final int MAX_LEVEL = 16;
 
     public static BasicGameState prevState = null;
     public static String nextLevelName = "";
