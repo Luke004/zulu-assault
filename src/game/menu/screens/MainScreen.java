@@ -29,7 +29,7 @@ public class MainScreen extends AbstractMenuScreen {
 
     static {
         menu_drawer = FontManager.getStencilBigFont();
-        menu_options = new String[]{"NEW", "LOAD", "EDITOR", "OPTIONS", "QUIT"};
+        menu_options = new String[]{"NEW", "LOAD", "EDITOR", "OPTIONS", "FEEDBACK", "QUIT"};
     }
 
     public MainScreen(BasicGameState gameState, GameContainer gameContainer) {
@@ -40,7 +40,7 @@ public class MainScreen extends AbstractMenuScreen {
 
         menu_options_position = new Vector2f(
                 gameContainer.getWidth() / 2.f - menu_drawer.getWidth(menu_options[3]) / 2.f,
-                gameContainer.getHeight() / 2.f);
+                gameContainer.getHeight() / 2.f - MENU_OPTION_HEIGHT);
 
         arrow = new Arrow(gameContainer, MENU_ITEM_SIZE, (int) menu_options_position.y);
 
@@ -79,7 +79,7 @@ public class MainScreen extends AbstractMenuScreen {
             handleMenuItemChoice(gameContainer, stateBasedGame, arrow.currIdx);
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
             MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
-            arrow.currIdx = 4;
+            arrow.currIdx = 5;
         }
     }
 
@@ -116,7 +116,10 @@ public class MainScreen extends AbstractMenuScreen {
             case 3: // OPTIONS
                 Menu.goToMenu(Menu.STATE_OPTIONS_MENU);
                 break;
-            case 4: // EXIT
+            case 4: // FEEDBACK
+                goToMenu(STATE_FEEDBACK);
+                break;
+            case 5: // EXIT
                 goToMenu(STATE_CONFIRM_EXIT_MENU);
                 break;
         }

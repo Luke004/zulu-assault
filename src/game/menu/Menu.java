@@ -19,7 +19,8 @@ public class Menu extends BasicGameState {
             STATE_SAVE_GAME_MENU = 3,
             STATE_OPTIONS_MENU = 4,
             STATE_DEATH_MENU = 5,
-            STATE_CONFIRM_EXIT_MENU = 6;
+            STATE_CONFIRM_EXIT_MENU = 6,
+            STATE_FEEDBACK = 7;
 
     private static int current_menu_idx, prev_menu_idx;
 
@@ -79,7 +80,7 @@ public class Menu extends BasicGameState {
         } catch (SlickException e) {
             e.printStackTrace();
         }
-        menus = new AbstractMenuScreen[7];
+        menus = new AbstractMenuScreen[8];
         menus[STATE_MAIN_MENU] = new MainScreen(this, gameContainer);
         menus[STATE_IN_GAME_MENU] = new InGameScreen(this, gameContainer);
         menus[STATE_LOAD_GAME_MENU] = new LoadGameScreen(this, gameContainer);
@@ -87,6 +88,7 @@ public class Menu extends BasicGameState {
         menus[STATE_OPTIONS_MENU] = new OptionsScreen(this, gameContainer);
         menus[STATE_DEATH_MENU] = new DeathScreen(this);
         menus[STATE_CONFIRM_EXIT_MENU] = new ConfirmExitScreen(this, gameContainer);
+        menus[STATE_FEEDBACK] = new FeedbackScreen(this, gameContainer);
 
         Console.init(gameContainer);    // init the console
 
