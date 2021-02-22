@@ -15,7 +15,7 @@ import settings.UserSettings;
 
 public class CombatBackgroundMusic {
 
-    public static final int COMBAT_MUSIC_SIZE = 10;     // there are 5 songs from base game and 5 extra from me
+    public static final int COMBAT_MUSIC_SIZE = 5;     // there are 5 songs from base game
 
     private static Sound[] combat_background_intro_sound_list;
     private static Music[] combat_background_music_list;
