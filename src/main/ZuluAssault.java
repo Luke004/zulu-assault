@@ -16,12 +16,12 @@ import java.io.File;
 public class ZuluAssault extends StateBasedGame {
 
     public static final String gameName = "Zulu Assault";
-    public static final String gameVersion = "Alpha Test Version 1.3.2";
+    public static final String gameVersion = "Pre-alpha Test Version 1.3.2";
 
     public static final int MAIN_MENU = 0;
     public static final int BRIEFING = 1;
     public static final int DEBRIEFING = 2;
-    public static final int IN_LEVEL = 3;
+    public static final int IN_GAME = 3;
     public static final int LEVEL_EDITOR = 4;
 
     public static final int MAX_LEVEL = 18;

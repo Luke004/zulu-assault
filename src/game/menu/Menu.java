@@ -63,7 +63,7 @@ public class Menu extends BasicGameState {
         info_string_drawer = FontManager.getConsoleOutputFont(false);
         info_strings = new String[3];
         info_strings[0] = "(C) 1998 Dallas Nutsch";
-        info_strings[1] = "Rebuild by Lukas Hilfrich";
+        info_strings[1] = "Remake by Lukas Hilfrich";
         info_strings[2] = ZuluAssault.gameVersion;
 
         try {

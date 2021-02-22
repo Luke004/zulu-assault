@@ -145,8 +145,8 @@ public class Briefing extends BasicGameState {
         if (loadMusicThread.isAlive()) return;
         MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
         try {
-            stateBasedGame.getState(ZuluAssault.IN_LEVEL).init(gameContainer, stateBasedGame);
-            stateBasedGame.enterState(ZuluAssault.IN_LEVEL, new FadeOutTransition(), new FadeInTransition());
+            stateBasedGame.getState(ZuluAssault.IN_GAME).init(gameContainer, stateBasedGame);
+            stateBasedGame.enterState(ZuluAssault.IN_GAME, new FadeOutTransition(), new FadeInTransition());
         } catch (SlickException e) {
             e.printStackTrace();
         }

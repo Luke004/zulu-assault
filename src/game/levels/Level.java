@@ -446,7 +446,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
 
     @Override
     public int getID() {
-        return ZuluAssault.IN_LEVEL;
+        return ZuluAssault.IN_GAME;
     }
 
 }
