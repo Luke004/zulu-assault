@@ -27,7 +27,7 @@ public abstract class AbstractMenuScreen implements iMenuScreen {
                     gameContainer.getInput().getMouseX(),
                     gameContainer.getInput().getMouseY());
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_BACKSLASH)) {
-            // open / close game.menu.console
+            // open or close console
             Console.toggle();
         }
 
@@ -35,7 +35,7 @@ public abstract class AbstractMenuScreen implements iMenuScreen {
             handleKeyInput(gameContainer, stateBasedGame);
         }
 
-        // loop the game.menu sound
+        // loop the menu sound
         if (!main_menu_intro_sound.playing()) {
             if (!main_menu_music.playing()) {
                 main_menu_music.play();

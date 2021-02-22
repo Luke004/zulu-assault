@@ -1,6 +1,7 @@
 package game.menu.screens;
 
 import game.audio.MenuSounds;
+import game.graphics.fonts.FontManager;
 import settings.SettingStorage;
 import game.menu.Menu;
 import game.menu.elements.Arrow;
@@ -13,6 +14,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import settings.UserSettings;
 
 import static game.menu.Menu.*;
+import static game.menu.screens.MainScreen.MENU_OPTION_HEIGHT;
 import static settings.UserSettings.VOLUME_MAX_LEVEL;
 
 
@@ -20,31 +22,37 @@ public class OptionsScreen extends AbstractMenuScreen {
 
     private Arrow arrow;
     private Slider sound_volume_slider, music_volume_slider;
-    private Image back_image;
-    private Vector2f back_image_position;
+    private static final TrueTypeFont menu_drawer;
+    private int back_btn_width, back_btn_height;
+    private Vector2f back_btn_position;
+
+    static {
+        menu_drawer = FontManager.getStencilBigFont();
+    }
 
     public OptionsScreen(BasicGameState gameState, GameContainer gameContainer) {
         super(gameState);
+        back_btn_width = menu_drawer.getWidth("BACK");
+        back_btn_height = MENU_OPTION_HEIGHT;
         try {
-            back_image = new Image("assets/menus/back.png");
-            back_image_position = new Vector2f(
-                    gameContainer.getWidth() / 2.f - back_image.getWidth() / 2.f,
+            back_btn_position = new Vector2f(
+                    gameContainer.getWidth() / 2.f - back_btn_width / 2.f,
                     gameContainer.getHeight() / 2.f);
             Texture slider_texture = new Image("assets/menus/slider.png").getTexture();
             Texture slider_value_texture = new Image("assets/menus/slider_value.png").getTexture();
             sound_volume_slider = new Slider(slider_texture, slider_value_texture, new Vector2f(
-                    back_image_position.x - 9,
-                    back_image_position.y + back_image.getHeight()
+                    back_btn_position.x - 50,
+                    back_btn_position.y + back_btn_height
             ), "Sound Volume", VOLUME_MAX_LEVEL);
             sound_volume_slider.setValue(UserSettings.soundVolumeLevel);
 
             music_volume_slider = new Slider(slider_texture, slider_value_texture, new Vector2f(
-                    back_image_position.x - 9,
-                    back_image_position.y + back_image.getHeight() * 2
+                    back_btn_position.x - 50,
+                    back_btn_position.y + back_btn_height * 2
             ), "Music Volume", VOLUME_MAX_LEVEL);
             music_volume_slider.setValue(UserSettings.musicVolumeLevel);
 
-            arrow = new Arrow(gameContainer, 3, (int) back_image_position.y);
+            arrow = new Arrow(gameContainer, 3, (int) back_btn_position.y);
         } catch (SlickException e) {
             e.printStackTrace();
         }
@@ -53,7 +61,9 @@ public class OptionsScreen extends AbstractMenuScreen {
     @Override
     public void render(GameContainer gameContainer) {
         super.render(gameContainer);
-        back_image.draw(back_image_position.x, back_image_position.y);
+        menu_drawer.drawString(gameContainer.getWidth() / 2.f - back_btn_width / 2.f,
+                gameContainer.getHeight() / 2.f,
+                "BACK", Color.lightGray);
         sound_volume_slider.draw();
         music_volume_slider.draw();
         arrow.draw();
@@ -107,8 +117,8 @@ public class OptionsScreen extends AbstractMenuScreen {
 
     @Override
     public void onMouseClick(GameContainer gameContainer, StateBasedGame stateBasedGame, int mouseX, int mouseY) {
-        if (mouseX > back_image_position.x && mouseX < back_image_position.x + back_image.getWidth()) {
-            if (mouseY > back_image_position.y && mouseY < back_image_position.y + back_image.getHeight()) {
+        if (mouseX > back_btn_position.x && mouseX < back_btn_position.x + back_btn_width) {
+            if (mouseY > back_btn_position.y && mouseY < back_btn_position.y + back_btn_height) {
                 MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
                 arrow.currIdx = 0;
                 handleMenuItemChoice(0);

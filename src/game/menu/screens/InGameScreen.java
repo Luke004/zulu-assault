@@ -15,6 +15,7 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 import settings.UserSettings;
 
 import static game.menu.Menu.*;
+import static game.menu.screens.MainScreen.MENU_OPTION_HEIGHT;
 
 
 public class InGameScreen extends AbstractMenuScreen {
@@ -39,22 +40,21 @@ public class InGameScreen extends AbstractMenuScreen {
     public InGameScreen(BasicGameState gameState, GameContainer gameContainer) {
         super(gameState);
         this.gameState = gameState;
-        final int menu_y_offset = 40;
         final int MENU_ITEM_SIZE = menu_options.length;
 
         menu_options_width = menu_drawer.getWidth(menu_options[3]);
-        menu_options_height = menu_y_offset * MENU_ITEM_SIZE;
+        menu_options_height = MENU_OPTION_HEIGHT * MENU_ITEM_SIZE;
 
         menu_options_position = new Vector2f(
                 gameContainer.getWidth() / 2.f - menu_drawer.getWidth(menu_options[3]) / 2.f,
-                gameContainer.getHeight() / 2.f - menu_y_offset);
+                gameContainer.getHeight() / 2.f - MENU_OPTION_HEIGHT);
 
         arrow = new Arrow(gameContainer, MENU_ITEM_SIZE, (int) menu_options_position.y);
 
         MENU_Y_MOUSE_CLICK_OFFSETS = new int[MENU_ITEM_SIZE];
         int idx = 0;
         do {
-            MENU_Y_MOUSE_CLICK_OFFSETS[idx] = (int) menu_options_position.y + menu_y_offset * (idx + 1);
+            MENU_Y_MOUSE_CLICK_OFFSETS[idx] = (int) menu_options_position.y + MENU_OPTION_HEIGHT * (idx + 1);
             idx++;
         } while (idx < MENU_ITEM_SIZE);
     }

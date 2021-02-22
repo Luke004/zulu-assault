@@ -88,7 +88,7 @@ public class Menu extends BasicGameState {
         menus[STATE_DEATH_MENU] = new DeathScreen(this);
         menus[STATE_CONFIRM_EXIT_MENU] = new ConfirmExitScreen(this, gameContainer);
 
-        Console.init(gameContainer);    // init the game.menu.console
+        Console.init(gameContainer);    // init the console
 
         goToMenu(STATE_MAIN_MENU);
     }

@@ -53,7 +53,7 @@ public class ConfirmExitScreen extends AbstractMenuScreen {
         }
         handleKeyInput(gameContainer, stateBasedGame);
 
-        // loop the game.menu sound
+        // loop the menu sound
         if (!main_menu_intro_sound.playing()) {
             if (!main_menu_music.playing()) {
                 main_menu_music.play();
