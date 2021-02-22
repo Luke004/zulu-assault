@@ -55,7 +55,7 @@ public class MainScreen extends AbstractMenuScreen {
     @Override
     public void render(GameContainer gameContainer) {
         super.render(gameContainer);
-        // draw all the game.menu options
+        // draw all the menu options
         for (int i = 0; i < menu_options.length; ++i) {
             menu_drawer.drawString(gameContainer.getWidth() / 2.f - menu_drawer.getWidth(menu_options[i]) / 2.f,
                     menu_options_position.y + (i * (menu_drawer.getHeight("A") - 5)),

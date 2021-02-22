@@ -22,7 +22,7 @@ public class InGameScreen extends AbstractMenuScreen {
 
     private BasicGameState gameState;
 
-    // game.menu options
+    // menu options
     private static final String[] menu_options;
     private Vector2f menu_options_position;
     private int menu_options_width, menu_options_height;
@@ -62,7 +62,7 @@ public class InGameScreen extends AbstractMenuScreen {
     @Override
     public void render(GameContainer gameContainer) {
         super.render(gameContainer);
-        // draw all the game.menu options
+        // draw all the menu options
         for (int i = 0; i < menu_options.length; ++i) {
             menu_drawer.drawString(gameContainer.getWidth() / 2.f - menu_drawer.getWidth(menu_options[i]) / 2.f,
                     menu_options_position.y + (i * (menu_drawer.getHeight("A") - 5)),

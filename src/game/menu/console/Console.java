@@ -21,7 +21,7 @@ public class Console {
 
     private static Font inputFont, outputFont;
 
-    // game.menu.console writing
+    // console writing
     private static final String DEFAULT_TEXT = "> ";
     private static final String WRITE_INDICATOR = "|";
     private static int write_indicator_x;
@@ -29,13 +29,13 @@ public class Console {
     private static final int WI_BLINK_TIME_MILLIS = 1000;  // blink in second ticks
     private static long wi_timePassed, wi_lastTime;
 
-    // game.menu.console output
+    // console output
     private static boolean printResponse;
     private static String s_response;
     private static final int RT_TIME_MILLIS = 5000;  // show response for 5 seconds
     private static long rt_timePassed, rt_lastTime;
 
-    // game.menu.console memory
+    // console memory
     private static ArrayList<String> memory;
     private static final int MEMORY_MAX_SIZE = 6;
     private static int currMemoryIdx = 0;

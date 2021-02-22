@@ -19,7 +19,7 @@ The game was originally published in July 1998 for Windows 95/98/NT platforms su
 |<kbd>R</kbd>|Toggle Radar|Yes|
 |<kbd>[</kbd>|Zoom Radar Out|Dismissed|
 |<kbd>]</kbd>|Zoom Radar In|Dismissed|
-|<kbd>Esc</kbd>|Go to game.menu|Yes|
+|<kbd>Esc</kbd>|Go to menu|Yes|
 |<kbd>1</kbd>|Use an invincibility  |Yes|
 |<kbd>2</kbd>|Use an emp|Yes|
 |<kbd>3</kbd>|Use a mega pulse|Yes|

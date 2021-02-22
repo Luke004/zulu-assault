@@ -12,7 +12,7 @@ public class FontManager {
     // stencil
     private static final TrueTypeFont stencil_smaller, stencil_small, stencil_medium, stencil_big;
 
-    // game.menu.console fonts
+    // console fonts
     private static final TrueTypeFont console_input, console_output, console_output_bold;
 
     // item font
