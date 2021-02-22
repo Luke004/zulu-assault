@@ -59,7 +59,7 @@ public class Menu extends BasicGameState {
         title_string = "ZULU ASSAULT";
         title_string_position = new Vector2f(
                 gameContainer.getWidth() / 2.f - title_string_drawer.getWidth(title_string) / 2.f,
-                gameContainer.getHeight() / 4.f - title_string_drawer.getHeight(title_string) / 2.f
+                gameContainer.getHeight() / 5.f - title_string_drawer.getHeight(title_string) / 2.f
         );
         info_string_drawer = FontManager.getConsoleOutputFont(false);
         info_strings = new String[3];

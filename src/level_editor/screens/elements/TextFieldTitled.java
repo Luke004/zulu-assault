@@ -17,6 +17,7 @@ public class TextFieldTitled extends TextField {
         this.title = title;
         this.text_drawer = font;
         titleHeight = text_drawer.getLineHeight();
+        setBackgroundColor(Color.lightGray);
     }
 
     @Override

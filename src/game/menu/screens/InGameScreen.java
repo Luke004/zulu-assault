@@ -34,7 +34,7 @@ public class InGameScreen extends AbstractMenuScreen {
 
     static {
         menu_drawer = FontManager.getStencilBigFont();
-        menu_options = new String[]{"RESUME", "NEW", "LOAD", "SAVE", "OPTIONS", "QUIT"};
+        menu_options = new String[]{"RESUME", "NEW", "LOAD", "SAVE", "OPTIONS", "FEEDBACK", "QUIT"};
     }
 
     public InGameScreen(BasicGameState gameState, GameContainer gameContainer) {
@@ -47,7 +47,7 @@ public class InGameScreen extends AbstractMenuScreen {
 
         menu_options_position = new Vector2f(
                 gameContainer.getWidth() / 2.f - menu_drawer.getWidth(menu_options[3]) / 2.f,
-                gameContainer.getHeight() / 2.f - MENU_OPTION_HEIGHT);
+                gameContainer.getHeight() / 2.f - MENU_OPTION_HEIGHT * 2);
 
         arrow = new Arrow(gameContainer, MENU_ITEM_SIZE, (int) menu_options_position.y);
 
@@ -86,7 +86,7 @@ public class InGameScreen extends AbstractMenuScreen {
             handleMenuItemChoice(gameContainer, stateBasedGame, arrow.currIdx);
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
             MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
-            arrow.currIdx = 5;
+            arrow.currIdx = 6;
         }
     }
 
@@ -122,7 +122,10 @@ public class InGameScreen extends AbstractMenuScreen {
             case 4: // OPTIONS
                 goToMenu(Menu.STATE_OPTIONS_MENU);
                 break;
-            case 5: // EXIT
+            case 5: // FEEDBACK
+                goToMenu(STATE_FEEDBACK);
+                break;
+            case 6: // EXIT
                 goToMenu(STATE_CONFIRM_EXIT_MENU);
                 break;
         }

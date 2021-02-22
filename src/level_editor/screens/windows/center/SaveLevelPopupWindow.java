@@ -47,7 +47,6 @@ public class SaveLevelPopupWindow extends CenterPopupWindow {
         for (int i = 0; i < textFields.length; ++i) {
             textFields[i].setLocation(windowX + Props.DEFAULT_MARGIN, startYSuper + i * (20 + Props.DEFAULT_MARGIN * 2));
             textFields[i].setConsumeEvents(true);
-            textFields[i].setBackgroundColor(Color.lightGray);
             textFields[i].setBorderColor(Color.darkGray);
             textFields[i].setTextColor(Color.black);
         }
