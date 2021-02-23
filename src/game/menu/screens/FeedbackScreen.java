@@ -22,7 +22,7 @@ import static game.menu.screens.MainScreen.MENU_OPTION_HEIGHT;
 
 public class FeedbackScreen extends AbstractMenuScreen {
 
-    TextFieldTitled tf_feedback, tf_name, tf_email;
+    private static TextFieldTitled tf_feedback, tf_name, tf_email;
     private Button sendBtn;
     private boolean sendBtnDisabled;
 
@@ -51,7 +51,7 @@ public class FeedbackScreen extends AbstractMenuScreen {
         int y_pos = gc.getHeight() / 6;
         back_btn_position = new Vector2f(gc.getWidth() / 2.f - back_btn_width / 2.f, y_pos);
         y_pos += back_btn_height + MARGIN;
-        int textFieldHeight = 50;
+        int textFieldHeight = 30;
         int textFieldWidth = gc.getWidth() - 100;
         tf_feedback = new TextFieldTitled(gc, FontManager.getConsoleOutputFont(false),
                 gc.getWidth() / 2 - textFieldWidth / 2, y_pos,
@@ -59,7 +59,7 @@ public class FeedbackScreen extends AbstractMenuScreen {
                 "Provide feedback below! (Bug Reports, Suggestions, Requests, Opinions etc.)"
         );
         y_pos += textFieldHeight + MARGIN;
-        textFieldHeight = 30;
+        textFieldHeight = 20;
         textFieldWidth = 200;
         tf_name = new TextFieldTitled(gc, FontManager.getConsoleOutputFont(false),
                 gc.getWidth() / 2 - textFieldWidth / 2, y_pos,
@@ -79,6 +79,7 @@ public class FeedbackScreen extends AbstractMenuScreen {
         statusTextPosition = new Vector2f(gc.getWidth() / 2.f, y_pos + sendBtnHeight + MARGIN / 4.f);
 
         arrow = new Arrow(gc, 1, (int) back_btn_position.y);
+        activateTextFields(false);
     }
 
     @Override
@@ -152,14 +153,21 @@ public class FeedbackScreen extends AbstractMenuScreen {
                 printStatus("Feedback sent!");
             });
             sendFeedbackThread.start();
-
             sendBtnDisabled = true;
-        } else if (mouseX > back_btn_position.x && mouseX < back_btn_position.x + back_btn_width) {
+            return;
+        }
+
+        if (mouseX > back_btn_position.x && mouseX < back_btn_position.x + back_btn_width) {
             if (mouseY > back_btn_position.y && mouseY < back_btn_position.y + back_btn_height) {
                 MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
                 reset();
                 Menu.returnToPreviousMenu();
+                return;
             }
+        }
+
+        if (!tf_feedback.isAcceptingInput()) {
+            activateTextFields(true);
         }
     }
 
@@ -183,5 +191,14 @@ public class FeedbackScreen extends AbstractMenuScreen {
         tf_feedback.setText("");
         tf_name.setText("");
         tf_email.setText("");
+        activateTextFields(false);
+    }
+
+    /* this is needed because of a slick bug that looks at all existing text fields, even of diff states ... */
+    /* the text fields are disabled manually on leave here so it does not mess up the text fields in level editor */
+    public static void activateTextFields(boolean val) {
+        tf_feedback.setAcceptingInput(val);
+        tf_name.setAcceptingInput(val);
+        tf_email.setAcceptingInput(val);
     }
 }

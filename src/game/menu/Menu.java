@@ -108,7 +108,6 @@ public class Menu extends BasicGameState {
     public static void goToMenu(int menu_idx) {
         prev_menu_idx = current_menu_idx;
         current_menu_idx = menu_idx;
-        //gameContainer.getInput().clearKeyPressedRecord();
     }
 
     public static void returnToPreviousMenu() {

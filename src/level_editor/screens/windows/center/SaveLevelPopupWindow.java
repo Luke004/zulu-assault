@@ -41,12 +41,12 @@ public class SaveLevelPopupWindow extends CenterPopupWindow {
         textFields[2].setMaxLength(1000);
 
         // music index text field
-        textFields[3] = new TextFieldTitled(gc, text_drawer, 0, 0, titleTextFieldWidth / 2, textFieldHeight, "Music (1-10)");
+        textFields[3] = new TextFieldTitled(gc, text_drawer, 0, 0, titleTextFieldWidth / 2, textFieldHeight, "Music (1-5)");
         textFields[3].setMaxLength(2);
 
         for (int i = 0; i < textFields.length; ++i) {
             textFields[i].setLocation(windowX + Props.DEFAULT_MARGIN, startYSuper + i * (20 + Props.DEFAULT_MARGIN * 2));
-            textFields[i].setConsumeEvents(true);
+            //textFields[i].setConsumeEvents(true);
             textFields[i].setBorderColor(Color.darkGray);
             textFields[i].setTextColor(Color.black);
         }
@@ -87,14 +87,12 @@ public class SaveLevelPopupWindow extends CenterPopupWindow {
             textField.render(gc, graphics);
         }
         confirmBtn.draw(graphics);
-
     }
 
     @Override
     public void update(GameContainer gc) {
         if (!this.isActive) return;
         confirmBtn.update(gc);
-
     }
 
     @Override
