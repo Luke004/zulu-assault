@@ -122,7 +122,7 @@ public class SaveLevelPopupWindow extends CenterPopupWindow {
             i_musicIdx = 1;
         }
         if (i_musicIdx < 1 || i_musicIdx > CombatBackgroundMusic.COMBAT_MUSIC_SIZE) i_musicIdx = 1;
-        return i_musicIdx - 1;  // subtract 1 (UI uses 1-10, we use indexes 0-9)
+        return i_musicIdx - 1;  // subtract 1 (UI uses 1-5, we use indexes 0-4)
     }
 
     public void fillTextFields(String title, String briefing, String debriefing, int musicIdx) {
