@@ -47,7 +47,7 @@ https://github.com/Luke004/zulu-assault/releases/download/1.3.21/zulu-assault-1.
 
 ## Console commands
 
-You can open up the console in the games menu by pressing <kbd>~</kbd> or <kbd>^</kbd>
+You can open up the console in the games menu by pressing <kbd>~</kbd> or <kbd>^</kbd> (left to <kbd>1</kbd> key)
 
 |Command|Action|
 |-----|-----------|
