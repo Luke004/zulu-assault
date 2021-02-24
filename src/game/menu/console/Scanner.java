@@ -57,11 +57,11 @@ public class Scanner {
                 if (!s_layout.equals("layout")) return ERROR_UNRECOGNIZED;
                 String country = input_split_by_whitespace[2];
                 switch (country) {
-                    case "1":   // German
+                    case "1":   // English
                         UserSettings.keyboardLayout_1 = true;
                         SettingStorage.storeSetting(new SettingStorage.Property("keyboard_layout_1", "true"));
                         return "Using keyboard layout 1 (English).";
-                    case "2":   // English
+                    case "2":   // German
                         UserSettings.keyboardLayout_1 = false;
                         SettingStorage.storeSetting(new SettingStorage.Property("keyboard_layout_1", "false"));
                         return "Using keyboard layout 2 (German).";
