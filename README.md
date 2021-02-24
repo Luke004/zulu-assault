@@ -47,18 +47,18 @@ https://github.com/Luke004/zulu-assault/releases/download/1.3.21/zulu-assault-1.
 
 ## Console commands
 
-You can open up the console in the games menu by pressing <kbd>^</kbd> (German version - key to the left of 1)
+You can open up the console in the games menu by pressing <kbd>~</kbd> or <kbd>^</kbd>
 
 |Command|Action|
 |-----|-----------|
-|*open level x* |open and play a single level x (where x can be a level number (1-20) but can also be the name of a custom map|
+|*open level x* |open and play a single level x (where x can be a level number (1-24) but can also be the name of a custom map|
 |*show time* |display the time needed for the play through (speedrunner support =D)|
 |*show fps* |display the frames per second (bottom right corner)|
-|*keyboard_layout x* |switch between keyboard layouts (1 = German, 2 = English)|
+|*keyboard_layout x* |switch between keyboard layouts (1 = English, 2 = German)|
 
 ## Info
 **Idea by:**  
 Dallas Nutsch  
- e-mail - tripled@door.net  
+ e-mail - tripled@door.net
  alt    - danutsch@yahoo.com  
 [Website](www.door.net/arrowhead)
