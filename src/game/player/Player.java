@@ -34,10 +34,17 @@ public class Player {
     }
 
     public void init(MovableEntity current_entity) {
+        base_soldier = new PlayerSoldier(new Vector2f(current_entity.getPosition().x, current_entity.getPosition().y), false);
+        // player starts as a base soldier (Uzi or rocket-soldier)
+        if (current_entity.getClass().getSimpleName().equals("UziSoldier") ||
+                current_entity.getClass().getSimpleName().equals("RocketSoldier")) {
+            this.current_entity = base_soldier;
+            return;
+        }
+        // player does not start as a soldier
         current_entity.showAccessibleAnimation(false);
         this.current_entity = current_entity;
         if (this.changeVehicleListener != null) this.changeVehicleListener.onPlayerChangeVehicle();
-        base_soldier = new PlayerSoldier(new Vector2f(current_entity.getPosition().x, current_entity.getPosition().y), false);
     }
 
     public void update(GameContainer gameContainer, int deltaTime) {
