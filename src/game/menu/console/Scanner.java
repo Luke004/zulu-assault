@@ -52,8 +52,10 @@ public class Scanner {
                     default:
                         return ERROR_UNRECOGNIZED;
                 }
-            case "keyboard_layout":
-                String country = input_split_by_whitespace[1];
+            case "keyboard":
+                String s_layout = input_split_by_whitespace[1];
+                if (!s_layout.equals("layout")) return ERROR_UNRECOGNIZED;
+                String country = input_split_by_whitespace[2];
                 switch (country) {
                     case "1":   // German
                         UserSettings.keyboardLayout_1 = true;
@@ -66,7 +68,6 @@ public class Scanner {
                     default:
                         return ERROR_UNRECOGNIZED;
                 }
-
             case "exit":    // all commands to exit the console
             case "leave":
             case "end":
