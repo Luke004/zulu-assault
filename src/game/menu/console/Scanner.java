@@ -58,11 +58,11 @@ public class Scanner {
                     case "1":   // German
                         UserSettings.keyboardLayout_1 = true;
                         SettingStorage.storeSetting(new SettingStorage.Property("keyboard_layout_1", "true"));
-                        return "Using keyboard layout 1 (German).";
+                        return "Using keyboard layout 1 (English).";
                     case "2":   // English
                         UserSettings.keyboardLayout_1 = false;
                         SettingStorage.storeSetting(new SettingStorage.Property("keyboard_layout_1", "false"));
-                        return "Using keyboard layout 2 (English).";
+                        return "Using keyboard layout 2 (German).";
                     default:
                         return ERROR_UNRECOGNIZED;
                 }

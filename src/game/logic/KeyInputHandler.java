@@ -188,7 +188,7 @@ public class KeyInputHandler {
                     tank.rotateTurret(MovableEntity.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
                 }
 
-                if (input.isKeyDown(UserSettings.keyboardLayout_1 ? Input.KEY_Y : Input.KEY_Z)) {
+                if (input.isKeyDown(UserSettings.keyboardLayout_1 ? Input.KEY_Z : Input.KEY_Y)) {
                     tank.rotateTurret(MovableEntity.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
                 }
 
