@@ -348,16 +348,14 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
             drivableEntity.draw(graphics);
         }
 
-        if (!(player.getEntity() instanceof Aircraft)) player.getEntity().draw(graphics);
-
         for (Entity renderInstance : renderList) {
             renderInstance.draw(graphics);
         }
 
+        player.getEntity().draw(graphics);
+
         bigExplosionAnimation.draw();
         collisionHandler.draw();
-
-        if (player.getEntity() instanceof Aircraft) player.getEntity().draw(graphics);
 
         // un-translate game.graphics to draw the HUD-items
         camera.untranslateGraphics();

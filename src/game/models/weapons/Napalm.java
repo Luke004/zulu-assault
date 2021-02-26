@@ -33,7 +33,7 @@ public class Napalm extends PiercingWeapon {
             e.printStackTrace();
         }
         // individual Napalm specs
-        bullet_damage = 90;
+        bullet_damage = 180;
         shot_reload_time = 200;
     }
 
