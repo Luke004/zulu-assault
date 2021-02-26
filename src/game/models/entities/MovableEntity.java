@@ -52,11 +52,14 @@ public abstract class MovableEntity extends Entity {
     // item sounds (ONLY PLAYER CAN USE THEM -> static)
     private static Sound expand_use_sound, emp_use_sound, mega_pulse_use_sound;
 
+    private static Sound soldier_death_sound;
+
     static {
         try {
             expand_use_sound = new Sound("audio/sounds/expand_use.ogg");
             mega_pulse_use_sound = new Sound("audio/sounds/mega_pulse_use.ogg");
             emp_use_sound = new Sound("audio/sounds/emp_use.ogg");
+            soldier_death_sound = new Sound("audio/sounds/bone_crack.ogg");
         } catch (SlickException e) {
             e.printStackTrace();
         }
@@ -220,6 +223,9 @@ public abstract class MovableEntity extends Entity {
             if (entity.isDestroyed) return;
             if (!isHostile && entity.isHostile) {
                 entity.changeHealth(-150.f);
+                if (entity.getHealth() < 0) {
+                    soldier_death_sound.play(1.f, UserSettings.soundVolume);
+                }
             }
             blockMovement();
         } else {
