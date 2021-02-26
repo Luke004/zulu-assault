@@ -16,7 +16,7 @@ import java.io.File;
 public class ZuluAssault extends StateBasedGame {
 
     public static final String gameName = "Zulu Assault";
-    public static final String gameVersion = "Pre-alpha Test Version 1.3.21";
+    public static final String gameVersion = "Pre-alpha Test Version 1.3.3";
 
     public static final int MAIN_MENU = 0;
     public static final int BRIEFING = 1;
@@ -39,7 +39,7 @@ public class ZuluAssault extends StateBasedGame {
     }
 
     public static void main(String[] args) {
-        boolean fullscreen = false;
+        boolean fullscreen = true;
         boolean alterRes = false;
 
         // this looks for the 'natives' folder and uses the right dll according to the operating system

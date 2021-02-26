@@ -8,7 +8,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class HealthCircle extends InteractionCircle {
 
-    public static final float HEAL_SPEED = 0.05f;
+    public static final float HEAL_SPEED = 0.08f;
 
     public HealthCircle(Vector2f map_position) {
         super(map_position);
