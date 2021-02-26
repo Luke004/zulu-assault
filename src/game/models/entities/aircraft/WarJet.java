@@ -14,8 +14,8 @@ public class WarJet extends Jet {
     // STATS
     private static final float ARMOR = 30.f;
     private static final float ROTATE_SPEED_PLAYER = 0.15f, ROTATE_SPEED_BOT = 0.15f;
-    private static final float MIN_SPEED_PLAYER = 0.2f, MIN_SPEED_BOT = 0.1f;
-    private static final float MAX_SPEED_PLAYER = 0.35f, MAX_SPEED_BOT = 0.15f;
+    private static final float MIN_SPEED_PLAYER = 0.2f, MIN_SPEED_BOT = 0.2f;
+    private static final float MAX_SPEED_PLAYER = 0.35f, MAX_SPEED_BOT = 0.25f;
     private static final float SPEED_CHANGE_FACTOR = 0.00013f;
 
     public WarJet(Vector2f startPos, boolean isHostile, boolean isDrivable) {
@@ -33,7 +33,7 @@ public class WarJet extends Jet {
         }
 
         weapons.add(new Uzi(isDrivable));  // WEAPON_1
-        if (isDrivable) weapons.add(new RocketLauncher(isDrivable));  // TODO: add 'GUIDED' rockets weapon
+        weapons.add(new RocketLauncher(isDrivable));  // TODO: add 'GUIDED' rockets weapon
 
         super.init();
     }
