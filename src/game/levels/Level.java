@@ -7,7 +7,7 @@ import game.graphics.hud.Radar;
 import game.graphics.screen_drawer.ScreenDrawer;
 import game.logic.Camera;
 import game.logic.CollisionHandler;
-import game.logic.KeyInputHandler;
+import game.logic.PlayerInput;
 import game.logic.RandomItemDropper;
 import game.logic.level_listeners.EntityDeleteListener;
 import game.logic.level_listeners.GroundTileDamager;
@@ -62,7 +62,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
     // list for rendering -> respects the render hierarchy
     private static List<Entity> renderList;
 
-    private static KeyInputHandler keyInputHandler;
+    private static PlayerInput playerInput;
     private static CollisionHandler collisionHandler;
     private Camera camera;
 
@@ -91,7 +91,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
         teleport_circles = new ArrayList<>();
         items = new ArrayList<>();
         randomItemDropper = new RandomItemDropper();
-        keyInputHandler = new KeyInputHandler();
+        playerInput = new PlayerInput();
         try {
             explosion_sound = new Sound("audio/sounds/explosion.ogg");
         } catch (SlickException e) {
@@ -239,7 +239,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) {
         collisionHandler.setPlayer(player);
-        keyInputHandler.setPlayer(player);
+        playerInput.setPlayer(player);
         combatBackgroundMusic.start();
 
         /*
@@ -389,7 +389,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
         for (Item item : items) {
             item.update(gc, dt);
         }
-        keyInputHandler.update(gc, dt);
+        playerInput.update(gc, dt);
         collisionHandler.update(dt);
         hud.update(dt);
         radar.update(dt);
@@ -422,7 +422,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
 
     @Override
     public void keyReleased(int key, char c) {
-        keyInputHandler.onKeyRelease(key);
+        playerInput.onKeyRelease(key);
     }
 
     private static void reset() {

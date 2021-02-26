@@ -4,7 +4,6 @@ import game.logic.CollisionHandler;
 import game.util.WayPointManager;
 import game.models.CollisionModel;
 import game.models.entities.MovableEntity;
-import game.models.weapons.Weapon;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -14,8 +13,10 @@ import org.newdawn.slick.geom.Vector2f;
 import java.util.Random;
 
 public abstract class Tank extends MovableEntity {
+
     public Image turret;
-    private boolean centerTurret, isTurretCentered;
+    public boolean isCenteringTurret;
+    private boolean isTurretCentered;
     private int TURRET_WIDTH_HALF, TURRET_HEIGHT_HALF;
 
     // for deceleration
@@ -58,7 +59,7 @@ public abstract class Tank extends MovableEntity {
             }
         }
 
-        if (centerTurret) {
+        if (isCenteringTurret) {
             centerTurret(deltaTime);
         }
 
@@ -165,7 +166,7 @@ public abstract class Tank extends MovableEntity {
     }
 
     public void autoCenterTurret() {
-        if (!isTurretCentered) centerTurret = true;
+        if (!isTurretCentered) isCenteringTurret = true;
     }
 
     protected void centerTurret(int deltaTime) {
@@ -175,7 +176,7 @@ public abstract class Tank extends MovableEntity {
         if (angle > -3 && angle < 3) {
             turret.setRotation(this.getRotation());
             isTurretCentered = true;
-            centerTurret = false;
+            isCenteringTurret = false;
             return;
         }
 

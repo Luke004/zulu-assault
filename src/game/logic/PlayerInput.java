@@ -2,6 +2,8 @@ package game.logic;
 
 import game.audio.MenuSounds;
 import game.models.entities.Entity;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import settings.UserSettings;
 import game.graphics.hud.Radar;
 import game.models.entities.MovableEntity;
@@ -17,9 +19,19 @@ import org.newdawn.slick.Input;
 import static game.levels.Level.all_entities;
 import static game.levels.Level.drivable_entities;
 
-public class KeyInputHandler {
+public class PlayerInput {
+
     private Player player;
     private boolean KEY_UP_RELEASED, KEY_DOWN_RELEASED, KEY_UP_PRESSED, KEY_DOWN_PRESSED;
+    private static Sound turretRotateSound;
+
+    static {
+        try {
+            turretRotateSound = new Sound("audio/sounds/rotate_turret.ogg");
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void update(GameContainer gameContainer, int deltaTime) {
         Input input = gameContainer.getInput();
@@ -186,10 +198,16 @@ public class KeyInputHandler {
 
                 if (input.isKeyDown(Input.KEY_X)) {
                     tank.rotateTurret(MovableEntity.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
+                    if (!turretRotateSound.playing()) {
+                        turretRotateSound.play(1.f, UserSettings.soundVolume);
+                    }
                 }
 
                 if (input.isKeyDown(UserSettings.keyboardLayout_1 ? Input.KEY_Z : Input.KEY_Y)) {
                     tank.rotateTurret(MovableEntity.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
+                    if (!turretRotateSound.playing()) {
+                        turretRotateSound.play(1.f, UserSettings.soundVolume);
+                    }
                 }
 
 
@@ -209,6 +227,12 @@ public class KeyInputHandler {
                 // auto center turret
                 if (input.isKeyPressed(Input.KEY_A)) {
                     tank.autoCenterTurret();
+                }
+                // play rotate turret sound while centering it
+                if (tank.isCenteringTurret) {
+                    if (!turretRotateSound.playing()) {
+                        turretRotateSound.play(1.f, UserSettings.soundVolume);
+                    }
                 }
                 break;
             case ROBOT:   // player is in a robot
@@ -244,10 +268,16 @@ public class KeyInputHandler {
 
                 if (input.isKeyDown(Input.KEY_X)) {
                     robot.rotateTurret(MovableEntity.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
+                    if (!turretRotateSound.playing()) {
+                        turretRotateSound.play(1.f, UserSettings.soundVolume);
+                    }
                 }
 
-                if (input.isKeyDown(Input.KEY_Y)) {
+                if (input.isKeyDown(UserSettings.keyboardLayout_1 ? Input.KEY_Z : Input.KEY_Y)) {
                     robot.rotateTurret(MovableEntity.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
+                    if (!turretRotateSound.playing()) {
+                        turretRotateSound.play(1.f, UserSettings.soundVolume);
+                    }
                 }
 
                 // get out of robot
@@ -266,8 +296,14 @@ public class KeyInputHandler {
                 // auto center turret
                 if (input.isKeyPressed(Input.KEY_A)) {
                     robot.autoCenterTurret();
+                    turretRotateSound.play(1.f, UserSettings.soundVolume);
                 }
-
+                // play rotate turret sound while centering it
+                if (robot.isCenteringTurret) {
+                    if (!turretRotateSound.playing()) {
+                        turretRotateSound.play(1.f, UserSettings.soundVolume);
+                    }
+                }
                 break;
 
             case PLANE:     // player is in a plane
@@ -364,6 +400,11 @@ public class KeyInputHandler {
                 break;
             case Input.KEY_DOWN:
                 KEY_DOWN_RELEASED = true;
+                break;
+            case Input.KEY_Y:
+            case Input.KEY_Z:
+            case Input.KEY_X:
+                turretRotateSound.stop();
                 break;
         }
     }

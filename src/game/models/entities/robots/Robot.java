@@ -8,9 +8,11 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
 public abstract class Robot extends MovableEntity {
+
     private Animation walking_animation;
     private float BASE_WIDTH_HALF, BASE_HEIGHT_HALF;
-    private boolean centerTurret;
+    public boolean isCenteringTurret;
+    private boolean isTurretCentered;
 
     // default robot attributes
     protected static final float ROBOT_DEFAULT_ARMOR = 75.f;
@@ -21,6 +23,7 @@ public abstract class Robot extends MovableEntity {
     public Robot(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
         current_speed = getMaxSpeed();
+        isTurretCentered = true;
     }
 
     @Override
@@ -58,7 +61,7 @@ public abstract class Robot extends MovableEntity {
             level_delete_listener.notifyForEntityDestruction(this);
         }
 
-        if (centerTurret) {
+        if (isCenteringTurret) {
             centerTurret(deltaTime);
         }
 
@@ -178,6 +181,7 @@ public abstract class Robot extends MovableEntity {
     }
 
     public void rotateTurret(RotateDirection r, int deltaTime) {
+        isTurretCentered = false;
         switch (r) {
             case ROTATE_DIRECTION_LEFT:
                 base_image.rotate(-getTurretRotateSpeed() * deltaTime);
@@ -189,11 +193,13 @@ public abstract class Robot extends MovableEntity {
     }
 
     protected void centerTurret(int deltaTime) {
+        if (isTurretCentered) return;
         float angle = WayPointManager.getShortestSignedAngle(this.getRotation(), base_image.getRotation());
 
         if (angle > -3 && angle < 3) {
             base_image.setRotation(this.getRotation());
-            centerTurret = false;
+            isTurretCentered = true;
+            isCenteringTurret = false;
             return;
         }
 
@@ -205,7 +211,7 @@ public abstract class Robot extends MovableEntity {
     }
 
     public void autoCenterTurret() {
-        centerTurret = true;
+        if (!isTurretCentered) isCenteringTurret = true;
     }
 
     @Override
