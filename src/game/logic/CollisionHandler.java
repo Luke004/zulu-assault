@@ -1,5 +1,6 @@
 package game.logic;
 
+import game.util.TileMapUtil;
 import settings.UserSettings;
 import game.models.CollisionModel;
 import game.graphics.animations.damage.PlasmaDamageAnimation;
@@ -375,7 +376,9 @@ public class CollisionHandler {
         CollisionModel.Point[] collision_points = projectile.getCollisionModel().collision_points;
         for (int i = 0; i < collision_points.length; ++i) {
             int x = (int) collision_points[i].x / TILE_WIDTH;
+            if (x >= LEVEL_WIDTH_TILES) return;
             int y = (int) collision_points[i].y / TILE_HEIGHT;
+            if (y >= LEVEL_HEIGHT_TILES) return;
             int tile_ID = map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
 
             for (int idx = 0; idx < destructible_tile_indices.length; ++idx) {
@@ -442,7 +445,7 @@ public class CollisionHandler {
                     for (Entity hostile_entity : all_hostile_entities) {
                         if (projectile.getCollisionModel().intersects(hostile_entity.getCollisionModel())) {
                             showBulletHitAnimation(weapon, projectile);
-                            projectile_iterator.remove();   // TODO: FIX CRASH BUG ON REMOVE
+                            projectile_iterator.remove();
                             hostile_entity.changeHealth(-weapon.getBulletDamage());  //drain health of enemy
                             break;
                         }
