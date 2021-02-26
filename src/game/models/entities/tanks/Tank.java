@@ -26,6 +26,7 @@ public abstract class Tank extends MovableEntity {
     private static final int TANK_DEFAULT_SCORE_VALUE = 1000;
 
     private static Sound tank_burning_sound;
+    public static Sound tankEngineSound;
 
     private DestructionAnimation destructionAnimation;
 
@@ -36,6 +37,14 @@ public abstract class Tank extends MovableEntity {
         if (tank_burning_sound == null) {
             try {
                 tank_burning_sound = new Sound("audio/sounds/burning.ogg");
+            } catch (SlickException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (tankEngineSound == null) {
+            try {
+                tankEngineSound = new Sound("audio/sounds/tank_engine.ogg");
             } catch (SlickException e) {
                 e.printStackTrace();
             }
@@ -73,6 +82,13 @@ public abstract class Tank extends MovableEntity {
 
         if (isCenteringTurret) {
             centerTurret(deltaTime);
+        }
+
+        // engine sound
+        if (isDrivable) {
+            if (!tankEngineSound.playing()) {
+                tankEngineSound.play(isMoving ? 1.5f : 1.f, UserSettings.soundVolume);
+            }
         }
 
         // WAY POINTS
