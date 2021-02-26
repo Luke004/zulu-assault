@@ -72,7 +72,7 @@ public class KeyInputHandler {
         }
 
         switch (player.getEntityType()) {
-            case SOLDIER:   // game.player is a soldier (goes by foot)
+            case SOLDIER:   // player is a soldier (goes by foot)
                 Soldier soldier = (Soldier) playerEntity;
 
                 // forward movement
@@ -211,7 +211,7 @@ public class KeyInputHandler {
                     tank.autoCenterTurret();
                 }
                 break;
-            case ROBOT:   // game.player is in a robot
+            case ROBOT:   // player is in a robot
                 Robot robot = (Robot) playerEntity;
 
                 // forward movement

@@ -145,7 +145,7 @@ public abstract class Entity extends Element {
         float rotationDegree;
         if (dist < 700) {
             isEnemyNear = true;
-            // aim at game.player
+            // aim at player
             rotationDegree = WayPointManager.calculateAngleToRotateTo(position, new Vector2f(xPos, yPos));
             changeAimingDirection(rotationDegree, deltaTime);
         } else {

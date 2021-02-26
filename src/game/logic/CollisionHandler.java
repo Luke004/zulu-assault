@@ -135,7 +135,7 @@ public class CollisionHandler {
             }
         }
         if (noIntersection) {
-            // allow the game.player to teleport again as soon as he is not in any teleport circle anymore
+            // allow the player to teleport again as soon as he is not in any teleport circle anymore
             player.getEntity().allowTeleport();
         }
 

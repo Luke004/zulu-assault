@@ -44,7 +44,7 @@ public class XTank extends Tank {
         super.init();
     }
 
-    /* The x-tank rotates itself, not a turret. It also follows the game.player. */
+    /* The x-tank rotates itself, not a turret. It also follows the player. */
     @Override
     public void changeAimingDirection(float angle, int deltaTime) {
         float rotation = WayPointManager.getShortestSignedAngle(base_image.getRotation(), angle);
@@ -55,7 +55,7 @@ public class XTank extends Tank {
             rotate(RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
         }
 
-        // follow the game.player
+        // follow the player
         accelerate(deltaTime, Direction.FORWARD);
     }
 

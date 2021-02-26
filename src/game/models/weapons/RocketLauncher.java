@@ -47,7 +47,7 @@ public class RocketLauncher extends Weapon {
             if (!isDrivable) {
                 BUFFER_SIZE = 3;
             } else {
-                BUFFER_SIZE = 5;    // game.player needs more buffer_size, since he can shoot more often
+                BUFFER_SIZE = 5;    // player needs more buffer_size, since he can shoot more often
             }
             buffered_rockets = new ArrayList<>();
 

@@ -244,7 +244,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
 
         /*
         if (ZuluAssault.prevState.getID() == ZuluAssault.MAIN_MENU) {
-            // game.player is resuming the level
+            // player is resuming the level
         }
          */
     }

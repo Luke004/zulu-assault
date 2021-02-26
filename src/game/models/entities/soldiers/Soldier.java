@@ -185,7 +185,7 @@ public abstract class Soldier extends MovableEntity {
     public void shootAtEnemies(MovableEntity player, List<? extends Entity> enemies_of_entity, int deltaTime) {
         if (isFleeing) return;
         MovableEntity closest_entity = player;
-        // calculate dist between the game.player and the enemy
+        // calculate dist between the player and the enemy
         float xPos = player.getPosition().x;
         float yPos = player.getPosition().y;
         float dist = (float) Math.sqrt((xPos - position.x) * (xPos - position.x)

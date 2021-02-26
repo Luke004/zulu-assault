@@ -73,7 +73,7 @@ public class Radar {
                 radar_origin.x + player_x, radar_origin.y + Y_END - Y_START);
         graphics.drawLine(radar_origin.x, radar_origin.y + player_y,
                 radar_origin.x + RADAR_WIDTH, radar_origin.y + player_y);
-        // draw the current screen as a rect that the game.player can see on radar
+        // draw the current screen as a rect that the player can see on radar
         graphics.setColor(Color.white);
         graphics.drawRect(radar_origin.x + player_x - RADAR_SCREEN_RECT_WIDTH / 2,
                 radar_origin.y + player_y - RADAR_SCREEN_RECT_HEIGHT / 2,

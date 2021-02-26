@@ -249,9 +249,9 @@ public abstract class Aircraft extends MovableEntity {
                     position.x + m_dir_x * (NEXT_TILE_OFFSET * tile_idx),
                     position.y + m_dir_y * (NEXT_TILE_OFFSET * tile_idx));
             int mapX = (int) (tile_before_plane.x / TILE_WIDTH);
-            if (mapX < 0 || mapX >= LEVEL_WIDTH_TILES) return false;  // game.player wants to land out of map
+            if (mapX < 0 || mapX >= LEVEL_WIDTH_TILES) return false;  // player wants to land out of map
             int mapY = (int) (tile_before_plane.y / TILE_HEIGHT);
-            if (mapY < 0 || mapY >= LEVEL_HEIGHT_TILES) return false;  // game.player wants to land out of map
+            if (mapY < 0 || mapY >= LEVEL_HEIGHT_TILES) return false;  // player wants to land out of map
             int tileID = map.getTileId(mapX, mapY, LANDSCAPE_TILES_LAYER_IDX);
             if (TileMapData.isCollisionTile(tileID)) return false;
         } while (tile_idx++ < 6);    // do it six times (6 tiles before the plane)
@@ -269,7 +269,7 @@ public abstract class Aircraft extends MovableEntity {
         return hasLanded;
     }
 
-    /* call this right after creating an instance of 'Plane' whenever a game.player is starting the level in this instance */
+    /* call this right after creating an instance of 'Plane' whenever a player is starting the level in this instance */
     public void setStarting() {
         landing = false;
         hasStarted = true;

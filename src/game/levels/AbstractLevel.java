@@ -170,7 +170,7 @@ public abstract class AbstractLevel extends BasicGameState implements EntityDele
 
 
         if (ZuluAssault.prevState.getID() == ZuluAssault.MAIN_MENU) {
-            // game.player is resuming the level
+            // player is resuming the level
         }
 
     }
