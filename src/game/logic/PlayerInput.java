@@ -50,13 +50,22 @@ public class PlayerInput {
         }
 
         // fire weapon1
-        if (input.isKeyDown(Input.KEY_LCONTROL) || input.isKeyPressed(Input.KEY_RCONTROL)) {
+        if (input.isKeyDown(Input.KEY_RCONTROL)) {
             if (playerEntity.isDestroyed) return;
             playerEntity.fireWeapon(Entity.WeaponType.WEAPON_1);
         }
 
+        // fire weapon1
+        if (input.isKeyDown(Input.KEY_LCONTROL)) {
+            // next if-statement fixes a bug from slick, where 'KEY_RALT' is also fired on 'KEY_LCONTROL' press
+            if (!input.isKeyDown(Input.KEY_RALT)) {
+                if (playerEntity.isDestroyed) return;
+                playerEntity.fireWeapon(Entity.WeaponType.WEAPON_1);
+            }
+        }
+
         // fire weapon2
-        if (input.isKeyDown(Input.KEY_LALT) || input.isKeyPressed(Input.KEY_RALT)) {
+        if (input.isKeyDown(Input.KEY_LALT) || input.isKeyDown(Input.KEY_RALT)) {
             if (playerEntity.isDestroyed) return;
             playerEntity.fireWeapon(Entity.WeaponType.WEAPON_2);
         }
