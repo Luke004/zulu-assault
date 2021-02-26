@@ -38,7 +38,7 @@ public class Uzi extends Weapon {
         }
         // individual Uzi specs
         bullet_damage = 50;
-        shot_reload_time = 150;
+        shot_reload_time = 200;
         if (!isDrivable) shot_reload_time *= 16;
     }
 

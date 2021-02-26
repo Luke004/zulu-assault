@@ -30,6 +30,8 @@ public class Cannon extends Uzi {
             e.printStackTrace();
         }
 
+        shot_reload_time = 100;
+        if (!isDrivable) shot_reload_time *= 16;
     }
 
     static {
