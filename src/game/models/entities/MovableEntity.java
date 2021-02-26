@@ -223,7 +223,7 @@ public abstract class MovableEntity extends Entity {
             if (entity.isDestroyed) return;
             if (!isHostile && entity.isHostile) {
                 entity.changeHealth(-150.f);
-                if (entity.getHealth() < 0) {
+                if (entity.getHealth() <= 0) {
                     soldier_death_sound.play(1.f, UserSettings.soundVolume);
                 }
             }

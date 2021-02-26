@@ -4,12 +4,16 @@ import game.models.weapons.projectiles.Flame;
 import game.models.weapons.projectiles.Projectile;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
+import settings.UserSettings;
 
 public class Napalm extends PiercingWeapon {
 
     private static Texture napalm_hud_texture;
+
+    public static Sound napalm_fire_sound;
 
     public Napalm(boolean isDrivable) {
         super();
@@ -17,6 +21,12 @@ public class Napalm extends PiercingWeapon {
             if (napalm_hud_texture == null)
                 napalm_hud_texture = new Image("assets/hud/weapons/napalm.png").getTexture();
             if (isDrivable) weapon_hud_image = new Image(napalm_hud_texture);
+
+            if (napalm_fire_sound == null) {
+                // as in the original, the napalm sound is the jet engine sound, but in a lower pitch
+                napalm_fire_sound = new Sound("audio/sounds/jet.ogg");
+            }
+            fire_sound = napalm_fire_sound;
 
             projectile_texture = new Image("assets/animations/big_explosion.png").getTexture();
         } catch (SlickException e) {
@@ -43,6 +53,9 @@ public class Napalm extends PiercingWeapon {
 
             Projectile bullet = new Flame(bullet_spawn, bullet_dir, 0, projectile_texture);
             projectile_list.add(bullet);
+        }
+        if (!fire_sound.playing()) {
+            fire_sound.play(.6f, UserSettings.soundVolume);
         }
     }
 }

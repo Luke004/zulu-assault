@@ -406,6 +406,14 @@ public class PlayerInput {
             case Input.KEY_X:
                 turretRotateSound.stop();
                 break;
+            case Input.KEY_RALT:
+            case Input.KEY_LALT:
+                // stop the napalm fire sound if player is in a NapalmTank
+                // not the most beautiful solution, but it works ...
+                if (player.getEntity().getClass().getSimpleName().equals("NapalmTank")) {
+                    Napalm.napalm_fire_sound.stop();
+                }
+                break;
         }
     }
 
