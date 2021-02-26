@@ -4,11 +4,9 @@ import game.logic.CollisionHandler;
 import game.util.WayPointManager;
 import game.models.CollisionModel;
 import game.models.entities.MovableEntity;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
+import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
+import settings.UserSettings;
 
 import java.util.Random;
 
@@ -27,11 +25,21 @@ public abstract class Tank extends MovableEntity {
     private static final float TANK_DEFAULT_ARMOR = 50.f;
     private static final int TANK_DEFAULT_SCORE_VALUE = 1000;
 
+    private static Sound tank_burning_sound;
+
     private DestructionAnimation destructionAnimation;
 
     public Tank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
         isTurretCentered = true;
+
+        if (tank_burning_sound == null) {
+            try {
+                tank_burning_sound = new Sound("audio/sounds/burning.ogg");
+            } catch (SlickException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void init() {
@@ -53,8 +61,12 @@ public abstract class Tank extends MovableEntity {
         }
 
         if (isDestroyed) {
+            if (!tank_burning_sound.playing()) {
+                tank_burning_sound.play(1.f, UserSettings.soundVolume);
+            }
             destructionAnimation.play(deltaTime);
             if (destructionAnimation.hasFinished()) {
+                tank_burning_sound.stop();
                 level_delete_listener.notifyForEntityDestruction(this);
             }
         }
