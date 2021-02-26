@@ -2,6 +2,7 @@ package game.logic;
 
 import game.audio.MenuSounds;
 import game.models.entities.Entity;
+import game.models.weapons.Napalm;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import settings.UserSettings;
