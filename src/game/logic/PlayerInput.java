@@ -418,9 +418,9 @@ public class PlayerInput {
                 break;
             case Input.KEY_RALT:
             case Input.KEY_LALT:
-                // stop the napalm fire sound if player is in a NapalmTank
+                // stop the napalm fire sound if players 2nd weapon is napalm
                 // not the most beautiful solution, but it works ...
-                if (player.getEntity().getClass().getSimpleName().equals("NapalmTank")) {
+                if (player.getEntity().getWeapon(Entity.WeaponType.WEAPON_2) instanceof Napalm) {
                     Napalm.napalm_fire_sound.stop();
                 }
                 break;
