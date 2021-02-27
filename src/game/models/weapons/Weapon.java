@@ -14,12 +14,13 @@ import java.util.Iterator;
 import java.util.List;
 
 public abstract class Weapon {
-    protected Image weapon_hud_image;   // the image for the weapon drawn on the HUD
 
+    protected Image weapon_hud_image;   // the image for the weapon drawn on the HUD
     protected Sound fire_sound;  // fire sound of the weapon
 
     Texture projectile_texture;
     protected List<Projectile> projectile_list;
+
     // specs related
     float bullet_damage, shot_reload_time, current_reload_time;
 
@@ -36,7 +37,7 @@ public abstract class Weapon {
             Projectile projectile = iter.next();
             projectile.update(deltaTime);
 
-            // remove bullet if if max lifetime was reached
+            // remove bullet if max lifetime was reached
             if (projectile.projectile_lifetime > projectile.projectile_max_lifetime) {
                 onProjectileRemove(projectile);
                 iter.remove();
@@ -44,7 +45,7 @@ public abstract class Weapon {
         }
     }
 
-    protected void onProjectileRemove(Projectile projectile) {
+    public void onProjectileRemove(Projectile projectile) {
         // method to override
     }
 

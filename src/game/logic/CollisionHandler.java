@@ -254,7 +254,10 @@ public class CollisionHandler {
                 Projectile projectile = projectile_iterator.next();
                 boolean canContinue;
                 canContinue = removeProjectileAtMapEdge(projectile, projectile_iterator);
-                if (canContinue) continue;
+                if (canContinue){
+                    weapon.onProjectileRemove(projectile);
+                    continue;
+                }
                 if (!(projectile instanceof AirProjectile)) {
                     // PLAYER GROUND PROJECTILE COLLISION WITH HOSTILE ENTITIES
                     canContinue = groundProjectileEnemyCollision(projectile, weapon, projectile_iterator);
@@ -310,6 +313,7 @@ public class CollisionHandler {
                 }
                 hostileEntity.changeHealth(-weapon.getBulletDamage());
                 projectile_iterator.remove();   // remove bullet
+                weapon.onProjectileRemove(projectile);
                 return true;
             }
         }
@@ -355,6 +359,7 @@ public class CollisionHandler {
                     damageTile(x, y, weapon, destructible_tile_replace_indices[idx], null);
                 }
                 bullet_iterator.remove();
+                weapon.onProjectileRemove(projectile);
                 return true;
             }
         }
@@ -436,7 +441,10 @@ public class CollisionHandler {
                 Projectile projectile = projectile_iterator.next();
                 boolean canContinue;
                 canContinue = removeProjectileAtMapEdge(projectile, projectile_iterator);
-                if (canContinue) continue;
+                if (canContinue) {
+                    weapon.onProjectileRemove(projectile);
+                    continue;
+                }
                 // BULLET COLLISION WITH DESTRUCTIBLE MAP TILE
                 canContinue = groundProjectileTileCollision(projectile, weapon, projectile_iterator);
                 if (canContinue) continue;
@@ -446,6 +454,7 @@ public class CollisionHandler {
                         if (projectile.getCollisionModel().intersects(hostile_entity.getCollisionModel())) {
                             showBulletHitAnimation(weapon, projectile);
                             projectile_iterator.remove();
+                            weapon.onProjectileRemove(projectile);
                             hostile_entity.changeHealth(-weapon.getBulletDamage());  //drain health of enemy
                             break;
                         }
@@ -460,6 +469,7 @@ public class CollisionHandler {
                         }
                         showBulletHitAnimation(weapon, projectile);
                         projectile_iterator.remove();   // remove bullet
+                        weapon.onProjectileRemove(projectile);
                         if (!player.isInvincible()) {
                             player.changeHealth(-weapon.getBulletDamage());  //drain health of player
                         }
@@ -470,6 +480,7 @@ public class CollisionHandler {
                         if (projectile.getCollisionModel().intersects(friendly_entity.getCollisionModel())) {
                             showBulletHitAnimation(weapon, projectile);
                             projectile_iterator.remove();
+                            weapon.onProjectileRemove(projectile);
                             friendly_entity.changeHealth(-weapon.getBulletDamage());  //drain health of friend
                             canContinue = true;
                             break;
@@ -481,6 +492,7 @@ public class CollisionHandler {
                         if (projectile.getCollisionModel().intersects(drivable_entity.getCollisionModel())) {
                             showBulletHitAnimation(weapon, projectile);
                             projectile_iterator.remove();
+                            weapon.onProjectileRemove(projectile);
                             drivable_entity.changeHealth(-weapon.getBulletDamage());
                             break;
                         }

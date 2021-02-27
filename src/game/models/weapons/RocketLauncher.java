@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RocketLauncher extends Weapon {
+
     private List<Animation> active_rockets;
     private List<Animation> buffered_rockets;
     int BUFFER_SIZE;
@@ -70,7 +71,7 @@ public class RocketLauncher extends Weapon {
                 Image rocket_animation_image = new Image(rocket_animation_image_texture);
                 Animation rocket_animation = new Animation(false);
                 for (int idx2 = 0; idx2 < IMAGE_COUNT; ++idx2) {
-                    rocket_animation.addFrame(rocket_animation_image.getSubImage(x, 0, 20, 123), 50);
+                    rocket_animation.addFrame(rocket_animation_image.getSubImage(x, 0, 20, 123), 100);
                     x += 20;
                 }
                 buffered_rockets.add(rocket_animation);
@@ -80,13 +81,14 @@ public class RocketLauncher extends Weapon {
         }
     }
 
+    /*
     @Override
     public void update(int deltaTime) {
         super.update(deltaTime);
-        if (active_rockets.size() == 0) return;
-        putRocketBackToBuffer();
+        //if (active_rockets.size() == 0) return;
+        //putRocketBackToBuffer();
     }
-
+     */
 
     @Override
     public void fire(float spawnX, float spawnY, float rotation_angle) {
@@ -139,4 +141,10 @@ public class RocketLauncher extends Weapon {
         buffered_rockets.add(rocket);
         active_rockets.remove(rocket);
     }
+
+    @Override
+    public void onProjectileRemove(Projectile projectile) {
+        putRocketBackToBuffer();
+    }
+
 }

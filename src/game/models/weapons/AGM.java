@@ -91,7 +91,7 @@ public class AGM extends RocketLauncher implements iGroundTileDamageWeapon {
     }
 
     @Override
-    protected void onProjectileRemove(Projectile projectile) {
+    public void onProjectileRemove(Projectile projectile) {
         // check if a ground tile is damaged
         groundTileDamager.damageGroundTile(projectile.projectile_pos.x,
                 projectile.projectile_pos.y);
