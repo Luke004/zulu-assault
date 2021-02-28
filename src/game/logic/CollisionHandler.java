@@ -381,9 +381,9 @@ public class CollisionHandler {
         CollisionModel.Point[] collision_points = projectile.getCollisionModel().collision_points;
         for (int i = 0; i < collision_points.length; ++i) {
             int x = (int) collision_points[i].x / TILE_WIDTH;
-            if (x >= LEVEL_WIDTH_TILES) return;
+            if (x >= LEVEL_WIDTH_TILES || x < 0) return;
             int y = (int) collision_points[i].y / TILE_HEIGHT;
-            if (y >= LEVEL_HEIGHT_TILES) return;
+            if (y >= LEVEL_HEIGHT_TILES || y < 0) return;
             int tile_ID = map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
 
             for (int idx = 0; idx < destructible_tile_indices.length; ++idx) {

@@ -295,7 +295,9 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
     public void damageGroundTile(float xPos, float yPos) {
         // damage a ground tile
         int mapX = (int) (xPos / TILE_WIDTH);
+        if (mapX >= LEVEL_WIDTH_TILES || mapX < 0) return;
         int mapY = (int) (yPos / TILE_HEIGHT);
+        if (mapY >= LEVEL_HEIGHT_TILES || mapY < 0) return;
         int tileID = map.getTileId(mapX, mapY, LANDSCAPE_TILES_LAYER_IDX);
 
         int replacement_tile_id = TileMapData.getReplacementTileID(tileID);
