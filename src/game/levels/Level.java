@@ -100,7 +100,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
     }
 
     @Override
-    public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+    public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) {
         if (ZuluAssault.nextLevelName.isEmpty()) {
             // this is called only once at startup
             LevelManager.init(stateBasedGame);
@@ -201,13 +201,33 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
                 renderList.addAll(all_entities);    // TODO: 25.10.2020 why are drivable_entities not in render list?
                 all_entities.addAll(drivable_entities);
 
-                // put planes at the end of the list so they get rendered on top of other entities
-                renderList.sort((o1, o2) -> {
-                    if (o1 instanceof Aircraft && o2 instanceof Aircraft) return 0;
-                    else if (o1 instanceof Aircraft) return 1;
-                    else if (o2 instanceof Aircraft) return -1;
-                    else return 0;
-                });
+                boolean levelHasAircraft = false;
+                for (int i = renderList.size() - 1; i >= 0; --i) {
+                    if (renderList.get(i) instanceof Aircraft) {
+                        levelHasAircraft = true;
+                        break;
+                    }
+                }
+
+                if (levelHasAircraft) {
+                    // put planes at the end of the list so they get rendered on top of other entities
+                    renderList.sort((o1, o2) -> {
+                        if (o1 instanceof Aircraft && o2 instanceof Aircraft) return 0;
+                        else if (o1 instanceof Aircraft) return 1;
+                        else if (o2 instanceof Aircraft) return -1;
+                        else return 0;
+                    });
+
+                    // put player before all planes
+                    // like this it will get rendered correctly, no matter if in plane or on land
+                    for (int i = renderList.size() - 1; i >= 0; --i) {
+                        if (!(renderList.get(i) instanceof Aircraft)) {
+                            renderList.add(i + 1, playerEntity);
+                            break;
+                        }
+                    }
+                }
+
 
                 camera = new Camera(gameContainer, map);
                 camera.centerOn(player.getEntity().getPosition().x, player.getEntity().getPosition().y);
@@ -313,9 +333,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
             if (s_name.substring(0, 4).equals("map_")) {
                 // official map
                 int levelID = Integer.parseInt(s_name.substring(4));
-                if (levelID <= ZuluAssault.MAX_LEVEL && levelID >= 1) {
-                    return true;
-                }
+                return levelID <= ZuluAssault.MAX_LEVEL && levelID >= 1;
             }
         }
         return false;
@@ -329,7 +347,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
     }
 
     @Override
-    public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
+    public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) {
         camera.drawMap();
         camera.translateGraphics();
         for (InteractionCircle health_circle : health_circles) {
@@ -354,7 +372,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
             renderInstance.draw(graphics);
         }
 
-        player.getEntity().draw(graphics);
+        //player.getEntity().draw(graphics);
 
         bigExplosionAnimation.draw();
         collisionHandler.draw();
@@ -366,7 +384,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
     }
 
     @Override
-    public void update(GameContainer gc, StateBasedGame stateBasedGame, int dt) throws SlickException {
+    public void update(GameContainer gc, StateBasedGame stateBasedGame, int dt) {
         if (hasWonTheLevel) {
             // notify TimeManager that the level is finished
             TimeManager.finishLevel();
@@ -376,6 +394,8 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
             return;
         }
         player.update(gc, dt);
+        
+        // game will crash if you replace this for with enhanced for
         for (int idx = 0; idx < all_entities.size(); ++idx) {
             all_entities.get(idx).update(gc, dt);
         }
