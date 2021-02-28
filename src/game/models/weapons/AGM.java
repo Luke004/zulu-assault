@@ -1,8 +1,6 @@
 package game.models.weapons;
 
 import game.logic.level_listeners.GroundTileDamager;
-import game.models.weapons.projectiles.GroundRocket;
-import settings.UserSettings;
 import game.graphics.animations.explosion.BigExplosionAnimation;
 import game.models.weapons.projectiles.AirRocket;
 import game.models.weapons.projectiles.Projectile;
@@ -21,8 +19,6 @@ public class AGM extends DoubleRocketLauncher implements iGroundTileDamageWeapon
     private BigExplosionAnimation bigExplosionAnimation;
     public GroundTileDamager groundTileDamager;
 
-    private final int SIDE_OFFSET;
-
     public AGM(boolean isDrivable, final int SIDE_OFFSET) {
         super(isDrivable, SIDE_OFFSET);
 
@@ -36,7 +32,6 @@ public class AGM extends DoubleRocketLauncher implements iGroundTileDamageWeapon
 
         BUFFER_SIZE *= 2;   // double the buffer size, since this is a double rocket launcher
         bigExplosionAnimation = new BigExplosionAnimation(50);
-        this.SIDE_OFFSET = SIDE_OFFSET;
 
         //if (!isDrivable) shot_reload_time *= 2;
     }

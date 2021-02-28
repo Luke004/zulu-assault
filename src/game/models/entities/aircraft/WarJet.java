@@ -1,5 +1,6 @@
 package game.models.entities.aircraft;
 
+import game.models.weapons.GuidedRockets;
 import game.models.weapons.RocketLauncher;
 import game.models.weapons.Uzi;
 import org.newdawn.slick.Image;
@@ -33,7 +34,7 @@ public class WarJet extends Jet {
         }
 
         weapons.add(new Uzi(isDrivable));  // WEAPON_1
-        weapons.add(new RocketLauncher(isDrivable));  // TODO: add 'GUIDED' rockets weapon
+        weapons.add(new GuidedRockets(isDrivable, 19));
 
         super.init();
     }
