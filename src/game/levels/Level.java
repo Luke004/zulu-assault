@@ -226,8 +226,9 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
                             break;
                         }
                     }
+                } else {
+                    renderList.add(playerEntity);
                 }
-
 
                 camera = new Camera(gameContainer, map);
                 camera.centerOn(player.getEntity().getPosition().x, player.getEntity().getPosition().y);
@@ -394,7 +395,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
             return;
         }
         player.update(gc, dt);
-        
+
         // game will crash if you replace this for with enhanced for
         for (int idx = 0; idx < all_entities.size(); ++idx) {
             all_entities.get(idx).update(gc, dt);
