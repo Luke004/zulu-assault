@@ -14,7 +14,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 
-public class AGM extends RocketLauncher implements iGroundTileDamageWeapon {
+public class AGM extends DoubleRocketLauncher implements iGroundTileDamageWeapon {
 
     private static Texture agm_hud_texture;
 
@@ -24,7 +24,7 @@ public class AGM extends RocketLauncher implements iGroundTileDamageWeapon {
     private final int SIDE_OFFSET;
 
     public AGM(boolean isDrivable, final int SIDE_OFFSET) {
-        super(isDrivable);
+        super(isDrivable, SIDE_OFFSET);
 
         try {
             if (agm_hud_texture == null)
@@ -39,23 +39,6 @@ public class AGM extends RocketLauncher implements iGroundTileDamageWeapon {
         this.SIDE_OFFSET = SIDE_OFFSET;
 
         //if (!isDrivable) shot_reload_time *= 2;
-    }
-
-    @Override
-    public void fire(float spawnX, float spawnY, float rotation_angle) {
-        if (canFire()) {
-            current_reload_time = 0;    // reset the reload time when a shot is fired
-
-            // first bullet (right turret)
-            Projectile bullet = addRocket(spawnX, spawnY, rotation_angle, SIDE_OFFSET);
-            projectile_list.add(bullet);
-
-            // second bullet (left turret)
-            bullet = addRocket(spawnX, spawnY, rotation_angle, -SIDE_OFFSET);
-            projectile_list.add(bullet);
-
-            fire_sound.play(1.f, UserSettings.soundVolume);
-        }
     }
 
     @Override
@@ -85,9 +68,6 @@ public class AGM extends RocketLauncher implements iGroundTileDamageWeapon {
     public void draw(Graphics graphics) {
         super.draw(graphics);
         bigExplosionAnimation.draw();
-    }
-
-    public static void playDestructionAnimation(float xPos, float yPos) {
     }
 
     @Override

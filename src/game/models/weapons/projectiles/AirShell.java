@@ -25,7 +25,6 @@ public class AirShell extends AirProjectile {
             this.projectile_lifetime += deltaTime;
             if (!hasHitGround()) {
                 setHitGround();
-                AGM.playDestructionAnimation(projectile_pos.x, projectile_pos.y);
                 // only update the collision model in the last 200 milliseconds
                 projectile_collision_model.update(deltaTime);
             }
