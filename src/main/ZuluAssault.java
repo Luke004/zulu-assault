@@ -16,7 +16,7 @@ import java.io.File;
 public class ZuluAssault extends StateBasedGame {
 
     public static final String gameName = "Zulu Assault";
-    public static final String gameVersion = "Pre-alpha Test Version 1.3.3";
+    public static final String gameVersion = "Pre-alpha Test Version 1.4";
 
     public static final int MAIN_MENU = 0;
     public static final int BRIEFING = 1;
