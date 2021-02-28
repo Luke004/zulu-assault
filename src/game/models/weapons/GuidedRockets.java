@@ -1,10 +1,7 @@
 package game.models.weapons;
 
-import game.models.entities.Entity;
-import game.models.weapons.projectiles.AirRocket;
 import game.models.weapons.projectiles.GuidedRocket;
 import game.models.weapons.projectiles.Projectile;
-import game.util.WayPointManager;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -15,10 +12,11 @@ import org.newdawn.slick.opengl.Texture;
 public class GuidedRockets extends DoubleRocketLauncher {
 
     private static Texture guided_hud_texture;
+    private boolean isHostile;
 
-    public GuidedRockets(boolean isDrivable, int SIDE_OFFSET) {
+    public GuidedRockets(boolean isDrivable, int SIDE_OFFSET, boolean isHostile) {
         super(isDrivable, SIDE_OFFSET);
-
+        this.isHostile = isHostile;
         try {
             if (guided_hud_texture == null)
                 guided_hud_texture = new Image("assets/hud/weapons/guided.png").getTexture();
@@ -35,7 +33,7 @@ public class GuidedRockets extends DoubleRocketLauncher {
         Vector2f bullet_spawn = calculateBulletSpawn(spawnX, spawnY, rotation_angle, side_offset);
         Vector2f bullet_dir = calculateBulletDir(rotation_angle);
         Animation preparedRocket = prepareNextRocket(rotation_angle);
-        return new GuidedRocket(bullet_spawn, bullet_dir, rotation_angle, projectile_texture, preparedRocket);
+        return new GuidedRocket(bullet_spawn, bullet_dir, rotation_angle, projectile_texture, preparedRocket, isHostile);
     }
 
 }

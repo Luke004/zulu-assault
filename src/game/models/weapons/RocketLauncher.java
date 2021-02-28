@@ -17,7 +17,7 @@ public class RocketLauncher extends Weapon {
 
     private List<Animation> active_rockets;
     private List<Animation> buffered_rockets;
-    int BUFFER_SIZE;
+    protected int BUFFER_SIZE;
 
     private static Sound rocket_fire_sound;
     private static Texture rocket_launcher_hud_texture;
@@ -48,7 +48,7 @@ public class RocketLauncher extends Weapon {
             if (!isDrivable) {
                 BUFFER_SIZE = 3;
             } else {
-                BUFFER_SIZE = 5;    // player needs more buffer_size, since he can shoot more often
+                BUFFER_SIZE = 8;    // player needs more buffer size, since he can shoot more often
             }
             buffered_rockets = new ArrayList<>();
 

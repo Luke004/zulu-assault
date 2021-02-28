@@ -1,10 +1,9 @@
 package game.models.entities.tanks;
 
-import game.models.entities.Entity;
+import game.models.weapons.GuidedRockets;
 import game.util.WayPointManager;
 import game.models.weapons.Cannon;
 import game.models.weapons.DoubleRocketLauncher;
-import game.models.weapons.Weapon;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -24,8 +23,8 @@ public class XTank extends Tank {
     public XTank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
 
-        weapons.add(new Cannon(isDrivable, 4));  // WEAPON_1
-        weapons.add(new DoubleRocketLauncher(isDrivable, 3));  // WEAPON_2
+        weapons.add(new Cannon(isDrivable, 4));  // WEAPON 1
+        weapons.add(new GuidedRockets(isDrivable, 19, isHostile));  // WEAPON 2
 
         // LOAD TEXTURES
         try {

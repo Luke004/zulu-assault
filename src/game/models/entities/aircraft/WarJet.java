@@ -33,8 +33,8 @@ public class WarJet extends Jet {
             e.printStackTrace();
         }
 
-        weapons.add(new Uzi(isDrivable));  // WEAPON_1
-        weapons.add(new GuidedRockets(isDrivable, 19));
+        weapons.add(new Uzi(isDrivable));  // WEAPON 1
+        weapons.add(new GuidedRockets(isDrivable, 19, isHostile));  // WEAPON 2
 
         super.init();
     }
