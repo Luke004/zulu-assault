@@ -1,6 +1,7 @@
 package game.models.weapons;
 
 import game.logic.level_listeners.GroundTileDamager;
+import game.models.weapons.projectiles.GroundRocket;
 import settings.UserSettings;
 import game.graphics.animations.explosion.BigExplosionAnimation;
 import game.models.weapons.projectiles.AirRocket;
@@ -20,7 +21,9 @@ public class AGM extends RocketLauncher implements iGroundTileDamageWeapon {
     private BigExplosionAnimation bigExplosionAnimation;
     public GroundTileDamager groundTileDamager;
 
-    public AGM(boolean isDrivable) {
+    private final int SIDE_OFFSET;
+
+    public AGM(boolean isDrivable, final int SIDE_OFFSET) {
         super(isDrivable);
 
         try {
@@ -33,6 +36,7 @@ public class AGM extends RocketLauncher implements iGroundTileDamageWeapon {
 
         BUFFER_SIZE *= 2;   // double the buffer size, since this is a double rocket launcher
         bigExplosionAnimation = new BigExplosionAnimation(50);
+        this.SIDE_OFFSET = SIDE_OFFSET;
 
         //if (!isDrivable) shot_reload_time *= 2;
     }
@@ -42,52 +46,24 @@ public class AGM extends RocketLauncher implements iGroundTileDamageWeapon {
         if (canFire()) {
             current_reload_time = 0;    // reset the reload time when a shot is fired
 
-            float xVal = (float) Math.sin(rotation_angle * Math.PI / 180);
-            float yVal = (float) -Math.cos(rotation_angle * Math.PI / 180);
-            Vector2f bullet_dir = new Vector2f(xVal, yVal);
-
             // first bullet (right turret)
-            float spawnX_1 = (float) (spawnX + Math.cos(((rotation_angle) * Math.PI) / 180) * 19.5f
-                    + -Math.sin(((rotation_angle) * Math.PI) / 180) * -30.f);
-            float spawnY_1 = (float) (spawnY + Math.sin(((rotation_angle) * Math.PI) / 180) * 19.5f
-                    + Math.cos(((rotation_angle) * Math.PI) / 180) * -30.f);
-            Vector2f bullet_spawn = new Vector2f(spawnX_1, spawnY_1);
-
-            Animation fresh_rocket = getNextFreshRocket();
-
-            for (int idx = 0; idx < fresh_rocket.getFrameCount(); ++idx) {
-                fresh_rocket.getImage(idx).setRotation(rotation_angle);
-            }
-            fresh_rocket.setPingPong(true);
-            fresh_rocket.setLooping(false);
-            fresh_rocket.setCurrentFrame(0);
-            fresh_rocket.start();
-
-            Projectile rocket1 = new AirRocket(bullet_spawn, bullet_dir, rotation_angle, projectile_texture, fresh_rocket);
-            projectile_list.add(rocket1);
+            Projectile bullet = addRocket(spawnX, spawnY, rotation_angle, SIDE_OFFSET);
+            projectile_list.add(bullet);
 
             // second bullet (left turret)
-            spawnX_1 = (float) (spawnX + Math.cos(((rotation_angle) * Math.PI) / 180) * -19.5f
-                    + -Math.sin(((rotation_angle) * Math.PI) / 180) * -30.f);
-            spawnY_1 = (float) (spawnY + Math.sin(((rotation_angle) * Math.PI) / 180) * -19.5f
-                    + Math.cos(((rotation_angle) * Math.PI) / 180) * -30.f);
-
-            Vector2f bullet_spawn2 = new Vector2f(spawnX_1, spawnY_1);
-            Animation fresh_rocket2 = getNextFreshRocket();
-
-            for (int idx = 0; idx < fresh_rocket.getFrameCount(); ++idx) {
-                fresh_rocket2.getImage(idx).setRotation(rotation_angle);
-            }
-            fresh_rocket2.setPingPong(true);
-            fresh_rocket2.setLooping(false);
-            fresh_rocket2.setCurrentFrame(0);
-            fresh_rocket2.start();
-
-            Projectile airRocket2 = new AirRocket(bullet_spawn2, bullet_dir, rotation_angle, projectile_texture, fresh_rocket2);
-            projectile_list.add(airRocket2);
+            bullet = addRocket(spawnX, spawnY, rotation_angle, -SIDE_OFFSET);
+            projectile_list.add(bullet);
 
             fire_sound.play(1.f, UserSettings.soundVolume);
         }
+    }
+
+    @Override
+    protected Projectile addRocket(float spawnX, float spawnY, float rotation_angle, float side_offset) {
+        Vector2f bullet_spawn = calculateBulletSpawn(spawnX, spawnY, rotation_angle, side_offset);
+        Vector2f bullet_dir = calculateBulletDir(rotation_angle);
+        Animation preparedRocket = prepareNextRocket(rotation_angle);
+        return new AirRocket(bullet_spawn, bullet_dir, rotation_angle, projectile_texture, preparedRocket);
     }
 
     @Override
@@ -96,6 +72,7 @@ public class AGM extends RocketLauncher implements iGroundTileDamageWeapon {
         groundTileDamager.damageGroundTile(projectile.projectile_pos.x,
                 projectile.projectile_pos.y);
         bigExplosionAnimation.playTenTimes(projectile.projectile_pos.x, projectile.projectile_pos.y, 90);
+        putRocketBackToBuffer();
     }
 
     @Override

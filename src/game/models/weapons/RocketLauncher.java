@@ -81,15 +81,6 @@ public class RocketLauncher extends Weapon {
         }
     }
 
-    /*
-    @Override
-    public void update(int deltaTime) {
-        super.update(deltaTime);
-        //if (active_rockets.size() == 0) return;
-        //putRocketBackToBuffer();
-    }
-     */
-
     @Override
     public void fire(float spawnX, float spawnY, float rotation_angle) {
         if (canFire()) {
@@ -102,26 +93,36 @@ public class RocketLauncher extends Weapon {
         }
     }
 
-    protected GroundRocket addRocket(float spawnX, float spawnY, float rotation_angle, float x_offset) {
-        float m_spawn_x = spawnX + (float) (Math.cos(((rotation_angle) * Math.PI) / 180) * x_offset
-                + -Math.sin(((rotation_angle) * Math.PI) / 180) * -30.f);
-        float m_spawn_y = spawnY + (float) (Math.sin(((rotation_angle) * Math.PI) / 180) * x_offset
-                + Math.cos(((rotation_angle) * Math.PI) / 180) * -30.f);
-        Vector2f bullet_spawn = new Vector2f(m_spawn_x, m_spawn_y);
+    protected Projectile addRocket(float spawnX, float spawnY, float rotation_angle, float side_offset) {
+        Vector2f bullet_spawn = calculateBulletSpawn(spawnX, spawnY, rotation_angle, side_offset);
+        Vector2f bullet_dir = calculateBulletDir(rotation_angle);
+        Animation preparedRocket = prepareNextRocket(rotation_angle);
+        return new GroundRocket(bullet_spawn, bullet_dir, rotation_angle, projectile_texture, preparedRocket);
+    }
 
-        float dirX = (float) Math.sin(rotation_angle * Math.PI / 180);
-        float dirY = (float) -Math.cos(rotation_angle * Math.PI / 180);
-        Vector2f bullet_dir = new Vector2f(dirX, dirY);
-
+    protected Animation prepareNextRocket(float rotation_angle) {
         Animation fresh_rocket = getNextFreshRocket();
-
         for (int idx = 0; idx < fresh_rocket.getFrameCount(); ++idx) {
             fresh_rocket.getImage(idx).setRotation(rotation_angle);
         }
         fresh_rocket.setCurrentFrame(0);
         fresh_rocket.stopAt(7);
         fresh_rocket.start();
-        return new GroundRocket(bullet_spawn, bullet_dir, rotation_angle, projectile_texture, fresh_rocket);
+        return fresh_rocket;
+    }
+
+    protected Vector2f calculateBulletSpawn(float spawnX, float spawnY, float rotation_angle, float side_offset) {
+        float m_spawn_x = spawnX + (float) (Math.cos(((rotation_angle) * Math.PI) / 180) * side_offset
+                + -Math.sin(((rotation_angle) * Math.PI) / 180) * -30.f);
+        float m_spawn_y = spawnY + (float) (Math.sin(((rotation_angle) * Math.PI) / 180) * side_offset
+                + Math.cos(((rotation_angle) * Math.PI) / 180) * -30.f);
+        return new Vector2f(m_spawn_x, m_spawn_y);
+    }
+
+    protected Vector2f calculateBulletDir(float rotation_angle) {
+        float dirX = (float) Math.sin(rotation_angle * Math.PI / 180);
+        float dirY = (float) -Math.cos(rotation_angle * Math.PI / 180);
+        return new Vector2f(dirX, dirY);
     }
 
     protected Animation getNextFreshRocket() {
@@ -136,7 +137,7 @@ public class RocketLauncher extends Weapon {
         return rocket;
     }
 
-    private void putRocketBackToBuffer() {
+    protected void putRocketBackToBuffer() {
         Animation rocket = active_rockets.get(active_rockets.size() - 1);
         buffered_rockets.add(rocket);
         active_rockets.remove(rocket);
