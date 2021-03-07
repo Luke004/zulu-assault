@@ -19,6 +19,8 @@ import java.util.Map;
 /* This class stores all relevant data for loading and saving a level */
 public class LevelDataStorage implements Serializable {
 
+    private static final long serialVersionUID = 6031109911093553022L;
+
     private static final String CUSTOM_MAPS_DATA_SAVE_FOLDER = "saves/custom_maps_data/";
     private static final String STANDARD_MAPS_DATA_SAVE_FOLDER = "assets/maps/";
 
@@ -188,7 +190,7 @@ public class LevelDataStorage implements Serializable {
             objectInputStream.close();
             return lds;
         } catch (IOException | ClassNotFoundException i) {
-            //i.printStackTrace();
+            i.printStackTrace();
             return null;
         }
     }
