@@ -50,6 +50,7 @@ public class ZuluAssault extends StateBasedGame {
         SettingStorage.createSettingsFile();
         try {
             AppGameContainer app = new AppGameContainer(new ZuluAssault(gameName));
+            app.setIcon("assets/icon/icon.png");
             app.setDisplayMode(alterRes ? 1920 : 640, alterRes ? 1080 : 480, fullscreen);
             app.setTargetFrameRate(120);
             app.setShowFPS(false);
