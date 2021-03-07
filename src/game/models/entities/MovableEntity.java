@@ -260,6 +260,7 @@ public abstract class MovableEntity extends Entity {
                     Entity hostileEntity = all_hostile_entities.get(idx);
                     if (hostileEntity instanceof Aircraft) {
                         if (WayPointManager.dist(hostileEntity.getPosition(), this.getPosition()) < 300) {
+                            hostileEntity.current_health = 0;
                             hostileEntity.isDestroyed = true;
                         }
                     }
