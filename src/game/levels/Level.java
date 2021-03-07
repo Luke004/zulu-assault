@@ -380,7 +380,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
         bigExplosionAnimation.draw();
         collisionHandler.draw();
 
-        // un-translate game.graphics to draw the HUD-items
+        // un-translate graphics to draw the HUD-items
         camera.untranslateGraphics();
         hud.draw(gameContainer);
         radar.draw(graphics);

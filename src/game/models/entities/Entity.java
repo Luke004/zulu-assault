@@ -26,7 +26,7 @@ public abstract class Entity extends Element {
     public boolean isHostile, isDestroyed, isMandatory;
     protected boolean isEnemyNear;
 
-    // game.graphics related
+    // graphics related
     private static Texture health_bar_texture_enemy, health_bar_texture_friendly;
 
     // model related

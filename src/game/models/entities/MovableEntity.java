@@ -139,7 +139,7 @@ public abstract class MovableEntity extends Entity {
         drawHealthBar(graphics);
         drawDrivableAnimation();
         super.draw(graphics);
-        //collisionModel.draw(game.graphics);
+        //collisionModel.draw(graphics);
     }
 
     protected void drawDrivableAnimation() {

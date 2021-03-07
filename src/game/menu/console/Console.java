@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Console {
 
-    private static Graphics graphics;   // give it its own game.graphics object for performance
+    private static Graphics graphics;   // give it its own graphics object for performance
     private static GameContainer gameContainer;
 
     private static final int CONSOLE_HEIGHT = 20;

@@ -4,7 +4,6 @@ import game.graphics.fonts.FontManager;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.TrueTypeFont;
-import org.newdawn.slick.gui.MouseOverArea;
 
 public abstract class ToolbarElement {
 

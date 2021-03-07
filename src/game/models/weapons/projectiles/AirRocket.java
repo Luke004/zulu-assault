@@ -48,7 +48,7 @@ public class AirRocket extends AirProjectile {
     @Override
     public void draw(Graphics graphics) {
         super.draw(graphics);
-        //collision_model.draw(game.graphics);
+        //collision_model.draw(graphics);
         rocket_animation.draw(projectile_pos.x - ANIMATION_WIDTH_HALF - xVal, projectile_pos.y - ANIMATION_HEIGHT_HALF - yVal);
     }
 

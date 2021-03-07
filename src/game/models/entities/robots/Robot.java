@@ -101,7 +101,7 @@ public abstract class Robot extends MovableEntity {
         }
         super.draw(graphics);
 
-        //collisionModel.draw(game.graphics);
+        //collisionModel.draw(graphics);
     }
 
     @Override

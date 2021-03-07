@@ -191,7 +191,7 @@ public abstract class Aircraft extends MovableEntity {
         // TODO: add destruction animation to plane crash
         /*
         if (isDestroyed) {
-            //destructionAnimation.draw(game.graphics);
+            //destructionAnimation.draw(graphics);
         }
          */
     }
