@@ -4,8 +4,6 @@ import game.util.WayPointManager;
 import game.graphics.animations.smoke.SmokeAnimation;
 import game.models.CollisionModel;
 import game.models.entities.Entity;
-import game.models.entities.MovableEntity;
-import game.models.weapons.Weapon;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -17,13 +15,12 @@ public abstract class Windmill extends Entity {
 
     protected Image turret;
     protected Vector2f turret_position;
-    private SmokeAnimation smokeAnimation;
+    private final SmokeAnimation smokeAnimation;
     private final static int SMOKE_ANIMATION_FREQUENCY = 300;  // two per second
     private int smoke_animation_timer;
-    private Random random;
+    private final Random random;
 
     private static final float WINDMILL_DEFAULT_ARMOR = 30.f;
-    private static final int WINDMILL_DEFAULT_SCORE_VALUE = 200;
     private static final float TURRET_ROTATE_SPEED = 0.07f;
 
 
@@ -104,8 +101,4 @@ public abstract class Windmill extends Entity {
         return 0;
     }
 
-    @Override
-    public int getScoreValue() {
-        return WINDMILL_DEFAULT_SCORE_VALUE;
-    }
 }

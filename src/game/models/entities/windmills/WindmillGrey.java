@@ -10,6 +10,9 @@ public class WindmillGrey extends Windmill {
 
     private static Texture windmill_grey_texture, windmill_grey_turret_texture;
 
+    // attributes
+    private final static int SCORE = 400;
+
     public WindmillGrey(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
 
@@ -43,4 +46,10 @@ public class WindmillGrey extends Windmill {
         turret.setCenterOfRotation(6, 21);
         super.changeAimingDirection(angle, deltaTime);
     }
+
+    @Override
+    public int getScoreValue() {
+        return SCORE;
+    }
+
 }

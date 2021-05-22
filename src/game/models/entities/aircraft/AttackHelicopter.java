@@ -31,10 +31,12 @@ public class AttackHelicopter extends Aircraft {
     private boolean decelerate;
     Direction decelerateDirection;
 
+    // attributes
     private static final float ARMOR = 25.f;
     private static final float ROTATE_SPEED_PLAYER = 0.15f, ROTATE_SPEED_BOT = 0.15f;
     private static final float MAX_SPEED_PLAYER = 0.25f, MAX_SPEED_BOT = 0.25f;
     private static final float ACCELERATION_FACTOR = 0.002f, DECELERATION_FACTOR = 0.0005f;
+    private static final int SCORE = 1500;
 
 
     public AttackHelicopter(Vector2f startPos, boolean isHostile, boolean isDrivable) {
@@ -213,6 +215,11 @@ public class AttackHelicopter extends Aircraft {
     @Override
     public void changeHealth(float amount) {
         super.changeHealth(amount, ARMOR);
+    }
+
+    @Override
+    public int getScoreValue() {
+        return SCORE;
     }
 
 }

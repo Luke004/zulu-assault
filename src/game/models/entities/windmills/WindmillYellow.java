@@ -10,6 +10,10 @@ public class WindmillYellow extends Windmill {
 
     private static Texture windmill_yellow_texture, windmill_yellow_turret_texture;
 
+    // attributes
+    private static final float ARMOR = 50.f;
+    private final static int SCORE = 600;
+
     public WindmillYellow(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
 
@@ -43,4 +47,15 @@ public class WindmillYellow extends Windmill {
         turret.setCenterOfRotation(8, 15);
         super.changeAimingDirection(angle, deltaTime);
     }
+
+    @Override
+    public void changeHealth(float amount) {
+        super.changeHealth(amount, ARMOR);
+    }
+
+    @Override
+    public int getScoreValue() {
+        return SCORE;
+    }
+
 }

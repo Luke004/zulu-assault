@@ -11,6 +11,9 @@ public class ShellRobot extends Robot {
 
     private static Texture shell_robot_texture;
 
+    // attributes
+    private static final int SCORE = 1000;
+
     public ShellRobot(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
 
@@ -31,5 +34,9 @@ public class ShellRobot extends Robot {
         super.init();
     }
 
+    @Override
+    public int getScoreValue() {
+        return SCORE;
+    }
 
 }

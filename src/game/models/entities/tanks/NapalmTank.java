@@ -17,6 +17,7 @@ public class NapalmTank extends Tank {
     private static final float ROTATE_SPEED_PLAYER = 0.15f, ROTATE_SPEED_BOT = 0.05f;
     private static final float MAX_SPEED_PLAYER = 0.16f, MAX_SPEED_BOT = 0.05f;
     private static final float ACCELERATION_FACTOR = 0.0001f, DECELERATION_FACTOR = 0.0009f;
+    private static final int SCORE = 400;
 
     public NapalmTank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
@@ -81,4 +82,10 @@ public class NapalmTank extends Tank {
     public void changeHealth(float amount) {
         super.changeHealth(amount, ARMOR);
     }
+
+    @Override
+    public int getScoreValue() {
+        return SCORE;
+    }
+
 }

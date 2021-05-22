@@ -13,6 +13,9 @@ public class RocketRobot extends Robot {
 
     private static Texture rocket_robot_texture;
 
+    // attributes
+    private static final int SCORE = 900;
+
     public RocketRobot(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
 
@@ -30,6 +33,11 @@ public class RocketRobot extends Robot {
         weapons.add(new DoubleRocketLauncher(isDrivable, 13));
 
         super.init();
+    }
+
+    @Override
+    public int getScoreValue() {
+        return SCORE;
     }
 
 }

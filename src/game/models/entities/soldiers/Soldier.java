@@ -16,6 +16,7 @@ import org.newdawn.slick.geom.Vector2f;
 import java.util.List;
 
 public abstract class Soldier extends MovableEntity {
+
     Animation animation;
 
     private boolean isFleeing;

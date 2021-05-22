@@ -10,6 +10,9 @@ public class RocketSoldier extends Soldier {
 
     private static Texture rocket_soldier_animation_texture;
 
+    // attributes
+    private static final int SCORE = 300;
+
     public RocketSoldier(Vector2f startPos, boolean isHostile) {
         super(startPos, isHostile);
 
@@ -28,4 +31,10 @@ public class RocketSoldier extends Soldier {
 
         super.init();
     }
+
+    @Override
+    public int getScoreValue() {
+        return SCORE;
+    }
+
 }

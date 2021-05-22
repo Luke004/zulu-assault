@@ -10,6 +10,9 @@ public class PlasmaRobot extends Robot {
 
     private static Texture plasma_robot_texture;
 
+    // attributes
+    private static final int SCORE = 600;
+
     public PlasmaRobot(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
 
@@ -28,4 +31,10 @@ public class PlasmaRobot extends Robot {
 
         super.init();
     }
+
+    @Override
+    public int getScoreValue() {
+        return SCORE;
+    }
+
 }

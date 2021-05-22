@@ -16,6 +16,7 @@ public class CannonTank extends Tank {
     private static final float ROTATE_SPEED_PLAYER = 0.15f, ROTATE_SPEED_BOT = 0.05f;
     private static final float MAX_SPEED_PLAYER = 0.23f, MAX_SPEED_BOT = 0.05f;
     private static final float ACCELERATION_FACTOR = 0.0005f, DECELERATION_FACTOR = 0.0005f;
+    private static final int SCORE = 300;
 
     public CannonTank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
@@ -79,4 +80,10 @@ public class CannonTank extends Tank {
     public void changeHealth(float amount) {
         super.changeHealth(amount, ARMOR);
     }
+
+    @Override
+    public int getScoreValue() {
+        return SCORE;
+    }
+
 }

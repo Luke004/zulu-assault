@@ -11,6 +11,9 @@ public class WarRobot extends Robot {
 
     private static Texture rocket_robot_texture;
 
+    // attributes
+    private static final int SCORE = 900;
+
     public WarRobot(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
 
@@ -31,5 +34,9 @@ public class WarRobot extends Robot {
         super.init();
     }
 
+    @Override
+    public int getScoreValue() {
+        return SCORE;
+    }
 
 }

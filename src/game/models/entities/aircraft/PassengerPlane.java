@@ -19,6 +19,7 @@ public class PassengerPlane extends Plane {
     private static final float MIN_SPEED_PLAYER = 0.05f, MIN_SPEED_BOT = 0.05f;
     private static final float MAX_SPEED_PLAYER = 0.1f, MAX_SPEED_BOT = 0.05f;
     private static final float SPEED_CHANGE_FACTOR = 0.00005f;
+    private static final int SCORE = 50;
 
     static {
         try {
@@ -70,6 +71,11 @@ public class PassengerPlane extends Plane {
     @Override
     public void changeHealth(float amount) {
         super.changeHealth(amount, ARMOR);
+    }
+
+    @Override
+    public int getScoreValue() {
+        return SCORE;
     }
 
 }

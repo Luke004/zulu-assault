@@ -23,7 +23,7 @@ public abstract class Tank extends MovableEntity {
 
     // default tank attributes
     private static final float TANK_DEFAULT_ARMOR = 50.f;
-    private static final int TANK_DEFAULT_SCORE_VALUE = 1000;
+    private static final int TANK_DEFAULT_SCORE_VALUE = 300;
 
     private static Sound tank_burning_sound;
     public static Sound tankEngineSound;

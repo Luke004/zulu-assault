@@ -12,10 +12,10 @@ public class MemeCar extends Tank {
 
     // attributes
     private static final float ARMOR = 10.f;
-    private static final int SCORE_VALUE = 50;
     private static final float ROTATE_SPEED_PLAYER = 0.15f, ROTATE_SPEED_BOT = 0.15f;
     private static final float MAX_SPEED_PLAYER = 0.3f, MAX_SPEED_BOT = 0.2f;
     private static final float ACCELERATION_FACTOR = 0.0005f, DECELERATION_FACTOR = 0.0003f;
+    private static final int SCORE = 50;
 
     public MemeCar(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
@@ -52,11 +52,6 @@ public class MemeCar extends Tank {
     }
 
     @Override
-    public int getScoreValue() {
-        return SCORE_VALUE;
-    }
-
-    @Override
     protected float getAccelerationFactor() {
         return ACCELERATION_FACTOR;
     }
@@ -70,4 +65,10 @@ public class MemeCar extends Tank {
     public void changeHealth(float amount) {
         super.changeHealth(amount, ARMOR);
     }
+
+    @Override
+    public int getScoreValue() {
+        return SCORE;
+    }
+
 }

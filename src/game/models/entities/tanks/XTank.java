@@ -19,6 +19,7 @@ public class XTank extends Tank {
     private static final float ROTATE_SPEED_PLAYER = 0.15f, ROTATE_SPEED_BOT = 0.05f;
     private static final float MAX_SPEED_PLAYER = 0.03f, MAX_SPEED_BOT = 0.01f;
     private static final float ACCELERATION_FACTOR = 0.0005f, DECELERATION_FACTOR = 0.0005f;
+    private static final int SCORE = 5000;
 
     public XTank(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
@@ -65,7 +66,7 @@ public class XTank extends Tank {
 
     @Override
     public int getScoreValue() {
-        return 5000;
+        return SCORE;
     }
 
     @Override

@@ -22,6 +22,7 @@ public class WarPlane extends Plane {
     private static final float MIN_SPEED_PLAYER = 0.1f, MIN_SPEED_BOT = 0.17f;
     private static final float MAX_SPEED_PLAYER = 0.22f, MAX_SPEED_BOT = 0.22f;
     private static final float SPEED_CHANGE_FACTOR = 0.000035f;
+    private static final int SCORE = 500;
 
     public WarPlane(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
@@ -80,6 +81,11 @@ public class WarPlane extends Plane {
     @Override
     public void changeHealth(float amount) {
         super.changeHealth(amount, ARMOR);
+    }
+
+    @Override
+    public int getScoreValue() {
+        return SCORE;
     }
 
 }

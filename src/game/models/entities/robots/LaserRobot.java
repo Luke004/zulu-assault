@@ -12,6 +12,9 @@ public class LaserRobot extends Robot {
 
     private static Texture laser_robot_texture;
 
+    // attributes
+    private static final int SCORE = 700;
+
     public LaserRobot(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
 
@@ -30,6 +33,11 @@ public class LaserRobot extends Robot {
         weapons.add(new DoubleLaser(isDrivable));
 
         super.init();
+    }
+
+    @Override
+    public int getScoreValue() {
+        return SCORE;
     }
 
 }

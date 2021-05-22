@@ -16,9 +16,9 @@ public abstract class Robot extends MovableEntity {
 
     // default robot attributes
     protected static final float ROBOT_DEFAULT_ARMOR = 75.f;
-    private static final int SCORE_VALUE = 3000;
     private static final float ROTATE_SPEED_PLAYER = 0.17f, ROTATE_SPEED_BOT = 0.05f;
     private static final float MAX_SPEED_PLAYER = 0.15f, MAX_SPEED_BOT = 0.06f;
+    private static final int ROBOT_DEFAULT_SCORE_VALUE = 1000;
 
     public Robot(Vector2f startPos, boolean isHostile, boolean isDrivable) {
         super(startPos, isHostile, isDrivable);
@@ -243,6 +243,6 @@ public abstract class Robot extends MovableEntity {
 
     @Override
     public int getScoreValue() {
-        return SCORE_VALUE;
+        return ROBOT_DEFAULT_SCORE_VALUE;
     }
 }
