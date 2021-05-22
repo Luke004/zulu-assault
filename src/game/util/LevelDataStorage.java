@@ -44,12 +44,14 @@ public class LevelDataStorage implements Serializable {
     }
 
     static class ItemData implements Serializable {
+        private static final long serialVersionUID = 8806833061094569719L;
         private String name;
         float xPos, yPos;
         boolean isMandatory;
     }
 
     static class CircleData implements Serializable {
+        private static final long serialVersionUID = -7967088267689042439L;
         private String name;
         float xPos, yPos;
     }
