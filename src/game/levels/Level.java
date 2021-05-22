@@ -281,7 +281,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
                     drivable_entities.remove(entity);
                 }
             }
-            player.addPoints(entity.getScoreValue());  // add points
+            Player.addPoints(entity.getScoreValue());  // add points
             screenDrawer.drawScoreValue(5, entity);    // draw the score on the screen
         } else {
             if (entity instanceof MovableEntity) {

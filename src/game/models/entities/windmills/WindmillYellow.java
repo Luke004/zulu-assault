@@ -11,7 +11,7 @@ public class WindmillYellow extends Windmill {
     private static Texture windmill_yellow_texture, windmill_yellow_turret_texture;
 
     // attributes
-    private static final float ARMOR = 50.f;
+    private static final float ARMOR = 37.5f;
     private final static int SCORE = 600;
 
     public WindmillYellow(Vector2f startPos, boolean isHostile) {

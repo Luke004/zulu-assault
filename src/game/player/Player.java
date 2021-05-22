@@ -24,8 +24,8 @@ public class Player {
     private PlayerSoldier base_soldier;
     private MovableEntity current_entity;
     private ItemChangeListener GUI_listener;
-    private int[] item_amounts;
-    private int points;
+    private final int[] item_amounts;
+    private static int points;
 
     private ChangeVehicleListener changeVehicleListener;
 
@@ -184,12 +184,12 @@ public class Player {
         SOLDIER, PLANE, TANK, ROBOT, HELICOPTER
     }
 
-    public int getPoints() {
+    public static int getPoints() {
         return points;
     }
 
-    public void addPoints(int amount) {
-        this.points += amount;
+    public static void addPoints(int amount) {
+        points += amount;
     }
 
     public void reset() {

@@ -5,8 +5,10 @@ import java.util.List;
 
 import game.audio.MenuSounds;
 import game.graphics.fonts.FontManager;
+import game.player.Player;
 import game.util.LevelDataStorage;
 import game.util.StringUtil;
+import game.util.TimeManager;
 import main.ZuluAssault;
 import settings.UserSettings;
 import org.newdawn.slick.*;
@@ -56,6 +58,15 @@ public class Debriefing extends BasicGameState {
                         gameContainer.getWidth() - TEXT_MARGIN * 2,
                         text_drawer
                 );
+            }
+
+            if(LevelManager.playerIsInPlayThrough()){
+                long timeInLevel = TimeManager.getTimeInLevel();
+                float sub_factor = (float) (timeInLevel / 1000) / 600;
+                int bonus = (int) (10000 * (1.f - sub_factor));
+                this.debriefing_message_line_split_list.add("");
+                this.debriefing_message_line_split_list.add("Time Bonus: " + bonus + " / 10000");
+                Player.addPoints(bonus);
             }
 
             if (isStandardLevel) {

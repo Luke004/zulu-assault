@@ -85,7 +85,7 @@ public class HUD_Drawer {
         pts_image.draw(GAME_WIDTH / 2.f + MARGIN, GAME_HEIGHT - 30);
 
         // draw the points
-        drawNumber(player.getPoints(), GAME_WIDTH / 2 + MARGIN + 35, GAME_HEIGHT - 40);
+        drawNumber(Player.getPoints(), GAME_WIDTH / 2 + MARGIN + 35, GAME_HEIGHT - 40);
         // draw the health
         drawNumber(player.getEntity().getHealth(), MARGIN + 35, GAME_HEIGHT - 40);
 

@@ -12,7 +12,7 @@ public class StringUtil {
         String[] split_strings = msg.split("\\s+");
         StringBuilder builder = new StringBuilder();
         for (String next_part : split_strings) {
-            if (text_drawer.getWidth(builder.toString() + next_part) >= windowWidth) {
+            if (text_drawer.getWidth(builder + next_part) >= windowWidth) {
                 lineSplitList.add(builder.toString());
                 builder.setLength(0);
             }
