@@ -6,9 +6,10 @@ import java.util.List;
 import game.audio.MenuSounds;
 import game.graphics.fonts.FontManager;
 import game.player.Player;
-import game.util.LevelDataStorage;
 import game.util.StringUtil;
 import game.util.TimeManager;
+import game.util.saving.SaveUtil;
+import game.util.saving.data.LevelData;
 import main.ZuluAssault;
 import settings.UserSettings;
 import org.newdawn.slick.*;
@@ -43,11 +44,10 @@ public class Debriefing extends BasicGameState {
         debriefing_music.play(1.f, UserSettings.musicVolume);
 
         boolean isStandardLevel = Level.isStandardLevel(ZuluAssault.nextLevelName);
-        LevelDataStorage lds = LevelDataStorage.loadLevel(ZuluAssault.nextLevelName, isStandardLevel);
-
-        if (lds != null) {
-            String s_debriefing_message = lds.debriefing_message;
-            String mission_title_detailed = lds.mission_title;
+        LevelData levelData = SaveUtil.loadLevelDataFromXML(ZuluAssault.nextLevelName, isStandardLevel);
+        if (levelData != null) {
+            String s_debriefing_message = levelData.debriefing_message;
+            String mission_title_detailed = levelData.mission_title;
             this.finished_level_Name = ZuluAssault.nextLevelName;
             this.debriefing_message_line_split_list = new ArrayList<>();
             if (s_debriefing_message == null || s_debriefing_message.isEmpty()) {
@@ -60,7 +60,7 @@ public class Debriefing extends BasicGameState {
                 );
             }
 
-            if(LevelManager.playerIsInPlayThrough()){
+            if (LevelManager.playerIsInPlayThrough()) {
                 long timeInLevel = TimeManager.getTimeInLevel();
                 float sub_factor = (float) (timeInLevel / 1000) / 600;
                 int bonus = (int) (10000 * (1.f - sub_factor));

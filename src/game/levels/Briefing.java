@@ -3,8 +3,9 @@ package game.levels;
 import game.audio.CombatBackgroundMusic;
 import game.audio.MenuSounds;
 import game.graphics.fonts.FontManager;
-import game.util.LevelDataStorage;
 import game.util.StringUtil;
+import game.util.saving.SaveUtil;
+import game.util.saving.data.LevelData;
 import main.ZuluAssault;
 import settings.UserSettings;
 import org.newdawn.slick.Graphics;
@@ -50,12 +51,11 @@ public class Briefing extends BasicGameState {
 
         boolean isStandardLevel = Level.isStandardLevel(ZuluAssault.nextLevelName);
 
-        LevelDataStorage lds = LevelDataStorage.loadLevel(ZuluAssault.nextLevelName, isStandardLevel);
-
-        if (lds != null) {
-            this.musicIdx = lds.musicIdx;
-            String s_briefingMessage = lds.briefing_message;
-            String mission_title_detailed = lds.mission_title;
+        LevelData levelData = SaveUtil.loadLevelDataFromXML(ZuluAssault.nextLevelName, isStandardLevel);
+        if (levelData != null) {
+            this.musicIdx = levelData.musicIdx;
+            String s_briefingMessage = levelData.briefing_message;
+            String mission_title_detailed = levelData.mission_title;
             this.briefing_message_line_split_list = new ArrayList<>();
 
             if (s_briefingMessage.isEmpty()) {

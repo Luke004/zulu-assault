@@ -11,7 +11,8 @@ import game.models.entities.aircraft.*;
 import game.models.interaction_circles.InteractionCircle;
 import game.models.interaction_circles.TeleportCircle;
 import game.models.items.*;
-import game.util.LevelDataStorage;
+import game.util.saving.SaveUtil;
+import game.util.saving.data.LevelData;
 import level_editor.screens.windows.CenterPopupWindow;
 import level_editor.screens.windows.Window;
 import level_editor.screens.windows.toolbars.bottom.BottomToolbar;
@@ -137,24 +138,24 @@ public class LevelEditor extends BasicGameState {
             mapY = mapHeight / 2.f;
 
             // attempt to load already created map data
-            LevelDataStorage lds = LevelDataStorage.loadLevel(getSimpleMapName(), false);
+            LevelData levelData = SaveUtil.loadLevelDataFromXML(getSimpleMapName(), false);
 
-            if (lds != null) {
-                setPlayerEntity(lds.getPlayerEntity(true));
+            if (levelData != null) {
+                setPlayerEntity(levelData.getPlayerEntity(true));
                 // add player
                 this.elements.add(playerEntity);
                 // add all items
-                this.elements.addAll(lds.getAllItems());
+                this.elements.addAll(levelData.getAllItems());
                 // add all circles
-                List<InteractionCircle> interactionCircles = lds.getAllCircles();
+                List<InteractionCircle> interactionCircles = levelData.getAllCircles();
                 for (InteractionCircle interactionCircle : interactionCircles) {
                     if (interactionCircle instanceof TeleportCircle) {
                         teleportCircles.add((TeleportCircle) interactionCircle);
                     }
                 }
-                this.elements.addAll(lds.getAllCircles());
+                this.elements.addAll(levelData.getAllCircles());
                 // add all entities
-                List<Entity> entities = lds.getAllEntities();
+                List<Entity> entities = levelData.getAllEntities();
                 for (Entity entity : entities) {
                     if (entity instanceof Aircraft) {
                         ((Aircraft) entity).hasLanded = true;   // so the shadow won't draw
@@ -162,17 +163,18 @@ public class LevelEditor extends BasicGameState {
                 }
                 this.elements.addAll(entities);
                 // add all entities that have waypoints
-                List<MovableEntity> waypointEntities = lds.getAllWaypointEntities();
+                List<MovableEntity> waypointEntities = levelData.getAllWaypointEntities();
                 for (MovableEntity entity : waypointEntities) {
                     if (entity instanceof Aircraft) {
                         ((Aircraft) entity).hasLanded = true;   // so the shadow won't draw
                     }
                 }
                 this.elements.addAll(waypointEntities);
-                EditorWaypointList.setEntityConnections(lds.getEntityConnections(waypointEntities));
-                allWayPointLists.addAll(lds.getAllWaypointLists(this));
+                EditorWaypointList.setEntityConnections(levelData.getEntityConnections(waypointEntities));
+                allWayPointLists.addAll(levelData.getAllWaypointLists(this));
                 // fill in the save-text-fields with the 'title', 'briefing' and 'debriefing' message
-                this.bottomToolbar.fillSaveTextFields(lds.mission_title, lds.briefing_message, lds.debriefing_message, lds.musicIdx);
+                this.bottomToolbar.fillSaveTextFields(levelData.mission_title, levelData.briefing_message,
+                        levelData.debriefing_message, levelData.musicIdx);
 
                 // FOR MAP REBUILD:
             /*
@@ -770,7 +772,7 @@ public class LevelEditor extends BasicGameState {
                                 entityCopy.setRotation(((Entity) elementToPlace).getRotation());
                                 entityCopy.isMandatory = EntityAdder.isMandatory;
                                 if (elementToPlace instanceof Aircraft) {
-                                    ((Aircraft) entityCopy).hasLanded = true;   // dont't draw shadow
+                                    ((Aircraft) entityCopy).hasLanded = true;   // don't draw shadow
                                 }
                             } else if (elementToPlace instanceof TeleportCircle) {
                                 teleportCircles.add((TeleportCircle) copy);
@@ -783,7 +785,7 @@ public class LevelEditor extends BasicGameState {
                     if (elementToPlace != null) {
                         Element copy = MapElements.getDeepCopy(elementToPlace, mapX, mapY);
                         if (copy instanceof Aircraft) {
-                            ((Aircraft) copy).hasLanded = true;   // dont't draw shadow
+                            ((Aircraft) copy).hasLanded = true;   // don't draw shadow
                         }
                         elements.add(copy);
                         if (this.elementToPlace.equals(playerEntity)) setPlayerEntity(copy);  // player entity is moved

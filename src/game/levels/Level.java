@@ -23,8 +23,9 @@ import game.models.interaction_circles.TeleportCircle;
 import game.models.items.Item;
 import game.player.Player;
 import game.util.TimeManager;
+import game.util.saving.SaveUtil;
+import game.util.saving.data.LevelData;
 import level_editor.LevelEditor;
-import game.util.LevelDataStorage;
 import main.ZuluAssault;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
@@ -121,16 +122,16 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
 
             // set the current tilemap based on the level
             TileMapData.setMap(map);
-
-            LevelDataStorage lds = LevelDataStorage.loadLevel(ZuluAssault.nextLevelName, isStandardLevel);
-            if (lds != null) {
+            // read level data from xml file and create the game objects
+            LevelData levelData = SaveUtil.loadLevelDataFromXML(ZuluAssault.nextLevelName, isStandardLevel);
+            if (levelData != null) {
                 reset();
 
                 // load all items
-                items.addAll(lds.getAllItems());
+                items.addAll(levelData.getAllItems());
 
                 // load all circles
-                for (InteractionCircle interactionCircle : lds.getAllCircles()) {
+                for (InteractionCircle interactionCircle : levelData.getAllCircles()) {
                     if (interactionCircle instanceof HealthCircle) {
                         health_circles.add((HealthCircle) interactionCircle);
                     } else if (interactionCircle instanceof TeleportCircle) {
@@ -139,7 +140,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
                 }
 
                 // load all entities
-                for (Entity entity : lds.getAllEntities()) {
+                for (Entity entity : levelData.getAllEntities()) {
                     if (entity instanceof MovableEntity) {
                         MovableEntity movableEntity = (MovableEntity) entity;
                         if (movableEntity.isDrivable) {
@@ -158,7 +159,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
                 }
 
                 // load all waypoint entities
-                for (MovableEntity movableEntity : lds.getAllWaypointEntities()) {
+                for (MovableEntity movableEntity : levelData.getAllWaypointEntities()) {
                     if (movableEntity.isHostile) {
                         all_hostile_entities.add(movableEntity);
                     } else {
@@ -167,7 +168,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
                 }
 
                 // load the player
-                MovableEntity playerEntity = lds.getPlayerEntity(false);
+                MovableEntity playerEntity = levelData.getPlayerEntity(false);
                 if (playerEntity instanceof Aircraft) {
                     ((Aircraft) playerEntity).setStarting();
                 }
@@ -188,7 +189,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
                 }
 
                 // set the combat music based on the level
-                combatBackgroundMusic.setIdx(lds.musicIdx);
+                combatBackgroundMusic.setIdx(levelData.musicIdx);
 
                 // check if the map size has changed - if so, inform the radar about it
                 boolean map_size_changed = TileMapData.updateMapSize();

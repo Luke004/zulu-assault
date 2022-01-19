@@ -1,6 +1,5 @@
 package level_editor.util;
 
-import game.models.Element;
 import game.models.entities.MovableEntity;
 import level_editor.LevelEditor;
 import org.newdawn.slick.Graphics;
