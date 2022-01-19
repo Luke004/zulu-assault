@@ -43,8 +43,8 @@ public class Debriefing extends BasicGameState {
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) {
         debriefing_music.play(1.f, UserSettings.musicVolume);
 
-        boolean isStandardLevel = Level.isStandardLevel(ZuluAssault.nextLevelName);
-        LevelData levelData = SaveUtil.loadLevelDataFromXML(ZuluAssault.nextLevelName, isStandardLevel);
+        boolean isOfficialLevel = Level.isOfficialLevel(ZuluAssault.nextLevelName);
+        LevelData levelData = SaveUtil.loadLevelDataFromXML(ZuluAssault.nextLevelName, isOfficialLevel);
         if (levelData != null) {
             String s_debriefing_message = levelData.debriefing_message;
             String mission_title_detailed = levelData.mission_title;
@@ -69,7 +69,7 @@ public class Debriefing extends BasicGameState {
                 Player.addPoints(bonus);
             }
 
-            if (isStandardLevel) {
+            if (isOfficialLevel) {
                 mission_title_abstract = "Mission " + ZuluAssault.nextLevelName.substring(ZuluAssault.nextLevelName.indexOf("_") + 1);
             } else {
                 mission_title_abstract = "Custom Mission";

@@ -49,9 +49,9 @@ public class Briefing extends BasicGameState {
         briefing_music_intro.play(1.f, UserSettings.musicVolume);
         gc.setMouseGrabbed(true);    // hide the mouse cursor
 
-        boolean isStandardLevel = Level.isStandardLevel(ZuluAssault.nextLevelName);
+        boolean isOfficialLevel = Level.isOfficialLevel(ZuluAssault.nextLevelName);
 
-        LevelData levelData = SaveUtil.loadLevelDataFromXML(ZuluAssault.nextLevelName, isStandardLevel);
+        LevelData levelData = SaveUtil.loadLevelDataFromXML(ZuluAssault.nextLevelName, isOfficialLevel);
         if (levelData != null) {
             this.musicIdx = levelData.musicIdx;
             String s_briefingMessage = levelData.briefing_message;
@@ -70,7 +70,7 @@ public class Briefing extends BasicGameState {
             loadMusicThread = new LoadMusicThread();
             loadMusicThread.start();
 
-            if (isStandardLevel) {
+            if (isOfficialLevel) {
                 mission_title_abstract = "Mission " + ZuluAssault.nextLevelName.substring(ZuluAssault.nextLevelName.indexOf("_") + 1);
             } else {
                 mission_title_abstract = "Custom Mission";

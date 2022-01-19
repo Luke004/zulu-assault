@@ -109,8 +109,8 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
         }
 
         String mapLocation;
-        boolean isStandardLevel = isStandardLevel(ZuluAssault.nextLevelName);
-        if (isStandardLevel) {
+        boolean isOfficialLevel = isOfficialLevel(ZuluAssault.nextLevelName);
+        if (isOfficialLevel) {
             mapLocation = DEFAULT_MAP_FOLDER;
         } else {
             // custom map
@@ -123,7 +123,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
             // set the current tilemap based on the level
             TileMapData.setMap(map);
             // read level data from xml file and create the game objects
-            LevelData levelData = SaveUtil.loadLevelDataFromXML(ZuluAssault.nextLevelName, isStandardLevel);
+            LevelData levelData = SaveUtil.loadLevelDataFromXML(ZuluAssault.nextLevelName, isOfficialLevel);
             if (levelData != null) {
                 reset();
 
@@ -332,7 +332,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
         doCollateralTileDamage(mapX, mapY);
     }
 
-    public static boolean isStandardLevel(String s_name) {
+    public static boolean isOfficialLevel(String s_name) {
         if (s_name.length() > 4) {
             if (s_name.substring(0, 4).equals("map_")) {
                 // official map

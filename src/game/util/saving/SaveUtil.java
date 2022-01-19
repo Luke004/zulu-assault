@@ -33,8 +33,8 @@ public class SaveUtil {
         }
     }
 
-    public static LevelData loadLevelDataFromXML(String name, boolean isStandardLevel) {
-        Path fileName = Path.of((isStandardLevel ? STANDARD_MAPS_DATA_SAVE_FOLDER : CUSTOM_MAPS_DATA_SAVE_FOLDER)
+    public static LevelData loadLevelDataFromXML(String name, boolean isOfficialLevel) {
+        Path fileName = Path.of((isOfficialLevel ? STANDARD_MAPS_DATA_SAVE_FOLDER : CUSTOM_MAPS_DATA_SAVE_FOLDER)
                 + name + ".xml");
         try {
             String xml = Files.readString(fileName);
