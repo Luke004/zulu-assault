@@ -1,23 +1,32 @@
-package game.util.saving.data;
-
+package game.util;
 
 import game.models.Element;
 import game.models.entities.Entity;
 import game.models.entities.MovableEntity;
 import game.models.interaction_circles.InteractionCircle;
 import game.models.items.Item;
-import game.util.WayPointManager;
 import level_editor.LevelEditor;
 import level_editor.util.EditorWaypointList;
 import level_editor.util.MapElements;
 import org.newdawn.slick.geom.Vector2f;
 
+import java.io.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class LevelData {
+/* This class stores all relevant data for loading and saving a level */
+public class LevelDataStorage implements Serializable {
+
+    private static final long serialVersionUID = 6031109911093553022L;
+
+    private static final String CUSTOM_MAPS_DATA_SAVE_FOLDER = "assets/maps_custom/";
+    private static final String STANDARD_MAPS_DATA_SAVE_FOLDER = "assets/maps/";
+
+    public String levelName;
+    public String mission_title, briefing_message, debriefing_message;
+    public int musicIdx;
 
     public List<ItemData> allItems;
     public List<CircleData> allCircles;
@@ -26,29 +35,56 @@ public class LevelData {
     public WaypointData waypointData;
     public EntityData player;
 
-    public String levelName;
-    public String mission_title, briefing_message, debriefing_message;
-    public int musicIdx;
-
-    public LevelData(String name,
-                     List<Element> elements,
-                     Entity player,
-                     List<EditorWaypointList> allWayPointLists,
-                     Map<MovableEntity, Vector2f> entityConnections,
-                     String mission_title,
-                     String briefing_message,
-                     String debriefing_message,
-                     int musicIdx) {
-        // init all objects
+    public LevelDataStorage() {
         allItems = new LinkedList<>();
         allCircles = new LinkedList<>();
         allEntities = new LinkedList<>();
         allWaypointEntities = new LinkedList<>();
         waypointData = new WaypointData();
+    }
 
-        // save level name
+    static class ItemData implements Serializable {
+        private static final long serialVersionUID = 8806833061094569719L;
+        private String name;
+        float xPos, yPos;
+        boolean isMandatory;
+    }
+
+    static class CircleData implements Serializable {
+        private static final long serialVersionUID = -7967088267689042439L;
+        private String name;
+        float xPos, yPos;
+    }
+
+    static class EntityData implements Serializable {
+        String name;
+        float xPos, yPos;
+        float rotation;
+        boolean isHostile, isDrivable, isMandatory;
+    }
+
+    static class WaypointEntityData implements Serializable {
+        EntityData entityData;
+        List<Vector2f> waypoints;
+        int waypointListIdx;
+        int waypointListStartIdx;
+    }
+
+    static class WaypointData implements Serializable {
+        List<List<Vector2f>> waypoints;
+        List<WaypointEntityData> entities;
+    }
+
+    public void saveLevel(String name,
+                          List<Element> elements,
+                          Entity player,
+                          List<EditorWaypointList> allWayPointLists,
+                          Map<MovableEntity, Vector2f> entityConnections,
+                          String mission_title,
+                          String briefing_message,
+                          String debriefing_message,
+                          int musicIdx) {
         this.levelName = name;
-
         // save all elements
         for (Element element : elements) {
             if (element instanceof Entity) {
@@ -107,7 +143,6 @@ public class LevelData {
                 allItems.add(itemData);
             }
         }
-
         // save waypoint data
         List<List<Vector2f>> allWaypointLists_data = new LinkedList<>();
         for (EditorWaypointList editorWaypointList : allWayPointLists) {
@@ -132,6 +167,34 @@ public class LevelData {
         playerData.isMandatory = false;
         playerData.rotation = player.getRotation();
         this.player = playerData;
+
+        try {
+            FileOutputStream fileOutputStream
+                    = new FileOutputStream(CUSTOM_MAPS_DATA_SAVE_FOLDER + name + ".data");
+            ObjectOutputStream objectOutputStream
+                    = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(this);
+            objectOutputStream.flush();
+            objectOutputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static LevelDataStorage loadLevel(String name, boolean isStandardLevel) {
+        try {
+            FileInputStream fileInputStream
+                    = new FileInputStream((isStandardLevel ? STANDARD_MAPS_DATA_SAVE_FOLDER : CUSTOM_MAPS_DATA_SAVE_FOLDER) + name + ".data");
+            ObjectInputStream objectInputStream
+                    = new ObjectInputStream(fileInputStream);
+            LevelDataStorage lds = (LevelDataStorage) objectInputStream.readObject();
+            objectInputStream.close();
+            return lds;
+        } catch (IOException | ClassNotFoundException i) {
+            i.printStackTrace();
+            return null;
+        }
     }
 
     public List<Item> getAllItems() {
@@ -210,7 +273,6 @@ public class LevelData {
 
     public Map<MovableEntity, Vector2f> getEntityConnections(List<MovableEntity> movableEntities) {
         Map<MovableEntity, Vector2f> entityConnections = new HashMap<>();
-
         for (WaypointEntityData waypointEntity : waypointData.entities) {
             for (MovableEntity movableEntity : movableEntities) {
                 if (waypointEntity.entityData.xPos == movableEntity.getPosition().x

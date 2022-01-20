@@ -5,7 +5,7 @@ import game.levels.LevelManager;
 public class TimeManager {
 
     public static final String TEXT_TOTAL_TIME = "TOTAL", TEXT_LEVEL_TIME = "LEVEL";
-    private static long timeInLevelMillis, timeTotalMillis;
+    public static long timeInLevelMillis, timeTotalMillis;
 
     public static void init() {
         timeInLevelMillis = 0;
@@ -16,8 +16,9 @@ public class TimeManager {
     }
 
     public static void finishLevel() {
-        if (LevelManager.playerIsInPlayThrough())
+        if (LevelManager.playerIsInPlayThrough()) {
             timeTotalMillis += timeInLevelMillis;
+        }
     }
 
     public static long getTimeInLevel() {

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="40" tileheight="40" infinite="0" nextobjectid="32">
+ <tileset firstgid="1" name="landscape_tiles" tilewidth="40" tileheight="40" tilecount="156" columns="12">
+  <image source="../tilesets/landscape_tiles.png" width="480" height="520"/>
+ </tileset>
+ <layer name="landscape_tiles" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu2dS27cMBBEbe8S5wI+TFY5RtY5xADexudOgmSACSFS3c3qD6laFAxYw1azHr8ajfT89PT07KgbSD8beea8s858fm9EHn/18k/aMrM82D/0Xms5Per7hjxG3sx4JT3njHbhYfFjxsNe2RF/yRi3A4/ZtunVZyzxPxpdhcdZGSSjq/Ho1R81x0rP2RuPrsbD22vrOSxlWh5WPkgeEf5WbQcVeVTxJkO78MjkgjxnJR69+Ter7c/uTyzXVCrUcYW8M5hSeq89/SZLm18j3yp5utM4FOH5KnMO60pR1FX1+ltvjb4Iy2XnvqNaFndJGLb/53yE43G/BnHG41XwGSqGRzu2tcfZP3A8zuaQo3kmO/cd9UnA5IgFeeSy0fCQlpes42bj9NqSdU2JiuXBZJbHWR+LbBuS/j4by7q3kDKR5n2/t/Z9koclDioXRCxrf5L2S2netwfN8PhT/psyDioXRD73Y+1adsREyoL9w94/jngcMdGw0HhgiYGKg8oFEUtS7mxN6+nB55P6S+exURxEDFQs7fp1hkdvb26tu6QemjiIGJGxInloc0bFQeWCjoViQh6YWL14MzyO1JuTtPtXRBxULuhYo3gURVG76kaV0leKoiiKoiiKoiiKoijqP0Vcf8m+JrSS3oAa8UCehyKPFUUetRTBw3I/jrfaHLPviYjkke09eVyLxw0sj/XulXhk738k+yPyqKMMHtrfGJOHzVvJ86Qkxz3nvGy/I3lIj5FHznhlffbBPZcfJ7LkjF5feazNIucPCSNPHtq+5yUvHtI+oOkrSB7tM+WyOSB5RD17RVu3q/I4qp+E0+z6doZHFbW/7/IYryTPoM5+nlGlZ2BGzB/V6lytPWTw6PGRvtsE7VklBhV4RPuJerfNlXis+I4DpNrfo2bzQPj62AeO3kOn2WtmazUeXuu1bA6r8phhNWKWzSGbh6Q9W/pCb+w6K3crpEgeo7aqfQcpUtnX07Out2s8jmSS7XcWDy0XLx5t3Gy/s3mMPOqNW559JdvvCjxan3t/vfmTRz1lr6kkkvJAf8+RIfQ+wlutv1HvRZ5Vb07ahccKbX33/oH+rcGuTDOE8JI86jGxnC/63dCrtJvRvbkz1wlX9eMx3+w91ZF/Ve8pQdZxtn6eXoy+k7Oed5X1dC+P0Z4gisUKcVFeS3N+EZTbVaj6WufAbL9nz380tmXOf5HMUb71/GtzPfq8pd6a8pnXY6qwyqp7NVXtzxH19tgf/gJ65JwkQJwAAA==
+  </data>
+ </layer>
+ <layer name="destruction_tiles" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3BMQEAAADCoPVP7WULoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgBt5RKnmQJwAAA==
+  </data>
+ </layer>
+</map>

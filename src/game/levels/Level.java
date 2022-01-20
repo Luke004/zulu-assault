@@ -12,6 +12,7 @@ import game.logic.RandomItemDropper;
 import game.logic.level_listeners.EntityDeleteListener;
 import game.logic.level_listeners.GroundTileDamager;
 import game.menu.Menu;
+import game.models.Element;
 import game.models.entities.Entity;
 import game.models.entities.MovableEntity;
 import game.models.entities.aircraft.Aircraft;
@@ -22,9 +23,12 @@ import game.models.interaction_circles.InteractionCircle;
 import game.models.interaction_circles.TeleportCircle;
 import game.models.items.Item;
 import game.player.Player;
+import game.util.LevelDataStorage;
 import game.util.TimeManager;
 import game.util.saving.SaveUtil;
-import game.util.saving.data.LevelData;
+import game.util.saving.data.ASaveDataWrapper;
+import game.util.saving.init.InitGameDataWrapper;
+import game.util.saving.running.RunningGameDataWrapper;
 import level_editor.LevelEditor;
 import main.ZuluAssault;
 import org.newdawn.slick.*;
@@ -36,7 +40,9 @@ import org.newdawn.slick.tiled.TiledMap;
 import game.logic.TileMapData;
 import settings.UserSettings;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static game.util.TileMapUtil.doCollateralTileDamage;
@@ -122,8 +128,19 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
 
             // set the current tilemap based on the level
             TileMapData.setMap(map);
-            // read level data from xml file and create the game objects
-            LevelData levelData = SaveUtil.loadLevelDataFromXML(ZuluAssault.nextLevelName, isOfficialLevel);
+            //LevelDataStorage levelData = LevelDataStorage.loadLevel(ZuluAssault.nextLevelName, isOfficialLevel);
+
+            ASaveDataWrapper levelData;
+            // check whether a game is loaded or a new one is started
+            if (GameDataStorage.runningGameData != null) {
+                // runningGameData exists -> LOAD EXISTING GAME
+                levelData = GameDataStorage.runningGameData;
+                // also setup the initGameData in case the user wants to save
+                GameDataStorage.initGameData = SaveUtil.loadInitGameDataFromXML(ZuluAssault.nextLevelName, isOfficialLevel);
+            } else {
+                // NO runningGameData exists ->  INIT NEW LEVEL
+                levelData = GameDataStorage.initGameData;
+            }
             if (levelData != null) {
                 reset();
 
@@ -184,9 +201,9 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
                     screenDrawer = new ScreenDrawer();
                     TileMapData.init();
                     hud = new HUD(player, gameContainer);
-                    player.addListener(hud);
                     radar = new Radar(gameContainer, player);
                 }
+                Player.setupItems();
 
                 // set the combat music based on the level
                 combatBackgroundMusic.setIdx(levelData.musicIdx);
@@ -348,6 +365,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
         TileMapData.reset();
         combatBackgroundMusic.stop();
         ZuluAssault.prevState = this;
+        GameDataStorage.runningGameData = null; // delete loaded game storage
     }
 
     @Override
@@ -466,6 +484,23 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
     public static void prepareNewPlayThrough() {
         player.reset();
         hud.reset();
+    }
+
+    /**
+     * Get all elements that currently exist in the level, this includes:
+     * - List<Entity> all_entities
+     * - List<TeleportCircle> teleport_circles
+     * - List<HealthCircle> health_circles
+     * - List<Item> items
+     * @return the level data
+     */
+    public static List<Element> getAllElements() {
+        List<Element> all_elements = new LinkedList<>();
+        all_elements.addAll(Level.teleport_circles);
+        all_elements.addAll(Level.health_circles);
+        all_elements.addAll(Level.items);
+        all_elements.addAll(Level.all_entities);
+        return all_elements;
     }
 
     @Override

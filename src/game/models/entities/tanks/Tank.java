@@ -90,7 +90,6 @@ public abstract class Tank extends MovableEntity {
                 tankEngineSound.play(isMoving ? 1.5f : 1.f, UserSettings.soundVolume);
             }
         }
-
         // WAY POINTS
         if (waypointManager != null) {
             // move to next vector

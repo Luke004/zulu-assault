@@ -57,6 +57,14 @@ public class WayPointManager {
         adjustAfterRotation(pos, angle);
     }
 
+    /**
+     * Returns the idx of the way point that the associated entity is heading towards.
+     * @return the way point idx
+     */
+    public int getNextWayPointIdx(){
+        return current_point_idx;
+    }
+
     public void adjustAfterRotation(Vector2f pos, float angle) {
         if (angle < 0) angle += 360; // only use the positive angles from 'getRotation()'
         float angle2 = calculateAngleToRotateTo(pos, wayPointLists.get(current_way_point_list_idx).get(current_point_idx));

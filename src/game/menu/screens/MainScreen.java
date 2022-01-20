@@ -1,8 +1,12 @@
 package game.menu.screens;
 
+import game.audio.CombatBackgroundMusic;
 import game.audio.MenuSounds;
 import game.graphics.fonts.FontManager;
+import game.levels.GameDataStorage;
 import game.levels.LevelManager;
+import game.util.saving.SaveUtil;
+import game.util.saving.running.RunningGameDataWrapper;
 import main.ZuluAssault;
 import game.menu.Menu;
 import game.menu.elements.Arrow;
@@ -10,6 +14,8 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 import settings.UserSettings;
 
 import static game.menu.Menu.*;
@@ -106,9 +112,15 @@ public class MainScreen extends AbstractMenuScreen {
                 // START NEW GAME
                 // init a new game starting with level 1
                 LevelManager.startNewGame("map_1", basicGameState);
-                break;  // TODO: LOAD AND SAVE
+                break;
             case 1: // LOAD
-                MenuSounds.ERROR_SOUND.play(1.f, UserSettings.soundVolume);
+                RunningGameDataWrapper gameData = SaveUtil.loadRunningGameDataFromXML("map_1");
+                GameDataStorage.runningGameData = gameData; // save game data in storage
+                if (gameData == null) {
+                    MenuSounds.ERROR_SOUND.play(1.f, UserSettings.soundVolume);
+                    break;
+                }
+                LevelManager.loadExistingGame("map_1", basicGameState, gameData);
                 break;
             case 2: // EDITOR
                 sbg.enterState(ZuluAssault.LEVEL_EDITOR);

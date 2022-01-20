@@ -16,6 +16,7 @@ import java.util.List;
 
 public abstract class Entity extends Element {
 
+    public double ID;
     protected List<Weapon> weapons;
     protected Image health_bar_image;
     protected Vector2f health_bar_position;
@@ -36,6 +37,7 @@ public abstract class Entity extends Element {
     protected EntityDeleteListener level_delete_listener;
 
     public Entity(Vector2f startPos, boolean isHostile) {
+        this.ID = Math.random();
         this.isHostile = isHostile;
         this.position = startPos;
         health_bar_position = new Vector2f(startPos);
@@ -231,6 +233,10 @@ public abstract class Entity extends Element {
 
     public boolean isMaxHealth() {
         return current_health == MAX_HEALTH;
+    }
+
+    public void setHealth(float health) {
+        current_health = health;
     }
 
     public int getHealth() {

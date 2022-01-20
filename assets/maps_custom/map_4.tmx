@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="40" tileheight="40" infinite="0" nextobjectid="32">
+ <tileset firstgid="1" name="landscape_tiles" tilewidth="40" tileheight="40" tilecount="156" columns="12">
+  <image source="../tilesets/landscape_tiles.png" width="480" height="520"/>
+ </tileset>
+ <layer name="landscape_tiles" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3cyW7UQBAG4CETwhk4IQTkFLE8Qx4gYn8cDuTKazMWY6nVdFXX3m1PHX6xzWLX19Xt2MZ3h8PhrpPXRV4heXnKE0E+EF93rHJFjGSbOHk8f8/j+c+fT7kXpmfB8aBuf10jqQfVJdpjydcAD4/e4HhwbbwdMA9pj0T3BuQhrV/tEWXQ85CaWPTGkveKfFS+f3QgD8m8hfWD9zquma9mymwe2v3Zs8cyZ/0I9ND2BuaBHSd5HutyPxPzKF24HpAF5mExvqgeV8jfc21afy81pnhQTSgWkAe3N6DxunrUx0fSuntH6lHOX9AcJl0zbpgWZeq6Y+vH6NpT5j+OB2SzRuKhseDMVzOaWHq0MtqC4mFhY2ELbZOXB1T/NdYOEg/MBqu31hh7v4dHtIG1h+b7Z/IoDTTz0Sfm68s1vfR4OOU7kJ9OHhSTKI+yD0b9nFx+b+/8Qm3SCmYK2fZcojyguqzjFxv3VudT1+996FisadWzNKB8xjdke2b0iAq3jrWL9L1Yr430GH3eW3odzSJQj4zuj2VOWuaeEf2RHnBqj4jrbTN61Ca9fdjT+pEeNh5WvTObB3eumsVjr/2xJw9uz1B/3vDKF4IHZT9m9VjCOW+i6Q3ONWmKw6wekfcwST3WenLvFYDmKMyDer796OTBeT20vdT70yQerXpy7jvTeEAms8xX0DZHe3A+q+ch6ZFR/UG5TlB7YCaUGtbXl6G5v3UtuhVs7eCMs3K/RvQH1aK13ZBJr4aU2llHMs48PHrnr6QOo+91trLAxtms/bFlD81cPMN6LvGgHs9zonHnzME9jxmPd3sulGN5rUXPhFtvaX/0xiZl3Eh/HpTuW+nS86P2YG9/JXPuSA/pWJX0fq++Fh61vXYNbNWzNV9xPgey0Z6/srTgeHD+3cuj7g8LE4vziRb7K+01zjyp9Sj3GTu+Gu3RM/F0kPaddhz3jq+26AG93rMPJWlty+wevZr1LEbMkdAYsfbAfLw9ODXTeFC/lzI+e7WXeEhyPMRfj9pLZjhfkkmPWWPp8Tujzp/qV03Kta537HOsfq3XSelxTf1a7HNa29PahtZ7uMdS1Kx98Xig1aW17evvR4+tPcSyP0bPvXuI13qeSY/RuT3luvjz9Tnv0mOIxfPDv/9XfF38fskLhkl62OTZAX4OBcckPWI8ljxND9fcHv6fm7Q9kh682pehOnBM0oNmIam9xCQ9Yi16a0l64KGs0+mRHpcaD4/l2Z1v0kOct8Ye2M8hXvdT7y2WvYF9T/YHLZweWWp+AwSap9LDz4RyXgTz2NJ8RXl+Hve5epYm2FpN9dhCf6wO98pY2NQm5fyksbDy4N6DJ4nHs2IsTLT9YOEB3RsBzSUW84TXs3ssts0yXA/sXhVonynPMcDi/eyemUwiPDT7HPUcJet+jvDo3ctlvZaOeqaVtp8jPCj31lnsr+YZuukh8yjnr/oYYJTBpXus89fo2vfGyyV5zJ4R63t6zNUv1PNXl+4RtaZkf2zTg2IyumbpkR7pkR7pEevBuT54qR5LIo55JddrL9Ujokek18/TYy6PlsvoeqVHeqRHelBNRtfLOxHPgJ/F49c5Ue/lvifqefyW9yfu2WO28+3eHluJt0t68OK9pqfHXD1ieT/16DrtoUfSIz22nq14/AURkKsUQJwAAA==
+  </data>
+ </layer>
+ <layer name="destruction_tiles" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3BMQEAAADCoPVP7WULoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgBt5RKnmQJwAAA==
+  </data>
+ </layer>
+</map>

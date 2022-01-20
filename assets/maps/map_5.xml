@@ -92,7 +92,7 @@
     </circle>
   </allCircles>
   <allEntities class="linked-list">
-    <entity>
+    <game.util.saving.init.data.IEntityData>
       <name>NapalmTank</name>
       <xPos>1286.0</xPos>
       <yPos>1090.0</yPos>
@@ -100,8 +100,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>RocketTank</name>
       <xPos>402.0</xPos>
       <yPos>1389.0</yPos>
@@ -109,8 +109,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>RocketTank</name>
       <xPos>1375.0</xPos>
       <yPos>410.0</yPos>
@@ -118,8 +118,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>RocketTank</name>
       <xPos>1390.0</xPos>
       <yPos>665.0</yPos>
@@ -127,8 +127,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>CannonTank</name>
       <xPos>565.0</xPos>
       <yPos>330.0</yPos>
@@ -136,8 +136,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>RocketTank</name>
       <xPos>315.0</xPos>
       <yPos>342.0</yPos>
@@ -145,8 +145,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>RocketTank</name>
       <xPos>1405.0</xPos>
       <yPos>2339.0</yPos>
@@ -154,8 +154,8 @@
       <isHostile>false</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillGrey</name>
       <xPos>460.0</xPos>
       <yPos>499.0</yPos>
@@ -163,8 +163,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillGrey</name>
       <xPos>460.0</xPos>
       <yPos>219.0</yPos>
@@ -172,8 +172,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillGrey</name>
       <xPos>180.0</xPos>
       <yPos>219.0</yPos>
@@ -181,8 +181,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillGrey</name>
       <xPos>180.0</xPos>
       <yPos>499.0</yPos>
@@ -190,8 +190,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillYellow</name>
       <xPos>1893.0</xPos>
       <yPos>1137.0</yPos>
@@ -199,8 +199,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillYellow</name>
       <xPos>1652.0</xPos>
       <yPos>1166.0</yPos>
@@ -208,8 +208,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillYellow</name>
       <xPos>1412.0</xPos>
       <yPos>1196.0</yPos>
@@ -217,8 +217,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillYellow</name>
       <xPos>1064.0</xPos>
       <yPos>1156.0</yPos>
@@ -226,8 +226,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillYellow</name>
       <xPos>659.0</xPos>
       <yPos>1320.0</yPos>
@@ -235,8 +235,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillYellow</name>
       <xPos>61.0</xPos>
       <yPos>1161.0</yPos>
@@ -244,11 +244,11 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
+    </game.util.saving.init.data.IEntityData>
   </allEntities>
   <allWaypointEntities class="linked-list">
     <waypointEntity>
-      <entityData>
+      <entityData class="game.util.saving.init.data.IEntityData">
         <name>RocketTank</name>
         <xPos>1744.0</xPos>
         <yPos>2250.0</yPos>
@@ -307,11 +307,11 @@
           <y>2571.0</y>
         </org.newdawn.slick.geom.Vector2f>
       </waypoints>
-      <waypointListIdx>0</waypointListIdx>
+      <waypointListIdx>6</waypointListIdx>
       <waypointListStartIdx>10</waypointListStartIdx>
     </waypointEntity>
     <waypointEntity>
-      <entityData>
+      <entityData class="game.util.saving.init.data.IEntityData">
         <name>RocketTank</name>
         <xPos>315.0</xPos>
         <yPos>2255.0</yPos>
@@ -321,11 +321,11 @@
         <isMandatory>false</isMandatory>
       </entityData>
       <waypoints reference="../../waypointEntity/waypoints"/>
-      <waypointListIdx>0</waypointListIdx>
+      <waypointListIdx>6</waypointListIdx>
       <waypointListStartIdx>4</waypointListStartIdx>
     </waypointEntity>
     <waypointEntity>
-      <entityData>
+      <entityData class="game.util.saving.init.data.IEntityData">
         <name>RocketTank</name>
         <xPos>830.0</xPos>
         <yPos>2270.0</yPos>
@@ -335,11 +335,11 @@
         <isMandatory>false</isMandatory>
       </entityData>
       <waypoints reference="../../waypointEntity/waypoints"/>
-      <waypointListIdx>0</waypointListIdx>
+      <waypointListIdx>6</waypointListIdx>
       <waypointListStartIdx>5</waypointListStartIdx>
     </waypointEntity>
     <waypointEntity>
-      <entityData>
+      <entityData class="game.util.saving.init.data.IEntityData">
         <name>WarPlane</name>
         <xPos>90.0</xPos>
         <yPos>2000.0</yPos>
@@ -382,11 +382,11 @@
           <y>2100.0</y>
         </org.newdawn.slick.geom.Vector2f>
       </waypoints>
-      <waypointListIdx>1</waypointListIdx>
+      <waypointListIdx>7</waypointListIdx>
       <waypointListStartIdx>1</waypointListStartIdx>
     </waypointEntity>
     <waypointEntity>
-      <entityData>
+      <entityData class="game.util.saving.init.data.IEntityData">
         <name>WarPlane</name>
         <xPos>950.0</xPos>
         <yPos>10.0</yPos>
@@ -429,11 +429,11 @@
           <y>10.0</y>
         </org.newdawn.slick.geom.Vector2f>
       </waypoints>
-      <waypointListIdx>2</waypointListIdx>
+      <waypointListIdx>8</waypointListIdx>
       <waypointListStartIdx>0</waypointListStartIdx>
     </waypointEntity>
     <waypointEntity>
-      <entityData>
+      <entityData class="game.util.saving.init.data.IEntityData">
         <name>WarPlane</name>
         <xPos>1400.0</xPos>
         <yPos>1170.0</yPos>
@@ -476,11 +476,11 @@
           <y>1170.0</y>
         </org.newdawn.slick.geom.Vector2f>
       </waypoints>
-      <waypointListIdx>3</waypointListIdx>
+      <waypointListIdx>9</waypointListIdx>
       <waypointListStartIdx>0</waypointListStartIdx>
     </waypointEntity>
     <waypointEntity>
-      <entityData>
+      <entityData class="game.util.saving.init.data.IEntityData">
         <name>WarPlane</name>
         <xPos>530.0</xPos>
         <yPos>1260.0</yPos>
@@ -523,11 +523,11 @@
           <y>1260.0</y>
         </org.newdawn.slick.geom.Vector2f>
       </waypoints>
-      <waypointListIdx>4</waypointListIdx>
+      <waypointListIdx>10</waypointListIdx>
       <waypointListStartIdx>0</waypointListStartIdx>
     </waypointEntity>
     <waypointEntity>
-      <entityData>
+      <entityData class="game.util.saving.init.data.IEntityData">
         <name>WarPlane</name>
         <xPos>1376.0</xPos>
         <yPos>2590.0</yPos>
@@ -570,12 +570,280 @@
           <y>2590.0</y>
         </org.newdawn.slick.geom.Vector2f>
       </waypoints>
-      <waypointListIdx>5</waypointListIdx>
+      <waypointListIdx>11</waypointListIdx>
       <waypointListStartIdx>0</waypointListStartIdx>
     </waypointEntity>
   </allWaypointEntities>
   <waypointData>
     <waypoints class="linked-list">
+      <list>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>2976.0</x>
+          <y>157.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>3150.0</x>
+          <y>237.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>3243.0</x>
+          <y>1300.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>3233.0</x>
+          <y>1589.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>2976.0</x>
+          <y>1817.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>957.0</x>
+          <y>1850.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>525.0</x>
+          <y>1710.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>344.0</x>
+          <y>1520.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>262.0</x>
+          <y>1302.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>334.0</x>
+          <y>1085.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>496.0</x>
+          <y>884.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>945.0</x>
+          <y>598.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>1193.0</x>
+          <y>523.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>1322.0</x>
+          <y>357.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>1634.0</x>
+          <y>211.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+      </list>
+      <list>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>2454.0</x>
+          <y>160.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>1868.0</x>
+          <y>543.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>1735.0</x>
+          <y>904.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>1821.0</x>
+          <y>1279.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>2103.0</x>
+          <y>1658.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>2467.0</x>
+          <y>1692.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>2962.0</x>
+          <y>1515.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>3148.0</x>
+          <y>1118.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>3196.0</x>
+          <y>645.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>3000.0</x>
+          <y>400.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+      </list>
+      <list>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>2060.0</x>
+          <y>960.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>2860.0</x>
+          <y>960.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>2960.0</x>
+          <y>1060.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>2960.0</x>
+          <y>1860.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>2860.0</x>
+          <y>1960.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>2060.0</x>
+          <y>1960.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>1960.0</x>
+          <y>1860.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>1960.0</x>
+          <y>1060.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+      </list>
+      <list>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>3820.0</x>
+          <y>680.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>3920.0</x>
+          <y>780.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>3920.0</x>
+          <y>1580.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>3820.0</x>
+          <y>1680.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>3020.0</x>
+          <y>1680.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>2920.0</x>
+          <y>1580.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>2920.0</x>
+          <y>780.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>3020.0</x>
+          <y>680.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+      </list>
+      <list>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>1510.0</x>
+          <y>1250.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>1410.0</x>
+          <y>1150.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>1410.0</x>
+          <y>350.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>1510.0</x>
+          <y>250.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>2310.0</x>
+          <y>250.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>2410.0</x>
+          <y>350.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>2410.0</x>
+          <y>1150.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>2310.0</x>
+          <y>1250.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+      </list>
+      <list>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>2976.0</x>
+          <y>157.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>3150.0</x>
+          <y>237.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>3243.0</x>
+          <y>1300.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>3233.0</x>
+          <y>1589.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>2976.0</x>
+          <y>1817.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>957.0</x>
+          <y>1850.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>525.0</x>
+          <y>1710.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>344.0</x>
+          <y>1520.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>262.0</x>
+          <y>1302.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>334.0</x>
+          <y>1085.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>496.0</x>
+          <y>884.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>945.0</x>
+          <y>598.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>1193.0</x>
+          <y>523.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>1322.0</x>
+          <y>357.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>1634.0</x>
+          <y>211.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+      </list>
       <list reference="../../../allWaypointEntities/waypointEntity/waypoints"/>
       <list reference="../../../allWaypointEntities/waypointEntity[4]/waypoints"/>
       <list reference="../../../allWaypointEntities/waypointEntity[5]/waypoints"/>
@@ -585,7 +853,7 @@
     </waypoints>
     <entities class="linked-list" reference="../../allWaypointEntities"/>
   </waypointData>
-  <player>
+  <player class="game.util.saving.init.data.IEntityData">
     <name>WarRobot</name>
     <xPos>778.0</xPos>
     <yPos>3838.0</yPos>

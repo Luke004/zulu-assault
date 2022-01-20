@@ -211,7 +211,7 @@
     </circle>
   </allCircles>
   <allEntities class="linked-list">
-    <entity>
+    <game.util.saving.init.data.IEntityData>
       <name>NapalmTank</name>
       <xPos>2360.0</xPos>
       <yPos>2430.0</yPos>
@@ -219,8 +219,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>NapalmTank</name>
       <xPos>2525.0</xPos>
       <yPos>2265.0</yPos>
@@ -228,8 +228,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>RocketTank</name>
       <xPos>2520.0</xPos>
       <yPos>2394.0</yPos>
@@ -237,8 +237,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>ShellTank</name>
       <xPos>3550.0</xPos>
       <yPos>481.0</yPos>
@@ -246,8 +246,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>ShellTank</name>
       <xPos>3640.0</xPos>
       <yPos>600.0</yPos>
@@ -255,8 +255,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>ShellTank</name>
       <xPos>3776.0</xPos>
       <yPos>536.0</yPos>
@@ -264,8 +264,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>ShellTank</name>
       <xPos>3822.0</xPos>
       <yPos>770.0</yPos>
@@ -273,8 +273,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>NapalmTank</name>
       <xPos>400.0</xPos>
       <yPos>689.0</yPos>
@@ -282,8 +282,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>NapalmTank</name>
       <xPos>712.0</xPos>
       <yPos>535.0</yPos>
@@ -291,8 +291,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>MegaPulseTank</name>
       <xPos>928.0</xPos>
       <yPos>216.0</yPos>
@@ -300,8 +300,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>ShellTank</name>
       <xPos>908.0</xPos>
       <yPos>300.0</yPos>
@@ -309,8 +309,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>RocketSoldier</name>
       <xPos>304.0</xPos>
       <yPos>484.0</yPos>
@@ -318,8 +318,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>UziSoldier</name>
       <xPos>488.0</xPos>
       <yPos>342.0</yPos>
@@ -327,8 +327,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>UziSoldier</name>
       <xPos>477.0</xPos>
       <yPos>373.0</yPos>
@@ -336,8 +336,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>UziSoldier</name>
       <xPos>482.0</xPos>
       <yPos>404.0</yPos>
@@ -345,8 +345,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>RocketSoldier</name>
       <xPos>548.0</xPos>
       <yPos>220.0</yPos>
@@ -354,8 +354,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>RocketSoldier</name>
       <xPos>468.0</xPos>
       <yPos>164.0</yPos>
@@ -363,8 +363,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>RocketSoldier</name>
       <xPos>558.0</xPos>
       <yPos>115.0</yPos>
@@ -372,8 +372,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>RocketSoldier</name>
       <xPos>495.0</xPos>
       <yPos>77.0</yPos>
@@ -381,8 +381,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>NapalmTank</name>
       <xPos>2730.0</xPos>
       <yPos>2218.0</yPos>
@@ -390,11 +390,11 @@
       <isHostile>false</isHostile>
       <isDrivable>true</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
+    </game.util.saving.init.data.IEntityData>
   </allEntities>
   <allWaypointEntities class="linked-list">
     <waypointEntity>
-      <entityData>
+      <entityData class="game.util.saving.init.data.IEntityData">
         <name>CannonTank</name>
         <xPos>1607.0</xPos>
         <yPos>209.0</yPos>
@@ -469,7 +469,7 @@
       <waypointListStartIdx>14</waypointListStartIdx>
     </waypointEntity>
     <waypointEntity>
-      <entityData>
+      <entityData class="game.util.saving.init.data.IEntityData">
         <name>CannonTank</name>
         <xPos>314.0</xPos>
         <yPos>1152.0</yPos>
@@ -489,7 +489,7 @@
     </waypoints>
     <entities class="linked-list" reference="../../allWaypointEntities"/>
   </waypointData>
-  <player>
+  <player class="game.util.saving.init.data.IEntityData">
     <name>AttackHelicopter</name>
     <xPos>3830.0</xPos>
     <yPos>3850.0</yPos>

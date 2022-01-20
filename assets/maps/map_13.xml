@@ -2,7 +2,7 @@
   <allItems class="linked-list"/>
   <allCircles class="linked-list"/>
   <allEntities class="linked-list">
-    <entity>
+    <game.util.saving.init.data.IEntityData>
       <name>AttackHelicopter</name>
       <xPos>1859.0</xPos>
       <yPos>342.0</yPos>
@@ -10,8 +10,8 @@
       <isHostile>false</isHostile>
       <isDrivable>true</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>RocketRobot</name>
       <xPos>186.0</xPos>
       <yPos>142.0</yPos>
@@ -19,8 +19,8 @@
       <isHostile>false</isHostile>
       <isDrivable>true</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>RocketTank</name>
       <xPos>3552.0</xPos>
       <yPos>3793.0</yPos>
@@ -28,8 +28,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>NapalmTank</name>
       <xPos>3809.0</xPos>
       <yPos>3674.0</yPos>
@@ -37,8 +37,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillGreen</name>
       <xPos>3376.0</xPos>
       <yPos>3773.0</yPos>
@@ -46,8 +46,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillGreen</name>
       <xPos>3407.0</xPos>
       <yPos>3592.0</yPos>
@@ -55,8 +55,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillGreen</name>
       <xPos>3524.0</xPos>
       <yPos>3516.0</yPos>
@@ -64,8 +64,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillGreen</name>
       <xPos>3735.0</xPos>
       <yPos>3462.0</yPos>
@@ -73,8 +73,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>RocketTank</name>
       <xPos>3831.0</xPos>
       <yPos>3550.0</yPos>
@@ -82,8 +82,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillGreen</name>
       <xPos>3328.0</xPos>
       <yPos>3922.0</yPos>
@@ -91,11 +91,11 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
+    </game.util.saving.init.data.IEntityData>
   </allEntities>
   <allWaypointEntities class="linked-list">
     <waypointEntity>
-      <entityData>
+      <entityData class="game.util.saving.init.data.IEntityData">
         <name>CannonTank</name>
         <xPos>1325.0</xPos>
         <yPos>3587.0</yPos>
@@ -166,7 +166,7 @@
       <waypointListStartIdx>1</waypointListStartIdx>
     </waypointEntity>
     <waypointEntity>
-      <entityData>
+      <entityData class="game.util.saving.init.data.IEntityData">
         <name>CannonTank</name>
         <xPos>1302.0</xPos>
         <yPos>3194.0</yPos>
@@ -180,7 +180,7 @@
       <waypointListStartIdx>3</waypointListStartIdx>
     </waypointEntity>
     <waypointEntity>
-      <entityData>
+      <entityData class="game.util.saving.init.data.IEntityData">
         <name>CannonTank</name>
         <xPos>2503.0</xPos>
         <yPos>2905.0</yPos>
@@ -200,7 +200,7 @@
     </waypoints>
     <entities class="linked-list" reference="../../allWaypointEntities"/>
   </waypointData>
-  <player>
+  <player class="game.util.saving.init.data.IEntityData">
     <name>MemeCar</name>
     <xPos>3902.0</xPos>
     <yPos>658.0</yPos>

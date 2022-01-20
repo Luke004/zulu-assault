@@ -1,7 +1,6 @@
 package game.player;
 
 import game.logic.level_listeners.ChangeVehicleListener;
-import game.logic.level_listeners.ItemChangeListener;
 import game.graphics.hud.HUD;
 import game.models.entities.Entity;
 import game.models.entities.MovableEntity;
@@ -21,10 +20,10 @@ import static game.logic.TileMapData.LEVEL_HEIGHT_PIXELS;
 import static game.logic.TileMapData.LEVEL_WIDTH_PIXELS;
 
 public class Player {
+
     private PlayerSoldier base_soldier;
     private MovableEntity current_entity;
-    private ItemChangeListener GUI_listener;
-    private final int[] item_amounts;
+    public static int[] item_amounts;
     private static int points;
 
     private ChangeVehicleListener changeVehicleListener;
@@ -114,11 +113,7 @@ public class Player {
         return base_soldier;
     }
 
-    public void addListener(ItemChangeListener gui) {
-        this.GUI_listener = gui;
-    }
-
-    public void addItem(Item_e item) {
+    public static void addItem(Item_e item) {
         int idx = -1;
         switch (item) {
             case INVINCIBILITY:
@@ -137,7 +132,7 @@ public class Player {
                 throw new IllegalStateException("Illegal item index [" + idx + "]!");
         }
         item_amounts[idx]++;
-        GUI_listener.itemAdded(idx);
+        HUD.notifyItemAdded(idx);
     }
 
     public void activateItem(Item_e item) {
@@ -165,7 +160,33 @@ public class Player {
         if (item_amounts[idx] == 0) return;
         item_amounts[idx]--;
         current_entity.activateItem(item);
-        GUI_listener.itemActivated(idx);
+        HUD.notifyItemActivated(idx);
+    }
+
+    /**
+     * Needed for loading a game: Setup items that the player already had collected.
+     */
+    public static void setupItems() {
+        int [] item_amounts_copy = Arrays.copyOf(item_amounts, item_amounts.length);
+        for (int i = 0; i < item_amounts_copy.length; ++i) {
+            while (item_amounts_copy[i] > 0) {
+                switch (i) {
+                    case 0:
+                        Player.addItem(Player.Item_e.INVINCIBILITY);
+                        break;
+                    case 1:
+                        Player.addItem(Player.Item_e.EMP);
+                        break;
+                    case 2:
+                        Player.addItem(Player.Item_e.MEGA_PULSE);
+                        break;
+                    case 3:
+                        Player.addItem(Player.Item_e.EXPAND);
+                        break;
+                }
+                item_amounts_copy[i]--;
+            }
+        }
     }
 
     public void addChangeVehicleListener(HUD hud) {

@@ -2,7 +2,16 @@ package game.menu.screens;
 
 import game.audio.MenuSounds;
 import game.graphics.fonts.FontManager;
+import game.levels.GameDataStorage;
+import game.levels.Level;
 import game.levels.LevelManager;
+import game.models.Element;
+import game.models.entities.Entity;
+import game.util.saving.SaveUtil;
+import game.util.saving.init.InitGameDataWrapper;
+import game.util.saving.running.RunningGameDataWrapper;
+import level_editor.LevelEditor;
+import level_editor.util.EditorWaypointList;
 import main.ZuluAssault;
 import game.menu.Menu;
 import game.menu.elements.Arrow;
@@ -13,6 +22,9 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 import settings.UserSettings;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import static game.menu.Menu.*;
 import static game.menu.screens.MainScreen.MENU_OPTION_HEIGHT;
@@ -116,8 +128,25 @@ public class InGameScreen extends AbstractMenuScreen {
                 LevelManager.startNewGame("map_1", gameState);
                 break;
             case 2: // LOAD
-            case 3: // SAVE
                 MenuSounds.ERROR_SOUND.play(1.f, UserSettings.soundVolume);
+                break;
+            case 3: // SAVE
+                InitGameDataWrapper levelData = GameDataStorage.initGameData;
+                if (levelData == null) {
+                    MenuSounds.ERROR_SOUND.play(1.f, UserSettings.soundVolume);
+                    break;
+                }
+                SaveUtil.saveRunningGameDataToXML(new RunningGameDataWrapper(
+                        levelData.levelName,
+                        Level.getAllElements(),
+                        Level.player.getEntity(),
+                        levelData.getAllWaypointLists(new LevelEditor()),
+                        levelData.getEntityConnections(levelData.getAllWaypointEntities()),
+                        levelData.mission_title,
+                        levelData.briefing_message,
+                        levelData.debriefing_message,
+                        levelData.musicIdx
+                ));
                 break;
             case 4: // OPTIONS
                 goToMenu(Menu.STATE_OPTIONS_MENU);

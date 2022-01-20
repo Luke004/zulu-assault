@@ -2,8 +2,9 @@ package level_editor.screens.windows.center;
 
 import game.audio.CombatBackgroundMusic;
 import game.models.entities.Entity;
+import game.models.entities.MovableEntity;
 import game.util.saving.SaveUtil;
-import game.util.saving.data.LevelData;
+import game.util.saving.init.InitGameDataWrapper;
 import level_editor.LevelEditor;
 import level_editor.screens.elements.Button;
 import level_editor.screens.elements.TextFieldTitled;
@@ -99,12 +100,12 @@ public class SaveLevelPopupWindow extends CenterPopupWindow {
     @Override
     public void onMouseClick(int button, int mouseX, int mouseY) {
         if (confirmBtn.isMouseOver(mouseX, mouseY)) {
-            SaveUtil.saveLevelDataToXML(new LevelData(
+            SaveUtil.saveInitGameDataToXML(new InitGameDataWrapper(
                     levelEditor.getSimpleMapName(),
                     levelEditor.getElements(),
-                    (Entity) levelEditor.getPlayerEntity(),
+                    (MovableEntity) levelEditor.getPlayerEntity(),
                     levelEditor.getAllWayPointLists(),
-                    EditorWaypointList.getEntityConnections(),
+                    EditorWaypointList.getEntityConnectionIDMap(),
                     textFields[0].getText(),
                     textFields[1].getText(),
                     textFields[2].getText(),

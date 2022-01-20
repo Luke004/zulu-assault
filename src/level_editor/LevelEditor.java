@@ -11,8 +11,9 @@ import game.models.entities.aircraft.*;
 import game.models.interaction_circles.InteractionCircle;
 import game.models.interaction_circles.TeleportCircle;
 import game.models.items.*;
+import game.util.LevelDataStorage;
 import game.util.saving.SaveUtil;
-import game.util.saving.data.LevelData;
+import game.util.saving.init.InitGameDataWrapper;
 import level_editor.screens.windows.CenterPopupWindow;
 import level_editor.screens.windows.Window;
 import level_editor.screens.windows.toolbars.bottom.BottomToolbar;
@@ -138,7 +139,8 @@ public class LevelEditor extends BasicGameState {
             mapY = mapHeight / 2.f;
 
             // attempt to load already created map data
-            LevelData levelData = SaveUtil.loadLevelDataFromXML(getSimpleMapName(), false);
+            //InitGameDataWrapper levelData = SaveUtil.loadInitGameDataFromXML(getSimpleMapName(), false);
+            LevelDataStorage levelData = LevelDataStorage.loadLevel(getSimpleMapName(), false);
 
             if (levelData != null) {
                 setPlayerEntity(levelData.getPlayerEntity(true));

@@ -1,6 +1,7 @@
 package game.models.entities;
 
 import game.models.entities.aircraft.AttackHelicopter;
+import game.models.entities.tanks.ShellTank;
 import game.util.WayPointManager;
 import game.models.entities.soldiers.Soldier;
 import settings.UserSettings;

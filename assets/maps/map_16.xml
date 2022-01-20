@@ -128,7 +128,7 @@
     </circle>
   </allCircles>
   <allEntities class="linked-list">
-    <entity>
+    <game.util.saving.init.data.IEntityData>
       <name>RocketTank</name>
       <xPos>1022.0</xPos>
       <yPos>3338.0</yPos>
@@ -136,8 +136,8 @@
       <isHostile>false</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>RocketRobot</name>
       <xPos>2474.0</xPos>
       <yPos>2124.0</yPos>
@@ -145,8 +145,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>NapalmTank</name>
       <xPos>1906.0</xPos>
       <yPos>2757.0</yPos>
@@ -154,8 +154,8 @@
       <isHostile>false</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>NapalmTank</name>
       <xPos>1595.0</xPos>
       <yPos>2992.0</yPos>
@@ -163,8 +163,8 @@
       <isHostile>false</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>NapalmTank</name>
       <xPos>1279.0</xPos>
       <yPos>3181.0</yPos>
@@ -172,8 +172,8 @@
       <isHostile>false</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>RocketTank</name>
       <xPos>723.0</xPos>
       <yPos>3466.0</yPos>
@@ -181,8 +181,8 @@
       <isHostile>false</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WarJet</name>
       <xPos>420.0</xPos>
       <yPos>114.0</yPos>
@@ -190,8 +190,8 @@
       <isHostile>false</isHostile>
       <isDrivable>true</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>LaserRobot</name>
       <xPos>477.0</xPos>
       <yPos>3240.0</yPos>
@@ -199,8 +199,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>ShellRobot</name>
       <xPos>2753.0</xPos>
       <yPos>178.0</yPos>
@@ -208,8 +208,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>ShellRobot</name>
       <xPos>3167.0</xPos>
       <yPos>194.0</yPos>
@@ -217,8 +217,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WarRobot</name>
       <xPos>2932.0</xPos>
       <yPos>429.0</yPos>
@@ -226,8 +226,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>LaserRobot</name>
       <xPos>2626.0</xPos>
       <yPos>2635.0</yPos>
@@ -235,8 +235,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>LaserRobot</name>
       <xPos>1965.0</xPos>
       <yPos>2401.0</yPos>
@@ -244,8 +244,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>LaserRobot</name>
       <xPos>1672.0</xPos>
       <yPos>2601.0</yPos>
@@ -253,8 +253,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>LaserRobot</name>
       <xPos>1534.0</xPos>
       <yPos>3366.0</yPos>
@@ -262,14 +262,14 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
+    </game.util.saving.init.data.IEntityData>
   </allEntities>
   <allWaypointEntities class="linked-list"/>
   <waypointData>
     <waypoints class="linked-list"/>
     <entities class="linked-list" reference="../../allWaypointEntities"/>
   </waypointData>
-  <player>
+  <player class="game.util.saving.init.data.IEntityData">
     <name>NapalmTank</name>
     <xPos>2165.0</xPos>
     <yPos>2637.0</yPos>

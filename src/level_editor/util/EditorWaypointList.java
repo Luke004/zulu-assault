@@ -138,4 +138,12 @@ public class EditorWaypointList {
         return entityConnections;
     }
 
+    public static Map<Double, Vector2f> getEntityConnectionIDMap() {
+        Map<Double, Vector2f> entityConnectionIdMap = new HashMap<>();
+        for (Map.Entry<MovableEntity, Vector2f> entry : entityConnections.entrySet()) {
+            entityConnectionIdMap.put(entry.getKey().ID, entry.getValue());
+        }
+        return entityConnectionIdMap;
+    }
+
 }

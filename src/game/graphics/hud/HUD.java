@@ -9,10 +9,10 @@ import game.player.Player;
 import java.util.List;
 
 
-public class HUD implements ItemChangeListener, ChangeVehicleListener {
+public class HUD implements ChangeVehicleListener {
     private Player player;
 
-    private Item[] items;
+    private static Item[] items;
 
     private List<Weapon> weapons;
     private Image weapon_board_image;
@@ -76,15 +76,13 @@ public class HUD implements ItemChangeListener, ChangeVehicleListener {
         }
     }
 
-    @Override
-    public void itemAdded(int idx) {
+    public static void notifyItemAdded(int idx) {
         items[idx].isFadingIn = true;
         items[idx].isActive = true;
         items[idx].amount++;
     }
 
-    @Override
-    public void itemActivated(int idx) {
+    public static void notifyItemActivated(int idx) {
         if (--items[idx].amount == 0) {
             items[idx].isFadingOut = true;
         }

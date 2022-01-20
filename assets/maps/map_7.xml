@@ -143,7 +143,7 @@
     </circle>
   </allCircles>
   <allEntities class="linked-list">
-    <entity>
+    <game.util.saving.init.data.IEntityData>
       <name>CannonTank</name>
       <xPos>1760.0</xPos>
       <yPos>2050.0</yPos>
@@ -151,8 +151,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>CannonTank</name>
       <xPos>1710.0</xPos>
       <yPos>2000.0</yPos>
@@ -160,8 +160,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>RocketTank</name>
       <xPos>2585.0</xPos>
       <yPos>1991.0</yPos>
@@ -169,8 +169,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>RocketTank</name>
       <xPos>600.0</xPos>
       <yPos>200.0</yPos>
@@ -178,8 +178,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>RocketTank</name>
       <xPos>283.0</xPos>
       <yPos>1326.0</yPos>
@@ -187,8 +187,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>RocketTank</name>
       <xPos>710.0</xPos>
       <yPos>1059.0</yPos>
@@ -196,8 +196,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>RocketTank</name>
       <xPos>483.0</xPos>
       <yPos>865.0</yPos>
@@ -205,8 +205,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>RocketTank</name>
       <xPos>500.0</xPos>
       <yPos>487.0</yPos>
@@ -214,8 +214,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>RocketTank</name>
       <xPos>1200.0</xPos>
       <yPos>680.0</yPos>
@@ -223,8 +223,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillYellow</name>
       <xPos>2528.0</xPos>
       <yPos>2101.0</yPos>
@@ -232,8 +232,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillYellow</name>
       <xPos>2430.0</xPos>
       <yPos>2261.0</yPos>
@@ -241,8 +241,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillYellow</name>
       <xPos>2290.0</xPos>
       <yPos>2347.0</yPos>
@@ -250,8 +250,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillGreen</name>
       <xPos>1579.0</xPos>
       <yPos>1957.0</yPos>
@@ -259,8 +259,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillGreen</name>
       <xPos>1479.0</xPos>
       <yPos>1969.0</yPos>
@@ -268,8 +268,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillGreen</name>
       <xPos>1381.0</xPos>
       <yPos>1976.0</yPos>
@@ -277,8 +277,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillGreen</name>
       <xPos>1757.0</xPos>
       <yPos>2129.0</yPos>
@@ -286,8 +286,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillGreen</name>
       <xPos>1752.0</xPos>
       <yPos>2215.0</yPos>
@@ -295,8 +295,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillGreen</name>
       <xPos>1711.0</xPos>
       <yPos>2271.0</yPos>
@@ -304,8 +304,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillGreen</name>
       <xPos>500.0</xPos>
       <yPos>2390.0</yPos>
@@ -313,8 +313,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillGreen</name>
       <xPos>113.0</xPos>
       <yPos>2397.0</yPos>
@@ -322,8 +322,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillGreen</name>
       <xPos>679.0</xPos>
       <yPos>2488.0</yPos>
@@ -331,8 +331,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillGreen</name>
       <xPos>576.0</xPos>
       <yPos>2860.0</yPos>
@@ -340,8 +340,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillGreen</name>
       <xPos>690.0</xPos>
       <yPos>2909.0</yPos>
@@ -349,8 +349,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillGreen</name>
       <xPos>544.0</xPos>
       <yPos>3173.0</yPos>
@@ -358,8 +358,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillGreen</name>
       <xPos>690.0</xPos>
       <yPos>3314.0</yPos>
@@ -367,8 +367,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillGreen</name>
       <xPos>980.0</xPos>
       <yPos>3381.0</yPos>
@@ -376,8 +376,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillYellow</name>
       <xPos>2939.0</xPos>
       <yPos>612.0</yPos>
@@ -385,8 +385,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillYellow</name>
       <xPos>2947.0</xPos>
       <yPos>753.0</yPos>
@@ -394,8 +394,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillYellow</name>
       <xPos>2953.0</xPos>
       <yPos>879.0</yPos>
@@ -403,8 +403,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillYellow</name>
       <xPos>2850.0</xPos>
       <yPos>944.0</yPos>
@@ -412,8 +412,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillYellow</name>
       <xPos>2723.0</xPos>
       <yPos>937.0</yPos>
@@ -421,8 +421,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillYellow</name>
       <xPos>2559.0</xPos>
       <yPos>867.0</yPos>
@@ -430,8 +430,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillYellow</name>
       <xPos>2558.0</xPos>
       <yPos>706.0</yPos>
@@ -439,8 +439,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WindmillYellow</name>
       <xPos>2554.0</xPos>
       <yPos>601.0</yPos>
@@ -448,8 +448,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WarRobot</name>
       <xPos>2686.0</xPos>
       <yPos>552.0</yPos>
@@ -457,8 +457,8 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
-    <entity>
+    </game.util.saving.init.data.IEntityData>
+    <game.util.saving.init.data.IEntityData>
       <name>WarRobot</name>
       <xPos>2794.0</xPos>
       <yPos>543.0</yPos>
@@ -466,11 +466,11 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </entity>
+    </game.util.saving.init.data.IEntityData>
   </allEntities>
   <allWaypointEntities class="linked-list">
     <waypointEntity>
-      <entityData>
+      <entityData class="game.util.saving.init.data.IEntityData">
         <name>PlasmaRobot</name>
         <xPos>1592.0</xPos>
         <yPos>2648.0</yPos>
@@ -513,11 +513,11 @@
           <y>2083.0</y>
         </org.newdawn.slick.geom.Vector2f>
       </waypoints>
-      <waypointListIdx>1</waypointListIdx>
+      <waypointListIdx>3</waypointListIdx>
       <waypointListStartIdx>5</waypointListStartIdx>
     </waypointEntity>
     <waypointEntity>
-      <entityData>
+      <entityData class="game.util.saving.init.data.IEntityData">
         <name>ScoutJet</name>
         <xPos>2120.0</xPos>
         <yPos>250.0</yPos>
@@ -560,11 +560,11 @@
           <y>350.0</y>
         </org.newdawn.slick.geom.Vector2f>
       </waypoints>
-      <waypointListIdx>2</waypointListIdx>
+      <waypointListIdx>4</waypointListIdx>
       <waypointListStartIdx>0</waypointListStartIdx>
     </waypointEntity>
     <waypointEntity>
-      <entityData>
+      <entityData class="game.util.saving.init.data.IEntityData">
         <name>ScoutJet</name>
         <xPos>80.0</xPos>
         <yPos>50.0</yPos>
@@ -607,11 +607,11 @@
           <y>150.0</y>
         </org.newdawn.slick.geom.Vector2f>
       </waypoints>
-      <waypointListIdx>3</waypointListIdx>
+      <waypointListIdx>5</waypointListIdx>
       <waypointListStartIdx>0</waypointListStartIdx>
     </waypointEntity>
     <waypointEntity>
-      <entityData>
+      <entityData class="game.util.saving.init.data.IEntityData">
         <name>ScoutJet</name>
         <xPos>480.0</xPos>
         <yPos>2020.0</yPos>
@@ -654,11 +654,11 @@
           <y>2120.0</y>
         </org.newdawn.slick.geom.Vector2f>
       </waypoints>
-      <waypointListIdx>4</waypointListIdx>
+      <waypointListIdx>6</waypointListIdx>
       <waypointListStartIdx>0</waypointListStartIdx>
     </waypointEntity>
     <waypointEntity>
-      <entityData>
+      <entityData class="game.util.saving.init.data.IEntityData">
         <name>ScoutJet</name>
         <xPos>2220.0</xPos>
         <yPos>2020.0</yPos>
@@ -701,11 +701,11 @@
           <y>2120.0</y>
         </org.newdawn.slick.geom.Vector2f>
       </waypoints>
-      <waypointListIdx>5</waypointListIdx>
+      <waypointListIdx>7</waypointListIdx>
       <waypointListStartIdx>0</waypointListStartIdx>
     </waypointEntity>
     <waypointEntity>
-      <entityData>
+      <entityData class="game.util.saving.init.data.IEntityData">
         <name>ShellTank</name>
         <xPos>3161.0</xPos>
         <yPos>562.0</yPos>
@@ -776,12 +776,84 @@
           <y>313.0</y>
         </org.newdawn.slick.geom.Vector2f>
       </waypoints>
-      <waypointListIdx>0</waypointListIdx>
+      <waypointListIdx>2</waypointListIdx>
       <waypointListStartIdx>1</waypointListStartIdx>
     </waypointEntity>
   </allWaypointEntities>
   <waypointData>
     <waypoints class="linked-list">
+      <list>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>407.0</x>
+          <y>328.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>269.0</x>
+          <y>579.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>269.0</x>
+          <y>1008.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>283.0</x>
+          <y>1346.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>850.0</x>
+          <y>1346.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>1298.0</x>
+          <y>1170.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>1550.0</x>
+          <y>973.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>1500.0</x>
+          <y>345.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>1362.0</x>
+          <y>180.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>688.0</x>
+          <y>180.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+      </list>
+      <list>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>839.0</x>
+          <y>372.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>1046.0</x>
+          <y>448.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>1200.0</x>
+          <y>695.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>1043.0</x>
+          <y>978.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>694.0</x>
+          <y>1059.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>483.0</x>
+          <y>852.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+        <org.newdawn.slick.geom.Vector2f>
+          <x>515.0</x>
+          <y>487.0</y>
+        </org.newdawn.slick.geom.Vector2f>
+      </list>
       <list reference="../../../allWaypointEntities/waypointEntity[6]/waypoints"/>
       <list reference="../../../allWaypointEntities/waypointEntity/waypoints"/>
       <list reference="../../../allWaypointEntities/waypointEntity[2]/waypoints"/>
@@ -791,7 +863,7 @@
     </waypoints>
     <entities class="linked-list" reference="../../allWaypointEntities"/>
   </waypointData>
-  <player>
+  <player class="game.util.saving.init.data.IEntityData">
     <name>NapalmTank</name>
     <xPos>130.0</xPos>
     <yPos>3860.0</yPos>

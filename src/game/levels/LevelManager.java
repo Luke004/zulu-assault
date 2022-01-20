@@ -1,6 +1,9 @@
 package game.levels;
 
+import game.player.Player;
 import game.util.TimeManager;
+import game.util.saving.SaveUtil;
+import game.util.saving.running.RunningGameDataWrapper;
 import level_editor.LevelEditor;
 import main.ZuluAssault;
 import game.menu.Menu;
@@ -15,7 +18,7 @@ public class LevelManager {
 
     private static StateBasedGame stateBasedGame;
 
-    private static boolean playerIsInPlayThrough, hasPreviousPlayThrough;
+    public static boolean playerIsInPlayThrough, hasPreviousPlayThrough;
 
     public static void startNewGame(String s_level, BasicGameState bgs) {
         playerIsInPlayThrough = true;
@@ -29,6 +32,16 @@ public class LevelManager {
         ZuluAssault.nextLevelName = s_level;
         stateBasedGame.enterState(ZuluAssault.BRIEFING, new FadeOutTransition(), new FadeInTransition());
         ZuluAssault.prevState = bgs;
+    }
+
+    public static void loadExistingGame(String s_level, BasicGameState bgs, RunningGameDataWrapper gameData) {
+        // set all running game data
+        Player.addPoints(gameData.currentScore);
+        Player.item_amounts = gameData.item_amounts;
+        LevelManager.playerIsInPlayThrough = gameData.isInPlayThrough;
+        if (gameData.isInPlayThrough) TimeManager.timeTotalMillis = gameData.totalTime;
+        TimeManager.timeInLevelMillis = gameData.currTime;
+        startNextLevel(s_level, bgs);
     }
 
     public static void goToMainMenu() {

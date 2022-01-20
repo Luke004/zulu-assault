@@ -23,7 +23,7 @@ public class Radar {
     private static final Color lightGrey = Color.decode("#808080");
 
 
-    private Player player;
+    private final Player player;
 
     private static final int X_START = 24, X_END = 160, Y_START = 10, Y_END = 110,
             RADAR_WIDTH = X_END - X_START, RADAR_HEIGHT = Y_END - Y_START;
