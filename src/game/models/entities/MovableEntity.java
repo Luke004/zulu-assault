@@ -42,23 +42,10 @@ public abstract class MovableEntity extends Entity {
     protected boolean isMoving, isMovingForward, canTeleport;
     public boolean isDrivable;
 
-    // invincibility item related
-    public boolean isInvincible, invincibility_animation_switch;
-    private int invincibility_lifetime;
-    private final static int INVINCIBILITY_TIME = 10000;   // 10 sec
-    public static final int INVINCIBLE_ANIMATION_TIME_SWITCH = 1000;    // once every sec switch to white color while invincible
-    public int invincible_animation_current_time;
-
-    // item sounds (ONLY PLAYER CAN USE THEM -> static)
-    private static Sound expand_use_sound, emp_use_sound, mega_pulse_use_sound;
-
     private static Sound soldier_death_sound;
 
     static {
         try {
-            expand_use_sound = new Sound("audio/sounds/expand_use.ogg");
-            mega_pulse_use_sound = new Sound("audio/sounds/mega_pulse_use.ogg");
-            emp_use_sound = new Sound("audio/sounds/emp_use.ogg");
             soldier_death_sound = new Sound("audio/sounds/bone_crack.ogg");
         } catch (SlickException e) {
             e.printStackTrace();
@@ -97,27 +84,6 @@ public abstract class MovableEntity extends Entity {
         // COLLISION RELATED STUFF
         collisionModel.update(base_image.getRotation());
 
-        if (!isHostile) {
-            // ITEMS RELATED STUFF
-
-            // INVINCIBILITY
-            if (isInvincible) {
-                // invincibility game.logic itself
-                invincibility_lifetime += deltaTime;
-                if (invincibility_lifetime > INVINCIBILITY_TIME) {
-                    isInvincible = false;
-                    invincibility_lifetime = 0;
-                }
-
-                // invincibility animation related
-                invincible_animation_current_time += deltaTime;
-                if (invincible_animation_current_time >= INVINCIBLE_ANIMATION_TIME_SWITCH) {
-                    invincibility_animation_switch = !invincibility_animation_switch;
-                    invincible_animation_current_time = 0;
-                }
-            }
-        }
-
         if (isDestroyed) {
             blockMovement();
         }
@@ -141,6 +107,11 @@ public abstract class MovableEntity extends Entity {
         super.draw(graphics);
         //collisionModel.draw(graphics);
     }
+
+    /**
+     * Extra method for player to animate him when invincible.
+     */
+    public abstract void drawInvincible(Graphics graphics, boolean invincibility_animation_switch);
 
     protected void drawDrivableAnimation() {
         if (show_drivable_animation) {
@@ -187,10 +158,6 @@ public abstract class MovableEntity extends Entity {
 
     public boolean isHostile() {
         return isHostile;
-    }
-
-    public boolean isInvincible() {
-        return isInvincible;
     }
 
     public void setMoving(boolean b) {
@@ -247,47 +214,6 @@ public abstract class MovableEntity extends Entity {
     }
 
     public abstract void rotate(RotateDirection r, int deltaTime);
-
-    public void activateItem(Player.Item_e item) {
-        if (isDestroyed) return;
-        switch (item) {
-            case INVINCIBILITY:
-                isInvincible = true;
-                break;
-            case EMP:   // destroy all nearby planes
-                emp_use_sound.play(1.f, UserSettings.soundVolume);
-                for (int idx = 0; idx < all_hostile_entities.size(); ++idx) {
-                    Entity hostileEntity = all_hostile_entities.get(idx);
-                    if (hostileEntity instanceof Aircraft) {
-                        if (WayPointManager.dist(hostileEntity.getPosition(), this.getPosition()) < 300) {
-                            hostileEntity.current_health = 0;
-                            hostileEntity.isDestroyed = true;
-                        }
-                    }
-                }
-                break;
-            case MEGA_PULSE:
-                mega_pulse_use_sound.play(1.f, UserSettings.soundVolume);
-                fireWeapon(WeaponType.MEGA_PULSE);
-                break;
-            case EXPAND:
-                expand_use_sound.play(1.f, UserSettings.soundVolume);
-                for (int idx = 0; idx < all_entities.size(); ++idx) {
-                    Entity entity = all_entities.get(idx);
-                    if (WayPointManager.dist(entity.getPosition(), this.getPosition()) < 500) {
-                        for (Weapon weapon : entity.getWeapons()) {
-                            Iterator<Projectile> projectile_iterator = weapon.getProjectileIterator();
-                            while (projectile_iterator.hasNext()) {
-                                Projectile projectile = projectile_iterator.next();
-                                projectile.dir.x *= -1;
-                                projectile.dir.y *= -1;
-                            }
-                        }
-                    }
-                }
-                break;
-        }
-    }
 
     public void teleport(Vector2f new_position) {
         if (canTeleport) {

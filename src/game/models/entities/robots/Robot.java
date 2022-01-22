@@ -87,21 +87,21 @@ public abstract class Robot extends MovableEntity {
 
     @Override
     public void draw(Graphics graphics) {
-        if (isInvincible) {
-            if (!invincibility_animation_switch) {
-                walking_animation.getCurrentFrame().drawFlash(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
-                base_image.drawFlash(position.x - BASE_WIDTH_HALF, position.y - BASE_HEIGHT_HALF);
-            } else {
-                walking_animation.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
-                base_image.draw(position.x - BASE_WIDTH_HALF, position.y - BASE_HEIGHT_HALF);
-            }
+        walking_animation.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
+        base_image.draw(position.x - BASE_WIDTH_HALF, position.y - BASE_HEIGHT_HALF);
+        super.draw(graphics);
+        //collisionModel.draw(graphics);
+    }
+
+    @Override
+    public void drawInvincible(Graphics graphics, boolean invincibility_animation_switch) {
+        if (!invincibility_animation_switch) {
+            walking_animation.getCurrentFrame().drawFlash(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
+            base_image.drawFlash(position.x - BASE_WIDTH_HALF, position.y - BASE_HEIGHT_HALF);
         } else {
             walking_animation.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
             base_image.draw(position.x - BASE_WIDTH_HALF, position.y - BASE_HEIGHT_HALF);
         }
-        super.draw(graphics);
-
-        //collisionModel.draw(graphics);
     }
 
     @Override

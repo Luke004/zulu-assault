@@ -11,11 +11,18 @@ import game.models.entities.soldiers.PlayerSoldier;
 import game.models.entities.soldiers.Soldier;
 import game.models.entities.tanks.Tank;
 import game.models.weapons.MegaPulse;
+import game.models.weapons.Weapon;
+import game.models.weapons.projectiles.Projectile;
+import game.util.WayPointManager;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
+import settings.UserSettings;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
+import static game.levels.Level.all_entities;
+import static game.levels.Level.all_hostile_entities;
 import static game.logic.TileMapData.LEVEL_HEIGHT_PIXELS;
 import static game.logic.TileMapData.LEVEL_WIDTH_PIXELS;
 
@@ -28,8 +35,28 @@ public class Player {
 
     private ChangeVehicleListener changeVehicleListener;
 
+    // ITEMS
+    // invincibility
+    public boolean isInvincible, invincibility_animation_switch;
+    private int invincibility_lifetime;
+    private final static int INVINCIBILITY_TIME = 10000;   // 10 sec
+    public static final int INVINCIBLE_ANIMATION_TIME_SWITCH = 1000;    // once every sec switch to white color while invincible
+    public int invincible_animation_current_time;
+    // item sounds
+    private static Sound expand_use_sound, emp_use_sound, mega_pulse_use_sound;
+
     public Player() {
         item_amounts = new int[4];
+    }
+
+    static {
+        try {
+            expand_use_sound = new Sound("audio/sounds/expand_use.ogg");
+            mega_pulse_use_sound = new Sound("audio/sounds/mega_pulse_use.ogg");
+            emp_use_sound = new Sound("audio/sounds/emp_use.ogg");
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
     }
 
     public void init(MovableEntity current_entity) {
@@ -51,6 +78,22 @@ public class Player {
 
         base_soldier.update(gameContainer, deltaTime);
 
+        // INVINCIBILITY
+        if (isInvincible) {
+            // invincibility game.logic itself
+            invincibility_lifetime += deltaTime;
+            if (invincibility_lifetime > INVINCIBILITY_TIME) {
+                isInvincible = false;
+                invincibility_lifetime = 0;
+            }
+            // invincibility animation related
+            invincible_animation_current_time += deltaTime;
+            if (invincible_animation_current_time >= INVINCIBLE_ANIMATION_TIME_SWITCH) {
+                invincibility_animation_switch = !invincibility_animation_switch;
+                invincible_animation_current_time = 0;
+            }
+        }
+
         // check for map boundaries, don't let the player cross them
         if (current_entity.getPosition().x <= 0) {
             current_entity.getPosition().x = 0;
@@ -60,6 +103,15 @@ public class Player {
             current_entity.getPosition().y = 0;
         } else if (current_entity.getPosition().y >= LEVEL_HEIGHT_PIXELS) {
             current_entity.getPosition().y = LEVEL_HEIGHT_PIXELS;
+        }
+    }
+
+    public void draw(Graphics graphics) {
+        if (isInvincible) {
+            current_entity.drawInvincible(graphics, invincibility_animation_switch);
+        } else {
+            // normal draw
+            current_entity.draw(graphics);
         }
     }
 
@@ -139,27 +191,53 @@ public class Player {
         int idx = -1;
         switch (item) {
             case INVINCIBILITY:
-                if (current_entity.isInvincible()) return;
+                if (this.isInvincible) return;
+                isInvincible = true;
                 idx = 0;
                 break;
-            case EMP:
+            case EMP:   // destroy all nearby planes
+                emp_use_sound.play(1.f, UserSettings.soundVolume);
+                for (int idx2 = 0; idx2 < all_hostile_entities.size(); ++idx2) {
+                    Entity hostileEntity = all_hostile_entities.get(idx2);
+                    if (hostileEntity instanceof Aircraft) {
+                        if (WayPointManager.dist(hostileEntity.getPosition(), this.current_entity.getPosition()) < 300) {
+                            hostileEntity.setHealth(0);
+                            hostileEntity.isDestroyed = true;
+                        }
+                    }
+                }
                 idx = 1;
                 break;
             case MEGA_PULSE:
                 MegaPulse mega_pulse = (MegaPulse) current_entity.getWeapon(Entity.WeaponType.MEGA_PULSE);
                 if (!mega_pulse.canFire()) return;
                 else mega_pulse.clearHitList();
+                mega_pulse_use_sound.play(1.f, UserSettings.soundVolume);
+                current_entity.fireWeapon(Entity.WeaponType.MEGA_PULSE);
                 idx = 2;
                 break;
             case EXPAND:
                 idx = 3;
+                expand_use_sound.play(1.f, UserSettings.soundVolume);
+                for (int idx3 = 0; idx3 < all_entities.size(); ++idx3) {
+                    Entity entity = all_entities.get(idx3);
+                    if (WayPointManager.dist(entity.getPosition(), this.current_entity.getPosition()) < 500) {
+                        for (Weapon weapon : entity.getWeapons()) {
+                            Iterator<Projectile> projectile_iterator = weapon.getProjectileIterator();
+                            while (projectile_iterator.hasNext()) {
+                                Projectile projectile = projectile_iterator.next();
+                                projectile.dir.x *= -1;
+                                projectile.dir.y *= -1;
+                            }
+                        }
+                    }
+                }
                 break;
             default:
                 throw new IllegalStateException("Illegal item index [" + idx + "]!");
         }
         if (item_amounts[idx] == 0) return;
         item_amounts[idx]--;
-        current_entity.activateItem(item);
         HUD.notifyItemActivated(idx);
     }
 
@@ -167,7 +245,7 @@ public class Player {
      * Needed for loading a game: Setup items that the player already had collected.
      */
     public static void setupItems() {
-        int [] item_amounts_copy = Arrays.copyOf(item_amounts, item_amounts.length);
+        int[] item_amounts_copy = Arrays.copyOf(item_amounts, item_amounts.length);
         for (int i = 0; i < item_amounts_copy.length; ++i) {
             while (item_amounts_copy[i] > 0) {
                 switch (i) {

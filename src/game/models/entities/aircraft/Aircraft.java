@@ -1,6 +1,7 @@
 package game.models.entities.aircraft;
 
 import game.logic.TileMapData;
+import game.player.Player;
 import game.util.WayPointManager;
 import game.audio.MenuSounds;
 import game.models.entities.Entity;
@@ -201,12 +202,13 @@ public abstract class Aircraft extends MovableEntity {
         this is an extra method so helicopter can draw the base image above its shadow wings
      */
     protected void drawBaseImage() {
-        if (isInvincible) {
-            if (!invincibility_animation_switch) {
-                base_image.drawFlash(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
-            } else {
-                base_image.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
-            }
+        base_image.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
+    }
+
+    @Override
+    public void drawInvincible(Graphics graphics, boolean invincibility_animation_switch) {
+        if (!invincibility_animation_switch) {
+            base_image.drawFlash(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
         } else {
             base_image.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
         }

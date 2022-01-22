@@ -17,12 +17,10 @@ import game.models.entities.soldiers.Soldier;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
-import static game.levels.Level.all_entities;
-import static game.levels.Level.drivable_entities;
+import static game.levels.Level.*;
 
 public class PlayerInput {
 
-    private Player player;
     private boolean KEY_UP_RELEASED, KEY_DOWN_RELEASED, KEY_UP_PRESSED, KEY_DOWN_PRESSED;
     private static Sound turretRotateSound;
 
@@ -427,7 +425,4 @@ public class PlayerInput {
         }
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
 }

@@ -10,13 +10,11 @@ import java.util.List;
 
 
 public class HUD implements ChangeVehicleListener {
+
     private Player player;
-
     private static Item[] items;
-
     private List<Weapon> weapons;
     private Image weapon_board_image;
-
     private HUD_Drawer HUDDrawer;
 
     public static int GAME_HEIGHT, GAME_WIDTH;

@@ -112,24 +112,23 @@ public abstract class Tank extends MovableEntity {
 
     @Override
     public void draw(Graphics graphics) {
-        if (isInvincible) {
-            if (!invincibility_animation_switch) {
-                base_image.drawFlash(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
-                turret.drawFlash(position.x - TURRET_WIDTH_HALF, position.y - TURRET_HEIGHT_HALF);
-            } else {
-                base_image.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
-                turret.draw(position.x - TURRET_WIDTH_HALF, position.y - TURRET_HEIGHT_HALF);
-            }
+        base_image.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
+        turret.draw(position.x - TURRET_WIDTH_HALF, position.y - TURRET_HEIGHT_HALF);
+        if (isDestroyed) {
+            destructionAnimation.draw(graphics);
+        }
+        super.draw(graphics);
+    }
+
+    @Override
+    public void drawInvincible(Graphics graphics, boolean invincibility_animation_switch) {
+        if (!invincibility_animation_switch) {
+            base_image.drawFlash(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
+            turret.drawFlash(position.x - TURRET_WIDTH_HALF, position.y - TURRET_HEIGHT_HALF);
         } else {
             base_image.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
             turret.draw(position.x - TURRET_WIDTH_HALF, position.y - TURRET_HEIGHT_HALF);
         }
-
-        if (isDestroyed) {
-            destructionAnimation.draw(graphics);
-        }
-
-        super.draw(graphics);
     }
 
     @Override

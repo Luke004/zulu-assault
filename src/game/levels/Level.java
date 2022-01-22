@@ -235,17 +235,6 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
                         else if (o2 instanceof Aircraft) return -1;
                         else return 0;
                     });
-
-                    // put player before all planes
-                    // like this it will get rendered correctly, no matter if in plane or on land
-                    for (int i = renderList.size() - 1; i >= 0; --i) {
-                        if (!(renderList.get(i) instanceof Aircraft)) {
-                            renderList.add(i + 1, playerEntity);
-                            break;
-                        }
-                    }
-                } else {
-                    renderList.add(playerEntity);
                 }
 
                 camera = new Camera(gameContainer, map);
@@ -277,15 +266,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
 
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-        collisionHandler.setPlayer(player);
-        playerInput.setPlayer(player);
         combatBackgroundMusic.start();
-
-        /*
-        if (ZuluAssault.prevState.getID() == ZuluAssault.MAIN_MENU) {
-            // player is resuming the level
-        }
-         */
     }
 
     @Override
@@ -392,7 +373,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
             renderInstance.draw(graphics);
         }
 
-        //player.getEntity().draw(graphics);
+        player.draw(graphics);
 
         bigExplosionAnimation.draw();
         collisionHandler.draw();
@@ -485,7 +466,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
     }
 
     /**
-     * Get all elements that currently exist in the level, this includes:
+     * Get all elements that currently exist in the level in order to save the game, this includes:
      * - List<Entity> all_entities
      * - List<TeleportCircle> teleport_circles
      * - List<HealthCircle> health_circles

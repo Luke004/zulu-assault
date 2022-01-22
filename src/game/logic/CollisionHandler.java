@@ -29,8 +29,6 @@ import java.util.*;
 
 public class CollisionHandler {
 
-    private Player player;
-
     // animations
     private static SmokeAnimation smokeAnimation;
     private static UziHitExplosionAnimation uziHitExplosionAnimation;
@@ -84,7 +82,7 @@ public class CollisionHandler {
         // movement and bullet collisions for all hostile entities
         for (Entity hostile_entity : all_hostile_entities) {
             hostile_entity.shootAtEnemies(player.getEntity(), all_friendly_entities, deltaTime);
-            handleShotCollisions(hostile_entity, player.getEntity());
+            handleShotCollisions(hostile_entity, player);
             movementCollisions(hostile_entity);
         }
 
@@ -433,7 +431,7 @@ public class CollisionHandler {
         }
     }
 
-    private void handleShotCollisions(Entity entity, MovableEntity player) {
+    private void handleShotCollisions(Entity entity, Player player) {
         for (Weapon weapon : entity.getWeapons()) {
             Iterator<Projectile> projectile_iterator = weapon.getProjectileIterator();
 
@@ -461,7 +459,7 @@ public class CollisionHandler {
                     }
                 } else {
                     // HOSTILE SHOT COLLISION WITH PLAYER
-                    if (projectile.getCollisionModel().intersects(player.getCollisionModel())) {
+                    if (projectile.getCollisionModel().intersects(player.getEntity().getCollisionModel())) {
                         if (weapon instanceof RocketLauncher || weapon instanceof Shell) {
                             explosion_sound.play(1.f, UserSettings.soundVolume);
                         } else if (weapon instanceof Uzi || weapon instanceof Plasma) {
@@ -470,8 +468,8 @@ public class CollisionHandler {
                         showBulletHitAnimation(weapon, projectile);
                         projectile_iterator.remove();   // remove bullet
                         weapon.onProjectileRemove(projectile);
-                        if (!player.isInvincible()) {
-                            player.changeHealth(-weapon.getBulletDamage());  //drain health of player
+                        if (!player.isInvincible) {
+                            player.getEntity().changeHealth(-weapon.getBulletDamage());  // drain health of player
                         }
                         continue;
                     }
@@ -481,7 +479,7 @@ public class CollisionHandler {
                             showBulletHitAnimation(weapon, projectile);
                             projectile_iterator.remove();
                             weapon.onProjectileRemove(projectile);
-                            friendly_entity.changeHealth(-weapon.getBulletDamage());  //drain health of friend
+                            friendly_entity.changeHealth(-weapon.getBulletDamage());  // drain health of friend
                             canContinue = true;
                             break;
                         }
@@ -532,7 +530,4 @@ public class CollisionHandler {
         return false;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
 }

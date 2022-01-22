@@ -78,18 +78,17 @@ public abstract class Soldier extends MovableEntity {
     @Override
     public void draw(Graphics graphics) {
         super.draw(graphics);
+        animation.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
+        //collisionModel.draw(graphics);
+    }
 
-        if (isInvincible) {
-            if (!invincibility_animation_switch) {
-                animation.getCurrentFrame().drawFlash(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
-            } else {
-                animation.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
-            }
+    @Override
+    public void drawInvincible(Graphics graphics, boolean invincibility_animation_switch) {
+        if (!invincibility_animation_switch) {
+            animation.getCurrentFrame().drawFlash(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
         } else {
             animation.draw(position.x - WIDTH_HALF, position.y - HEIGHT_HALF);
         }
-
-        //collisionModel.draw(graphics);
     }
 
     @Override
