@@ -1,6 +1,7 @@
 package game.models.weapons;
 
 import game.models.weapons.projectiles.Flame;
+import game.models.weapons.projectiles.GroundBullet;
 import game.models.weapons.projectiles.Projectile;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -51,11 +52,17 @@ public class Napalm extends PiercingWeapon {
             float yVal = (float) -Math.cos(rotation_angle * Math.PI / 180);
             Vector2f bullet_dir = new Vector2f(xVal, yVal);
 
-            Projectile bullet = new Flame(bullet_spawn, bullet_dir, 0, projectile_texture);
+            Projectile bullet = this.getNewBullet(bullet_spawn, bullet_dir, 0);
             projectile_list.add(bullet);
         }
         if (!fire_sound.playing()) {
             fire_sound.play(.6f, UserSettings.soundVolume);
         }
     }
+
+    @Override
+    protected Projectile getNewBullet(Vector2f bullet_spawn, Vector2f bullet_dir, float rotation_angle) {
+        return new Flame(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
+    }
+
 }

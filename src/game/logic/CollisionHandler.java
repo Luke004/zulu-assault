@@ -1,6 +1,5 @@
 package game.logic;
 
-import game.util.TileMapUtil;
 import settings.UserSettings;
 import game.models.CollisionModel;
 import game.graphics.animations.damage.PlasmaDamageAnimation;
@@ -250,7 +249,7 @@ public class CollisionHandler {
     private void playerBulletCollisions(MovableEntity player_entity) {
         // PLAYER BULLET COLLISIONS
         for (Weapon weapon : player_entity.getWeapons()) {
-            Iterator<Projectile> projectile_iterator = weapon.getProjectiles();
+            Iterator<Projectile> projectile_iterator = weapon.getProjectileIterator();
             while (projectile_iterator.hasNext()) {
                 Projectile projectile = projectile_iterator.next();
                 boolean canContinue;
@@ -286,10 +285,10 @@ public class CollisionHandler {
                         //drain health of hit tank:
                         hostileEntity.changeHealth(-weapon.getBulletDamage());
                         if (weapon instanceof Laser) {
-                            uziHitExplosionAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y,
+                            uziHitExplosionAnimation.play(projectile.pos.x, projectile.pos.y,
                                     random.nextInt(360));
-                            uziDamageAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y,
-                                    projectile.projectile_image.getRotation() - 90
+                            uziDamageAnimation.play(projectile.pos.x, projectile.pos.y,
+                                    projectile.image.getRotation() - 90
                                             + random.nextInt(30 + 1 + 30) - 30);
                         }
                     }
@@ -297,20 +296,20 @@ public class CollisionHandler {
                 } else if (weapon instanceof Uzi) {
                     bullet_hit_sound.play(1.f, UserSettings.soundVolume);
                     if (!(hostileEntity instanceof Soldier)) {
-                        uziHitExplosionAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y,
+                        uziHitExplosionAnimation.play(projectile.pos.x, projectile.pos.y,
                                 random.nextInt(360));
 
-                        uziDamageAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y,
-                                projectile.projectile_image.getRotation() - 90
+                        uziDamageAnimation.play(projectile.pos.x, projectile.pos.y,
+                                projectile.image.getRotation() - 90
                                         + random.nextInt(30 + 1 + 30) - 30);
                         // add random extra rotation [-30 , +30]
                     }
                 } else if (weapon instanceof Shell || weapon instanceof RocketLauncher) {
                     explosion_sound.play(1.f, UserSettings.soundVolume);
-                    bigExplosionAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y, 90);
+                    bigExplosionAnimation.play(projectile.pos.x, projectile.pos.y, 90);
                 } else if (weapon instanceof Plasma) {
                     bullet_hit_sound.play(1.f, UserSettings.soundVolume);
-                    plasmaDamageAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y, 0);
+                    plasmaDamageAnimation.play(projectile.pos.x, projectile.pos.y, 0);
                 }
                 hostileEntity.changeHealth(-weapon.getBulletDamage());
                 projectile_iterator.remove();   // remove bullet
@@ -322,8 +321,8 @@ public class CollisionHandler {
     }
 
     private boolean groundProjectileTileCollision(Projectile projectile, Weapon weapon, Iterator<Projectile> bullet_iterator) {
-        int x = (int) projectile.projectile_pos.x / TILE_WIDTH;
-        int y = (int) projectile.projectile_pos.y / TILE_HEIGHT;
+        int x = (int) projectile.pos.x / TILE_WIDTH;
+        int y = (int) projectile.pos.y / TILE_HEIGHT;
         int tile_ID = map.getTileId(x, y, LANDSCAPE_TILES_LAYER_IDX);
 
 
@@ -346,16 +345,16 @@ public class CollisionHandler {
                         } else if (!((PiercingWeapon) weapon).hasAlreadyHit(generateKey(x, y))) {
                             damageTile(x, y, weapon, destructible_tile_replace_indices[idx], null);
                             if (weapon instanceof Laser) {
-                                uziHitExplosionAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y, random.nextInt(360));
+                                uziHitExplosionAnimation.play(projectile.pos.x, projectile.pos.y, random.nextInt(360));
                             }
                         }
                         continue;
                     } else if (weapon instanceof Uzi) {
                         bullet_hit_sound.play(1.f, UserSettings.soundVolume);
-                        uziHitExplosionAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y, random.nextInt(360));
+                        uziHitExplosionAnimation.play(projectile.pos.x, projectile.pos.y, random.nextInt(360));
                     } else if (weapon instanceof Plasma) {
                         bullet_hit_sound.play(1.f, UserSettings.soundVolume);
-                        plasmaDamageAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y, 0);
+                        plasmaDamageAnimation.play(projectile.pos.x, projectile.pos.y, 0);
                     }
                     damageTile(x, y, weapon, destructible_tile_replace_indices[idx], null);
                 }
@@ -436,7 +435,7 @@ public class CollisionHandler {
 
     private void handleShotCollisions(Entity entity, MovableEntity player) {
         for (Weapon weapon : entity.getWeapons()) {
-            Iterator<Projectile> projectile_iterator = weapon.getProjectiles();
+            Iterator<Projectile> projectile_iterator = weapon.getProjectileIterator();
 
             while (projectile_iterator.hasNext()) {
                 Projectile projectile = projectile_iterator.next();
@@ -505,28 +504,28 @@ public class CollisionHandler {
 
     private void showBulletHitAnimation(Weapon weapon, Projectile projectile) {
         if (weapon instanceof Uzi) {
-            uziHitExplosionAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y, random.nextInt(360));
-            uziDamageAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y, projectile.projectile_image.getRotation() - 90
+            uziHitExplosionAnimation.play(projectile.pos.x, projectile.pos.y, random.nextInt(360));
+            uziDamageAnimation.play(projectile.pos.x, projectile.pos.y, projectile.image.getRotation() - 90
                     + random.nextInt(30 + 1 + 30) - 30);  // add random extra rotation [-30 , +30]
         } else if (weapon instanceof Shell || weapon instanceof RocketLauncher) {
-            bigExplosionAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y, 90);
+            bigExplosionAnimation.play(projectile.pos.x, projectile.pos.y, 90);
         } else if (weapon instanceof Plasma) {
-            plasmaDamageAnimation.play(projectile.projectile_pos.x, projectile.projectile_pos.y, 0);
+            plasmaDamageAnimation.play(projectile.pos.x, projectile.pos.y, 0);
         }
     }
 
     private boolean removeProjectileAtMapEdge(Projectile projectile, Iterator<Projectile> bullet_iterator) {
         // remove bullet if edge of map was reached
-        if (projectile.projectile_pos.x < 0) {
+        if (projectile.pos.x < 0) {
             bullet_iterator.remove();
             return true;
-        } else if (projectile.projectile_pos.y < 0) {
+        } else if (projectile.pos.y < 0) {
             bullet_iterator.remove();
             return true;
-        } else if (projectile.projectile_pos.x > LEVEL_WIDTH_PIXELS - 1) {
+        } else if (projectile.pos.x > LEVEL_WIDTH_PIXELS - 1) {
             bullet_iterator.remove();
             return true;
-        } else if (projectile.projectile_pos.y > LEVEL_HEIGHT_PIXELS - 1) {
+        } else if (projectile.pos.y > LEVEL_HEIGHT_PIXELS - 1) {
             bullet_iterator.remove();
             return true;
         }

@@ -50,7 +50,7 @@ public class Laser extends PiercingWeapon {
 
             Projectile bullet = addBullet(spawnX, spawnY, rotation_angle, 0.f);
             bullet.setProjectileSpeed(LASER_SPEED);
-            bullet.projectile_max_lifetime = LASER_LIFETIME_MILLIS;
+            bullet.maxLifetime = LASER_LIFETIME_MILLIS;
             projectile_list.add(bullet);
 
             fire_sound.play(1.f, UserSettings.soundVolume);

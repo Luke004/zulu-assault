@@ -1,7 +1,6 @@
 package game.models.entities;
 
 import game.models.entities.aircraft.AttackHelicopter;
-import game.models.entities.tanks.ShellTank;
 import game.util.WayPointManager;
 import game.models.entities.soldiers.Soldier;
 import settings.UserSettings;
@@ -277,11 +276,11 @@ public abstract class MovableEntity extends Entity {
                     Entity entity = all_entities.get(idx);
                     if (WayPointManager.dist(entity.getPosition(), this.getPosition()) < 500) {
                         for (Weapon weapon : entity.getWeapons()) {
-                            Iterator<Projectile> projectile_iterator = weapon.getProjectiles();
+                            Iterator<Projectile> projectile_iterator = weapon.getProjectileIterator();
                             while (projectile_iterator.hasNext()) {
                                 Projectile projectile = projectile_iterator.next();
-                                projectile.projectile_dir.x *= -1;
-                                projectile.projectile_dir.y *= -1;
+                                projectile.dir.x *= -1;
+                                projectile.dir.y *= -1;
                             }
                         }
                     }

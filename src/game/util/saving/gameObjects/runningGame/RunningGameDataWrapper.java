@@ -5,6 +5,7 @@ import game.levels.LevelManager;
 import game.models.Element;
 import game.models.entities.Entity;
 import game.models.entities.MovableEntity;
+import game.models.weapons.Weapon;
 import game.models.weapons.projectiles.Projectile;
 import game.player.Player;
 import game.util.TimeManager;
@@ -12,11 +13,13 @@ import game.util.WayPointManager;
 import game.util.saving.gameObjects.ASaveDataWrapper;
 import game.util.saving.gameObjects.EntityData;
 import game.util.saving.gameObjects.newGame.data.WaypointEntityData;
+import game.util.saving.gameObjects.runningGame.data.ProjectileData;
 import game.util.saving.gameObjects.runningGame.data.REntityData;
 import level_editor.util.EditorWaypointList;
 import level_editor.util.MapElements;
 import org.newdawn.slick.geom.Vector2f;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +35,6 @@ public class RunningGameDataWrapper extends ASaveDataWrapper {
     public long currTime, totalTime;            // current and total time of player in game
     public int currentScore;                    // current score of the player
     public int[] item_amounts;                  // current items that the player has
-    public List<Projectile> projectileList;     // current flying projectiles
 
     public RunningGameDataWrapper(String name,
                                   List<Element> elements,
@@ -59,6 +61,7 @@ public class RunningGameDataWrapper extends ASaveDataWrapper {
         entityData.ID = entity.ID;
         entityData.name = entity.getClass().getSimpleName();
         entityData.currentHealth = entity.getHealth();
+        entityData.projectileMap = this.getProjectileMap(entity);
         entityData.isHostile = entity.isHostile;
         entityData.isMandatory = entity.isMandatory;
         entityData.rotation = entity.getRotation();
@@ -78,8 +81,42 @@ public class RunningGameDataWrapper extends ASaveDataWrapper {
         playerData.isHostile = false;
         playerData.isMandatory = false;
         playerData.rotation = player.getRotation();
+        playerData.projectileMap = this.getProjectileMap(player);
         playerData.currentHealth = player.getHealth();
         this.player = playerData;
+    }
+
+    /**
+     * Create a map of <WeaponType, List<Projectiles>>
+     *
+     * @param entity the game entity that shot the projectile
+     * @return the projectile map
+     */
+    private Map<String, List<ProjectileData>> getProjectileMap(Entity entity) {
+        boolean hasProjectiles = false;
+        for (Weapon weapon : entity.getWeapons()) {
+            if (!weapon.getProjectileList().isEmpty()) {
+                hasProjectiles = true;
+                break;
+            }
+        }
+        if (!hasProjectiles) return null;
+        // player currently has fired projectiles flying
+        Map<String, List<ProjectileData>> projectileMap = new HashMap<>();
+        for (Weapon weapon : entity.getWeapons()) {
+            if (weapon.getProjectileList().isEmpty()) continue;
+            List<ProjectileData> projectiles = new LinkedList<>();
+            for (Projectile projectile : weapon.getProjectileList()) {
+                projectiles.add(new ProjectileData(
+                        projectile.pos,
+                        projectile.dir,
+                        projectile.lifetime,
+                        projectile.image.getRotation()
+                ));
+            }
+            projectileMap.put(weapon.getClass().getSimpleName(), projectiles);
+        }
+        return projectileMap;
     }
 
     @Override
@@ -87,8 +124,10 @@ public class RunningGameDataWrapper extends ASaveDataWrapper {
         MovableEntity playerEntity = super.getPlayerEntity(forMapEditor);
         REntityData player = (REntityData) this.player;
         playerEntity.setHealth(player.currentHealth);
+        this.loadProjectileList(player, playerEntity);
         return playerEntity;
     }
+
     @Override
     public List<Entity> getAllEntities() {
         List<Entity> entities = new LinkedList<>();
@@ -101,12 +140,32 @@ public class RunningGameDataWrapper extends ASaveDataWrapper {
                 Entity casted_copy = (Entity) copy;
                 casted_copy.ID = entityData.ID;
                 casted_copy.setHealth(rEntityData.currentHealth);
+                this.loadProjectileList(rEntityData, casted_copy);
                 casted_copy.setRotation(entityData.rotation);
                 casted_copy.isMandatory = entityData.isMandatory;
                 entities.add(casted_copy);
             }
         }
         return entities;
+    }
+
+    private void loadProjectileList(REntityData rEntityData, Entity entity) {
+        Map<String, List<ProjectileData>> projectileMap = rEntityData.projectileMap;
+        if (projectileMap != null) {
+            for (Weapon weapon : entity.getWeapons()) {
+                List<ProjectileData> projectiles = projectileMap.get(weapon.getClass().getSimpleName());
+                if (projectiles != null) {
+                    for (ProjectileData projectileData : projectiles) {
+                        weapon.loadProjectile(
+                                projectileData.pos,
+                                projectileData.dir,
+                                projectileData.rotation,
+                                projectileData.currentLifetime
+                        );
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -124,10 +183,11 @@ public class RunningGameDataWrapper extends ASaveDataWrapper {
                 casted_copy.addWayPoints(new WayPointManager(casted_copy.getPosition(), casted_copy.getRotation(),
                         waypointEntityData.waypoints, waypointEntityData.waypointListStartIdx));
                 casted_copy.ID = waypointEntityData.entityData.ID;
-                REntityData movableWaypointEntity = (REntityData)waypointEntityData.entityData;
-                casted_copy.setRotation(movableWaypointEntity.rotation);
-                casted_copy.isMandatory = movableWaypointEntity.isMandatory;
-                casted_copy.setHealth(movableWaypointEntity.currentHealth);
+                REntityData rEntityData = (REntityData) waypointEntityData.entityData;
+                casted_copy.setRotation(rEntityData.rotation);
+                casted_copy.isMandatory = rEntityData.isMandatory;
+                casted_copy.setHealth(rEntityData.currentHealth);
+                this.loadProjectileList(rEntityData, casted_copy);
                 entities.add(casted_copy);
             }
         }

@@ -100,6 +100,12 @@ public class RocketLauncher extends Weapon {
         return new GroundRocket(bullet_spawn, bullet_dir, rotation_angle, projectile_texture, preparedRocket);
     }
 
+    @Override
+    protected Projectile getNewBullet(Vector2f bullet_spawn, Vector2f bullet_dir, float rotation_angle) {
+        Animation preparedRocket = prepareNextRocket(rotation_angle);
+        return new GroundRocket(bullet_spawn, bullet_dir, rotation_angle, projectile_texture, preparedRocket);
+    }
+
     protected Animation prepareNextRocket(float rotation_angle) {
         Animation fresh_rocket = getNextFreshRocket();
         for (int idx = 0; idx < fresh_rocket.getFrameCount(); ++idx) {

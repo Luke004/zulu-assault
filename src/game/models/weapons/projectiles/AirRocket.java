@@ -1,6 +1,5 @@
 package game.models.weapons.projectiles;
 
-import game.models.weapons.AGM;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -14,12 +13,12 @@ public class AirRocket extends AirProjectile {
 
     public AirRocket(Vector2f startPos, Vector2f dir, float rotation, Texture projectile_texture, Animation rocket_animation) {
         super(startPos, dir, rotation, projectile_texture);
-        this.projectile_max_lifetime = 350;   // maximum lifetime is 350 millis
+        this.maxLifetime = 350;   // maximum lifetime is 350 millis
 
         this.rocket_animation = rocket_animation;
         ANIMATION_WIDTH_HALF = rocket_animation.getCurrentFrame().getWidth() / 2;
         ANIMATION_HEIGHT_HALF = rocket_animation.getCurrentFrame().getHeight() / 2;
-        projectile_speed = 0.5f;   // set individual rocket speed (slower than from a normal projectile)
+        speed = 0.5f;   // set individual rocket speed (slower than from a normal projectile)
         // calculate x and y to set rocket behind the bullet
         final float DISTANCE = -70;
         final float SPAWN_X = -3;
@@ -32,14 +31,14 @@ public class AirRocket extends AirProjectile {
 
     @Override
     public void update(int deltaTime) {
-        if (projectile_lifetime <= projectile_max_lifetime - 50) {
+        if (lifetime <= maxLifetime - 50) {
             super.update(deltaTime);
         } else {
-            this.projectile_lifetime += deltaTime;
+            this.lifetime += deltaTime;
             if (!hasHitGround()) {
                 setHitGround();
                 // only update the collision model in the last 200 milliseconds
-                projectile_collision_model.update(deltaTime);
+                collisionModel.update(deltaTime);
             }
         }
         rocket_animation.update(deltaTime);
@@ -49,7 +48,7 @@ public class AirRocket extends AirProjectile {
     public void draw(Graphics graphics) {
         super.draw(graphics);
         //collision_model.draw(graphics);
-        rocket_animation.draw(projectile_pos.x - ANIMATION_WIDTH_HALF - xVal, projectile_pos.y - ANIMATION_HEIGHT_HALF - yVal);
+        rocket_animation.draw(pos.x - ANIMATION_WIDTH_HALF - xVal, pos.y - ANIMATION_HEIGHT_HALF - yVal);
     }
 
 }

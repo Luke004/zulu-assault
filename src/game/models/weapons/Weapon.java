@@ -18,7 +18,7 @@ public abstract class Weapon {
     protected Image weapon_hud_image;   // the image for the weapon drawn on the HUD
     protected Sound fire_sound;  // fire sound of the weapon
 
-    Texture projectile_texture;
+    public Texture projectile_texture;
     protected List<Projectile> projectile_list;
 
     // specs related
@@ -32,15 +32,14 @@ public abstract class Weapon {
         if (current_reload_time < shot_reload_time) {
             current_reload_time += deltaTime;
         }
-        Iterator<Projectile> iter = projectile_list.iterator();
-        while (iter.hasNext()) {
-            Projectile projectile = iter.next();
+        Iterator<Projectile> iterator = projectile_list.iterator();
+        while (iterator.hasNext()) {
+            Projectile projectile = iterator.next();
             projectile.update(deltaTime);
-
             // remove bullet if max lifetime was reached
-            if (projectile.projectile_lifetime > projectile.projectile_max_lifetime) {
+            if (projectile.lifetime > projectile.maxLifetime) {
                 onProjectileRemove(projectile);
-                iter.remove();
+                iterator.remove();
             }
         }
     }
@@ -66,19 +65,34 @@ public abstract class Weapon {
             float yVal = (float) -Math.cos(rotation_angle * Math.PI / 180);
             Vector2f bullet_dir = new Vector2f(xVal, yVal);
 
-            Projectile bullet = new GroundBullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
+            Projectile bullet = getNewBullet(bullet_spawn, bullet_dir, rotation_angle);
             projectile_list.add(bullet);
-            if (fire_sound != null)
+            if (fire_sound != null) {
                 fire_sound.play(1.f, UserSettings.soundVolume);
+            }
         }
+    }
+
+    protected Projectile getNewBullet(Vector2f bullet_spawn, Vector2f bullet_dir, float rotation_angle) {
+        return new GroundBullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
+    }
+
+    public void loadProjectile(Vector2f pos, Vector2f dir, float rotation, int lifetimeLeft) {
+        Projectile projectile = getNewBullet(pos, dir ,rotation);
+        projectile.lifetime = lifetimeLeft;
+        this.projectile_list.add(projectile);
     }
 
     public boolean canFire() {
         return current_reload_time >= shot_reload_time;
     }
 
-    public Iterator<Projectile> getProjectiles() {
+    public Iterator<Projectile> getProjectileIterator() {
         return projectile_list.iterator();
+    }
+
+    public List<Projectile> getProjectileList() {
+        return projectile_list;
     }
 
     public float getBulletDamage() {

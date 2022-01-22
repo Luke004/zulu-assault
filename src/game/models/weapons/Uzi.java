@@ -81,4 +81,5 @@ public class Uzi extends Weapon {
 
         return new GroundBullet(bullet_spawn, bullet_dir, rotation_angle, projectile_texture);
     }
+
 }

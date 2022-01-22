@@ -34,7 +34,7 @@ public class NewGameDataWrapper extends ASaveDataWrapper {
 
     @Override
     protected EntityData setupEntityData(Entity entity) {
-        EntityData entityData = new IEntityData();
+        EntityData entityData = new NEntityData();
         entityData.ID = entity.ID;
         entityData.name = entity.getClass().getSimpleName();
         entityData.isHostile = entity.isHostile;
@@ -47,7 +47,7 @@ public class NewGameDataWrapper extends ASaveDataWrapper {
 
     @Override
     protected void savePlayerData(MovableEntity player) {
-        EntityData playerData = new IEntityData();
+        EntityData playerData = new NEntityData();
         playerData.ID = player.ID;
         playerData.name = player.getClass().getSimpleName();
         playerData.xPos = player.getPosition().x;

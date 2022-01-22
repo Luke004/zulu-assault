@@ -47,9 +47,9 @@ public class AGM extends DoubleRocketLauncher implements iGroundTileDamageWeapon
     @Override
     public void onProjectileRemove(Projectile projectile) {
         // check if a ground tile is damaged
-        groundTileDamager.damageGroundTile(projectile.projectile_pos.x,
-                projectile.projectile_pos.y);
-        bigExplosionAnimation.playTenTimes(projectile.projectile_pos.x, projectile.projectile_pos.y, 90);
+        groundTileDamager.damageGroundTile(projectile.pos.x,
+                projectile.pos.y);
+        bigExplosionAnimation.playTenTimes(projectile.pos.x, projectile.pos.y, 90);
         putRocketBackToBuffer();
     }
 

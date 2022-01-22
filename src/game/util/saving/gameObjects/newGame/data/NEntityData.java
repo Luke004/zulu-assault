@@ -5,4 +5,4 @@ import game.util.saving.gameObjects.EntityData;
 /**
  * EntityData for initializing levels.
  */
-public class IEntityData extends EntityData { }
+public class NEntityData extends EntityData { }

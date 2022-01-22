@@ -73,7 +73,7 @@ public class GuidedRocket extends GroundRocket {
 
     @Override
     public void draw(Graphics graphics) {
-        this.projectile_image.draw(this.projectile_pos.x - WIDTH_HALF, this.projectile_pos.y - HEIGHT_HALF);
+        this.image.draw(this.pos.x - WIDTH_HALF, this.pos.y - HEIGHT_HALF);
 
         for (int i = 0; i < rocketAnimationSubImages.length; ++i) {
             if (prevPositions.size() < (i + 1) * SPACE_BETWEEN_SUB_IMAGES)
@@ -89,7 +89,7 @@ public class GuidedRocket extends GroundRocket {
         super.update(deltaTime);
 
         // keep track of the previous positions of the guided missile, so the clouds can follow its path
-        prevPositions.add(new Vector2f(projectile_pos));
+        prevPositions.add(new Vector2f(pos));
 
         if (!hasAcquiredTarget) {
             searchForTarget();
@@ -97,21 +97,21 @@ public class GuidedRocket extends GroundRocket {
             // make projectiles guide towards the target entity
 
             // stop guiding if the rocket is getting too far away and thus has no possibility to reach the target
-            if (WayPointManager.dist(projectile_pos, target.getPosition()) > GUIDE_ACTIVATE_DISTANCE + 50) return;
+            if (WayPointManager.dist(pos, target.getPosition()) > GUIDE_ACTIVATE_DISTANCE + 50) return;
 
-            float angle = WayPointManager.calculateAngleToRotateTo(projectile_pos,
+            float angle = WayPointManager.calculateAngleToRotateTo(pos,
                     new Vector2f(target.position.x, target.position.y));
 
-            float shortest_angle = WayPointManager.getShortestSignedAngle(projectile_image.getRotation(), angle);
+            float shortest_angle = WayPointManager.getShortestSignedAngle(image.getRotation(), angle);
 
             if (shortest_angle > 0) {
-                projectile_image.setRotation(projectile_image.getRotation() + GUIDE_INTENSITY * deltaTime);
+                image.setRotation(image.getRotation() + GUIDE_INTENSITY * deltaTime);
             } else {
-                projectile_image.setRotation(projectile_image.getRotation() - GUIDE_INTENSITY * deltaTime);
+                image.setRotation(image.getRotation() - GUIDE_INTENSITY * deltaTime);
             }
 
-            projectile_dir.x = (float) Math.sin(projectile_image.getRotation() * Math.PI / 180);
-            projectile_dir.y = (float) -Math.cos(projectile_image.getRotation() * Math.PI / 180);
+            dir.x = (float) Math.sin(image.getRotation() * Math.PI / 180);
+            dir.y = (float) -Math.cos(image.getRotation() * Math.PI / 180);
         }
     }
 
@@ -122,7 +122,7 @@ public class GuidedRocket extends GroundRocket {
         for (Entity entity : enemyEntities) {
             float xPos = entity.position.x;
             float yPos = entity.position.y;
-            float dist = WayPointManager.dist(projectile_pos, new Vector2f(xPos, yPos));
+            float dist = WayPointManager.dist(pos, new Vector2f(xPos, yPos));
             if (dist < closest_dist) {
                 closest_dist = dist;
                 closestEntity = entity;
@@ -141,7 +141,7 @@ public class GuidedRocket extends GroundRocket {
                     if (entity.equals(closestEntity)) continue;
                     float xPos = entity.position.x;
                     float yPos = entity.position.y;
-                    float dist = WayPointManager.dist(projectile_pos, new Vector2f(xPos, yPos));
+                    float dist = WayPointManager.dist(pos, new Vector2f(xPos, yPos));
                     if (dist <= GUIDE_ACTIVATE_DISTANCE) {
                         possibleTargets.put(entity, dist);
                     }
@@ -168,9 +168,9 @@ public class GuidedRocket extends GroundRocket {
     }
 
     private boolean isTargetBehind(Entity target) {
-        float angleToTarget = WayPointManager.calculateAngleToRotateTo(projectile_pos,
+        float angleToTarget = WayPointManager.calculateAngleToRotateTo(pos,
                 new Vector2f(target.position.x, target.position.y));
-        float angleDiff = projectile_image.getRotation() - angleToTarget;
+        float angleDiff = image.getRotation() - angleToTarget;
         angleDiff %= 360;
         return (angleDiff > -270 && angleDiff < -90) || (angleDiff > 90 && angleDiff < 270);
     }

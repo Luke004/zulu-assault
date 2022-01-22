@@ -6,6 +6,7 @@ import game.util.saving.gameObjects.EntityData;
 import game.util.saving.gameObjects.newGame.data.*;
 import game.util.saving.gameObjects.newGame.NewGameDataWrapper;
 import game.util.saving.gameObjects.runningGame.RunningGameDataWrapper;
+import game.util.saving.gameObjects.runningGame.data.ProjectileData;
 import game.util.saving.mapLayers.MyTileMap;
 import game.util.saving.gameObjects.runningGame.data.REntityData;
 import org.newdawn.slick.Image;
@@ -97,18 +98,20 @@ public class SaveUtil {
 
     private static void setupXStream() {
         xstream = new XStream();
-        xstream.alias("entity", EntityData.class);
+        xstream.alias("nEntity", NEntityData.class);
+        xstream.alias("rEntity", REntityData.class);
         xstream.alias("circle", CircleData.class);
         xstream.alias("item", ItemData.class);
         xstream.alias("waypoint", WaypointData.class);
         xstream.alias("waypointEntity", WaypointEntityData.class);
+        xstream.alias("projectileData", ProjectileData.class);
         xstream.alias("initGameData", NewGameDataWrapper.class);
         xstream.alias("runningGameData", NewGameDataWrapper.class);
         xstream.alias("mapLayers", ArrayList.class);
         // setup XStream permissions for used classes
-        Class<?>[] classes = new Class[]{IEntityData.class, REntityData.class, Projectile.class, CircleData.class,
+        Class<?>[] classes = new Class[]{NEntityData.class, REntityData.class, Projectile.class, CircleData.class,
                 ItemData.class, WaypointData.class, WaypointEntityData.class, NewGameDataWrapper.class, Vector2f.class,
-                EntityData.class, RunningGameDataWrapper.class,
+                EntityData.class, RunningGameDataWrapper.class, ProjectileData.class,
                 TiledMap.class, TileSet.class, TextureImpl.class, Image.class, Layer.class, MyTileMap.class};
         xstream.allowTypes(classes);
     }

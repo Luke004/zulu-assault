@@ -131,7 +131,6 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
                 // runningGameData exists -> LOAD EXISTING GAME
                 ArrayList<Layer> mapLayers = SaveUtil.loadTMXMapData("");
                 map = new MyTileMap(mapLocation + ZuluAssault.nextLevelName + ".tmx", mapLayers);
-                //map = SaveUtil.loadTMXMapData("");
                 levelData = GameDataStorage.runningGameData;
                 // also setup the initGameData in case the user wants to save
                 GameDataStorage.initGameData = SaveUtil.loadInitGameDataFromXML(ZuluAssault.nextLevelName, isOfficialLevel);

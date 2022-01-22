@@ -219,8 +219,8 @@
     </circle>
   </allCircles>
   <allEntities class="linked-list">
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.0022577184978898046</ID>
+    <nEntity>
+      <ID>0.7601978982493653</ID>
       <name>CannonTank</name>
       <xPos>3055.0</xPos>
       <yPos>3110.0</yPos>
@@ -228,9 +228,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.06952306929861252</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.5392089794074288</ID>
       <name>UziSoldier</name>
       <xPos>1370.0</xPos>
       <yPos>3150.0</yPos>
@@ -238,9 +238,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.6523673411896619</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.08510465927654398</ID>
       <name>UziSoldier</name>
       <xPos>1473.0</xPos>
       <yPos>3198.0</yPos>
@@ -248,9 +248,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.44479036943541816</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.2791465795293169</ID>
       <name>UziSoldier</name>
       <xPos>1266.0</xPos>
       <yPos>3206.0</yPos>
@@ -258,9 +258,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.04339277889788229</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.2851784710596288</ID>
       <name>RocketTank</name>
       <xPos>2970.0</xPos>
       <yPos>130.0</yPos>
@@ -268,9 +268,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.3986613066980935</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.20319692574035575</ID>
       <name>RocketTank</name>
       <xPos>3250.0</xPos>
       <yPos>140.0</yPos>
@@ -278,9 +278,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.5398258231696204</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.6697470036537418</ID>
       <name>RocketTank</name>
       <xPos>3460.0</xPos>
       <yPos>70.0</yPos>
@@ -288,9 +288,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.8860225761748851</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.26996837295686393</ID>
       <name>UziSoldier</name>
       <xPos>2565.0</xPos>
       <yPos>160.0</yPos>
@@ -298,9 +298,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.10730237259932929</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.6579390178001959</ID>
       <name>UziSoldier</name>
       <xPos>2500.0</xPos>
       <yPos>240.0</yPos>
@@ -308,9 +308,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.7384462892451888</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.30486318015120084</ID>
       <name>UziSoldier</name>
       <xPos>2460.0</xPos>
       <yPos>60.0</yPos>
@@ -318,9 +318,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.4047328879970724</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.7917421522591587</ID>
       <name>UziSoldier</name>
       <xPos>2350.0</xPos>
       <yPos>100.0</yPos>
@@ -328,9 +328,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.5880743994416942</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.531365161215955</ID>
       <name>UziSoldier</name>
       <xPos>2340.0</xPos>
       <yPos>160.0</yPos>
@@ -338,9 +338,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.5669888547024637</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.5218734906036947</ID>
       <name>PlasmaRobot</name>
       <xPos>2465.0</xPos>
       <yPos>170.0</yPos>
@@ -348,9 +348,9 @@
       <isHostile>false</isHostile>
       <isDrivable>true</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.9674819451812058</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.8678210796658948</ID>
       <name>MemeCar</name>
       <xPos>2110.0</xPos>
       <yPos>1960.0</yPos>
@@ -358,9 +358,9 @@
       <isHostile>true</isHostile>
       <isDrivable>true</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.5651448798916705</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.0031267326486960068</ID>
       <name>WindmillYellow</name>
       <xPos>60.0</xPos>
       <yPos>3620.0</yPos>
@@ -368,9 +368,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.9388367505845034</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.1968853821678902</ID>
       <name>WindmillYellow</name>
       <xPos>180.0</xPos>
       <yPos>3660.0</yPos>
@@ -378,9 +378,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.23541166098511368</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.5066352534895723</ID>
       <name>WindmillYellow</name>
       <xPos>260.0</xPos>
       <yPos>3741.0</yPos>
@@ -388,9 +388,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.6278326108583937</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.9358501865473073</ID>
       <name>WindmillYellow</name>
       <xPos>340.0</xPos>
       <yPos>3859.0</yPos>
@@ -398,9 +398,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.12316608164301035</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.6595080552688751</ID>
       <name>WindmillYellow</name>
       <xPos>379.0</xPos>
       <yPos>3942.0</yPos>
@@ -408,9 +408,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.3354842370458754</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.2734542328863866</ID>
       <name>WindmillGreen</name>
       <xPos>3567.0</xPos>
       <yPos>175.0</yPos>
@@ -418,9 +418,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.4224303850462653</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.32024413028897825</ID>
       <name>WindmillGreen</name>
       <xPos>3380.0</xPos>
       <yPos>180.0</yPos>
@@ -428,9 +428,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.8655368818110845</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.9754664756441507</ID>
       <name>WindmillGreen</name>
       <xPos>3247.0</xPos>
       <yPos>223.0</yPos>
@@ -438,9 +438,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.12193641348136508</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.20703590759069224</ID>
       <name>WindmillGreen</name>
       <xPos>3181.0</xPos>
       <yPos>222.0</yPos>
@@ -448,9 +448,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.7441873694782152</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.35850230887822176</ID>
       <name>WindmillGreen</name>
       <xPos>3109.0</xPos>
       <yPos>221.0</yPos>
@@ -458,9 +458,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.25532130374754547</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.3344765907988949</ID>
       <name>WindmillGreen</name>
       <xPos>2859.0</xPos>
       <yPos>331.0</yPos>
@@ -468,9 +468,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.7948895133518417</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.8784118020113764</ID>
       <name>WindmillGreen</name>
       <xPos>2619.0</xPos>
       <yPos>444.0</yPos>
@@ -478,9 +478,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.044455156953514985</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.2543597007321494</ID>
       <name>WindmillGreen</name>
       <xPos>2341.0</xPos>
       <yPos>512.0</yPos>
@@ -488,9 +488,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.25269980037902784</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.34356454984868046</ID>
       <name>WindmillGreen</name>
       <xPos>1926.0</xPos>
       <yPos>240.0</yPos>
@@ -498,9 +498,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.01143330999692227</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.11339900378944778</ID>
       <name>WindmillGreen</name>
       <xPos>1888.0</xPos>
       <yPos>61.0</yPos>
@@ -508,9 +508,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>false</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.2140122645291912</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.4399476821240579</ID>
       <name>WindmillGrey</name>
       <xPos>1420.0</xPos>
       <yPos>2740.0</yPos>
@@ -518,9 +518,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.4970445271928735</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.6631224103199393</ID>
       <name>WindmillGreen</name>
       <xPos>1700.0</xPos>
       <yPos>2340.0</yPos>
@@ -528,9 +528,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.6883611319420614</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.5178319930564579</ID>
       <name>WindmillGreen</name>
       <xPos>1700.0</xPos>
       <yPos>2180.0</yPos>
@@ -538,9 +538,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.7828379580748372</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.8163484227932589</ID>
       <name>WindmillGreen</name>
       <xPos>1900.0</xPos>
       <yPos>2181.0</yPos>
@@ -548,9 +548,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.08458552194467528</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.24059628132026212</ID>
       <name>WindmillGreen</name>
       <xPos>1900.0</xPos>
       <yPos>2340.0</yPos>
@@ -558,9 +558,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.3821711411303419</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.8251122815652899</ID>
       <name>WindmillGreen</name>
       <xPos>1220.0</xPos>
       <yPos>3300.0</yPos>
@@ -568,9 +568,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.37503173180539073</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.11502185876179116</ID>
       <name>WindmillGreen</name>
       <xPos>1061.0</xPos>
       <yPos>3299.0</yPos>
@@ -578,9 +578,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.39536728752875305</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.04436171141679368</ID>
       <name>WindmillGreen</name>
       <xPos>941.0</xPos>
       <yPos>1860.0</yPos>
@@ -588,9 +588,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.955215280506376</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.31697911029313675</ID>
       <name>WindmillGreen</name>
       <xPos>940.0</xPos>
       <yPos>1700.0</yPos>
@@ -598,9 +598,9 @@
       <isHostile>true</isHostile>
       <isDrivable>false</isDrivable>
       <isMandatory>true</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.8585077711618536</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.8850140414661276</ID>
       <name>PassengerPlane</name>
       <xPos>2508.0</xPos>
       <yPos>2339.0</yPos>
@@ -608,9 +608,9 @@
       <isHostile>true</isHostile>
       <isDrivable>true</isDrivable>
       <isMandatory>true</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.8847032695971183</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.8830644528664283</ID>
       <name>PassengerPlane</name>
       <xPos>2300.0</xPos>
       <yPos>1773.0</yPos>
@@ -618,9 +618,9 @@
       <isHostile>true</isHostile>
       <isDrivable>true</isDrivable>
       <isMandatory>true</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.13822237146584715</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.49299817433596216</ID>
       <name>PassengerPlane</name>
       <xPos>1134.0</xPos>
       <yPos>1779.0</yPos>
@@ -628,9 +628,9 @@
       <isHostile>true</isHostile>
       <isDrivable>true</isDrivable>
       <isMandatory>true</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
-    <game.util.saving.gameObjects.newGame.data.IEntityData>
-      <ID>0.5557603498627421</ID>
+    </nEntity>
+    <nEntity>
+      <ID>0.8716621140722391</ID>
       <name>PassengerPlane</name>
       <xPos>1420.0</xPos>
       <yPos>2412.0</yPos>
@@ -638,12 +638,12 @@
       <isHostile>true</isHostile>
       <isDrivable>true</isDrivable>
       <isMandatory>true</isMandatory>
-    </game.util.saving.gameObjects.newGame.data.IEntityData>
+    </nEntity>
   </allEntities>
   <allWaypointEntities class="linked-list">
     <waypointEntity>
-      <entityData class="game.util.saving.gameObjects.newGame.data.IEntityData">
-        <ID>0.9105309520705458</ID>
+      <entityData class="nEntity">
+        <ID>0.9147718438778815</ID>
         <name>ShellTank</name>
         <xPos>2100.0</xPos>
         <yPos>2050.0</yPos>
@@ -674,8 +674,8 @@
       <waypointListStartIdx>0</waypointListStartIdx>
     </waypointEntity>
     <waypointEntity>
-      <entityData class="game.util.saving.gameObjects.newGame.data.IEntityData">
-        <ID>0.2030049355471718</ID>
+      <entityData class="nEntity">
+        <ID>0.6984876288246834</ID>
         <name>ShellTank</name>
         <xPos>1600.0</xPos>
         <yPos>2600.0</yPos>
@@ -689,8 +689,8 @@
       <waypointListStartIdx>2</waypointListStartIdx>
     </waypointEntity>
     <waypointEntity>
-      <entityData class="game.util.saving.gameObjects.newGame.data.IEntityData">
-        <ID>0.5253745676111923</ID>
+      <entityData class="nEntity">
+        <ID>0.7246966654388475</ID>
         <name>WarPlane</name>
         <xPos>2700.0</xPos>
         <yPos>3500.0</yPos>
@@ -737,8 +737,8 @@
       <waypointListStartIdx>0</waypointListStartIdx>
     </waypointEntity>
     <waypointEntity>
-      <entityData class="game.util.saving.gameObjects.newGame.data.IEntityData">
-        <ID>0.11904692365941016</ID>
+      <entityData class="nEntity">
+        <ID>0.5424229935647621</ID>
         <name>WarPlane</name>
         <xPos>2700.0</xPos>
         <yPos>1900.0</yPos>
@@ -785,8 +785,8 @@
       <waypointListStartIdx>0</waypointListStartIdx>
     </waypointEntity>
     <waypointEntity>
-      <entityData class="game.util.saving.gameObjects.newGame.data.IEntityData">
-        <ID>0.4056151379386027</ID>
+      <entityData class="nEntity">
+        <ID>0.9488957400696704</ID>
         <name>WarPlane</name>
         <xPos>3260.0</xPos>
         <yPos>200.0</yPos>
@@ -833,8 +833,8 @@
       <waypointListStartIdx>0</waypointListStartIdx>
     </waypointEntity>
     <waypointEntity>
-      <entityData class="game.util.saving.gameObjects.newGame.data.IEntityData">
-        <ID>0.0725517021414066</ID>
+      <entityData class="nEntity">
+        <ID>0.5960131010268556</ID>
         <name>NapalmTank</name>
         <xPos>1005.0</xPos>
         <yPos>900.0</yPos>
@@ -881,8 +881,8 @@
       <waypointListStartIdx>0</waypointListStartIdx>
     </waypointEntity>
     <waypointEntity>
-      <entityData class="game.util.saving.gameObjects.newGame.data.IEntityData">
-        <ID>0.006270280473708478</ID>
+      <entityData class="nEntity">
+        <ID>0.48025338410057816</ID>
         <name>NapalmTank</name>
         <xPos>1412.0</xPos>
         <yPos>838.0</yPos>
@@ -969,8 +969,8 @@
       <waypointListStartIdx>0</waypointListStartIdx>
     </waypointEntity>
     <waypointEntity>
-      <entityData class="game.util.saving.gameObjects.newGame.data.IEntityData">
-        <ID>0.596749405398814</ID>
+      <entityData class="nEntity">
+        <ID>0.4281153102696541</ID>
         <name>NapalmTank</name>
         <xPos>921.0</xPos>
         <yPos>229.0</yPos>
@@ -1069,8 +1069,8 @@
     </waypoints>
     <entities class="linked-list" reference="../../allWaypointEntities"/>
   </waypointData>
-  <player class="game.util.saving.gameObjects.newGame.data.IEntityData">
-    <ID>0.46611973280816954</ID>
+  <player class="nEntity">
+    <ID>0.8782198035443592</ID>
     <name>CannonTank</name>
     <xPos>750.0</xPos>
     <yPos>800.0</yPos>

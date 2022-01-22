@@ -38,7 +38,7 @@ public class DoubleLaser extends Laser {
                 groundBullet = addBullet(spawnX, spawnY, rotation_angle, false);
             }
             groundBullet.setProjectileSpeed(LASER_SPEED);
-            groundBullet.projectile_max_lifetime = LASER_LIFETIME_MILLIS;
+            groundBullet.maxLifetime = LASER_LIFETIME_MILLIS;
             projectile_list.add(groundBullet);
             fire_sound.play(1.f, UserSettings.soundVolume);
         }
