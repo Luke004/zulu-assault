@@ -50,7 +50,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
 
     private static final String DEFAULT_MAP_FOLDER = "assets/maps/";
 
-    private static RandomItemDropper randomItemDropper;
+    private static final RandomItemDropper randomItemDropper;
 
     protected static CombatBackgroundMusic combatBackgroundMusic;
 
@@ -63,10 +63,11 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
             all_entities;
     public static List<MovableEntity> drivable_entities;
 
-    // list for rendering -> respects the render hierarchy
-    private static List<Entity> renderList;
+    // diff between aircraft and no aircraft because aircraft has to be drawn later (on top of no aircraft)
+    private static final List<Entity> renderListNoAircraft;
+    private static final List<Aircraft> renderListAircraft;
 
-    private static PlayerInput playerInput;
+    private static final PlayerInput playerInput;
     private static CollisionHandler collisionHandler;
     private Camera camera;
 
@@ -90,7 +91,8 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
         all_friendly_entities = new ArrayList<>();
         drivable_entities = new ArrayList<>();
         all_entities = new ArrayList<>();
-        renderList = new ArrayList<>();
+        renderListNoAircraft = new ArrayList<>();
+        renderListAircraft = new ArrayList<>();
         health_circles = new ArrayList<>();
         teleport_circles = new ArrayList<>();
         items = new ArrayList<>();
@@ -188,8 +190,6 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
                     ((Aircraft) playerEntity).setStarting();
                 }
                 player.init(playerEntity);
-                // reassign player entity after init of player
-                playerEntity = player.getEntity();
 
                 if (!initOnce) {
                     initOnce = true;
@@ -216,26 +216,23 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
                 // create a global movable entity list for collisions between them
                 all_entities.addAll(all_friendly_entities);
                 all_entities.addAll(all_hostile_entities);
-                renderList.addAll(all_entities);    // TODO: 25.10.2020 why are drivable_entities not in render list?
+                //renderListNoAircraft.addAll(all_entities);    // TODO: 25.10.2020 why are drivable_entities not in render list?
                 all_entities.addAll(drivable_entities);
 
-                boolean levelHasAircraft = false;
-                for (int i = renderList.size() - 1; i >= 0; --i) {
-                    if (renderList.get(i) instanceof Aircraft) {
-                        levelHasAircraft = true;
-                        break;
+                for (Entity entity : all_entities) {
+                    if (entity instanceof Aircraft) {
+                        renderListAircraft.add((Aircraft)entity);
+                    } else {
+                        renderListNoAircraft.add(entity);
                     }
                 }
-
-                if (levelHasAircraft) {
-                    // put planes at the end of the list so they get rendered on top of other entities
-                    renderList.sort((o1, o2) -> {
-                        if (o1 instanceof Aircraft && o2 instanceof Aircraft) return 0;
-                        else if (o1 instanceof Aircraft) return 1;
-                        else if (o2 instanceof Aircraft) return -1;
-                        else return 0;
-                    });
-                }
+                // render the aircraft that is actually moving (has wayPointManager) above not moving aircraft
+                renderListAircraft.sort((aircraft1, aircraft2) -> {
+                    if (aircraft1.waypointManager != null && aircraft2.waypointManager != null) return 0;
+                    if (aircraft1.waypointManager != null) return 1;
+                    if (aircraft2.waypointManager != null) return -1;
+                    return 0;
+                });
 
                 camera = new Camera(gameContainer, map);
                 camera.centerOn(player.getEntity().getPosition().x, player.getEntity().getPosition().y);
@@ -307,7 +304,11 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
             items.add(drop_item);
         }
         // remove entity from other relevant lists
-        renderList.remove(entity);
+        if (entity instanceof Aircraft) {
+            renderListAircraft.remove(entity);
+        } else {
+            renderListNoAircraft.remove(entity);
+        }
         all_entities.remove(entity);
     }
 
@@ -369,11 +370,15 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
             drivableEntity.draw(graphics);
         }
 
-        for (Entity renderInstance : renderList) {
+        for (Entity renderInstance : renderListNoAircraft) {
             renderInstance.draw(graphics);
         }
 
         player.draw(graphics);
+
+        for (Entity renderInstance : renderListAircraft) {
+            renderInstance.draw(graphics);
+        }
 
         bigExplosionAnimation.draw();
         collisionHandler.draw();
@@ -452,7 +457,8 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
         all_friendly_entities.clear();
         drivable_entities.clear();
         all_entities.clear();
-        renderList.clear();
+        renderListNoAircraft.clear();
+        renderListAircraft.clear();
         health_circles.clear();
         teleport_circles.clear();
         items.clear();
