@@ -1,12 +1,11 @@
 package game.menu.screens;
 
-import game.audio.CombatBackgroundMusic;
 import game.audio.MenuSounds;
 import game.graphics.fonts.FontManager;
 import game.levels.GameDataStorage;
 import game.levels.LevelManager;
 import game.util.saving.SaveUtil;
-import game.util.saving.running.RunningGameDataWrapper;
+import game.util.saving.gameObjects.runningGame.RunningGameDataWrapper;
 import main.ZuluAssault;
 import game.menu.Menu;
 import game.menu.elements.Arrow;
@@ -14,8 +13,6 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.state.transition.FadeInTransition;
-import org.newdawn.slick.state.transition.FadeOutTransition;
 import settings.UserSettings;
 
 import static game.menu.Menu.*;

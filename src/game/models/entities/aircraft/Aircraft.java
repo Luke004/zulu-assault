@@ -12,6 +12,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
+import static game.levels.Level.map;
 import static game.logic.TileMapData.*;
 
 public abstract class Aircraft extends MovableEntity {

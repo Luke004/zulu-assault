@@ -8,8 +8,7 @@ import game.graphics.fonts.FontManager;
 import game.player.Player;
 import game.util.StringUtil;
 import game.util.TimeManager;
-import game.util.saving.SaveUtil;
-import game.util.saving.init.InitGameDataWrapper;
+import game.util.saving.gameObjects.newGame.NewGameDataWrapper;
 import main.ZuluAssault;
 import settings.UserSettings;
 import org.newdawn.slick.*;
@@ -44,7 +43,7 @@ public class Debriefing extends BasicGameState {
         debriefing_music.play(1.f, UserSettings.musicVolume);
 
         boolean isOfficialLevel = Level.isOfficialLevel(ZuluAssault.nextLevelName);
-        InitGameDataWrapper levelData = GameDataStorage.initGameData;
+        NewGameDataWrapper levelData = GameDataStorage.initGameData;
         if (levelData != null) {
             String s_debriefing_message = levelData.debriefing_message;
             String mission_title_detailed = levelData.mission_title;

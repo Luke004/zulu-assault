@@ -1,6 +1,6 @@
-package game.util.saving.init.data;
+package game.util.saving.gameObjects.newGame.data;
 
-import game.util.saving.data.EntityData;
+import game.util.saving.gameObjects.EntityData;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.List;

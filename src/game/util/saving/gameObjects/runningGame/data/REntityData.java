@@ -1,6 +1,6 @@
-package game.util.saving.running.data;
+package game.util.saving.gameObjects.runningGame.data;
 
-import game.util.saving.init.data.IEntityData;
+import game.util.saving.gameObjects.newGame.data.IEntityData;
 
 /**
  * 'IEntityData'-class but extended with parameter 'currentHealth'.

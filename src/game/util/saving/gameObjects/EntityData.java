@@ -1,4 +1,4 @@
-package game.util.saving.data;
+package game.util.saving.gameObjects;
 
 public abstract class EntityData {
     public double ID;

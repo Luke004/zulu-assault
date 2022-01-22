@@ -21,6 +21,7 @@ import org.newdawn.slick.Sound;
 import game.player.Player;
 
 import static game.levels.Level.*;
+import static game.levels.Level.map;
 import static game.util.TileMapUtil.*;
 import static game.logic.TileMapData.*;
 
@@ -144,16 +145,16 @@ public class CollisionHandler {
             if (player.getEntity().getCollisionModel().intersects(items.get(idx).getCollisionModel())) {
                 switch (items.get(idx).getName()) {
                     case "MEGA_PULSE":
-                        player.addItem(Player.Item_e.MEGA_PULSE);
+                        Player.addItem(Player.Item_e.MEGA_PULSE);
                         break;
                     case "INVINCIBILITY":
-                        player.addItem(Player.Item_e.INVINCIBILITY);
+                        Player.addItem(Player.Item_e.INVINCIBILITY);
                         break;
                     case "EMP":
-                        player.addItem(Player.Item_e.EMP);
+                        Player.addItem(Player.Item_e.EMP);
                         break;
                     case "EXPAND":
-                        player.addItem(Player.Item_e.EXPAND);
+                        Player.addItem(Player.Item_e.EXPAND);
                         break;
                     case "SILVER_WRENCH":
                         if (player.getEntity().isMaxHealth()) return;

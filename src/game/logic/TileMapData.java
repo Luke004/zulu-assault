@@ -1,15 +1,13 @@
 package game.logic;
 
 import org.newdawn.slick.tiled.TileSet;
-import org.newdawn.slick.tiled.TiledMap;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class TileMapData {
+import static game.levels.Level.map;
 
-    // the map itself
-    public static TiledMap map;
+public class TileMapData {
 
     // tile size info
     public static int TILE_WIDTH, TILE_HEIGHT, LEVEL_WIDTH_TILES, LEVEL_HEIGHT_TILES, LEVEL_WIDTH_PIXELS,
@@ -68,7 +66,6 @@ public class TileMapData {
                 collision_replace_indices[idx] += landscape_tiles.firstGID;
             }
         }
-
         // init tiles of grass for tile replacement
         int[] grass_indices = new int[]{
                 0, 3, 4, 5, 6, 12, 28, 29, 30, 31
@@ -127,10 +124,6 @@ public class TileMapData {
     public static void reset() {
         if (destructible_tiles_health_info == null) destructible_tiles_health_info = new HashMap<>();
         else destructible_tiles_health_info.clear();
-    }
-
-    public static void setMap(TiledMap myMap) {
-        map = myMap;
     }
 
     public static int getReplacementTileID(int tileID) {

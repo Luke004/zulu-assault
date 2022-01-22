@@ -9,6 +9,7 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 
+import static game.levels.Level.map;
 import static game.logic.TileMapData.*;
 import static game.logic.TileMapData.LANDSCAPE_TILES_LAYER_IDX;
 

@@ -1,19 +1,18 @@
-package game.util.saving.running;
+package game.util.saving.gameObjects.runningGame;
 
 
 import game.levels.LevelManager;
 import game.models.Element;
 import game.models.entities.Entity;
 import game.models.entities.MovableEntity;
-import game.models.items.Item;
 import game.models.weapons.projectiles.Projectile;
 import game.player.Player;
 import game.util.TimeManager;
 import game.util.WayPointManager;
-import game.util.saving.data.ASaveDataWrapper;
-import game.util.saving.data.EntityData;
-import game.util.saving.init.data.WaypointEntityData;
-import game.util.saving.running.data.REntityData;
+import game.util.saving.gameObjects.ASaveDataWrapper;
+import game.util.saving.gameObjects.EntityData;
+import game.util.saving.gameObjects.newGame.data.WaypointEntityData;
+import game.util.saving.gameObjects.runningGame.data.REntityData;
 import level_editor.util.EditorWaypointList;
 import level_editor.util.MapElements;
 import org.newdawn.slick.geom.Vector2f;
@@ -23,7 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * All the data that is needed to save and load a running game is stored here.
+ * Wraps all the data that is needed to load a running game.
+ * It is converted to an XML-file to later load the data from.
  */
 public class RunningGameDataWrapper extends ASaveDataWrapper {
 

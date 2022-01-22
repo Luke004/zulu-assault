@@ -1,4 +1,4 @@
-package game.util.saving.init.data;
+package game.util.saving.gameObjects.newGame.data;
 
 import org.newdawn.slick.geom.Vector2f;
 

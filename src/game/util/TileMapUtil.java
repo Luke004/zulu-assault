@@ -6,6 +6,7 @@ import game.logic.TileMapData;
 import java.util.ArrayList;
 import java.util.List;
 
+import static game.levels.Level.map;
 import static game.logic.TileMapData.*;
 
 public class TileMapUtil {

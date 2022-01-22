@@ -23,12 +23,10 @@ import game.models.interaction_circles.InteractionCircle;
 import game.models.interaction_circles.TeleportCircle;
 import game.models.items.Item;
 import game.player.Player;
-import game.util.LevelDataStorage;
 import game.util.TimeManager;
 import game.util.saving.SaveUtil;
-import game.util.saving.data.ASaveDataWrapper;
-import game.util.saving.init.InitGameDataWrapper;
-import game.util.saving.running.RunningGameDataWrapper;
+import game.util.saving.gameObjects.ASaveDataWrapper;
+import game.util.saving.mapLayers.MyTileMap;
 import level_editor.LevelEditor;
 import main.ZuluAssault;
 import org.newdawn.slick.*;
@@ -36,11 +34,10 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
-import org.newdawn.slick.tiled.TiledMap;
+import org.newdawn.slick.tiled.Layer;
 import game.logic.TileMapData;
 import settings.UserSettings;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -58,7 +55,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
     protected static CombatBackgroundMusic combatBackgroundMusic;
 
     public static Player player;
-    public TiledMap map;
+    public static MyTileMap map;
     public static List<TeleportCircle> teleport_circles;
     public static List<HealthCircle> health_circles;
     public static List<Item> items;
@@ -124,21 +121,23 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
         }
 
         try {
-            map = new TiledMap(mapLocation + ZuluAssault.nextLevelName + ".tmx");
 
-            // set the current tilemap based on the level
-            TileMapData.setMap(map);
+
             //LevelDataStorage levelData = LevelDataStorage.loadLevel(ZuluAssault.nextLevelName, isOfficialLevel);
 
             ASaveDataWrapper levelData;
             // check whether a game is loaded or a new one is started
             if (GameDataStorage.runningGameData != null) {
                 // runningGameData exists -> LOAD EXISTING GAME
+                ArrayList<Layer> mapLayers = SaveUtil.loadTMXMapData("");
+                map = new MyTileMap(mapLocation + ZuluAssault.nextLevelName + ".tmx", mapLayers);
+                //map = SaveUtil.loadTMXMapData("");
                 levelData = GameDataStorage.runningGameData;
                 // also setup the initGameData in case the user wants to save
                 GameDataStorage.initGameData = SaveUtil.loadInitGameDataFromXML(ZuluAssault.nextLevelName, isOfficialLevel);
             } else {
                 // NO runningGameData exists ->  INIT NEW LEVEL
+                map = new MyTileMap(mapLocation + ZuluAssault.nextLevelName + ".tmx");
                 levelData = GameDataStorage.initGameData;
             }
             if (levelData != null) {

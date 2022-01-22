@@ -1,4 +1,4 @@
-package game.util.saving.data;
+package game.util.saving.gameObjects;
 
 import game.models.Element;
 import game.models.entities.Entity;
@@ -6,8 +6,8 @@ import game.models.entities.MovableEntity;
 import game.models.interaction_circles.InteractionCircle;
 import game.models.items.Item;
 import game.util.WayPointManager;
-import game.util.saving.init.InitGameDataWrapper;
-import game.util.saving.init.data.*;
+import game.util.saving.gameObjects.newGame.NewGameDataWrapper;
+import game.util.saving.gameObjects.newGame.data.*;
 import level_editor.LevelEditor;
 import level_editor.util.EditorWaypointList;
 import level_editor.util.MapElements;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Abstract save data wrapper class. It serves as an abstract base class for both the 'InitGameDataWrapper' and the
+ * Abstract save data wrapper class. It serves as an abstract base class for both the 'NewGameDataWrapper' and the
  * 'RunningGameDataWrapper'.
  */
 public abstract class ASaveDataWrapper {
@@ -82,7 +82,7 @@ public abstract class ASaveDataWrapper {
                                 waypointEntityData.waypoints = waypoints;
                                 // for the waypointListStartIdx: if it is init game, use default start idx
                                 // else it is a running game, so get the next target idx
-                                waypointEntityData.waypointListStartIdx = this instanceof InitGameDataWrapper ?
+                                waypointEntityData.waypointListStartIdx = this instanceof NewGameDataWrapper ?
                                         waypoints.indexOf(startingWaypoint) :
                                         movableEntity.waypointManager.getNextWayPointIdx();
                                 waypointEntityData.waypointListIdx = allWayPointLists.indexOf(editorWaypointList);

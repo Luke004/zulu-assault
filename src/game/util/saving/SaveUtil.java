@@ -1,23 +1,24 @@
 package game.util.saving;
 
 import com.thoughtworks.xstream.XStream;
-import game.models.Element;
-import game.models.entities.Entity;
-import game.models.entities.MovableEntity;
 import game.models.weapons.projectiles.Projectile;
-import game.util.saving.data.EntityData;
-import game.util.saving.init.data.*;
-import game.util.saving.init.InitGameDataWrapper;
-import game.util.saving.running.RunningGameDataWrapper;
-import game.util.saving.running.data.REntityData;
-import level_editor.util.EditorWaypointList;
+import game.util.saving.gameObjects.EntityData;
+import game.util.saving.gameObjects.newGame.data.*;
+import game.util.saving.gameObjects.newGame.NewGameDataWrapper;
+import game.util.saving.gameObjects.runningGame.RunningGameDataWrapper;
+import game.util.saving.mapLayers.MyTileMap;
+import game.util.saving.gameObjects.runningGame.data.REntityData;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.opengl.TextureImpl;
+import org.newdawn.slick.tiled.Layer;
+import org.newdawn.slick.tiled.TileSet;
+import org.newdawn.slick.tiled.TiledMap;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
 
 public class SaveUtil {
 
@@ -30,7 +31,7 @@ public class SaveUtil {
         setupXStream();
     }
 
-    public static void saveInitGameDataToXML(InitGameDataWrapper levelData) {
+    public static void saveInitGameDataToXML(NewGameDataWrapper levelData) {
         String xml = xstream.toXML(levelData);
         try (PrintWriter out = new PrintWriter(STANDARD_MAPS_DATA_SAVE_FOLDER + levelData.levelName + ".xml")) {
             out.println(xml);
@@ -39,12 +40,12 @@ public class SaveUtil {
         }
     }
 
-    public static InitGameDataWrapper loadInitGameDataFromXML(String name, boolean isOfficialLevel) {
+    public static NewGameDataWrapper loadInitGameDataFromXML(String name, boolean isOfficialLevel) {
         Path fileName = Path.of((isOfficialLevel ? STANDARD_MAPS_DATA_SAVE_FOLDER : CUSTOM_MAPS_DATA_SAVE_FOLDER)
                 + name + ".xml");
         try {
             String xml = Files.readString(fileName);
-            return (InitGameDataWrapper) xstream.fromXML(xml);
+            return (NewGameDataWrapper) xstream.fromXML(xml);
         } catch (IOException e) {
             System.out.println("Error: Could not read XML-file for level '" + name + "'!");
         }
@@ -74,6 +75,26 @@ public class SaveUtil {
         return null;
     }
 
+    public static void saveTMXMapData(ArrayList<Layer> mapLayers) {
+        String xml = xstream.toXML(mapLayers);
+        try (PrintWriter out = new PrintWriter(RUNNING_GAMES_DATA_SAVE_FOLDER + "testData" + ".xml")) {
+            out.println(xml);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ArrayList<Layer> loadTMXMapData(String name) {
+        Path fileName = Path.of(RUNNING_GAMES_DATA_SAVE_FOLDER + "testData" + ".xml");
+        try {
+            String xml = Files.readString(fileName);
+            return (ArrayList<Layer>) xstream.fromXML(xml);
+        } catch (IOException e) {
+            System.out.println("Error: Could not read map-file for level '" + "testData" + "'!");
+        }
+        return null;
+    }
+
     private static void setupXStream() {
         xstream = new XStream();
         xstream.alias("entity", EntityData.class);
@@ -81,12 +102,14 @@ public class SaveUtil {
         xstream.alias("item", ItemData.class);
         xstream.alias("waypoint", WaypointData.class);
         xstream.alias("waypointEntity", WaypointEntityData.class);
-        xstream.alias("initGameData", InitGameDataWrapper.class);
-        xstream.alias("runningGameData", InitGameDataWrapper.class);
+        xstream.alias("initGameData", NewGameDataWrapper.class);
+        xstream.alias("runningGameData", NewGameDataWrapper.class);
+        xstream.alias("mapLayers", ArrayList.class);
         // setup XStream permissions for used classes
         Class<?>[] classes = new Class[]{IEntityData.class, REntityData.class, Projectile.class, CircleData.class,
-                ItemData.class, WaypointData.class, WaypointEntityData.class, InitGameDataWrapper.class, Vector2f.class,
-                EntityData.class, RunningGameDataWrapper.class };
+                ItemData.class, WaypointData.class, WaypointEntityData.class, NewGameDataWrapper.class, Vector2f.class,
+                EntityData.class, RunningGameDataWrapper.class,
+                TiledMap.class, TileSet.class, TextureImpl.class, Image.class, Layer.class, MyTileMap.class};
         xstream.allowTypes(classes);
     }
 
