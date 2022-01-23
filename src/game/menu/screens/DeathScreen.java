@@ -38,7 +38,7 @@ public class DeathScreen extends AbstractMenuScreen {
             buttons = new Buttons(button_texture_active, button_texture_inactive,
                     new Vector2f(100, 100), new String[]{
                     "Replay Mission", "Load Game", "Main Menu"
-            });
+            }, true);
         } catch (SlickException e) {
             e.printStackTrace();
         }

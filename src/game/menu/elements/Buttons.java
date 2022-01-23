@@ -11,13 +11,13 @@ public class Buttons {
     private int currIdx;
 
     public Buttons(Texture active_button_texture, Texture inactive_button_texture,
-                   Vector2f starting_position, String[] descriptions, Color color) {
+                   Vector2f starting_position, String[] descriptions, boolean defaultActive, Color color) {
         Vector2f nextBtnPosition = new Vector2f(starting_position);
         int amount = descriptions.length;
         buttons = new Button[amount];
         for (int idx = 0; idx < buttons.length; ++idx) {
             buttons[idx] = new Button(active_button_texture, inactive_button_texture, new Vector2f(nextBtnPosition.x,
-                    nextBtnPosition.y), descriptions[idx], idx == 0, color);
+                    nextBtnPosition.y), descriptions[idx], defaultActive ? idx == 0 : false, color);
             nextBtnPosition.y += 32;
             // split buttons in 2 columns when there are more than 6
             if (amount > 6 && idx == amount / 2 - 1) {
@@ -28,8 +28,8 @@ public class Buttons {
     }
 
     public Buttons(Texture active_button_texture, Texture inactive_button_texture,
-                   Vector2f starting_position, String[] descriptions) {
-        this(active_button_texture, inactive_button_texture, starting_position, descriptions, Color.white);
+                   Vector2f starting_position, String[] descriptions, boolean defaultActive) {
+        this(active_button_texture, inactive_button_texture, starting_position, descriptions,defaultActive, Color.white);
     }
 
     public void draw() {
@@ -60,6 +60,15 @@ public class Buttons {
 
     public Button getButtonByIdx(int idx) {
         return buttons[idx];
+    }
+
+    public Button getCurrentActiveBtn() {
+        return buttons[currIdx];
+    }
+
+    public void reset() {
+        this.getCurrentActiveBtn().setActive(false);
+        this.currIdx = 0;
     }
 
     public int isClicked(int mouseX, int mouseY) {
@@ -123,6 +132,18 @@ public class Buttons {
 
         public void setDescription(String description) {
             this.description = description;
+        }
+
+        public String getDescription() {
+            return this.description;
+        }
+
+        public void changeColor(Color newColor) {
+            this.color = newColor;
+        }
+
+        public void setActive(boolean value) {
+            this.isActive = value;
         }
 
     }

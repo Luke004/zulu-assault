@@ -111,15 +111,6 @@ public class MainScreen extends AbstractMenuScreen {
                 break;
             case 1: // LOAD
                 goToMenu(STATE_LOAD_GAME_MENU, gc);
-                /*
-                RunningGameDataWrapper gameData = SaveUtil.loadRunningGameDataFromXML("map_1");
-                GameDataStorage.runningGameData = gameData; // save game data in storage
-                if (gameData == null) {
-                    MenuSounds.ERROR_SOUND.play(1.f, UserSettings.soundVolume);
-                    break;
-                }
-                LevelManager.loadExistingGame("map_1", basicGameState, gameData);
-                 */
                 break;
             case 2: // EDITOR
                 sbg.enterState(ZuluAssault.LEVEL_EDITOR);
