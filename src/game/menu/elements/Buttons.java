@@ -1,5 +1,6 @@
 package game.menu.elements;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
@@ -10,14 +11,13 @@ public class Buttons {
     private int currIdx;
 
     public Buttons(Texture active_button_texture, Texture inactive_button_texture,
-                   Vector2f starting_position, String[] descriptions) {
+                   Vector2f starting_position, String[] descriptions, Color color) {
         Vector2f nextBtnPosition = new Vector2f(starting_position);
         int amount = descriptions.length;
         buttons = new Button[amount];
         for (int idx = 0; idx < buttons.length; ++idx) {
             buttons[idx] = new Button(active_button_texture, inactive_button_texture, new Vector2f(nextBtnPosition.x,
-                    nextBtnPosition.y),
-                    descriptions[idx], idx == 0);
+                    nextBtnPosition.y), descriptions[idx], idx == 0, color);
             nextBtnPosition.y += 32;
             // split buttons in 2 columns when there are more than 6
             if (amount > 6 && idx == amount / 2 - 1) {
@@ -25,6 +25,11 @@ public class Buttons {
                 nextBtnPosition.y -= (idx + 1) * 32;
             }
         }
+    }
+
+    public Buttons(Texture active_button_texture, Texture inactive_button_texture,
+                   Vector2f starting_position, String[] descriptions) {
+        this(active_button_texture, inactive_button_texture, starting_position, descriptions, Color.white);
     }
 
     public void draw() {
@@ -53,6 +58,10 @@ public class Buttons {
         return currIdx;
     }
 
+    public Button getButtonByIdx(int idx) {
+        return buttons[idx];
+    }
+
     public int isClicked(int mouseX, int mouseY) {
         if (mouseX < buttons[0].base_position.x) return -1;
         if (mouseX > buttons[buttons.length - 1].base_position.x + Button.BUTTON_WIDTH) return -1;
@@ -63,7 +72,7 @@ public class Buttons {
             if (buttons[idx].base_position.x < mouseX
                     && buttons[idx].base_position.x + Button.BUTTON_WIDTH > mouseX) {
                 if (buttons[idx].base_position.y < mouseY
-                && buttons[idx].base_position.y + Button.BUTTON_HEIGHT > mouseY) {
+                        && buttons[idx].base_position.y + Button.BUTTON_HEIGHT > mouseY) {
                     // CLICKED
                     if (currIdx != idx) buttons[currIdx].isActive = false; // set prev clicked as inactive
                     currIdx = idx; // set new active idx
@@ -80,11 +89,12 @@ public class Buttons {
     }
 
 
-    private static class Button extends AbstractMenuElement {
+    public static class Button extends AbstractMenuElement {
 
         private boolean isActive;
         private final Image inactive_button_image;
         static int BUTTON_WIDTH, BUTTON_HEIGHT;
+        private Color color;
 
         public Button(Texture active_button_texture, Texture inactive_button_texture, Vector2f button_position,
                       String description, boolean isActive) {
@@ -95,6 +105,11 @@ public class Buttons {
             BUTTON_HEIGHT = inactive_button_image.getHeight();
         }
 
+        public Button(Texture active_button_texture, Texture inactive_button_texture, Vector2f button_position,
+                      String description, boolean isActive, Color color) {
+            this(active_button_texture, inactive_button_texture, button_position, description, isActive);
+            this.color = color;
+        }
 
         @Override
         public void draw() {
@@ -103,8 +118,13 @@ public class Buttons {
             text_drawer.drawString(
                     base_position.x + ELEMENT_WIDTH + 30,
                     base_position.y + 5.f,
-                    description);
+                    description, this.color == null ? Color.white : this.color);
         }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
     }
 
 }

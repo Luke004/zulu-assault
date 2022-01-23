@@ -140,8 +140,8 @@ public class InGameScreen extends AbstractMenuScreen {
                         levelData.briefing_message,
                         levelData.debriefing_message,
                         levelData.musicIdx
-                ));
-                SaveUtil.saveTMXMapData(Level.map.getMapLayers(), levelData.levelName);
+                ), 1);
+                SaveUtil.saveTMXMapData(Level.map.getMapLayers(), levelData.levelName, 1);
                 break;
             case 4: // OPTIONS
                 goToMenu(Menu.STATE_OPTIONS_MENU);

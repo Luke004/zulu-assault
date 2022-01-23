@@ -35,6 +35,7 @@ public class RunningGameDataWrapper extends ASaveDataWrapper {
     public long currTime, totalTime;            // current and total time of player in game
     public int currentScore;                    // current score of the player
     public int[] item_amounts;                  // current items that the player has
+    public static int levelIdxToLoad;           // idx to load the data from
 
     public RunningGameDataWrapper(String name,
                                   List<Element> elements,

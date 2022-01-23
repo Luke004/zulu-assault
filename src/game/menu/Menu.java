@@ -24,7 +24,7 @@ public class Menu extends BasicGameState {
 
     private static int current_menu_idx, prev_menu_idx;
 
-    private AbstractMenuScreen[] menus;
+    private static AbstractMenuScreen[] menus;
 
     private static boolean firstCall_leave = true, firstCall_enter = true;
 
@@ -108,6 +108,11 @@ public class Menu extends BasicGameState {
     public static void goToMenu(int menu_idx) {
         prev_menu_idx = current_menu_idx;
         current_menu_idx = menu_idx;
+    }
+
+    public static void goToMenu(int menu_idx, GameContainer gc) {
+        goToMenu(menu_idx);
+        menus[current_menu_idx].onEnterState(gc);
     }
 
     public static void returnToPreviousMenu() {

@@ -110,7 +110,7 @@ public class MainScreen extends AbstractMenuScreen {
                 LevelManager.startNewGame("map_1", basicGameState);
                 break;
             case 1: // LOAD
-                goToMenu(STATE_LOAD_GAME_MENU);
+                goToMenu(STATE_LOAD_GAME_MENU, gc);
                 /*
                 RunningGameDataWrapper gameData = SaveUtil.loadRunningGameDataFromXML("map_1");
                 GameDataStorage.runningGameData = gameData; // save game data in storage

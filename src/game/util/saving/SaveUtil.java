@@ -25,7 +25,7 @@ public class SaveUtil {
 
     private static final String CUSTOM_MAPS_DATA_SAVE_FOLDER = "assets/maps_custom/";
     private static final String STANDARD_MAPS_DATA_SAVE_FOLDER = "assets/maps/";
-    private static final String RUNNING_GAMES_DATA_SAVE_FOLDER = "saves/games/";
+    public static final String RUNNING_GAMES_DATA_SAVE_FOLDER = "saves/games/";
     private static XStream xstream;
 
     static {
@@ -53,20 +53,23 @@ public class SaveUtil {
         return null;
     }
 
-    public static void saveRunningGameDataToXML(RunningGameDataWrapper runningGameData) {
-        File properties_file = new File(RUNNING_GAMES_DATA_SAVE_FOLDER);
-        properties_file.mkdir();
-
+    public static void saveRunningGameDataToXML(RunningGameDataWrapper runningGameData, int saveIdx) {
+        File saveFolderDir = new File(RUNNING_GAMES_DATA_SAVE_FOLDER);
+        saveFolderDir.mkdir(); // create save folder dir ("/saves/games")
+        final String saveGameDir = RUNNING_GAMES_DATA_SAVE_FOLDER + File.separator + saveIdx;
+        File idxFolderDir = new File(saveGameDir);
+        idxFolderDir.mkdir(); // create save game folder dir ("/saves/games/[saveIdx]")
         String xml = xstream.toXML(runningGameData);
-        try (PrintWriter out = new PrintWriter(RUNNING_GAMES_DATA_SAVE_FOLDER + runningGameData.levelName + ".xml")) {
+        try (PrintWriter out = new PrintWriter(saveGameDir + File.separator + runningGameData.levelName + ".xml")) {
             out.println(xml);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public static RunningGameDataWrapper loadRunningGameDataFromXML(String name) {
-        Path fileName = Path.of(RUNNING_GAMES_DATA_SAVE_FOLDER + name + ".xml");
+    public static RunningGameDataWrapper loadRunningGameDataFromXML(String name, int idx) {
+        Path fileName = Path.of(RUNNING_GAMES_DATA_SAVE_FOLDER + File.separator + idx
+                + File.separator + name + ".xml");
         try {
             String xml = Files.readString(fileName);
             return (RunningGameDataWrapper) xstream.fromXML(xml);
@@ -76,9 +79,10 @@ public class SaveUtil {
         return null;
     }
 
-    public static void saveTMXMapData(ArrayList<Layer> mapLayers, String name) {
+    public static void saveTMXMapData(ArrayList<Layer> mapLayers, String name, int saveIdx) {
         String xml = xstream.toXML(mapLayers);
-        try (PrintWriter out = new PrintWriter(RUNNING_GAMES_DATA_SAVE_FOLDER + name + "_layers.xml")) {
+        try (PrintWriter out = new PrintWriter(RUNNING_GAMES_DATA_SAVE_FOLDER + saveIdx
+                + File.separator + name + "_layers.xml")) {
             out.println(xml);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -86,7 +90,8 @@ public class SaveUtil {
     }
 
     public static ArrayList<Layer> loadTMXMapData(String name) {
-        Path fileName = Path.of(RUNNING_GAMES_DATA_SAVE_FOLDER + name + "_layers.xml");
+        Path fileName = Path.of(RUNNING_GAMES_DATA_SAVE_FOLDER + RunningGameDataWrapper.levelIdxToLoad
+                + File.separator + name + "_layers.xml");
         try {
             String xml = Files.readString(fileName);
             return (ArrayList<Layer>) xstream.fromXML(xml);

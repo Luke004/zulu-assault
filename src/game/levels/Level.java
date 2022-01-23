@@ -331,7 +331,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
 
     public static boolean isOfficialLevel(String s_name) {
         if (s_name.length() > 4) {
-            if (s_name.substring(0, 4).equals("map_")) {
+            if (s_name.startsWith("map_")) {
                 // official map
                 int levelID = Integer.parseInt(s_name.substring(4));
                 return levelID <= ZuluAssault.MAX_LEVEL && levelID >= 1;
