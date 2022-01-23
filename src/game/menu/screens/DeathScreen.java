@@ -35,7 +35,7 @@ public class DeathScreen extends AbstractMenuScreen {
         try {
             button_texture_inactive = new Image("assets/menus/green_button_inactive.png").getTexture();
             Texture button_texture_active = new Image("assets/menus/green_button_active.png").getTexture();
-            buttons = new Buttons(3, false, button_texture_active, button_texture_inactive,
+            buttons = new Buttons(button_texture_active, button_texture_inactive,
                     new Vector2f(100, 100), new String[]{
                     "Replay Mission", "Load Game", "Main Menu"
             });

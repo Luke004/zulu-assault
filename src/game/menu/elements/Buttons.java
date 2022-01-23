@@ -6,21 +6,24 @@ import org.newdawn.slick.opengl.Texture;
 
 public class Buttons {
 
-    private Button[] buttons;
+    private final Button[] buttons;
     private int currIdx;
-    private Vector2f starting_position;
-    private int button_amount;
 
-    public Buttons(int amount, boolean hasReturnButton, Texture active_button_texture, Texture inactive_button_texture,
+    public Buttons(Texture active_button_texture, Texture inactive_button_texture,
                    Vector2f starting_position, String[] descriptions) {
-        this.starting_position = new Vector2f(starting_position);
-        this.button_amount = amount + (hasReturnButton ? 1 : 0);
-        buttons = new Button[this.button_amount];
+        Vector2f nextBtnPosition = new Vector2f(starting_position);
+        int amount = descriptions.length;
+        buttons = new Button[amount];
         for (int idx = 0; idx < buttons.length; ++idx) {
-            buttons[idx] = new Button(active_button_texture, inactive_button_texture, new Vector2f(starting_position.x,
-                    starting_position.y),
+            buttons[idx] = new Button(active_button_texture, inactive_button_texture, new Vector2f(nextBtnPosition.x,
+                    nextBtnPosition.y),
                     descriptions[idx], idx == 0);
-            starting_position.y += 32;
+            nextBtnPosition.y += 32;
+            // split buttons in 2 columns when there are more than 6
+            if (amount > 6 && idx == amount / 2 - 1) {
+                nextBtnPosition.x += 250;
+                nextBtnPosition.y -= (idx + 1) * 32;
+            }
         }
     }
 
@@ -51,32 +54,36 @@ public class Buttons {
     }
 
     public int isClicked(int mouseX, int mouseY) {
-        if (mouseX < starting_position.x || mouseX > starting_position.x + Button.BUTTON_WIDTH)
-            return -1;
-        if (mouseY < starting_position.y || mouseY > starting_position.y + Button.BUTTON_HEIGHT * button_amount)
-            return -1;
+        if (mouseX < buttons[0].base_position.x) return -1;
+        if (mouseX > buttons[buttons.length - 1].base_position.x + Button.BUTTON_WIDTH) return -1;
+        if (mouseY < buttons[0].base_position.y) return -1;
+        if (mouseY > buttons[buttons.length - 1].base_position.y + Button.BUTTON_HEIGHT) return -1;
 
-        int startY = (int) starting_position.y;
-
-        for (int idx = 0; idx < button_amount; ++idx) {
-            if (mouseY < startY + ((idx + 1) * Button.BUTTON_HEIGHT)) {
-                if (currIdx != idx) buttons[currIdx].isActive = false;
-                currIdx = idx;
-                if (buttons[currIdx].isActive) {
-                    return currIdx;
-                } else {
-                    buttons[currIdx].isActive = true;
-                    return -2;
+        for (int idx = 0; idx < buttons.length; ++idx) {
+            if (buttons[idx].base_position.x < mouseX
+                    && buttons[idx].base_position.x + Button.BUTTON_WIDTH > mouseX) {
+                if (buttons[idx].base_position.y < mouseY
+                && buttons[idx].base_position.y + Button.BUTTON_HEIGHT > mouseY) {
+                    // CLICKED
+                    if (currIdx != idx) buttons[currIdx].isActive = false; // set prev clicked as inactive
+                    currIdx = idx; // set new active idx
+                    if (buttons[currIdx].isActive) {
+                        return currIdx;
+                    } else {
+                        buttons[currIdx].isActive = true;
+                        return -2; // btn was just set as active
+                    }
                 }
             }
         }
         return -1;
     }
 
+
     private static class Button extends AbstractMenuElement {
 
         private boolean isActive;
-        private Image inactive_button_image;
+        private final Image inactive_button_image;
         static int BUTTON_WIDTH, BUTTON_HEIGHT;
 
         public Button(Texture active_button_texture, Texture inactive_button_texture, Vector2f button_position,

@@ -86,7 +86,6 @@ public class MainScreen extends AbstractMenuScreen {
         }
     }
 
-
     @Override
     public void onMouseClick(GameContainer gameContainer, StateBasedGame stateBasedGame, int mouseX, int mouseY) {
         if (mouseX > menu_options_position.x && mouseX < menu_options_position.x + menu_options_width) {
@@ -111,6 +110,8 @@ public class MainScreen extends AbstractMenuScreen {
                 LevelManager.startNewGame("map_1", basicGameState);
                 break;
             case 1: // LOAD
+                goToMenu(STATE_LOAD_GAME_MENU);
+                /*
                 RunningGameDataWrapper gameData = SaveUtil.loadRunningGameDataFromXML("map_1");
                 GameDataStorage.runningGameData = gameData; // save game data in storage
                 if (gameData == null) {
@@ -118,6 +119,7 @@ public class MainScreen extends AbstractMenuScreen {
                     break;
                 }
                 LevelManager.loadExistingGame("map_1", basicGameState, gameData);
+                 */
                 break;
             case 2: // EDITOR
                 sbg.enterState(ZuluAssault.LEVEL_EDITOR);
