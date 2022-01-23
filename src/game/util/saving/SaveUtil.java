@@ -76,9 +76,9 @@ public class SaveUtil {
         return null;
     }
 
-    public static void saveTMXMapData(ArrayList<Layer> mapLayers) {
+    public static void saveTMXMapData(ArrayList<Layer> mapLayers, String name) {
         String xml = xstream.toXML(mapLayers);
-        try (PrintWriter out = new PrintWriter(RUNNING_GAMES_DATA_SAVE_FOLDER + "testData" + ".xml")) {
+        try (PrintWriter out = new PrintWriter(RUNNING_GAMES_DATA_SAVE_FOLDER + name + "_layers.xml")) {
             out.println(xml);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -86,12 +86,12 @@ public class SaveUtil {
     }
 
     public static ArrayList<Layer> loadTMXMapData(String name) {
-        Path fileName = Path.of(RUNNING_GAMES_DATA_SAVE_FOLDER + "testData" + ".xml");
+        Path fileName = Path.of(RUNNING_GAMES_DATA_SAVE_FOLDER + name + "_layers.xml");
         try {
             String xml = Files.readString(fileName);
             return (ArrayList<Layer>) xstream.fromXML(xml);
         } catch (IOException e) {
-            System.out.println("Error: Could not read map-file for level '" + "testData" + "'!");
+            System.out.println("Error: Could not read map-file for level '" + name + "'!");
         }
         return null;
     }

@@ -131,7 +131,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
             // check whether a game is loaded or a new one is started
             if (GameDataStorage.runningGameData != null) {
                 // runningGameData exists -> LOAD EXISTING GAME
-                ArrayList<Layer> mapLayers = SaveUtil.loadTMXMapData("");
+                ArrayList<Layer> mapLayers = SaveUtil.loadTMXMapData(GameDataStorage.runningGameData.levelName);
                 map = new MyTileMap(mapLocation + ZuluAssault.nextLevelName + ".tmx", mapLayers);
                 levelData = GameDataStorage.runningGameData;
                 // also setup the initGameData in case the user wants to save
