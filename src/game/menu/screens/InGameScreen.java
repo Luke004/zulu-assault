@@ -111,37 +111,21 @@ public class InGameScreen extends AbstractMenuScreen {
         }
     }
 
-    private void handleMenuItemChoice(GameContainer gameContainer, StateBasedGame stateBasedGame, int idx) {
+    private void handleMenuItemChoice(GameContainer gc, StateBasedGame sbg, int idx) {
         arrow.currIdx = idx;
         switch (idx) {
             case 0: // RESUME CURRENT GAME
-                stateBasedGame.enterState(ZuluAssault.prevState.getID(),
+                sbg.enterState(ZuluAssault.prevState.getID(),
                         new FadeOutTransition(), new FadeInTransition());
                 break;
             case 1: // START NEW GAME
                 LevelManager.startNewGame("map_1", gameState);
                 break;
             case 2: // LOAD
-                MenuSounds.ERROR_SOUND.play(1.f, UserSettings.soundVolume);
+                goToMenu(STATE_LOAD_GAME_MENU, gc);
                 break;
             case 3: // SAVE
-                NewGameDataWrapper levelData = GameDataStorage.initGameData;
-                if (levelData == null) {
-                    MenuSounds.ERROR_SOUND.play(1.f, UserSettings.soundVolume);
-                    break;
-                }
-                SaveUtil.saveRunningGameDataToXML(new RunningGameDataWrapper(
-                        levelData.levelName,
-                        Level.getAllElements(),
-                        Level.player.getEntity(),
-                        levelData.getAllWaypointLists(new LevelEditor()),
-                        levelData.getEntityConnections(levelData.getAllWaypointEntities()),
-                        levelData.mission_title,
-                        levelData.briefing_message,
-                        levelData.debriefing_message,
-                        levelData.musicIdx
-                ), 1);
-                SaveUtil.saveTMXMapData(Level.map.getMapLayers(), levelData.levelName, 1);
+                goToMenu(STATE_SAVE_GAME_MENU, gc);
                 break;
             case 4: // OPTIONS
                 goToMenu(Menu.STATE_OPTIONS_MENU);

@@ -56,7 +56,7 @@ public class SaveUtil {
     public static void saveRunningGameDataToXML(RunningGameDataWrapper runningGameData, int saveIdx) {
         File saveFolderDir = new File(RUNNING_GAMES_DATA_SAVE_FOLDER);
         saveFolderDir.mkdir(); // create save folder dir ("/saves/games")
-        final String saveGameDir = RUNNING_GAMES_DATA_SAVE_FOLDER + File.separator + saveIdx;
+        final String saveGameDir = RUNNING_GAMES_DATA_SAVE_FOLDER + saveIdx;
         File idxFolderDir = new File(saveGameDir);
         idxFolderDir.mkdir(); // create save game folder dir ("/saves/games/[saveIdx]")
         String xml = xstream.toXML(runningGameData);

@@ -34,7 +34,7 @@ public class LoadGameScreen extends AbstractMenuScreen {
     private final Arrow arrow;
     private final int back_btn_width, back_btn_height;
     private final Vector2f back_btn_position;
-    private Buttons buttons;
+    protected Buttons buttons;
     private static final TrueTypeFont menu_drawer;
     private static final Map<Integer, String> levelNameMap;
     private boolean isArrowOnBackBtn;
@@ -132,7 +132,10 @@ public class LoadGameScreen extends AbstractMenuScreen {
             }
         }
         int idx = buttons.isClicked(mouseX, mouseY);
-        if (idx != -1) MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
+        if (idx != -1) {
+            isArrowOnBackBtn = false;
+            MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
+        }
         if (idx == -2) return;
         this.loadLevel(levelNameMap.get(buttons.getCurrentButtonIdx() + 1), buttons.getCurrentButtonIdx() + 1);
     }
@@ -147,7 +150,7 @@ public class LoadGameScreen extends AbstractMenuScreen {
         return false;
     }
 
-    private void loadLevel(String name, int idx) {
+    protected void loadLevel(String name, int idx) {
         if (buttons.getCurrentActiveBtn().getDescription().equals("EMPTY")) {
             MenuSounds.ERROR_SOUND.play(1.f, UserSettings.soundVolume);
             return;
@@ -181,18 +184,20 @@ public class LoadGameScreen extends AbstractMenuScreen {
                 loadGameBtn.changeColor(Color.white);
                 saveGameFileName = saveGameFileName.substring(0, saveGameFileName.length() - 4); // cut ".tmx"
                 levelNameMap.put(loadIdx, saveGameFileName);
-                String btnDescription;
-                if (Level.isOfficialLevel(saveGameFileName)) {
-                    btnDescription = "Level " + saveGameFileName.substring(saveGameFileName.indexOf("_") + 1);
-                } else {
-                    // custom level
-                    btnDescription = saveGameFileName.substring(0, saveGameFileName.length() - 4) + " (custom)";
-                }
-                loadGameBtn.setDescription(btnDescription);
+                loadGameBtn.setDescription(this.generateLevelName(saveGameFileName));
             }
         }
         buttons.reset();
         this.isArrowOnBackBtn = true;
+    }
+
+    protected String generateLevelName(String saveGameFileName){
+        if (Level.isOfficialLevel(saveGameFileName)) {
+            return "Level " + saveGameFileName.substring(saveGameFileName.indexOf("_") + 1);
+        } else {
+            // custom level
+            return saveGameFileName.substring(0, saveGameFileName.length() - 4) + " (custom)";
+        }
     }
 
     @Override
