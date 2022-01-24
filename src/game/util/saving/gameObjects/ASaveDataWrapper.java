@@ -225,6 +225,22 @@ public abstract class ASaveDataWrapper {
         return entityConnections;
     }
 
+    public Map<MovableEntity, Vector2f> getEntityConnectionsForLevelEditor(List<MovableEntity> movableEntities) {
+        Map<MovableEntity, Vector2f> entityConnections = new HashMap<>();
+        for (WaypointEntityData waypointEntity : waypointData.entities) {
+            for (MovableEntity movableEntity : movableEntities) {
+                if (waypointEntity.entityData.xPos == movableEntity.getPosition().x
+                        && waypointEntity.entityData.yPos == movableEntity.getPosition().y) {
+                    // this is the right movable entity, now get the connected waypoint
+                    List<Vector2f> waypointList = waypointData.waypoints.get(waypointEntity.waypointListIdx);
+                    Vector2f connectedWaypoint = waypointList.get(waypointEntity.waypointListStartIdx);
+                    entityConnections.put(movableEntity, connectedWaypoint);
+                }
+            }
+        }
+        return entityConnections;
+    }
+
     public MovableEntity getPlayerEntity(boolean forMapEditor) {
         MovableEntity copy = (MovableEntity) MapElements.getCopyByName(new Vector2f(player.xPos, player.yPos), player.name,
                 false, !forMapEditor);

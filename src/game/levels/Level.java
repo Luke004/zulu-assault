@@ -123,10 +123,6 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
         }
 
         try {
-
-
-            //LevelDataStorage levelData = LevelDataStorage.loadLevel(ZuluAssault.nextLevelName, isOfficialLevel);
-
             ASaveDataWrapper levelData;
             // check whether a game is loaded or a new one is started
             if (GameDataStorage.runningGameData != null) {

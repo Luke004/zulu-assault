@@ -12,6 +12,8 @@ import game.models.interaction_circles.InteractionCircle;
 import game.models.interaction_circles.TeleportCircle;
 import game.models.items.*;
 import game.util.LevelDataStorage;
+import game.util.saving.SaveUtil;
+import game.util.saving.gameObjects.newGame.NewGameDataWrapper;
 import level_editor.screens.windows.CenterPopupWindow;
 import level_editor.screens.windows.Window;
 import level_editor.screens.windows.toolbars.bottom.BottomToolbar;
@@ -137,8 +139,8 @@ public class LevelEditor extends BasicGameState {
             mapY = mapHeight / 2.f;
 
             // attempt to load already created map data
-            //InitGameDataWrapper levelData = SaveUtil.loadInitGameDataFromXML(getSimpleMapName(), false);
-            LevelDataStorage levelData = LevelDataStorage.loadLevel(getSimpleMapName(), false);
+            NewGameDataWrapper levelData = SaveUtil.loadInitGameDataFromXML(getSimpleMapName(), false);
+            //LevelDataStorage levelData = LevelDataStorage.loadLevel(getSimpleMapName(), false);
 
             if (levelData != null) {
                 setPlayerEntity(levelData.getPlayerEntity(true));
@@ -170,7 +172,7 @@ public class LevelEditor extends BasicGameState {
                     }
                 }
                 this.elements.addAll(waypointEntities);
-                EditorWaypointList.setEntityConnections(levelData.getEntityConnections(waypointEntities));
+                EditorWaypointList.setEntityConnections(levelData.getEntityConnectionsForLevelEditor(waypointEntities));
                 allWayPointLists.addAll(levelData.getAllWaypointLists(this));
                 // fill in the save-text-fields with the 'title', 'briefing' and 'debriefing' message
                 this.bottomToolbar.fillSaveTextFields(levelData.mission_title, levelData.briefing_message,
