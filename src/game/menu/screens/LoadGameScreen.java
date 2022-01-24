@@ -26,7 +26,7 @@ import java.io.FileFilter;
 import java.util.HashMap;
 import java.util.Map;
 
-import static game.menu.Menu.returnToPreviousMenu;
+import static game.menu.Menu.*;
 import static game.menu.screens.MainScreen.MENU_OPTION_HEIGHT;
 
 public class LoadGameScreen extends AbstractMenuScreen {
@@ -202,7 +202,8 @@ public class LoadGameScreen extends AbstractMenuScreen {
 
     @Override
     public void onLeaveState(GameContainer gameContainer) {
-
+        main_menu_intro_sound.stop();
+        main_menu_music.stop();
     }
 
 }
