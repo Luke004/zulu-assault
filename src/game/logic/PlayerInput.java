@@ -35,25 +35,15 @@ public class PlayerInput {
     public void update(GameContainer gameContainer, int deltaTime) {
         Input input = gameContainer.getInput();
         MovableEntity playerEntity = player.getEntity();
-
         // keys for all types:
-
         // left turn
         if (input.isKeyDown(Input.KEY_LEFT)) {
             playerEntity.rotate(MovableEntity.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
         }
-
         // right turn
         if (input.isKeyDown(Input.KEY_RIGHT)) {
             playerEntity.rotate(MovableEntity.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
         }
-
-        // fire weapon1
-        if (input.isKeyDown(Input.KEY_RCONTROL)) {
-            if (playerEntity.isDestroyed) return;
-            playerEntity.fireWeapon(Entity.WeaponType.WEAPON_1);
-        }
-
         // fire weapon1
         if (input.isKeyDown(Input.KEY_LCONTROL)) {
             // next if-statement fixes a bug from slick, where 'KEY_RALT' is also fired on 'KEY_LCONTROL' press
@@ -62,30 +52,24 @@ public class PlayerInput {
                 playerEntity.fireWeapon(Entity.WeaponType.WEAPON_1);
             }
         }
-
         // fire weapon2
         if (input.isKeyDown(Input.KEY_LALT) || input.isKeyDown(Input.KEY_RALT)) {
             if (playerEntity.isDestroyed) return;
             playerEntity.fireWeapon(Entity.WeaponType.WEAPON_2);
         }
-
         // activate items
         if (input.isKeyPressed(Input.KEY_1)) {
             player.activateItem(Player.Item_e.INVINCIBILITY);
         }
-
         if (input.isKeyPressed(Input.KEY_2)) {
             player.activateItem(Player.Item_e.EMP);
         }
-
         if (input.isKeyPressed(Input.KEY_3)) {
             player.activateItem(Player.Item_e.MEGA_PULSE);
         }
-
         if (input.isKeyPressed(Input.KEY_4)) {
             player.activateItem(Player.Item_e.EXPAND);
         }
-
         // show / hide radar
         if (input.isKeyPressed(Input.KEY_R)) {
             Radar.toggleRadar();
@@ -94,7 +78,6 @@ public class PlayerInput {
         switch (player.getEntityType()) {
             case SOLDIER:   // player is a soldier (goes by foot)
                 Soldier soldier = (Soldier) playerEntity;
-
                 // forward movement
                 if (input.isKeyPressed(Input.KEY_UP)) {
                     soldier.setMovingForward(true);
@@ -108,7 +91,6 @@ public class PlayerInput {
                 if (input.isKeyDown(Input.KEY_UP)) {
                     soldier.moveForward(deltaTime);
                 }
-
                 // backwards movement
                 if (input.isKeyPressed(Input.KEY_DOWN)) {
                     soldier.setMovingForward(false);
@@ -122,22 +104,6 @@ public class PlayerInput {
                 if (input.isKeyDown(Input.KEY_DOWN)) {
                     soldier.moveBackwards(deltaTime);
                 }
-
-                // fire weapon1
-                if (input.isKeyDown(Input.KEY_LCONTROL) || input.isKeyPressed(Input.KEY_RCONTROL)) {
-                    soldier.fireWeapon(Entity.WeaponType.WEAPON_1);
-                }
-
-                // fire weapon2
-                if (input.isKeyDown(Input.KEY_LALT) || input.isKeyPressed(Input.KEY_RALT)) {
-                    soldier.fireWeapon(Entity.WeaponType.WEAPON_2);
-                }
-
-                // activate invincibility
-                if (input.isKeyPressed(Input.KEY_1)) {
-                    player.activateItem(Player.Item_e.INVINCIBILITY);
-                }
-
                 // get into vehicle
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
                     for (MovableEntity movableEntity : drivable_entities) {
@@ -154,7 +120,6 @@ public class PlayerInput {
                 break;
             case TANK:      // player is in a tank
                 Tank tank = (Tank) playerEntity;
-
                 // forward movement
                 if (input.isKeyPressed(Input.KEY_UP)) {
 
@@ -168,7 +133,6 @@ public class PlayerInput {
                     KEY_UP_RELEASED = false;
                     KEY_UP_PRESSED = false;
                 }
-
                 if (KEY_UP_PRESSED) {
                     if (KEY_DOWN_PRESSED) return;
                     if (tank.isDecelerating()) {
@@ -178,8 +142,6 @@ public class PlayerInput {
                     tank.setMoving(true);
                     tank.accelerate(deltaTime, MovableEntity.Direction.FORWARD);
                 }
-
-
                 // backwards movement
                 if (input.isKeyPressed(Input.KEY_DOWN)) {
                     if (KEY_UP_PRESSED) return;
@@ -193,7 +155,6 @@ public class PlayerInput {
                     KEY_DOWN_RELEASED = false;
                     KEY_DOWN_PRESSED = false;
                 }
-
                 if (KEY_DOWN_PRESSED) {
                     if (KEY_UP_PRESSED) return;
                     if (tank.isDecelerating()) {
@@ -203,22 +164,18 @@ public class PlayerInput {
                     tank.setMoving(true);
                     tank.accelerate(deltaTime, MovableEntity.Direction.BACKWARDS);
                 }
-
                 if (input.isKeyDown(Input.KEY_X)) {
                     tank.rotateTurret(MovableEntity.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
                     if (!turretRotateSound.playing()) {
                         turretRotateSound.play(1.f, UserSettings.soundVolume);
                     }
                 }
-
                 if (input.isKeyDown(UserSettings.keyboardLayout_1 ? Input.KEY_Z : Input.KEY_Y)) {
                     tank.rotateTurret(MovableEntity.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
                     if (!turretRotateSound.playing()) {
                         turretRotateSound.play(1.f, UserSettings.soundVolume);
                     }
                 }
-
-
                 // get out of tank
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
                     if (!tank.isMoving()) {
@@ -231,7 +188,6 @@ public class PlayerInput {
                         MenuSounds.ERROR_SOUND.play(1.f, UserSettings.soundVolume);
                     }
                 }
-
                 // auto center turret
                 if (input.isKeyPressed(Input.KEY_A)) {
                     tank.autoCenterTurret();
@@ -259,7 +215,6 @@ public class PlayerInput {
                 if (input.isKeyDown(Input.KEY_UP)) {
                     robot.moveForward(deltaTime);
                 }
-
                 // backwards movement
                 if (input.isKeyPressed(Input.KEY_DOWN)) {
                     robot.setMovingForward(false);
@@ -273,21 +228,18 @@ public class PlayerInput {
                 if (input.isKeyDown(Input.KEY_DOWN)) {
                     robot.moveBackwards(deltaTime);
                 }
-
                 if (input.isKeyDown(Input.KEY_X)) {
                     robot.rotateTurret(MovableEntity.RotateDirection.ROTATE_DIRECTION_RIGHT, deltaTime);
                     if (!turretRotateSound.playing()) {
                         turretRotateSound.play(1.f, UserSettings.soundVolume);
                     }
                 }
-
                 if (input.isKeyDown(UserSettings.keyboardLayout_1 ? Input.KEY_Z : Input.KEY_Y)) {
                     robot.rotateTurret(MovableEntity.RotateDirection.ROTATE_DIRECTION_LEFT, deltaTime);
                     if (!turretRotateSound.playing()) {
                         turretRotateSound.play(1.f, UserSettings.soundVolume);
                     }
                 }
-
                 // get out of robot
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
                     if (!robot.isMoving()) {
@@ -300,7 +252,6 @@ public class PlayerInput {
                         MenuSounds.ERROR_SOUND.play(1.f, UserSettings.soundVolume);
                     }
                 }
-
                 // auto center turret
                 if (input.isKeyPressed(Input.KEY_A)) {
                     robot.autoCenterTurret();
@@ -316,15 +267,12 @@ public class PlayerInput {
 
             case PLANE:     // player is in a plane
                 Aircraft aircraft = (Aircraft) playerEntity;
-
                 if (input.isKeyDown(Input.KEY_UP)) {
                     aircraft.increaseSpeed(deltaTime);
                 }
-
                 if (input.isKeyDown(Input.KEY_DOWN)) {
                     aircraft.decreaseSpeed(deltaTime);
                 }
-
                 // get out of plane
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
                     aircraft.initLanding();
@@ -336,7 +284,6 @@ public class PlayerInput {
                     player.setEntity(aircraft, Player.EnterAction.LEAVING);
                 }
                 break;
-
             case HELICOPTER:     // player is in a helicopter
                 AttackHelicopter attackHelicopter = (AttackHelicopter) playerEntity;
 
@@ -352,7 +299,6 @@ public class PlayerInput {
                     KEY_UP_RELEASED = false;
                     KEY_UP_PRESSED = false;
                 }
-
                 if (KEY_UP_PRESSED) {
                     if (KEY_DOWN_PRESSED) return;
                     if (attackHelicopter.isDecelerating()) {
@@ -362,7 +308,6 @@ public class PlayerInput {
                     attackHelicopter.setMoving(true);
                     attackHelicopter.increaseSpeed(deltaTime);
                 }
-
                 // backwards movement
                 if (input.isKeyPressed(Input.KEY_DOWN)) {
                     if (KEY_UP_PRESSED) return;
@@ -376,7 +321,6 @@ public class PlayerInput {
                     KEY_DOWN_RELEASED = false;
                     KEY_DOWN_PRESSED = false;
                 }
-
                 if (KEY_DOWN_PRESSED) {
                     if (KEY_UP_PRESSED) return;
                     if (attackHelicopter.isDecelerating()) {
@@ -386,7 +330,6 @@ public class PlayerInput {
                     attackHelicopter.setMoving(true);
                     attackHelicopter.decreaseSpeed(deltaTime);
                 }
-
                 // get out of helicopter
                 if (input.isKeyPressed(Input.KEY_LSHIFT) || input.isKeyPressed(Input.KEY_RSHIFT)) {
                     attackHelicopter.initLanding();
