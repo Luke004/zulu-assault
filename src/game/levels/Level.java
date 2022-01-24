@@ -126,19 +126,19 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
             ASaveDataWrapper levelData;
             // check whether a game is loaded or a new one is started
             if (GameDataStorage.runningGameData != null) {
-                // runningGameData exists -> LOAD EXISTING GAME
+                // PLAYER WANTS TO LOAD A GAME
                 ArrayList<Layer> mapLayers = SaveUtil.loadTMXMapData(GameDataStorage.runningGameData.levelName);
                 map = new MyTileMap(mapLocation + ZuluAssault.nextLevelName + ".tmx", mapLayers);
                 levelData = GameDataStorage.runningGameData;
                 // also setup the initGameData in case the user wants to save
                 GameDataStorage.initGameData = SaveUtil.loadInitGameDataFromXML(ZuluAssault.nextLevelName, isOfficialLevel);
             } else {
-                // NO runningGameData exists ->  INIT NEW LEVEL
+                // PLAYER WANTS TO START NEW GAME
                 map = new MyTileMap(mapLocation + ZuluAssault.nextLevelName + ".tmx");
                 levelData = GameDataStorage.initGameData;
             }
             if (levelData != null) {
-                reset();
+                resetLevel();
 
                 // load all items
                 items.addAll(levelData.getAllItems());
@@ -447,7 +447,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
         playerInput.onKeyRelease(key);
     }
 
-    private static void reset() {
+    private static void resetLevel() {
         if (player.getEntity() == null) return;
         all_hostile_entities.clear();
         all_friendly_entities.clear();
@@ -462,7 +462,7 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
         hasWonTheLevel = false;
     }
 
-    public static void prepareNewPlayThrough() {
+    public static void resetGame() {
         player.reset();
         hud.reset();
     }

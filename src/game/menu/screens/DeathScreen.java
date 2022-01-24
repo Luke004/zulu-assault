@@ -12,6 +12,9 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import settings.UserSettings;
 
+import static game.menu.Menu.STATE_LOAD_GAME_MENU;
+import static game.menu.Menu.goToMenu;
+
 
 public class DeathScreen extends AbstractMenuScreen {
 
@@ -84,14 +87,13 @@ public class DeathScreen extends AbstractMenuScreen {
         handleMenuItemChoice(gameContainer, stateBasedGame, idx);
     }
 
-    private void handleMenuItemChoice(GameContainer gameContainer, StateBasedGame stateBasedGame, int idx) {
+    private void handleMenuItemChoice(GameContainer gc, StateBasedGame sbg, int idx) {
         switch (idx) {
             case 0: // REPLAY MISSION
                 LevelManager.startNewGame(ZuluAssault.nextLevelName, gameState);
                 break;
             case 1: // LOAD A GAME
-                // TODO: LOAD
-                MenuSounds.ERROR_SOUND.play(1.f, UserSettings.soundVolume);
+                goToMenu(STATE_LOAD_GAME_MENU, gc);
                 break;
             case 2: // MAIN MENU
                 you_are_dead_sound.stop();

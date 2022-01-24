@@ -21,7 +21,7 @@ public class LevelManager {
 
     public static void startNewGame(String s_level, BasicGameState bgs) {
         playerIsInPlayThrough = true;
-        if (hasPreviousPlayThrough) Level.prepareNewPlayThrough();
+        if (hasPreviousPlayThrough) Level.resetGame();
         TimeManager.reset();
         startNextLevel(s_level, bgs);
         hasPreviousPlayThrough = true;
@@ -34,6 +34,7 @@ public class LevelManager {
     }
 
     public static void loadExistingGame(String s_level, BasicGameState bgs, RunningGameDataWrapper gameData) {
+        Level.resetGame();
         // set all running game data
         Player.addPoints(gameData.currentScore);
         Player.item_amounts = gameData.item_amounts;
