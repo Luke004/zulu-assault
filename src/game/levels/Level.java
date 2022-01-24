@@ -463,8 +463,8 @@ public class Level extends BasicGameState implements EntityDeleteListener, Groun
     }
 
     public static void resetGame() {
-        player.reset();
-        hud.reset();
+        if (player != null) player.reset();
+        if (hud != null) hud.reset();
     }
 
     /**
