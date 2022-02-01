@@ -108,6 +108,7 @@ public class Player {
 
     public void draw(Graphics graphics) {
         if (isInvincible) {
+            current_entity.draw(graphics);
             current_entity.drawInvincible(graphics, invincibility_animation_switch);
         } else {
             // normal draw
