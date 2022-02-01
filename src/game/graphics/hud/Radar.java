@@ -3,6 +3,9 @@ package game.graphics.hud;
 import game.logic.TileMapData;
 import game.models.entities.Entity;
 import game.models.entities.MovableEntity;
+import game.models.interaction_circles.HealthCircle;
+import game.models.interaction_circles.InteractionCircle;
+import game.models.interaction_circles.TeleportCircle;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -21,6 +24,8 @@ public class Radar {
     private Vector2f radar_image_position;
     private static final Color lightRed = Color.decode("#800000");
     private static final Color lightGrey = Color.decode("#808080");
+    private static final Color circleBlue = Color.decode("#08337c");
+    private static final Color circleGreen = Color.decode("#084b17");
 
 
     private final Player player;
@@ -79,6 +84,28 @@ public class Radar {
                 radar_origin.y + player_y - RADAR_SCREEN_RECT_HEIGHT / 2,
                 RADAR_SCREEN_RECT_WIDTH,
                 RADAR_SCREEN_RECT_HEIGHT);
+
+        // draw circles
+        // health circles
+        for (HealthCircle healthCircle : health_circles) {
+            graphics.setColor(circleGreen);
+            float circle_x = healthCircle.getPosition().x * ((float) RADAR_WIDTH / TileMapData.LEVEL_WIDTH_PIXELS);
+            float circle_y = healthCircle.getPosition().y * ((float) RADAR_HEIGHT / TileMapData.LEVEL_HEIGHT_PIXELS);
+            graphics.drawLine(radar_origin.x + circle_x - 3, radar_origin.y + circle_y,
+                    radar_origin.x + circle_x + 3, radar_origin.y + circle_y);
+            graphics.drawLine(radar_origin.x + circle_x, radar_origin.y + circle_y + 3,
+                    radar_origin.x + circle_x, radar_origin.y + circle_y - 3);
+        }
+        // teleport circles
+        for (TeleportCircle teleportCircle : teleport_circles) {
+            graphics.setColor(circleBlue);
+            float circle_x = teleportCircle.getPosition().x * ((float) RADAR_WIDTH / TileMapData.LEVEL_WIDTH_PIXELS);
+            float circle_y = teleportCircle.getPosition().y * ((float) RADAR_HEIGHT / TileMapData.LEVEL_HEIGHT_PIXELS);
+            graphics.drawLine(radar_origin.x + circle_x - 3, radar_origin.y + circle_y,
+                    radar_origin.x + circle_x + 3, radar_origin.y + circle_y);
+            graphics.drawLine(radar_origin.x + circle_x, radar_origin.y + circle_y + 3,
+                    radar_origin.x + circle_x, radar_origin.y + circle_y - 3);
+        }
 
         // draw the friendly entities
         graphics.setColor(Color.blue);
