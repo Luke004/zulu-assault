@@ -11,7 +11,7 @@ The game was originally published in July 1998 for Windows 95/98/NT platforms su
 |<kbd>Up/Down</kbd>|Accelerate/Deaccelerate|Yes|
 |<kbd>Left/Right</kbd>|Turn left/right|Yes|
 |<kbd>Ctrl</kbd>|Weapon A|Yes|
-|<kbd>Alt</kbd>|Weapon B|Partially|
+|<kbd>Alt</kbd>|Weapon B|Yes|
 |<kbd>Shift</kbd>|Get In/Out of current vehicle|Yes|
 |<kbd>A</kbd>|Autocenter turret|Yes|
 |<kbd>Z</kbd>|Turret left|Yes|
@@ -43,7 +43,7 @@ The game was originally published in July 1998 for Windows 95/98/NT platforms su
 
 
 ## Play current release (download)
-https://github.com/Luke004/zulu-assault/releases/download/1.4/zulu-assault-1.4.zip
+https://github.com/Luke004/zulu-assault/releases/download/1.5.1/zulu-assault-1.5.1.zip
 
 ## Console commands
 
