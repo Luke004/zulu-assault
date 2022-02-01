@@ -92,7 +92,12 @@ public class InGameScreen extends AbstractMenuScreen {
             handleMenuItemChoice(gameContainer, stateBasedGame, arrow.currIdx);
         } else if (gameContainer.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
             MenuSounds.CLICK_SOUND.play(1.f, UserSettings.soundVolume);
-            arrow.currIdx = 6;
+            // set arrow on 'RESUME'
+            if (arrow.currIdx != 0) arrow.currIdx = 0;
+            else {
+                // if arrow already is on 'RESUME' -> resume the game
+                handleMenuItemChoice(gameContainer, stateBasedGame, 0);
+            }
         }
     }
 
