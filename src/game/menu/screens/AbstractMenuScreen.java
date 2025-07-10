@@ -26,8 +26,7 @@ public abstract class AbstractMenuScreen implements iMenuScreen {
             onMouseClick(gameContainer, stateBasedGame,
                     gameContainer.getInput().getMouseX(),
                     gameContainer.getInput().getMouseY());
-        } else if (gameContainer.getInput().isKeyPressed(Input.KEY_BACKSLASH)
-                || gameContainer.getInput().isKeyPressed(Input.KEY_GRAVE)) {
+        } else if (gameContainer.getInput().isKeyPressed(Input.KEY_F1)) {
             // open or close console
             Console.toggle();
         }

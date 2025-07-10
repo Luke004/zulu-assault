@@ -175,9 +175,9 @@ public class Menu extends BasicGameState {
 
     @Override
     public void keyPressed(int key, char c) {
-        if (!Console.isActive()) return;
-        else Console.handleUserInput(key, c);
+        if (!Console.isActive()) {
+            return;
+        }
+        Console.handleUserInput(key, c);
     }
-
-
 }

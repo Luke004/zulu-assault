@@ -134,15 +134,7 @@ public class Console {
                 break;
             default:
                 // default text input
-                String charName;
-                if (c == '^') {
-                    // handle the tilde press
-                    charName = Input.getKeyName(key);
-                    if (charName.length() > 1)
-                        return;   // make sure that it's a single key, not for instance a 'SPACE BAR'
-                } else {
-                    charName = (String.valueOf(c));
-                }
+                String charName = (String.valueOf(c));
                 charName = normalize(charName);
                 if (!isValidInputChar(charName)) return;
                 s_input += charName;
@@ -151,7 +143,7 @@ public class Console {
 
     private static String normalize(String s) {
         s = Normalizer.normalize(s, Normalizer.Form.NFD);
-        s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+        s = s.replaceAll("\\p{InCombiningDiacriticalMarks}", "");
         return s.toLowerCase();
     }
 
