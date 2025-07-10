@@ -3,6 +3,8 @@ package game.graphics.fonts;
 import org.newdawn.slick.TrueTypeFont;
 
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 public class FontManager {
 
@@ -22,11 +24,11 @@ public class FontManager {
         console_input = new TrueTypeFont(new java.awt.Font("DialogInput", java.awt.Font.PLAIN, 14), true);
         console_output = new TrueTypeFont(new java.awt.Font("DialogInput", java.awt.Font.PLAIN, 11), true);
         console_output_bold = new TrueTypeFont(new java.awt.Font("DialogInput", Font.BOLD, 11), true);
-        game_title = new TrueTypeFont(new java.awt.Font("Stencil", java.awt.Font.PLAIN, 69), true);
-        stencil_small = new TrueTypeFont(new Font("Stencil", Font.PLAIN, 12), true);
-        stencil_smaller = new TrueTypeFont(new Font("Stencil", Font.PLAIN, 11), true);
-        stencil_medium = new TrueTypeFont(new Font("Stencil", Font.PLAIN, 19), true);
-        stencil_big = new TrueTypeFont(new Font("Stencil", Font.PLAIN, 45), true);
+        game_title = new TrueTypeFont(createStencilFont(69), true);
+        stencil_small = new TrueTypeFont(createStencilFont(12), true);
+        stencil_smaller = new TrueTypeFont(createStencilFont(11), true);
+        stencil_medium = new TrueTypeFont(createStencilFont(19), true);
+        stencil_big = new TrueTypeFont(createStencilFont(45), true);
         item = new TrueTypeFont(new Font("Century Gothic", Font.PLAIN, 11), true);
     }
 
@@ -62,4 +64,14 @@ public class FontManager {
         return item;
     }
 
+    private static Font createStencilFont(int size) {
+        try {
+            return Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/Stencil.ttf"))
+                    .deriveFont((float) size);
+        } catch (FontFormatException | IOException e) {
+            System.out.println("Failed to load Stencil font. Using fallback font \"Consolas\" instead.\n");
+            size -= 7;
+            return new Font("Consolas", Font.PLAIN, size);
+        }
+    }
 }
