@@ -2,6 +2,9 @@
 I'm working on recreating this old awesome game by Dallas Nutsch that I used to play a lot back in the days.
 The game was originally published in July 1998 for Windows 95/98/NT platforms supporting DirectX 5.0, which is really outdated. I am using Java with the libraries "LWJGL" and "Slick2D" to develop this game for newer operating systems like Windows 10, Mac or Linux.
 
+## Play current release (download)
+https://github.com/Luke004/zulu-assault/releases/download/1.5.2/zulu-assault-1.5.2.zip
+
 ## Instructions
 
 ### Keys
@@ -40,10 +43,6 @@ The game was originally published in July 1998 for Windows 95/98/NT platforms su
 ![expand item](https://github.com/Luke004/Zulu-Assault/blob/master/assets/items/expand/expand.png?raw=true)
 <kbd>4</kbd> Activate **Expand**  
 *Repel projectiles of enemy weapons*
-
-
-## Play current release (download)
-https://github.com/Luke004/zulu-assault/releases/download/1.5.2/zulu-assault-1.5.2.zip
 
 ## Console commands
 
